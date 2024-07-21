@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Models\Magasin;
+
+use App\Models\User\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+class Magasin extends Authenticatable
+{
+    use HasFactory,Notifiable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'password',
+        'admin_name',
+        'logo',
+        'slug',
+        'adresse',
+        'is_active',
+        'termsService',
+        'code_validation',
+        'confirmation_token'
+    ];
+
+    public function categories(){
+        return $this->hasMany(Category::class);
+    }
+    
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function clients()
+    {
+        return $this->hasMany(Client::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function agents()
+    {
+        return $this->hasMany(Agent::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class,'magasin_users');
+    }
+
+    public function commandes()
+    {
+        return $this->hasMany(Commande::class);
+    }
+   
+}

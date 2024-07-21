@@ -1,0 +1,169 @@
+@extends('layouts.app',['title' => 'magasin-panier'])
+
+@section('main-content')
+<div class="content">
+   
+  <!-- ============================================-->
+      <!-- <section> begin ============================-->
+      <section class="pt-5 pb-9">
+        <div class="container-small cart">
+          <h2 class="mb-6">Panier</h2>
+          <div class="row g-5">
+            <div class="col-12 col-lg-8">
+              <div id="cartTable" data-list='{"valueNames":["products","color","size","price","quantity","total"],"page":10}'>
+                <div class="table-responsive scrollbar mx-n1 px-1">
+                  <table class="table fs-9 mb-0 border-top border-translucent">
+                    <thead>
+                      <tr>
+                        <th class="sort white-space-nowrap align-middle fs-10" scope="col"></th>
+                        <th class="sort white-space-nowrap align-middle" scope="col" style="min-width:250px;">PRODUITS</th>
+                        <th class="sort align-middle text-end" scope="col" style="width:100%;">PRIX UNITAIRE</th>
+                        <th class="sort align-middle ps-5" scope="col" style="width:200px;">QUANTITE</th>
+                        <th class="sort align-middle text-end" scope="col" style="width:250px;">TOTAL</th>
+                        <th class="sort text-end align-middle pe-0" scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody class="list cartpage" id="cart-table-body">
+                      @foreach(Cart::content() as $product) 
+                        <tr class="cart-table-row btn-reveal-trigger">
+                          <td class="align-middle white-space-nowrap py-0"><a class="d-block border border-translucent rounded-2" href="product-details.html"><img src="{{Storage::url($product->model->image)}}" alt="" width="53" /></a></td>
+                          <td class="products align-middle"><a class="fw-semibold mb-0 line-clamp-2" href="product-details.html">{{$product->model->name}}</a></td>
+                          <td class="price align-middle text-body fs-9 fw-semibold text-end" style="width: 100%;">{{$product->model->getPrice()}}</td>
+                          <td class="quantity align-middle fs-8 ps-5">
+                            <div class="input-group input-group-sm flex-nowrap" data-quantity="data-quantity">
+                              <a href="{{ route('magasin.panier.edit',$product->rowId) }}" class="btn btn-sm px-2" data-type="minus">-</a>
+                                <input disabled="" class="form-control text-center input-spin-none bg-transparent border-0 px-0" data-id="{{ $product->rowId }}" id="qty" name="qty" type="number" min="1" value="{{ $product->qty }}" aria-label="Amount (to the nearest dollar)" />
+                              <a class="btn btn-sm px-2" href="{{ route('magasin.panier.show',$product->rowId) }}" data-type="plus">+</a>
+                            </div>
+                          </td>
+                          <td class="total align-middle fw-bold text-body-highlight text-end"> {{$product->model->getProductSubtotal($product->subtotal())}}</td>
+                          <td class="align-middle white-space-nowrap text-end pe-0 ps-3">
+                            <a href="{{ route('magasin.panier.destroy',$product->rowId) }}" onclick="event.preventDefault(); document.getElementById('SupprimerAuPanier-{{ $product->id }}').submit();" class="btn btn-sm text-body-tertiary text-opacity-85 text-body-tertiary-hover me-2"><span class="text-warning" data-feather="trash-2"></span></a>
+                            <form id="SupprimerAuPanier-{{ $product->id }}" action="{{ route('magasin.panier.destroy',$product->rowId) }}" method="POST" class="d-none">
+                              @csrf
+                              @method('DELETE')
+                            </form>
+                          </td>
+                        </tr>
+                      @endforeach
+                      <tr class="cart-table-row btn-reveal-trigger">
+                        <td class="text-body-emphasis fw-semibold ps-0 fs-8" colspan="5">Montant total des articles :</td>
+                        <td class="text-body-emphasis fw-bold text-center fs-8">{{ number_format( str_replace(',', '', Cart::subtotal()),2, ',','.'). ' CFA'; }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-between-center mb-3">
+                    <h3 class="card-title mb-0">Résumé</h3>
+                  </div>
+                  <form action="@if(AuthMagasinAgentVisible() == 1) {{ route('magasin.commande.store') }} @else {{ route('magasin.commande.post') }} @endif" method="post">
+                    @csrf
+                    <select class="form-select mb-3 @error('client') is-invalid @enderror" name="client" id="client" aria-label="delivery type" onchange="enableBrand(this)">
+                      <option></option>
+                      <option value="-1">Un simple client</option>
+                      @foreach($clients as $client)
+                        <option value="{{ $client->id }}">{{ $client->name }}</option>
+                      @endforeach
+                    </select>
+                    @error('client')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                    <div class="mb-3 text-start">
+                      <label class="form-label" for="bon_commande">Bon de commande (Facultatif)</label>
+                      <input id="bon_commande" type="text" class="form-control @error('bon_commande') is-invalid @enderror" name="bon_commande" value="{{ old('bon_commande') }}" placeholder="Bon de commande (Facultatif)" autocomplete="bon_commande">
+
+                      @error('bon_commande')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
+                    </div>
+                    <div class="d-none" id="clientNone">
+                      <div class="mb-3 text-start ">
+                        <label class="form-label" for="name">Prenom et nom du client</label>
+                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Prenom et nom du client" autocomplete="name">
+
+                        @error('name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                      </div>
+                      <div class="mb-3 text-start">
+                        <label class="form-label" for="phone">Numero de telephone</label>
+                        <input id="phone" type="numeric" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" placeholder="Numero de telephone" autocomplete="phone">
+
+                        @error('phone')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                      </div>
+                    </div>
+                    {{--
+                    <div>
+                      <div class="d-flex justify-content-between">
+                        <p class="text-body fw-semibold">Tax :</p>
+                        <p class="text-body-emphasis fw-semibold">{{ Cart::tax() }}</p>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <p class="text-body fw-semibold">Subtotal :</p>
+                        <p class="text-body-emphasis fw-semibold">{{ Cart::subtotal() }}</p>
+                      </div>
+                    </div>
+                    --}}
+                    
+                    <div class="d-flex justify-content-between border-y border-dashed py-3 mb-4">
+                      <h4 class="mb-0">Total :</h4>
+                      <h4 class="mb-">{{ number_format( str_replace(',', '', Cart::subtotal()),2, ',','.'). ' CFA'; }}</h4>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Enregistrer la commande
+                      <span class="fas fa-chevron-right ms-1 fs-10"></span>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- end of .container-->
+      </section><!-- <section> close ============================-->
+      <!-- ============================================-->
+
+
+
+
+
+  <footer class="footer position-absolute">
+    <div class="row g-0 justify-content-between align-items-center h-100">
+      <div class="col-12 col-sm-auto text-center">
+        <p class="mb-0 mt-2 mt-sm-0 text-body">Thank you for creating with Phoenix<span class="d-none d-sm-inline-block"></span><span class="d-none d-sm-inline-block mx-1">|</span><br class="d-sm-none" />2024 &copy;<a class="mx-1" href="https://themewagon.com/">Themewagon</a></p>
+      </div>
+      <div class="col-12 col-sm-auto text-center">
+        <p class="mb-0 text-body-tertiary text-opacity-85">v1.16.0</p>
+      </div>
+    </div>
+  </footer>
+
+
+</div>
+@endsection
+
+
+<script>
+   function enableBrand(answer){
+        
+        // declarartion de naissance
+        if (answer.value == -1) {
+            document.getElementById('clientNone').classList.remove('d-none')
+        }else{
+            document.getElementById('clientNone').classList.add('d-none')
+        }
+      }
+</script>

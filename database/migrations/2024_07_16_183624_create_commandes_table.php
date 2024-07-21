@@ -1,0 +1,58 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('commandes', function (Blueprint $table) {
+            $table->id();
+            $table->integer('order')->unique();
+            $table->integer('num_invoice')->unique()->nullable();
+            $table->string('name')->nullable();
+            $table->string('email')->nullable();
+            $table->integer('phone')->nullable();
+            $table->string('slug')->unique();
+            $table->string('adresse')->nullable();
+            $table->string('bon_commande')->nullable();
+            $table->dateTime('payment_created_at')->nullable();
+            $table->integer('tva')->nullable();
+            $table->boolean('type')->default(false);
+            $table
+              ->foreignId("user_id")
+              ->references("id")
+              ->on("users")
+              ->cascadeOnDelete()->nullable();
+            $table
+              ->foreignId("magasin_id")
+              ->references("id")
+              ->on("magasins")
+              ->cascadeOnDelete();
+            $table
+              ->foreignId("client_id")
+              ->references("id")
+              ->on("magasins")
+              ->cascadeOnDelete()->nullable();
+            $table->string('amount')->nullable();
+            $table->enum('payment', ['Success', 'Pending','Cancelled'])->nullable();
+            $table->enum('delivery', ['Success', 'Pending','Cancelled'])->nullable();
+            $table->integer('status')->nullable();
+            $table->date('date');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('commandes');
+    }
+};
