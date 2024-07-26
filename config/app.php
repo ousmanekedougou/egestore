@@ -170,8 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         // Mes provider
-
-        Mckenziearts\Notify\LaravelNotifyServiceProvider::class,
+        Brian2694\Toastr\ToastrServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
 
 
@@ -188,11 +187,9 @@ return [
     |
     */
 
-    // 'aliases' => [
-    //     "PDF" => Barryvdh\DomPDF\Facade::class,
-    // ]
 
     'aliases' => Facade::defaultAliases()->merge([
+        'Toastr'  => Brian2694\Toastr\Facades\Toastr::class,
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 

@@ -242,7 +242,7 @@ class OrderController extends Controller
         }
 
         return view('magasin.orders.invoice',[
-            'order' => Order::where('slug',$slug)->where('magasin_id',AuthMagasinAgent())->where('status',1)->first(),
+            'order' => Order::where('slug',$slug)->where('magasin_id',AuthMagasinAgent())->first(),
             'authName' => $authName
         ]);
     }

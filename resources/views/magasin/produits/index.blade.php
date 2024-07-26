@@ -88,9 +88,10 @@
             <h5 id="offcanvasRightLabel">Ajouter un produit</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
-            <form @if(AuthMagasinAgentVisible() == 1) class="dropzone dropzone-multiple p-0" id="dropzone-multiple"  data-dropzone="data-dropzone" @endif method="POST" action="{{ route('magasin.produit.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('magasin.produit.store') }}" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="sub_category_id" value="{{ $subcategory->id }}">
+              
               <div class="mb-3 text-start">
                   <label class="form-label" for="name">Titre du produit</label>
                   <input id="name" type="text" placeholder="Titre du produit" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -123,6 +124,7 @@
                       </span>
                   @enderror
               </div>
+              
               <div class="mb-3 text-start">
                   <label class="form-label" for="quantity">Quantite du produit</label>
                   <input id="quantity" type="quantity" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" placeholder="Quantite du produit" required autocomplete="quantity">
@@ -170,32 +172,14 @@
                   </span>
                 @enderror
               </div>
+
               @if(AuthMagasinAgentVisible() == 1)
-              <div class="mb-3 text-start">
-                <label class="form-label" for="attachment">Ajouter d'autres images illustrative (facultatif)</label>
-                <div class="fallback">
-                  <input name="attachment[]" type="file" multiple="multiple" />
+                <div class="mb-3 text-start">
+                  <label class="form-label" for="images">Ajouter des images similaires (facultatif)</label>
+                    <input type="file" name="images[]" multiple="multiple" class="form-control form-control-sm mb-4" id="customFileSm"> 
                 </div>
-                <div class="dz-message" data-dz-message="data-dz-message"><img class="me-2" src="{{asset('assets/img/icons/cloud-upload.svg')}}" width="25" alt="" />Déposez vos images ici</div>
-                <div class="dz-preview dz-preview-multiple m-0 d-flex flex-column">
-                  <div class="d-flex mb-3 pb-3 border-bottom border-translucent media">
-                    <div class="border p-2 rounded-2 me-2"><img class="rounded-2 dz-image" src="{{asset('assets/img/icons/file.png')}}" alt="..." data-dz-thumbnail="data-dz-thumbnail" /></div>
-                    <div class="flex-1 d-flex flex-between-center">
-                      <div>
-                        <h6 data-dz-name="data-dz-name"></h6>
-                        <div class="d-flex align-items-center">
-                          <p class="mb-0 fs-9 text-body-quaternary lh-1" data-dz-size="data-dz-size"></p>
-                          <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress=""></span></div>
-                        </div><span class="fs-10 text-danger" data-dz-errormessage="data-dz-errormessage"></span>
-                      </div>
-                      <div class="dropdown"><button class="btn btn-link text-body-tertiary btn-sm dropdown-toggle btn-reveal dropdown-caret-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h"></span></button>
-                        <div class="dropdown-menu dropdown-menu-end border border-translucent py-2"><a class="dropdown-item text-warning" href="#!" data-dz-remove="data-dz-remove">Retirer</a></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
               @endif
+
 
               <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce produit</button>
             </form>
@@ -262,6 +246,7 @@
 
                 <div class="mb-3 text-start">
                   <label class="form-label" for="image">Image du produit</label>
+                  <img src="{{Storage::url($product->image)}}" alt="" width="38" />
                   <input class="form-control @error('image') is-invalid @enderror" id="image" name="image" type="file" value="{{ old('image') ?? $product->image }}"  autocomplete="image"/>
                   @error('image')
                       <span class="invalid-feedback" role="alert">
@@ -296,6 +281,18 @@
                     </span>
                   @enderror
                 </div>
+
+                @if(AuthMagasinAgentVisible() == 1)
+                  <div class="mb-3 text-start">
+                    <label class="form-label" for="images">Modifier les images similaires (facultatif)</label> <br>
+                      @if($product->images != '')
+                        @foreach(json_decode($product->images, true) as $image)
+                          <img src="{{Storage::url($image)}}" alt="" width="38" />
+                        @endforeach
+                      @endif
+                      <input type="file" name="images[]" multiple="multiple" class="form-control form-control-sm mb-4" id="customFileSm"> 
+                  </div>
+                @endif
 
                 <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce produit</button>
               </form>

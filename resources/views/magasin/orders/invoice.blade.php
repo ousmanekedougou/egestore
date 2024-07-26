@@ -28,7 +28,7 @@
             <header>
                <div class="row align-items-center">
                   <div class="col-7 text-start mb-3 mb-sm-0">
-                     <img id="logo" src="@if($order->magasin->image == '') https://ui-avatars.com/api/?name={{$order->magasin->name}} @else {{(Storage::url($order->magasin->image))}} @endif title="Billig" alt="Billig">
+                     <img id="logo" src="@if($order->magasin->logo == '') https://ui-avatars.com/api/?name={{$order->magasin->name}} @else {{(Storage::url($order->magasin->logo))}} @endif" title="Billig" alt="Billig">
                   </div>
                   <div class="col-5 text-end">
                      <h4 class="mb-0 text-uppercase">Facture</h4>
@@ -107,7 +107,13 @@
             </main>
             <!-- Footer -->
             <footer class="text-center mt-4">
-               <p class="text-1"><strong>NOTE :</strong> Il s'agit d'un reçu généré par ordinateur qui ne nécessite pas de signature physique.</p>
+               <p class="text-1"><strong> Merci d'avoir choisi notre boutique </strong></p>
+               <div class="text-end py-9 border-bottom mb-4">
+                  @if($order->status == 1)
+                  <img class="mb-1" src="{{asset('assets/img/logos/payer.png')}}" alt="" />
+                  @endif
+                  <h6>Signataire autorisé</h6>
+                </div>
                <div class="btn-group btn-group-sm d-print-none"> 
                   <a href="#" id="print_Button" onclick="printDiv()" class="btn btn-light border text-black-50 shadow-none"><i class="fa fa-print"></i> Print
                   </a> <a href="#" class="btn btn-light border text-black-50 shadow-none"><i class="fa fa-download"></i> Download</a> </div>

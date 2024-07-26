@@ -38,17 +38,6 @@ class ProduitController extends Controller
      */
     public function store(Request $request)
     {
-        $files = $request->file('attachment');
-
-        // dd($files);
-
-        if($request->hasFile('attachment'))
-        {
-            dd($files);
-            // foreach ($files as $file) {
-            //     $file->store('users/' . $this->user->id . '/messages');
-            // }
-        }
         
         $this->validate($request,[
             'name' => 'required|string|unique:products',
@@ -67,6 +56,14 @@ class ProduitController extends Controller
             $imageName = $request->image->store('public/Products');
         }
 
+        $data = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->images as $image) {
+                $imageStore = $image->store('Products/ImageSimilaires');
+                $data[] = $imageStore;
+            }
+        }
+
         Product::create([
             'name' => $request->name,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
@@ -75,14 +72,18 @@ class ProduitController extends Controller
             'quantity' => $request->quantity,
             'desc' => $request->desc,
             'image' => $imageName,
+            'images' => json_encode($data),
             'visible' => $request->visible,
             'magasin_id' => AuthMagasinAgent(),
             'sub_category_id' => $request->sub_category_id
         ]);
 
-        notify()->success('Votre produit a ete ajouter avec success ⚡️', 'Ajout produit');
+
+        // notify()->success('Votre produit a ete ajouter avec success ⚡️', 'Ajout produit');
         return back();
     }
+
+ 
 
     /**
      * Display the specified resource.
@@ -120,6 +121,18 @@ class ProduitController extends Controller
             $imageName = $product->image;
         }
 
+        $data = [];
+        $imagesUpdate = '';
+        if ($request->hasFile('images')) {
+            foreach ($request->images as $image) {
+                $imageStore = $image->store('Products/ImageSimilaires');
+                $data[] = $imageStore;
+            }
+            $imagesUpdate = json_encode($data);
+        }else {
+            $imagesUpdate = $product->images;
+        }
+
         $product->update([
             'name' => $request->name,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
@@ -128,6 +141,7 @@ class ProduitController extends Controller
             'quantity' => $request->quantity,
             'desc' => $request->desc,
             'image' => $imageName,
+            'images' => $imagesUpdate,
             'visible' => $request->visible,
             'magasin_id' => AuthMagasinAgent(),
             'sub_category_id' => $request->sub_category_id

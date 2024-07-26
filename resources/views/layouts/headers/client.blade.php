@@ -1,5 +1,3 @@
-    
-    @if(Auth::guard('web')->user())
 
 <!-- ============================================-->
  <!-- <section> begin ============================-->
@@ -157,14 +155,14 @@
                <li class="nav-item dropdown">
                  <a class="nav-link px-2" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
                    
-                   <img class="rounded-circle text-body-tertiary" style="height:28px;width:28px;" src="assets/img/team/40x40/57.webp" alt="" />
+                   <img class="rounded-circle text-body-tertiary" style="height:28px;width:28px;" src="@if(Auth::guard('web')->user()->image == '') https://ui-avatars.com/api/?name={{Auth::guard('web')->user()->name}} @else {{(Storage::url(Auth::guard('web')->user()->image))}} @endif" alt="" />
                  </a>
                  <div class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border mt-2" aria-labelledby="navbarDropdownUser">
                    <div class="card position-relative border-0">
                      <div class="card-body p-0">
                        <div class="text-center pt-4 pb-3">
                          <div class="avatar avatar-xl ">
-                           <img class="rounded-circle " src="../../../assets/img/team/72x72/57.webp" alt="" />
+                           <img class="rounded-circle " src="@if(Auth::guard('web')->user()->image == '') https://ui-avatars.com/api/?name={{Auth::guard('web')->user()->name}} @else {{(Storage::url(Auth::guard('web')->user()->image))}} @endif" alt="" />
                          </div>
                          <h6 class="mt-2 text-body-emphasis">{{ Auth::guard('web')->user()->name}}</h6>
                        </div>
@@ -208,25 +206,5 @@
  </section><!-- <section> close ============================-->
  <!-- ============================================-->
 
-@else
-
-<nav class="navbar navbar-expand-lg sticky-top py-3" data-navbar-soft-on-scroll="data-navbar-soft-on-scroll">
-   <div class="container-small px-0 px-sm-3"><a class="navbar-brand" href="index.html">
-       <div class="d-flex align-items-center"><img src="assets/img/icons/logo.png" alt="phoenix" width="27" />
-         <p class="logo-text ms-2">phoenix</p>
-       </div>
-     </a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-         <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3 active" aria-current="page" href="documentation/getting-started.html">Documentation</a></li>
-         <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3" href="mailto:support@themewagon.com">Support</a></li>
-         <li class="nav-item"><a class="nav-link fs-9 fw-bold pe-5" href="https://themewagon.com/hire-us/" target="_blank">Hire us </a></li>
-       </ul>
-       <div class="d-grid d-lg-flex align-items-center"><a class="btn btn-primary" href="https://themes.getbootstrap.com/product/phoenix-admin-dashboard-webapp-template/" target="_blank">Purchase</a></div>
-     </div>
-   </div>
-</nav>
-
-@endif
                
              

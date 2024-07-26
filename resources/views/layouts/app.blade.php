@@ -24,6 +24,8 @@
             @include('layouts.headers.magasin')
         @elseif(Auth::guard('agent')->user())
             @include('layouts.headers.agent')
+        @else
+            @include('layouts.headers.user')
         @endif
         
 

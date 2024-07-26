@@ -32,7 +32,8 @@ class User extends Authenticatable
         'confirmation_token',
         'code_validation',
         'expired_at',
-        'termsService'
+        'termsService',
+        'remember_token'
     ];
 
     /**

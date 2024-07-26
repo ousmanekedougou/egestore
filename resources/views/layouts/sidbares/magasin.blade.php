@@ -3,7 +3,7 @@
         <!-- scrollbar removed-->
         <div class="navbar-vertical-content">
             <ul class="navbar-nav flex-column" id="navbarVerticalNav">
-            <li class="nav-item">
+                <li class="nav-item">
                     <!-- label-->
                     <p class="navbar-vertical-label">Pages</p>
                     <hr class="navbar-vertical-line" /><!-- parent pages-->
@@ -103,7 +103,6 @@
                         </div><!-- parent pages-->
                     @endforeach
                 </li>
-                
             </ul>
         </div>
     </div>

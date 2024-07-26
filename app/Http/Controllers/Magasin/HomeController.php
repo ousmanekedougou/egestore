@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Magasin;
 use App\Http\Controllers\Controller;
+use App\Models\Magasin\Product;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('magasin.home');
+        
+        return view('magasin.home',['products' => Product::where('magasin_id',AuthMagasinAgent())->where('visible',1)->get()]);
     }
 }

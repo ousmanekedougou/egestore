@@ -1,5 +1,4 @@
 
-
 @include('layouts.head',['title' => 'magasin-connexion'])
 <body>
 
@@ -13,11 +12,11 @@
 			
 			<div class="text-center mb-5">
 				<div class="avatar avatar-4xl mb-4"><img class="rounded-circle" src="{{asset('assets/img/icons/logo.png')}}" alt="" /></div>
-				<h4 class="text-body-highlight mb-3"> <span class="">Reinitialisation de compte de type client</span>  </h4>
+				<h2 class="text-body-highlight"> <span class="fw-normal">Reinitialisation de compte de </span>{{ $type }} </h2>
 				<p class="text-body-tertiary">
-					Bonjour <b> cher client  </b>, Vous recevez cet e-mail parce que nous avons reçu une demande de réinitialisation du mot de passe de votre compte.
+					Bonjour <b> @if($type == 'Boutique'){{$notifiable->admin_name}} @else {{$notifiable->name}} @endif </b>, Vous recevez cet e-mail parce que nous avons reçu une demande de réinitialisation du mot de passe de votre compte.
 				</p>
-				<a href="{{ $actionUrl }}" class="btn btn-success text-white">Je modifie mon mot de passe</a>
+				<a href="{{ $url }}" class="btn btn-success">Je modifie mon mot de passe de {{ $type }}</a>
 			</div>
 			
 			</div>

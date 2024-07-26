@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app',['title' => 'client-acceuil'])
 
 @section('main-content')
     <!-- ============================================-->

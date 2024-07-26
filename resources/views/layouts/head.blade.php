@@ -10,7 +10,6 @@
     <title>{{ page_title($title ?? '') }}</title>
     <!-- ===============================================-->
     <!--    Favicons-->
-	  {{--@notifyCss--}}
     <!-- ===============================================-->
     <link rel="apple-touch-icon" sizes="180x180" href="{{asset('assets/img/favicons/apple-touch-icon.png')}}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{asset('assets/img/favicons/favicon-32x32.png')}}">
@@ -55,4 +54,5 @@
     <link href="{{asset('vendors/leaflet/leaflet.css')}}" rel="stylesheet">
     <link href="{{asset('vendors/leaflet.markercluster/MarkerCluster.css')}}" rel="stylesheet">
     <link href="{{asset('vendors/leaflet.markercluster/MarkerCluster.Default.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('assets/css/toastr.min.css')}}">
   </head>

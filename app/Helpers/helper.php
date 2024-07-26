@@ -2,6 +2,7 @@
 
 use App\Models\Magasin\Category;
 use App\Models\Magasin\Product;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -78,10 +79,10 @@ if (!function_exists('ProductStockAlert')) {
     function ProductStockAlert()
     {
         $ProductStockAlert = null;
-
-        $ProductStockAlert = Product::where('magasin_id',AuthMagasinAgent())->where('quantity','<',10)->get();
-       
-        return $ProductStockAlert;
+        $ProductStockAlert = Product::where('magasin_id',AuthMagasinAgent())->where('quantity','>',0)->where('quantity','<',10)->get();
+        if ($ProductStockAlert->count() > 0) {
+            return Toastr::warning('Vous avez ' .$ProductStockAlert->count(). ' produits dont le stock est en phase d\'epuisement', 'Title', ["positionClass" => "toast-top-right"]);
+        }
     }
 }
 
@@ -90,10 +91,9 @@ if (!function_exists('ProductStockVide')) {
     function ProductStockVide()
     {
         $ProductStockVide = null;
-
         $ProductStockVide = Product::where('magasin_id',AuthMagasinAgent())->where('quantity',0)->get();
-       
-
-        return $ProductStockVide;
+       if ($ProductStockVide->count() > 0) {
+            return Toastr::error('Vous avez ' .$ProductStockVide->count(). ' produits dont le stock est épuisé', 'Title', ["positionClass" => "toast-top-right"]);
+       }
     }
 }

@@ -9,17 +9,7 @@
             </a>
             <div class="text-center mb-7">
               <h3 class="text-body-highlight">Se connecter</h3>
-              <p class="text-body-tertiary">Accéder à votre compte</p>
-            </div>
-            <button class="btn btn-phoenix-secondary w-100 mb-3">
-                <span class="fab fa-google text-danger me-2 fs-9"></span>Sign in with google
-            
-            </button><button class="btn btn-phoenix-secondary w-100">
-                <span class="fab fa-facebook text-primary me-2 fs-9"></span>Sign in with facebook
-            </button>
-            <div class="position-relative">
-              <hr class="bg-body-secondary mt-5 mb-4" />
-              <div class="divider-content-center">ou utiliser l'email</div>
+              <p class="text-body-tertiary">Accéder à votre compte administrateur</p>
             </div>
             <form method="POST" action="{{ route('admin.login') }}">
               @csrf
@@ -49,11 +39,10 @@
                 <div class="col-auto">
                   <div class="form-check mb-0"><input class="form-check-input" id="basic-checkbox" type="checkbox" checked="checked" /><label class="form-check-label mb-0" for="basic-checkbox">Remember me</label></div>
                 </div>
-                <div class="col-auto"><a class="fs-9 fw-semibold" href="forgot-password.html">Mot de passe oublié ?</a></div>
+                <div class="col-auto"><a class="fs-9 fw-semibold" href="{{route('admin.reset')}}">Mot de passe oublié ?</a></div>
               </div>
               <button class="btn btn-primary w-100 mb-3">Se connecter</button>
             </form>
-            <div class="text-center"><a class="fs-9 fw-bold" href="{{ route('register') }}">Créer un compte</a></div>
           </div>
         </div>
       </div>

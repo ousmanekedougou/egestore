@@ -1,5 +1,4 @@
 	
-	
 	<script src="{{asset('vendors/popper/popper.min.js')}}"></script>
     <script src="{{asset('vendors/bootstrap/bootstrap.min.js')}}"></script>
     <script src="{{asset('vendors/anchorjs/anchor.min.js')}}"></script>
@@ -16,7 +15,7 @@
     <script src="{{asset('assets/js/phoenix.js')}}"></script>
     <script src="{{asset('vendors/echarts/echarts.min.js')}}"></script>
     <script src="{{asset('assets/js/ecommerce-dashboard.js')}}"></script>
-
+    
     <script src="{{asset('vendors/swiper/swiper-bundle.min.js')}}"></script>
     <script src="{{asset('vendors/dropzone/dropzone.min.js')}}"></script>
     <script src="{{asset('vendors/rater-js/index.js')}}"></script>
@@ -24,8 +23,6 @@
     <script src="{{asset('assets/js/phoenix.js')}}"></script>
 
 
-
-
-	<!-- Laravel Notify -->
-	@include('notify::components.notify')
-	@notifyJs
+    <script src="{{asset('assets/js/jquery/toastr-jquery.min.js')}}"></script>
+    <script src="{{asset('assets/js/toastr.min.js')}}"></script>
+        {!! Toastr::message() !!}

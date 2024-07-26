@@ -54,15 +54,19 @@
               <div class="mb-3">
                 <p class="fw-semibold mb-2 text-body">Color : <span class="text-body-emphasis" data-product-color="data-product-color">Blue</span></p>
                 <div class="d-flex product-color-variants" data-product-color-variants="data-product-color-variants">
-                  <div class="rounded-1 border border-translucent me-2 active" data-variant="Blue" data-products-images='["../../../assets/img/products/details/blue_front.png","../../../assets/img/products/details/blue_back.png","../../../assets/img/products/details/blue_side.png"]'><img src="../../../assets/img/products/details/blue_front.png" alt="" width="38" /></div>
-                  <div class="rounded-1 border border-translucent me-2" data-variant="Red" data-products-images='["../../../assets/img/products/details/red_front.png","../../../assets/img/products/details/red_back.png","../../../assets/img/products/details/red_side.png"]'><img src="../../../assets/img/products/details/red_front.png" alt="" width="38" /></div>
-                  <div class="rounded-1 border border-translucent me-2" data-variant="Green" data-products-images='["../../../assets/img/products/details/green_front.png","../../../assets/img/products/details/green_back.png","../../../assets/img/products/details/green_side.png"]'><img src="../../../assets/img/products/details/green_front.png" alt="" width="38" /></div>
-                  <div class="rounded-1 border border-translucent me-2" data-variant="Purple" data-products-images='["../../../assets/img/products/details/purple_front.png","../../../assets/img/products/details/purple_back.png","../../../assets/img/products/details/purple_side.png"]'><img src="../../../assets/img/products/details/purple_front.png" alt="" width="38" /></div>
-                  <div class="rounded-1 border border-translucent me-2" data-variant="Silver" data-products-images='["../../../assets/img/products/details/silver_front.png","../../../assets/img/products/details/silver_back.png","../../../assets/img/products/details/silver_side.png"]'><img src="../../../assets/img/products/details/silver_front.png" alt="" width="38" /></div>
-                  <div class="rounded-1 border border-translucent me-2" data-variant="Yellow" data-products-images='["../../../assets/img/products/details/yellow_front.png","../../../assets/img/products/details/yellow_back.png","../../../assets/img/products/details/yellow_side.png"]'><img src="../../../assets/img/products/details/yellow_front.png" alt="" width="38" /></div>
-                  <div class="rounded-1 border border-translucent me-2" data-variant="Orange" data-products-images='["../../../assets/img/products/details/orange_front.png","../../../assets/img/products/details/orange_back.png","../../../assets/img/products/details/orange_side.png"]'><img src="../../../assets/img/products/details/orange_front.png" alt="" width="38" /></div>
+                  
+                  <div class="rounded-1 border border-translucent me-2 active" data-variant="red" data-products-images='["{{Storage::url($product->image)}}"]'>
+                    <img src="{{Storage::url($product->image)}}" alt="" width="38" />
+                  </div>
+
+                    @foreach(json_decode($product->images, true) as $image)
+                      <div class="rounded-1 border border-translucent me-2" data-variant="Blue" data-products-images='["{{Storage::url($image)}}"]'>
+                        <img src="{{Storage::url($image)}}" alt="" width="38" />
+                      </div>
+                    @endforeach
                 </div>
               </div>
+
               {{--
                 <div class="row g-3 g-sm-5 align-items-end">
                   <div class="col-12 col-sm-auto">
@@ -147,6 +151,7 @@
 
             <div class="mb-3 text-start">
               <label class="form-label" for="image">Image du produit</label>
+              <img src="{{Storage::url($product->image)}}" alt="" width="38" />
               <input class="form-control @error('image') is-invalid @enderror" id="image" name="image" type="file" value="{{ old('image') ?? $product->image }}"  autocomplete="image"/>
               @error('image')
                   <span class="invalid-feedback" role="alert">
@@ -181,6 +186,16 @@
                 </span>
               @enderror
             </div>
+
+              @if(AuthMagasinAgentVisible() == 1)
+                <div class="mb-3 text-start">
+                  <label class="form-label" for="images">Modifier les images similaires (facultatif)</label> <br>
+                  @foreach(json_decode($product->images, true) as $image)
+                    <img src="{{Storage::url($image)}}" alt="" width="38" />
+                  @endforeach
+                  <input type="file" name="images[]" multiple="multiple" class="form-control form-control-sm mb-4" id="customFileSm"> 
+                </div>
+              @endif
 
             <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce produit</button>
           </form>

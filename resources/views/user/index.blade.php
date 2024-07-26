@@ -6,46 +6,51 @@
     <!--/.bg-holder-->
     <div class="container-lg position-relative">
       <div class="row flex-center">
-        <div class="col-12 col-sm-9 col-xl-7 px-4 px-xxl-6 text-center pt-10">
-          <h1 class="display-3 fw-bolder lh-sm text-body-highlight mb-4">Multiple Demos for You</h1>
-          <p class="mb-10">6 predefined layout options to cater the modern web application needs. The Flexible layout with easily customizable and ready-to-use UI components to help you design modern web apps faster.</p>
+        <div class="col-sm-10 col-md-8 col-lg-5 col-xl-5 px-xxl-3 text-center">
+          <a class="d-flex flex-center text-decoration-none mb-4" href="/">
+            <div class="d-flex align-items-center fw-bolder fs-3 d-inline-block">
+              <img src="{{asset('assets/img/icons/logo.png')}}" alt="phoenix" width="58" />
+            </div>
+          </a>
+          <div class="text-center mb-7">
+            <h3 class="text-body-highlight">Se connecter</h3>
+            <p class="text-body-tertiary">Accéder à votre compte client</p>
+          </div>
+          <form method="POST" action="{{ route('login') }}">
+            @csrf
+            <div class="mb-3 text-start"><label class="form-label" for="email">Adresse email</label>
+              <div class="form-icon-container">
+                <input id="email" class="form-icon-input form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus type="email" placeholder="name@example.com" />
+                <span class="fas fa-user text-body fs-9 form-icon"></span>
+                  @error('email')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+              </div>
+            </div>
+            <div class="mb-3 text-start"><label class="form-label" for="password">Mot de passe</label>
+              <div class="form-icon-container">
+                <input  id="password" type="password" class="form-icon-input form-control @error('password') is-invalid @enderror" placeholder="votre mot de passe" name="password" required autocomplete="current-password" />
+                <span class="fas fa-key text-body fs-9 form-icon"></span>
+                  @error('password')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+              </div>
+            </div>
+            <div class="row flex-between-center mb-7">
+              <div class="col-auto">
+                <div class="form-check mb-0"><input class="form-check-input" id="basic-checkbox" type="checkbox" checked="checked" /><label class="form-check-label mb-0" for="basic-checkbox">Remember me</label></div>
+              </div>
+              <div class="col-auto"><a class="fs-9 fw-semibold" href="{{ route('password.request') }}">Mot de passe oublié ?</a></div>
+            </div>
+            <button class="btn btn-primary w-100 mb-3">Se connecter</button>
+          </form>
+          <div class="text-center"><a class="fs-9 fw-bold" href="{{ route('register') }}">Créer un compte client</a></div>
         </div>
       </div>
     </div>
   </section>
-
-  <section class="overflow-hidden rotating-earth-container pb-5 pb-md-0">
-    <div class="container-small px-lg-7 px-xxl-3">
-    <h2 class="text-body-highlight fw-normal mb-6 text-center">Packed with</h2>
-      <div class="row">
-        <div class="col-sm-4 text-center">
-          <a href="{{ route('magasin.login') }}">
-            <img class="mb-4 d-dark-none" src="../../assets/img/icons/lightning-speed.png" alt="" />
-            <img class="mb-4 d-light-none" src="../../assets/img/icons/lightning-speed-dark.png" alt="" />
-            <h4 class="mb-2">Compte Boutique</h4>
-            <p>Grow fast with Phoenix!</p>
-          </a>
-        </div>
-        <div class="col-sm-4 text-center">
-          <a href="{{ route('agent.login') }}">
-            <img class="mb-4 d-dark-none" src="../../assets/img/icons/best-statistics.png" alt="" />
-            <img class="mb-4 d-light-none" src="../../assets/img/icons/best-statistics-dark.png" alt="" />
-            <h4 class="mb-2">Compte agents</h4>
-            <p>Get all reports at hand!</p>
-          </a>
-        </div>
-        <div class="col-sm-4 text-center">
-          <a href="{{ route('login') }}">
-            <img class="mb-4 d-dark-none" src="../../assets/img/icons/all-night.png" alt="" />
-            <img class="mb-4 d-light-none" src="../../assets/img/icons/all-night-dark.png" alt="" />
-            <h4 class="mb-2">Compte Clients</h4>
-            <p>Security Assured: Ensure</p>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-   
 @endsection

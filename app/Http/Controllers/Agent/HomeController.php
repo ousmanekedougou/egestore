@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Agent;
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Agent;
+use App\Models\Magasin\Product;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -26,7 +27,7 @@ class HomeController extends Controller
             return redirect()->route('agent.login');
         }else {
             notify()->error('Ce lien ne semble plus valide ⚡️', 'Expiration du lien');
-            return redirect()->route('user.index');
+            return redirect()->route('agent.login');
         }
     }
 
@@ -37,6 +38,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('agent.home');
+        return view('agent.home',['products' => Product::where('magasin_id',AuthMagasinAgent())->where('visible',1)->get()]);
     }
 }

@@ -26,6 +26,7 @@ return new class extends Migration
                 $table->dateTime("expired_at")->nullable();
                 $table->boolean('termsService');
                 $table->timestamp('email_verified_at')->nullable();
+                $table->rememberToken();
                 $table->timestamps();
             });
     }
