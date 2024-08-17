@@ -5,8 +5,8 @@
       <button class="btn navbar-toggler navbar-toggler-humburger-icon hover-bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
       <a class="navbar-brand me-1 me-sm-3" href="{{route('magasin.home')}} ">
         <div class="d-flex align-items-center">
-          <div class="d-flex align-items-center"><img src="../../../assets/img/icons/logo.png" alt="phoenix" width="27" />
-            <p class="logo-text ms-2 d-none d-sm-block">phoenix</p>
+          <div class="d-flex align-items-center"><img src="@if(Auth::guard('agent')->user()->magasin->logo == '') https://ui-avatars.com/api/?name={{Auth::guard('agent')->user()->magasin->name}} @else {{(Storage::url(Auth::guard('agent')->user()->magasin->logo))}} @endif" width="27" />
+            <p class="logo-text ms-2 d-none d-sm-block">{{Auth::guard('agent')->user()->magasin->name}}</p>
           </div>
         </div>
       </a>
@@ -22,7 +22,8 @@
           <span class="icon-indicator-number">{{ Cart::content()->count() }}</span>
         </a>
       </li>
-
+      
+      {{--
       <li class="nav-item dropdown">
         <a class="nav-link" href="#" style="min-width: 2.25rem" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-auto-close="outside"><span data-feather="bell" style="height:20px;width:20px;"></span></a>
         <div class="dropdown-menu dropdown-menu-end notification-dropdown-menu py-0 shadow border navbar-dropdown-caret" id="navbarDropdownNotfication" aria-labelledby="navbarDropdownNotfication">
@@ -134,7 +135,7 @@
           </div>
         </div>
       </li>
-
+      
       <li class="nav-item dropdown">
         <a class="nav-link" id="navbarDropdownNindeDots" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" data-bs-auto-close="outside" aria-expanded="false"><svg width="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="2" cy="2" r="2" fill="currentColor"></circle>
@@ -198,7 +199,8 @@
           </div>
         </div>
       </li>
-      
+      --}}
+
       <li class="nav-item dropdown"><a class="nav-link lh-1 pe-0" id="navbarDropdownUser" href="#!" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
           <div class="avatar avatar-l ">
             <img class="rounded-circle " src="@if(Auth::guard('agent')->user()->image == '') https://ui-avatars.com/api/?name={{Auth::guard('agent')->user()->admin_name}} @else {{(Storage::url(Auth::guard('agent')->user()->image))}} @endif" alt="" />
@@ -233,6 +235,7 @@
           </div>
         </div>
       </li>
+      
     </ul>
   </div>
 </nav>

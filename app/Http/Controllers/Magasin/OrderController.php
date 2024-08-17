@@ -10,9 +10,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Magasin\Order;
 use App\Models\Magasin\Product;
+use App\Models\Magasin\Vente;
 use App\Models\User\User;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Brian2694\Toastr\Facades\Toastr;
+
 class OrderController extends Controller
 {
     public function __construct()
@@ -59,7 +62,7 @@ class OrderController extends Controller
     public function post(Request $request)
     {
         if ($this->checkNotAvailable()) {
-            notify()->error('Un produit dans votre panier n\'est plus disponible ⚡️', 'Produit indisponible');
+            Toastr::warning('Un produit n\'est plus disponible dans votre panier', 'Indisponibilite de produits', ["positionClass" => "toast-top-right"]);
             return back();
         }
 
@@ -98,11 +101,21 @@ class OrderController extends Controller
             $products['product_' .$i][] = $product->model->name;
             $products['product_' .$i][] = $product->model->price;
             $products['product_' .$i][] = $product->qty;
+            $products['product_' .$i][] = $product->options->color;
+            $products['product_' .$i][] = $product->options->size;
             $i++;
 
             $item = Product::find($product->model->id);
 
             $item->update(['quantity' => $item->quantity - $product->qty]);
+
+            Vente::create([
+                'slug' => str_replace('/','',Hash::make(Str::random(1).$product->model->name)),
+                'quantity' => $product->qty,
+                'date' => now(),
+                'product_id' => $product->model->id,
+                'magasin_id' => AuthMagasinAgent(),
+            ]);
         }
 
         // $code = $this->generateCode();
@@ -132,7 +145,7 @@ class OrderController extends Controller
 
         Cart::destroy();
 
-        notify()->success('Votre commande a bien ete ajouter ⚡️', 'Enregistrement de la commande');
+        Toastr::success('Votre commande a bien été ajouté', 'Ajout de commandes', ["positionClass" => "toast-top-right"]);
         return redirect()->route('magasin.commande.index');
     }
 
@@ -142,7 +155,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         if ($this->checkNotAvailable()) {
-            notify()->error('Un produit dans votre panier n\'est plus disponible ⚡️', 'Produit indisponible');
+            Toastr::warning('Un produit n\'est plus disponible dans votre panier', 'Indisponibilite de produits', ["positionClass" => "toast-top-right"]);
             return back();
         }
 
@@ -153,7 +166,7 @@ class OrderController extends Controller
             'phone' => 'numeric',
         ]);
 
-        // dd($request->bon_commande);
+        // dd($request->all());
 
         $name = null;
         $phone = null;
@@ -182,6 +195,8 @@ class OrderController extends Controller
             $products['product_' .$i][] = $product->model->name;
             $products['product_' .$i][] = $product->model->price;
             $products['product_' .$i][] = $product->qty;
+            $products['product_' .$i][] = $product->options->color;
+            $products['product_' .$i][] = $product->options->size;
             $i++;
 
             $item = Product::find($product->model->id);
@@ -216,7 +231,7 @@ class OrderController extends Controller
 
         Cart::destroy();
 
-        notify()->success('Votre commande a bien ete ajouter ⚡️', 'Enregistrement de la commande');
+        Toastr::success('Votre commande a bien été ajouté', 'Ajout de commandes', ["positionClass" => "toast-top-right"]);
         return redirect()->route('magasin.commande.index');
     }
 
@@ -277,7 +292,7 @@ class OrderController extends Controller
             'num_invoice' => $incvoiceNum
         ]);
 
-        notify()->success('Le status de votre commande a ete mise a jour ⚡️', 'Status de commande');
+        Toastr::success('Le status de cette commande a bien été modifé', 'Modification de commandes', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -287,7 +302,7 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         Order::where('id',$id)->where('magasin_id',AuthMagasinAgent())->delete();
-        notify()->success('Votre commande a ete supprimer avec success ⚡️', 'Suppression de commande');
+        Toastr::success('Votre commande a bien été supprimé', 'Suppression de commandes', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -302,3 +317,5 @@ class OrderController extends Controller
         }
 	}
 }
+
+

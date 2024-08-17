@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Magasin;
 use App\Notifications\ForgotPassword\ForgotMagasinPassword;
+use Brian2694\Toastr\Facades\Toastr;
 
 class ForgotPasswordController extends Controller
 {
@@ -35,10 +36,10 @@ class ForgotPasswordController extends Controller
 
         if ($admin_email) {
             $admin_email->notify(new ForgotMagasinPassword());
-            notify()->success('Un email vous a ete envoyer merci de verifie ⚡️', 'Reinitailisation Mot de passe');
+            Toastr::success('Un email vous ete envoyer merci de verifier', 'Envoi d\'email', ["positionClass" => "toast-top-right"]);
             return redirect()->route('utilisateur.index');
         }else {
-            notify()->error('Cet adresse email n\' existe pas !⚡️', 'Email inexistan');
+            Toastr::error('Cette adresse email n\'existe pas', 'Email inexistant', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }
@@ -55,21 +56,21 @@ class ForgotPasswordController extends Controller
         $this->validate($request,[
             'password' => 'required|string|confirmed',
         ]);
-        // dd($request->all());
+        
         $token = $request->token;
         if ($token) {
             $update_admin_email = Magasin::where('email',$email)->first();
             
             if ($update_admin_email) {
                 $update_admin_email->update(['password' => Hash::make($request->password)]);
-                notify()->success('Votre mot de passe a ete modifier avec success ,veuillez vous connecter a nouveu⚡️', 'Reinitailisation Mot de passe');
+                Toastr::success('Votre mot de passe a bien été modifié, Veillez vous connecter a nouveau', 'Modification de mot de passe', ["positionClass" => "toast-top-right"]);
                 return redirect()->route('magasin.login');
             }else {
-                notify()->error('Adress email ou mot de passe non valide⚡️', 'Error de coordonner');
+                Toastr::error('Cette adresse email n\'existe pas', 'Email inexistant', ["positionClass" => "toast-top-right"]);
                 return back();
             }
         }
-        notify()->error('Cette requette semble plus valide⚡️', 'Expiration de requette');
+        Toastr::error('Cette requete n\'est plus valide', 'Ajout de commandes', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

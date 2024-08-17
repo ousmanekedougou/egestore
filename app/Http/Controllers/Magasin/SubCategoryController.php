@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Magasin;
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Category;
 use App\Models\Magasin\SubCategory;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -39,12 +40,13 @@ class SubCategoryController extends Controller
     {
         $this->validate($request,[
             'name' => 'required|string|unique:sub_categories',
+            'type' => 'required|numeric',
             'visible' => 'required|boolean',
         ]);
 
-        SubCategory::create(['name' => $request->name,'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),'visible' => $request->visible,'category_id' => $request->category_id]);
+        SubCategory::create(['name' => $request->name,'type' => $request->type,'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),'visible' => $request->visible,'category_id' => $request->category_id]);
 
-        notify()->success('Votre sous-categorie a ete ajouter avec success ⚡️', 'Ajout Categorie');
+        Toastr::success('Votre sous-categorie a bien été ajouté', 'Ajout de sous-categories', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -69,8 +71,8 @@ class SubCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        SubCategory::where('id',$id)->update(['name' => $request->name,'visible' => $request->visible,'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name))]);
-        notify()->success('Status de la sous-categorie a bien ete modifier  ⚡️', 'Status sous-categorie');
+        SubCategory::where('id',$id)->update(['name' => $request->name,'type' => $request->type,'visible' => $request->visible,'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name))]);
+        Toastr::success('Le status de catte sous-categorie a bien été modifié', 'Modification de sous-categories', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -80,7 +82,7 @@ class SubCategoryController extends Controller
     public function destroy(string $id)
     {
         SubCategory::where('id',$id)->delete();
-        notify()->success('Votre sous-categorie a ete supprimer avec success  ⚡️', 'Suppression sous-categorie');
+        Toastr::success('Votre sous-categorie a bien été supprimé', 'Suppression de sous-categories', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

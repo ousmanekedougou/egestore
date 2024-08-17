@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Magasin\Agent;
 use App\Notifications\NouveauCompte\NouveauCompteAgent;
+use Brian2694\Toastr\Facades\Toastr;
+
 class AgentController extends Controller
 {
     public function __construct()
@@ -56,7 +58,7 @@ class AgentController extends Controller
         
         $email = Agent::where('email',$request->email)->first();
         $email->notify(new NouveauCompteAgent());
-        notify()->success('Votre agent a ete ajouter avec success ⚡️', 'Ajout Agent');
+        Toastr::success('Votre agent a bien été ajouté', 'Ajout ajents', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -84,7 +86,7 @@ class AgentController extends Controller
     public function update(Request $request, string $id)
     {
         Agent::where('id',$id)->update(['is_active' => $request->is_active]);
-        notify()->success('Status du compte a bien ete modifier  ⚡️', 'Status compte agent');
+        Toastr::success('Le status de votre a bien été modifieé', 'Modification de status', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -94,7 +96,7 @@ class AgentController extends Controller
     public function destroy(string $id)
     {
         Agent::where('id',$id)->delete();
-        notify()->success('Ce compte a bien ete supprimer  ⚡️', 'Supression compte agent');
+        Toastr::success('Votre agent a bien été supprimé', 'Suppresion agents', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

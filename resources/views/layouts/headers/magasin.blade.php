@@ -5,8 +5,8 @@
       <button class="btn navbar-toggler navbar-toggler-humburger-icon hover-bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
       <a class="navbar-brand me-1 me-sm-3" href="{{route('magasin.home')}} ">
         <div class="d-flex align-items-center">
-          <div class="d-flex align-items-center"><img src="../../../assets/img/icons/logo.png" alt="phoenix" width="27" />
-            <p class="logo-text ms-2 d-none d-sm-block">phoenix</p>
+          <div class="d-flex align-items-center"><img src="@if(Auth::guard('magasin')->user()->logo == '') https://ui-avatars.com/api/?name={{Auth::guard('magasin')->user()->name}} @else {{(Storage::url(Auth::guard('magasin')->user()->logo))}} @endif" width="27" />
+            <p class="logo-text ms-2 d-none d-sm-block">{{ Auth::guard('magasin')->user()->name }}</p>
           </div>
         </div>
       </a>
@@ -22,7 +22,8 @@
           <span class="icon-indicator-number">{{ Cart::content()->count() }}</span>
         </a>
       </li>
-
+      
+      {{--
       <li class="nav-item dropdown">
         <a class="nav-link" href="#" style="min-width: 2.25rem" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-auto-close="outside"><span data-feather="bell" style="height:20px;width:20px;"></span></a>
         <div class="dropdown-menu dropdown-menu-end notification-dropdown-menu py-0 shadow border navbar-dropdown-caret" id="navbarDropdownNotfication" aria-labelledby="navbarDropdownNotfication">
@@ -198,7 +199,8 @@
           </div>
         </div>
       </li>
-      
+      --}}
+
       <li class="nav-item dropdown"><a class="nav-link lh-1 pe-0" id="navbarDropdownUser" href="#!" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
           <div class="avatar avatar-l ">
             <img class="rounded-circle " src="@if(Auth::guard('magasin')->user()->image == '') https://ui-avatars.com/api/?name={{Auth::guard('magasin')->user()->admin_name}} @else {{(Storage::url(Auth::guard('magasin')->user()->image))}} @endif" alt="" />

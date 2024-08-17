@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Magasin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Magasin;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -60,10 +61,17 @@ class ProfileController extends Controller
             'admin_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'phone' => ['required', 'numeric'],
+            'inv_at' => ['required', 'numeric'],
             'adresse' => ['required', 'string'],
             'visible' => ['required', 'boolean'],
-            'password' => ['required', 'string', 'confirmed'],
+            'password' => ['confirmed'],
         ]);
+        $password = null;
+        if($request->password == ''){
+            $password = Auth::guard('magasin')->user()->password;
+        }else {
+            $password = Hash::make($request->password);
+        }
         Magasin::find(Auth::guard('magasin')->user()->id)
         ->update(
         [
@@ -73,10 +81,11 @@ class ProfileController extends Controller
             'phone' => $request->phone,
             'adresse' => $request->adresse,
             'visible' => $request->visible,
-            'password' => Hash::make($request->password),
+            'inv_at' => $request->inv_at,
+            'password' => $password,
         ]);
 
-        notify()->success('Votre profile a ete mise a jour avec success ⚡️', 'Mise a jour de profile');
+        Toastr::success('Votre profile a bien été modifié', 'Modification de profiles', ["positionClass" => "toast-top-right"]);
         return back();
     }
 

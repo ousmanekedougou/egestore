@@ -29,6 +29,8 @@ return new class extends Migration
             $table->boolean('is_active')->default(false);
             $table->boolean('termsService')->default(false);
             $table->boolean('visible')->default(false);
+            $table->boolean('inv_status')->default(false);
+            $table->integer('inv_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

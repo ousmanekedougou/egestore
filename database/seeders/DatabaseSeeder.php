@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Admin\Admin;
 use App\Models\Magasin\Agent;
+use App\Models\Magasin\Color;
 use App\Models\Magasin\Magasin;
 use App\Models\User\User;
 use Illuminate\Database\Seeder;
@@ -23,6 +24,33 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        $colors = 
+        [
+            // Region
+            'Bisque' => '#FFE4C4',
+            'Rose bonbon' => '#F9429E',
+            'Chair' => '#FEC3AC',
+            'Cherry' => '#EC3B83',
+            'Coquille d’œu' => ' #FDE',
+            'Alizarine' => '#D90115',
+            'Amarante' => '#91283B',
+            'Rouge d\'Andrinople',
+            'Rouge d\'Anglais' => '#F7230',
+            'Abricot' => '#E67E30',
+            'Orange brûlé' => '#CC55',
+            'Roux' => '#B7410E',
+            'Safran' => '#F4C430',
+            'Safran' => '#FF7F00'
+        ];
+
+        foreach ($colors as $color_key => $color_value) {
+            Color::create([
+                'name' => $color_key,
+                'code' => $color_value
+                // 'slug' => str_replace('/','',Hash::make(Str::random(1).$color_key)),
+            ]);
+        }
 
         Admin::create([
             'name' => 'Ousmane Diallo',

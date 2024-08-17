@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Magasin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Category;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -39,12 +40,13 @@ class CategoryController extends Controller
     {
         $this->validate($request,[
             'name' => 'required|string|unique:categories',
+            'type' => 'required|numeric',
             'visible' => 'required|boolean',
         ]);
 
-        Category::create(['name' => $request->name,'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),'visible' => $request->visible,'magasin_id' => AuthMagasinAgent()]);
+        Category::create(['name' => $request->name,'type' => $request->type,'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),'visible' => $request->visible,'magasin_id' => AuthMagasinAgent()]);
 
-        notify()->success('Votre categorie a ete ajouter avec success ⚡️', 'Ajout Categorie');
+        Toastr::success('Votre categorie a bien été ajouté', 'Ajout de categories', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -69,8 +71,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        Category::where('id',$id)->where('magasin_id',AuthMagasinAgent())->update(['name' => $request->name,'visible' => $request->visible,'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name))]);
-        notify()->success('Status de la categorie a bien ete modifier  ⚡️', 'Status categorie');
+        Category::where('id',$id)->where('magasin_id',AuthMagasinAgent())
+        ->update(
+            ['name' => $request->name,
+            'type' => $request->type,
+            'visible' => $request->visible,
+            'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name))
+            ]);
+        Toastr::success('le status de votre categorie a bien été modifié', 'Modification de categories', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -80,7 +88,7 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         Category::where('id',$id)->where('magasin_id',AuthMagasinAgent())->delete();
-        notify()->success('Votre categorie a ete supprimer avec success  ⚡️', 'Suppression categorie');
+        Toastr::success('Votre categorie a bien été supprimé', 'Suppression de categories', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

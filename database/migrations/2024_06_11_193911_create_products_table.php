@@ -19,6 +19,9 @@ return new class extends Migration
             $table->text('images')->nullable();
             $table->integer('price');
             $table->integer('quantity');
+            $table->integer('stock')->nullable();
+            $table->text('colors')->nullable();
+            $table->text('sizes')->nullable();
             $table->string('reference');
             $table->boolean('visible')->default(false);
             $table->text('desc');

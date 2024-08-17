@@ -109,7 +109,7 @@ class LoginController extends Controller
  
          $request->session()->regenerateToken();
  
-         return $this->loggedOut($request) ?: redirect('/');
+         return $this->loggedOut($request) ?: redirect()->route('agent.login');
      }
 
 

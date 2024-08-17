@@ -5,16 +5,16 @@ namespace App\Models\Magasin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Vente extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
         'slug',
-        'type',
-        'magasin_id',
-        'visible',
+        'quantity',
+        'date',
+        'product_id',
+        'magasin_id'
     ];
 
     public function magasin()
@@ -22,8 +22,8 @@ class Category extends Model
         return $this->belongsTo(Magasin::class);
     }
 
-    public function sub_categories(){
-        return $this->hasMany(SubCategory::class);
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
-    
 }

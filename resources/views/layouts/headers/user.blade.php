@@ -29,7 +29,7 @@
               <div class="card position-relative border-0">
                 <div class="card-footer p-0 border-top border-translucent">
                   <ul class="nav d-flex flex-column my-3">
-                    <li class="nav-item"><a class="nav-link px-3" href="{{ route('magasin.login') }}"> <span class="me-2 text-body" data-feather="user-plus"></span>Admin</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="{{ route('magasin.login') }}"> <span class="me-2 text-body" data-feather="user-plus"></span>Boutiques</a></li>
                   </ul>
                   <hr />
                   <ul class="nav d-flex flex-column my-3">

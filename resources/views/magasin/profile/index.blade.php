@@ -117,7 +117,7 @@
             <div class="row g-3 mb-5">
               <div class="col-12 col-lg-6">
                 <label class="form-label text-body-highlight fs-8 ps-0 text-lowercase lh-sm" for="admin_name">Votre Prenom et nom</label>
-                <input id="admin_name" type="text" placeholder="Votre Prenom et nom" class="form-control @error('admin_name') is-invalid @enderror" name="admin_name" value="{{ old('admin_name') ?? Auth::guard('magasin')->user()->admin_name }}" required autocomplete="admin_name" autofocus>
+                <input id="admin_name" type="text" placeholder="Votre Prenom et nom" class="form-control @error('admin_name') is-invalid @enderror" name="admin_name" value="{{ old('admin_name') ?? Auth::guard('magasin')->user()->admin_name }}"  autocomplete="admin_name" autofocus>
                 @error('admin_name')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -126,7 +126,7 @@
               </div>
               <div class="col-12 col-lg-6">
                 <label class="form-label text-body-highlight fs-8 ps-0 text-lowercase  lh-sm" for="shop_name">Le nom de votre boutique</label>
-                <input id="shop_name" type="text" placeholder="Le nom de votre boutique" class="form-control @error('shop_name') is-invalid @enderror" name="shop_name" value="{{ old('shop_name') ?? Auth::guard('magasin')->user()->name }}" required autocomplete="shop_name" autofocus>
+                <input id="shop_name" type="text" placeholder="Le nom de votre boutique" class="form-control @error('shop_name') is-invalid @enderror" name="shop_name" value="{{ old('shop_name') ?? Auth::guard('magasin')->user()->name }}"  autocomplete="shop_name" autofocus>
 
                 @error('shop_name')
                     <span class="invalid-feedback" role="alert">
@@ -136,7 +136,7 @@
               </div>
               <div class="col-12 col-lg-6">
                 <label class="form-label text-body-highlight fs-8 ps-0 text-lowercase lh-sm" for="email">adresse Email</label>
-                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') ?? Auth::guard('magasin')->user()->email }}" placeholder="email@gmail.com" required autocomplete="email">
+                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') ?? Auth::guard('magasin')->user()->email }}" placeholder="email@gmail.com"  autocomplete="email">
                 @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -144,8 +144,8 @@
                 @enderror
               </div>
               <div class="col-12 col-lg-6">
-                <label class="form-label text-body-highlight fw-bold fs-8 ps-0 text-lowercase lh-sm" for="phone">telePhone</label>
-                <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') ?? Auth::guard('magasin')->user()->phone }}" placeholder="Votre numero de telephone" required autocomplete="phone">
+                <label class="form-label text-body-highlight fw-bold fs-8 ps-0 text-lowercase lh-sm" for="phone">telephone</label>
+                <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') ?? Auth::guard('magasin')->user()->phone }}" placeholder="Votre numero de telephone"  autocomplete="phone">
 
                 @error('phone')
                     <span class="invalid-feedback" role="alert">
@@ -156,7 +156,7 @@
              
               <div class="col-12 col-lg-6">
                 <label class="form-label text-body-highlight fw-bold fs-8 ps-0 text-lowercase lh-sm" for="adresse">adresse de localisation</label>
-                <input id="adresse" type="adresse" class="form-control @error('adresse') is-invalid @enderror" name="adresse" value="{{ old('adresse') ?? Auth::guard('magasin')->user()->adresse }}" placeholder="Votre adresse de localisation" required autocomplete="adresse">
+                <input id="adresse" type="adresse" class="form-control @error('adresse') is-invalid @enderror" name="adresse" value="{{ old('adresse') ?? Auth::guard('magasin')->user()->adresse }}" placeholder="Votre adresse de localisation"  autocomplete="adresse">
                   @error('adresse')
                       <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
@@ -164,25 +164,39 @@
                   @enderror
               </div>
               <div class="col-12 col-lg-6" style="padding-left: 2rem;">
-                <label class="form-label text-body-highlight fs-8 ps-0 text-lowercase lh-sm" for="visible">Visubilite</label> <br>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input text-success @error('visible') is-invalid @enderror" @if(Auth::guard('magasin')->user()->visible == 1) checked="" @endif id="inlineRadioA" type="radio" name="visible" value=" 1 ">
-                  <label class="form-check-label text-success" for="inlineRadioA">Publique</label>
+                <div class="row">
+                  <div class="col-lg-9">
+                    <label class="form-label text-body-highlight fs-8 ps-0 text-lowercase lh-sm" for="visible">Visubilite</label> <br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input text-success @error('visible') is-invalid @enderror" @if(Auth::guard('magasin')->user()->visible == 1) checked="" @endif id="inlineRadioA" type="radio" name="visible" value=" 1 ">
+                      <label class="form-check-label text-success" for="inlineRadioA">Publique</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input text-warning @error('visible') is-invalid @enderror" @if(Auth::guard('magasin')->user()->visible == 0) checked="" @endif id="inlineRadioB" type="radio" name="visible" value=" 0 ">
+                      <label class="form-check-label text-warning" for="inlineRadioB">Privé</label>
+                    </div>
+                    @error('visible')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
+                  </div>
+                  <div class="col-lg-3">
+                    <label class="form-label text-body-highlight fw-bold fs-8 ps-0 text-lowercase lh-sm" for="inv_at">Inventaire</label>
+                    <input id="inv_at" type="numeric" class="form-control @error('inv_at') is-invalid @enderror" name="inv_at" value="{{ old('inv_at') ?? Auth::guard('magasin')->user()->inv_at }}"  autocomplete="inv_at">
+
+                    @error('inv_at')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                  </div>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input text-warning @error('visible') is-invalid @enderror" @if(Auth::guard('magasin')->user()->visible == 0) checked="" @endif id="inlineRadioB" type="radio" name="visible" value=" 0 ">
-                  <label class="form-check-label text-warning" for="inlineRadioB">Privé</label>
-                </div>
-                @error('visible')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
               </div>
               
               <div class="col-12 col-lg-6">
                 <label class="form-label text-body-highlight fw-bold fs-8 ps-0 text-lowercase lh-sm" for="password">modifier votre Mot de passe</label>
-                <input id="password" type="password" placeholder="Votre mot de passe" class="form-icon-input form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">   
+                <input id="password" type="password" placeholder="Votre mot de passe" class="form-icon-input form-control @error('password') is-invalid @enderror" name="password"  autocomplete="new-password">   
                 @error('password')
                   <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -191,7 +205,7 @@
               </div>
               <div class="col-12 col-lg-6">
                 <label class="form-label text-body-highlight fw-bold fs-8 ps-0 text-lowercase lh-sm" for="confirmPassword">Confirmer le mot de passe</label>
-                <input id="password-confirm" type="password" class="form-icon-input form-control" placeholder="Confirmer votre mot de passe" name="password_confirmation" required autocomplete="new-password">
+                <input id="password-confirm" type="password" class="form-icon-input form-control" placeholder="Confirmer votre mot de passe" name="password_confirmation"  autocomplete="new-password">
               </div>
             </div>
             <div class="text-end">

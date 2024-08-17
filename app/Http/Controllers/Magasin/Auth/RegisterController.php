@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Magasin\Magasin;
 use App\Providers\RouteServiceProvider;
 use App\Notifications\NouveauCompte\NouveauCompteMagasin;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -58,10 +59,10 @@ class RegisterController extends Controller
         if ($user) {
             $user->update(['confirmation_token' => null , 'is_active' => ACTIVE,'code_validation',null]);
             $this->guard('magsin')->login($user);
-            notify()->success('Votre compte client a bien ete comfirmer  ⚡️', 'Confirmation de compte client');
+            Toastr::success('Votre client a bien été confirmé', 'Confirmation de compte clients', ["positionClass" => "toast-top-right"]);
             return redirect($this->redirectPath());
         }else {
-            notify()->error('Ce lien n\'est plus valide ⚡️', 'Compte client');
+            Toastr::error('Ce lien n\'est plus valide', 'Validite de lien', ["positionClass" => "toast-top-right"]);
             return redirect()->route('magasin.login');
         }
     }
@@ -80,7 +81,7 @@ class RegisterController extends Controller
 
         $user->notify(new NouveauCompteMagasin());
 
-        notify()->success('Votre client a ete ajouter avec success ⚡️', 'Creation de compte client');
+        Toastr::success('Votre client a bien été ajouté', 'Ajout de clients', ["positionClass" => "toast-top-right"]);
         return view('magasin.auth.mfa2',compact('user'));
     }
 

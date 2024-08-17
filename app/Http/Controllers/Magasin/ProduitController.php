@@ -6,10 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Magasin\Product;
 use App\Models\Magasin\SubCategory;
-
+use Brian2694\Toastr\Facades\Toastr;
 class ProduitController extends Controller
 {
     public function __construct()
@@ -50,6 +49,7 @@ class ProduitController extends Controller
             'visible' => 'required|boolean',
         ]);
 
+
         $imageName = '';
         if($request->hasFile('image'))
         {
@@ -64,22 +64,45 @@ class ProduitController extends Controller
             }
         }
 
+        $sizes = [];
+        if ($request->sizes) {
+            foreach ($request->sizes as $size) {
+                $sizes['name'][] = $size;
+            }
+        }
+
+        $colors = null;
+        $sizes = null;
+
+        if ($request->colors != '') {
+            $colors = $request->colors;
+        }else {
+            $colors = null;
+        }
+
+        if ($request->sizes != '') {
+            $sizes = $request->sizes;
+        }else {
+            $sizes = null;
+        }
+
         Product::create([
             'name' => $request->name,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
             'reference' => $request->reference,
             'price' => $request->price,
             'quantity' => $request->quantity,
+            'stock' => $request->quantity,
             'desc' => $request->desc,
             'image' => $imageName,
             'images' => json_encode($data),
             'visible' => $request->visible,
+            'colors' => serialize($colors),
+            'sizes' => serialize($sizes),
             'magasin_id' => AuthMagasinAgent(),
             'sub_category_id' => $request->sub_category_id
         ]);
-
-
-        // notify()->success('Votre produit a ete ajouter avec success ⚡️', 'Ajout produit');
+        Toastr::success('Votre produit a bien été ajouté', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -133,21 +156,39 @@ class ProduitController extends Controller
             $imagesUpdate = $product->images;
         }
 
+        $colors = null;
+        $sizes = null;
+
+        if ($request->colors != '') {
+            $colors = serialize($request->colors);
+        }else {
+            $colors = $product->colors;
+        }
+
+        if ($request->sizes != '') {
+            $sizes = serialize($request->sizes);
+        }else {
+            $sizes = $product->sizes;
+        }
+
         $product->update([
             'name' => $request->name,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
             'reference' => $request->reference,
             'price' => $request->price,
             'quantity' => $request->quantity,
+            'stock' => $request->quantity,
             'desc' => $request->desc,
             'image' => $imageName,
             'images' => $imagesUpdate,
             'visible' => $request->visible,
+            'colors' => $colors,
+            'sizes' => $sizes,
             'magasin_id' => AuthMagasinAgent(),
             'sub_category_id' => $request->sub_category_id
         ]);
 
-        notify()->success('Votre produit a ete modifier avec success ⚡️', 'Modification produit');
+        Toastr::success('Votre produit a bien été modifié', 'Modification de produits', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -158,7 +199,7 @@ class ProduitController extends Controller
     {
 
         Product::where('id',$id)->where('magasin_id',AuthMagasinAgent())->delete();
-        notify()->success('Votre categorie a ete supprimer avec success  ⚡️', 'Suppression categorie');
+        Toastr::success('Votre produit a bien été supprimé', 'Supression de produits', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

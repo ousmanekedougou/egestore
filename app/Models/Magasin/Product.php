@@ -15,11 +15,15 @@ class Product extends Model
         'magasin_id',
         'visible',
         'quantity',
+        'stock',
+        'ventes',
         'reference',
         'image',
         'images',
         'price',
         'desc',
+        'colors',
+        'sizes',
         'order_id',
         'sub_category_id'
     ];
@@ -46,5 +50,10 @@ class Product extends Model
     public function magasin()
     {
         return $this->belongsTo(Magasin::class);
+    }
+
+    public function ventes()
+    {
+        return $this->hasMany(Vente::class);
     }
 }

@@ -9,13 +9,13 @@ return [
         "positionClass" => "toast-top-right",
         "preventDuplicates" => false,
         "onclick" => null,
-        "showDuration" => "300",
+        "showDuration" => "1000",
         "hideDuration" => "1000",
-        "timeOut" => "5000",
+        "timeOut" => "9000",
         "extendedTimeOut" => "1000",
         "showEasing" => "swing",
         "hideEasing" => "linear",
-        "showMethod" => "fadeIn",
-        "hideMethod" => "fadeOut"
+        "showMethod" => "slideDown", //fadeIn
+        "hideMethod" => "slideUp" //fadeOut
     ],
 ];

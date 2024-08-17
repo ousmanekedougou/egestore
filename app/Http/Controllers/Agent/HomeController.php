@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Agent;
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Agent;
 use App\Models\Magasin\Product;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,10 +24,10 @@ class HomeController extends Controller
         $agent = Agent::where('email',$email)->where('confirmation_token',$token)->first();
         if ($agent) {
             $agent->update(['confirmation_token' => null , 'is_active' => ACTIVE]);
-            notify()->success('Votre compte agent a ete confirmer avec success ⚡️', 'Confirmation compte agent');
+            Toastr::success('Votre compte agent a bien été confirmé', 'Confirmation de compte agents', ["positionClass" => "toast-top-right"]);
             return redirect()->route('agent.login');
         }else {
-            notify()->error('Ce lien ne semble plus valide ⚡️', 'Expiration du lien');
+            Toastr::error('Ce lien n\'est plus valide', 'Lien invalide', ["positionClass" => "toast-top-right"]);
             return redirect()->route('agent.login');
         }
     }

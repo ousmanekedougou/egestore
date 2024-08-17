@@ -16,36 +16,44 @@
                     <thead>
                       <tr>
                         <th class="sort white-space-nowrap align-middle fs-10" scope="col"></th>
-                        <th class="sort white-space-nowrap align-middle" scope="col" style="min-width:250px;">PRODUITS</th>
-                        <th class="sort align-middle text-end" scope="col" style="width:100%;">PRIX UNITAIRE</th>
+                        <th class="sort white-space-nowrap align-middle" scope="col" style="min-width:200px;">PRODUITS</th>
+                        <th class="sort align-middle" scope="col" style="width:80px;">COULEUR</th>
+                        <th class="sort align-middle" scope="col" style="width:50px;">TAILLE</th>
+                        <th class="sort align-middle text-end" scope="col" style="width:100%;">PRIX</th>
                         <th class="sort align-middle ps-5" scope="col" style="width:200px;">QUANTITE</th>
                         <th class="sort align-middle text-end" scope="col" style="width:250px;">TOTAL</th>
                         <th class="sort text-end align-middle pe-0" scope="col"></th>
                       </tr>
                     </thead>
                     <tbody class="list cartpage" id="cart-table-body">
-                      @foreach(Cart::content() as $product) 
-                        <tr class="cart-table-row btn-reveal-trigger">
-                          <td class="align-middle white-space-nowrap py-0"><a class="d-block border border-translucent rounded-2" href="product-details.html"><img src="{{Storage::url($product->model->image)}}" alt="" width="53" /></a></td>
-                          <td class="products align-middle"><a class="fw-semibold mb-0 line-clamp-2" href="product-details.html">{{$product->model->name}}</a></td>
-                          <td class="price align-middle text-body fs-9 fw-semibold text-end" style="width: 100%;">{{$product->model->getPrice()}}</td>
-                          <td class="quantity align-middle fs-8 ps-5">
-                            <div class="input-group input-group-sm flex-nowrap" data-quantity="data-quantity">
-                              <a href="{{ route('magasin.panier.edit',$product->rowId) }}" class="btn btn-sm px-2" data-type="minus">-</a>
-                                <input disabled="" class="form-control text-center input-spin-none bg-transparent border-0 px-0" data-id="{{ $product->rowId }}" id="qty" name="qty" type="number" min="1" value="{{ $product->qty }}" aria-label="Amount (to the nearest dollar)" />
-                              <a class="btn btn-sm px-2" href="{{ route('magasin.panier.show',$product->rowId) }}" data-type="plus">+</a>
-                            </div>
-                          </td>
-                          <td class="total align-middle fw-bold text-body-highlight text-end"> {{$product->model->getProductSubtotal($product->subtotal())}}</td>
-                          <td class="align-middle white-space-nowrap text-end pe-0 ps-3">
-                            <a href="{{ route('magasin.panier.destroy',$product->rowId) }}" onclick="event.preventDefault(); document.getElementById('SupprimerAuPanier-{{ $product->id }}').submit();" class="btn btn-sm text-body-tertiary text-opacity-85 text-body-tertiary-hover me-2"><span class="text-warning" data-feather="trash-2"></span></a>
-                            <form id="SupprimerAuPanier-{{ $product->id }}" action="{{ route('magasin.panier.destroy',$product->rowId) }}" method="POST" class="d-none">
-                              @csrf
-                              @method('DELETE')
-                            </form>
-                          </td>
-                        </tr>
-                      @endforeach
+                      @if(Cart::count() > 0)
+                        @foreach(Cart::content() as $product) 
+                          <tr class="cart-table-row btn-reveal-trigger">
+                            <td class="align-middle white-space-nowrap py-0"><a class="d-block border border-translucent rounded-2" href="product-details.html"><img src="{{Storage::url($product->model->image)}}" alt="" width="53" /></a></td>
+                            <td class="products align-middle"><a class="fw-semibold mb-0 line-clamp-2" href="product-details.html">{{$product->model->name}}</a></td>
+                            <td class="color align-middle white-space-nowrap fs-9 text-body">{{ $product->options->color }}</td>
+                            <td class="size align-middle white-space-nowrap text-body-tertiary fs-9 fw-semibold">{{ $product->options->size }}</td>
+                            <td class="price align-middle text-body fs-9 fw-semibold text-end" style="width: 100%;">{{$product->model->getPrice()}}</td>
+                            <td class="quantity align-middle fs-8 ps-5">
+                              <div class="input-group input-group-sm flex-nowrap" data-quantity="data-quantity">
+                                <a href="{{ route('magasin.panier.edit',$product->rowId) }}" class="btn btn-sm px-2" data-type="minus">-</a>
+                                  <input disabled="" class="form-control text-center input-spin-none bg-transparent border-0 px-0" data-id="{{ $product->rowId }}" id="qty" name="qty" type="number" min="1" value="{{ $product->qty }}" aria-label="Amount (to the nearest dollar)" />
+                                <a class="btn btn-sm px-2" href="{{ route('magasin.panier.show',$product->rowId) }}" data-type="plus">+</a>
+                              </div>
+                            </td>
+                            <td class="total align-middle fw-bold text-body-highlight text-end"> {{$product->model->getProductSubtotal($product->subtotal())}}</td>
+                            <td class="align-middle white-space-nowrap text-end pe-0 ps-3">
+                              <a href="{{ route('magasin.panier.destroy',$product->rowId) }}" onclick="event.preventDefault(); document.getElementById('SupprimerAuPanier-{{ $product->id }}').submit();" class="btn btn-sm text-body-tertiary text-opacity-85 text-body-tertiary-hover me-2"><span class="text-warning" data-feather="trash-2"></span></a>
+                              <form id="SupprimerAuPanier-{{ $product->id }}" action="{{ route('magasin.panier.destroy',$product->rowId) }}" method="POST" class="d-none">
+                                @csrf
+                                @method('DELETE')
+                              </form>
+                            </td>
+                          </tr>
+                        @endforeach
+                      @else
+                        <h3 class="card-title mb-4">Votre panier est vide</h3>
+                      @endif
                       <tr class="cart-table-row btn-reveal-trigger">
                         <td class="text-body-emphasis fw-semibold ps-0 fs-8" colspan="5">Montant total des articles :</td>
                         <td class="text-body-emphasis fw-bold text-center fs-8">{{ number_format( str_replace(',', '', Cart::subtotal()),2, ',','.'). ' CFA'; }}</td>
@@ -63,6 +71,18 @@
                   </div>
                   <form action="@if(AuthMagasinAgentVisible() == 1) {{ route('magasin.commande.store') }} @else {{ route('magasin.commande.post') }} @endif" method="post">
                     @csrf
+                    <div class="mb-3 text-start">
+                      <label class="form-label" for="bon_commande">Bon de commande (Facultatif)</label>
+                      <input id="bon_commande" type="text" class="form-control @error('bon_commande') is-invalid @enderror" name="bon_commande" value="{{ old('bon_commande') }}" placeholder="Bon de commande (Facultatif)" autocomplete="bon_commande">
+
+                      @error('bon_commande')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
+                    </div>
+
+                    <label class="form-label" for="client">Selectionner un client</label>
                     <select class="form-select mb-3 @error('client') is-invalid @enderror" name="client" id="client" aria-label="delivery type" onchange="enableBrand(this)">
                       <option></option>
                       <option value="-1">Un simple client</option>
@@ -75,16 +95,7 @@
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
-                    <div class="mb-3 text-start">
-                      <label class="form-label" for="bon_commande">Bon de commande (Facultatif)</label>
-                      <input id="bon_commande" type="text" class="form-control @error('bon_commande') is-invalid @enderror" name="bon_commande" value="{{ old('bon_commande') }}" placeholder="Bon de commande (Facultatif)" autocomplete="bon_commande">
-
-                      @error('bon_commande')
-                          <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
-                      @enderror
-                    </div>
+                    
                     <div class="d-none" id="clientNone">
                       <div class="mb-3 text-start ">
                         <label class="form-label" for="name">Prenom et nom du client</label>

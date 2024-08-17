@@ -88,6 +88,7 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
     Route::resource('/reserve', App\Http\Controllers\Magasin\ReservationController::class);
     Route::resource('/bagage', App\Http\Controllers\Magasin\BagageController::class);
     Route::resource('/bon', App\Http\Controllers\Magasin\BonController::class);
+    Route::post('post',[App\Http\Controllers\Magasin\BonController::class,'post'])->name('bon.post');
     Route::post('reserve/post',[App\Http\Controllers\Magasin\ReservationController::class,'post'])->name('reserve.post');
 
 

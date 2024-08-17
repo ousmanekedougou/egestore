@@ -7,8 +7,15 @@
       <div class="row g-4">
         <div class="col-12 col-xxl-6">
           <div class="mb-8">
-            <h2 class="mb-2">Ecommerce Dashboard</h2>
-            <h5 class="text-body-tertiary fw-semibold">Here’s what’s going on at your business right now</h5>
+            <h2 class="mb-2">Tableau de bord du commerce électronique</h2>
+            <h5 class="text-body-tertiary fw-semibold">Voici ce qui se passe actuellement dans votre entreprise</h5>
+            @if($paimentNotification)
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <i class="mdi mdi-alert-outline me-2"></i>
+                      <b>Attention : </b>  {{$paimentNotification}}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            @endif
           </div>
           <div class="row align-items-center g-4">
             <div class="col-12 col-md-auto">
@@ -59,6 +66,8 @@
                 <th class="sort white-space-nowrap align-middle fs-10" scope="col" style="width:70px;"></th>
                 <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;" data-sort="product">PRODUITS</th>
                 <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">REFERENCES</th>
+                <th class="sort align-middle ps-3" scope="col" data-sort="tags" style="width:100px;">COULEUR</th>
+                <th class="sort align-middle ps-3" scope="col" data-sort="tags" style="width:100px;">TAILLES</th>
                 <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">QUANTITES</th>
                 <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">PRIX UNITAIRE</th>
                 <th class="sort text-end align-middle pe-1 ps-4" scope="col">PANIERS</th>
@@ -67,9 +76,17 @@
             <tbody class="list" id="products-table-body">
               @foreach($products as $product)
                 <tr class="position-static @if($product->quantity > 0 && $product->quantity < 10 ) bg-warning  @elseif($product->quantity == 0) bg-danger @endif">
-                  <td class="align-middle white-space-nowrap py-0"><a class="d-block border border-translucent rounded-2" target="_blank" href="{{ route('magasin.produit.edit',$product->id) }}"><img src="{{Storage::url($product->image)}}" alt="" width="53" /></a></td>
-                  <td class="product align-middle ps-4"><a class="fw-semibold line-clamp-3 mb-0 @if( $product->quantity < 10 ) text-white @endif" target="_blank" href="{{ route('magasin.produit.edit',$product->slug) }}">{{ $product->name }}</a></td>
+                  <td class="align-middle white-space-nowrap py-0"><a class="d-block border border-translucent rounded-2" href="{{ route('magasin.produit.edit',$product->id) }}"><img src="{{Storage::url($product->image)}}" alt="" width="53" /></a></td>
+                  <td class="product align-middle ps-4"><a class="fw-semibold line-clamp-3 mb-0 @if( $product->quantity < 10 ) text-white @endif" href="{{ route('magasin.produit.edit',$product->slug) }}">{{ $product->name }}</a></td>
                   <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->reference }}</td>
+                  <td class="tags align-middle review ps-3" style="min-width:200px;">
+                    @foreach(unserialize($product->colors) as $colorGet)
+                      <span class="badge badge-tag mb-1"> {{ $colorGet }} </span>
+                    @endforeach
+                  </td>
+                  <td class="tags align-middle review ps-3" style="min-width:100px;">
+                    <span class="">@foreach(unserialize($product->sizes) as $sizeGet) {{ $sizeGet }},  @endforeach</span>
+                  </td>
                   <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->quantity }}</td>
                   <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->getPrice() }}</td>
                   

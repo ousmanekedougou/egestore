@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Admin;
 use App\Notifications\ForgotPassword\ForgotAdminPassword;
+use Brian2694\Toastr\Facades\Toastr;
 
 class ForgotPasswordController extends Controller
 {
@@ -35,10 +36,10 @@ class ForgotPasswordController extends Controller
 
         if ($admin_email) {
             $admin_email->notify(new ForgotAdminPassword());
-            notify()->success('Un email vous a ete envoyer merci de verifie ⚡️', 'Reinitailisation Mot de passe');
+            Toastr::success('Un email vous a ete envoye merci de verifie', 'Evnoi d\'email', ["positionClass" => "toast-top-right"]);
             return redirect()->route('utilisateur.index');
         }else {
-            notify()->error('Cet adresse email n\' existe pas !⚡️', 'Email inexistan');
+            Toastr::error('Cette adresse email n\'existe pas', 'Email inexistant', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }
@@ -61,14 +62,14 @@ class ForgotPasswordController extends Controller
             
             if ($update_admin_email) {
                 $update_admin_email->update(['password' => Hash::make($request->password)]);
-                notify()->success('Votre mot de passe a ete modifier avec success ,veuillez vous connecter a nouveu⚡️', 'Reinitailisation Mot de passe');
+                Toastr::success('Votre mot de passe a bien été reinitialisé', 'Reinitialisation de mot de passe', ["positionClass" => "toast-top-right"]);
                 return redirect()->route('admin.login');
             }else {
-                notify()->error('Adress email ou mot de passe non valide⚡️', 'Error de coordonner');
+                Toastr::error('cette adrese email n\'existe pas', 'Email inexistant', ["positionClass" => "toast-top-right"]);
                 return back();
             }
         }
-        notify()->error('Cette requette semble plus valide⚡️', 'Expiration de requette');
+        Toastr::error('Ce lien n\'est plus valide', 'Lien invalide', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

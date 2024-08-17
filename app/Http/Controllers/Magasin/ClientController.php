@@ -7,6 +7,7 @@ use App\Models\Magasin\Client;
 use App\Models\Magasin\Magasin;
 use App\Models\Magasin\Order;
 use App\Models\User\User;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -26,7 +27,7 @@ class ClientController extends Controller
             $magasin = Magasin::find(AuthMagasinAgent());
             return view('magasin.clients.index',['clients' => $magasin->users]);
         }else {
-            notify()->error('Vous n\'aviez pas acces a cette pages ⚡️', 'Error access');
+            Toastr::error('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }
@@ -40,7 +41,7 @@ class ClientController extends Controller
             $magasin = Magasin::find(AuthMagasinAgent());
             return view('magasin.clients.simple',['clients' => $magasin->clients]);
         }else {
-            notify()->error('Vous n\'aviez pas acces a cette pages ⚡️', 'Error access');
+            Toastr::success('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }
@@ -64,7 +65,7 @@ class ClientController extends Controller
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->email)),
         ]);
 
-        notify()->success('Votre client a ete ajouter avec success ⚡️', 'Ajout de clients');
+        Toastr::success('Votre client a bien été ajouté', 'Ajout de clients', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -109,7 +110,7 @@ class ClientController extends Controller
             'phone' => $request->phone,
         ]);
 
-        notify()->success('Votre client a ete modifier avec success ⚡️', 'Modification de clients');
+        Toastr::success('Votre client a bien été modifié', 'Modification de clients', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -119,7 +120,7 @@ class ClientController extends Controller
     public function destroy(string $id)
     {
         Client::where('id',$id)->delete();
-        notify()->success('Ce client a bien ete supprimer  ⚡️', 'Supression de client');
+        Toastr::success('Votre client a bien été supprimé', 'Suppression de clients', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

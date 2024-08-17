@@ -28,6 +28,8 @@
                       <tr>
                         <th class="sort white-space-nowrap align-middle fs-10" scope="col"></th>
                         <th class="sort white-space-nowrap align-middle" scope="col" style="min-width:200px;" data-sort="products">PRODUCTS</th>
+                        <th class="sort align-middle" scope="col" style="width:80px;">COULEUR</th>
+                        <th class="sort align-middle" scope="col" style="width:50px;">TAILLE</th>
                         <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:100px;">PRICE</th>
                         <th class="sort align-middle text-end ps-4" scope="col" data-sort="quantity" style="width:100px;">QUANTITY</th>
                         <th class="sort align-middle text-end ps-4" scope="col" data-sort="total" style="width:100px;">TOTAL</th>
@@ -36,11 +38,17 @@
                     <tbody class="list" id="order-table-body">
                       @foreach(unserialize($order->products) as $product)
                         <tr class="hover-actions-trigger btn-reveal-trigger position-static">
-                          <td class="align-middle white-space-nowrap py-2"><a class="d-block border border-translucent rounded-2" href="../landing/product-details.html"><img src="{{Storage::url($product[0])}}" alt="" width="53" /></a></td>
-                          <td class="products align-middle py-0"><a class="fw-semibold line-clamp-2 mb-0" href="../landing/product-details.html">{{$product[1]}}</a></td>
+                          <td class="align-middle white-space-nowrap py-2">
+                            <span class="d-block border border-translucent rounded-2">
+                              <img src="{{Storage::url($product[0])}}" alt="" width="53" />
+                            </span>
+                        </td>
+                          <td class="products align-middle py-0"><span class="fw-semibold line-clamp-2 mb-0">{{$product[1]}}</span></td>
+                          <td class="color align-middle white-space-nowrap fs-9 text-body">@if($product[4] != ''){{$product[4]}} @else Null @endif</td>
+                          <td class="size align-middle white-space-nowrap text-body-tertiary fs-9 fw-semibold">@if($product[5] != ''){{$product[5]}} @else Null @endif</td>
                           <td class="price align-middle text-body fw-semibold text-end py-0 ps-4">{{$product[2]}}</td>
                           <td class="quantity align-middle text-end py-0 ps-4 text-body-tertiary">{{$product[3]}}</td>
-                          <td class="total align-middle fw-bold text-body-highlight text-end py-0 ps-4" style="width: 100%;">{{$product[2] * $product[3]}} CFA</td>
+                          <td class="total align-middle fw-bold text-body-highlight text-end py-0 ps-4" style="width: 100%;">{{$product[2] * $product[3]}}</td>
                         </tr>
                       @endforeach
                     </tbody>
@@ -93,16 +101,29 @@
                   <div class="card">
                     <div class="card-body">
                       <h3 class="card-title mb-4">Statut de la commande</h3>
-                      <h6 class="mb-2">Payment status</h6><select class="form-select mb-4" aria-label="delivery type">
-                        <option value="cod">Processing</option>
-                        <option value="card">Canceled</option>
-                        <option value="paypal">Completed</option>
-                      </select>
-                      <h6 class="mb-2">Fulfillment status</h6><select class="form-select" aria-label="delivery type">
-                        <option value="cod">Unfulfilled</option>
-                        <option value="card">Fulfilled</option>
-                        <option value="paypal">Pending</option>
-                      </select>
+                      <form action="{{ route('magasin.commande.update',$order->id) }}" method="post">
+                        @csrf
+                        {{ method_field('PUT') }}
+                        <div class="modal-body">
+                          <p class="text-body-tertiary lh-lg mb-3"> Commande Nº {{ $order->order }} de  {{$order->name}} </p>
+                          <p class="text-body-tertiary lh-lg mb-3">
+                            <h6 class="mb-2">Selectionner un status</h6>
+                            <select class="form-select mb-4 @error('status') is-invalid @enderror" name="status" id="status"aria-label="delivery type">
+                              <option class="text-success" value="1" @if($order->status == 1) selected="" @endif>Terminé</option>
+                              <option class="text-primary" value="2" @if($order->status == 2) selected="" @endif>Traitement</option>
+                              <option class="text-danger" value="3" @if($order->status == 3) selected="" @endif>Annulé</option>
+                            </select>
+                            @error('status')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                          </p>
+                        </div>
+                        <div class="modal-footer">
+                          <button class="btn btn-success" style="width: 100%;" type="submit">Enregistre le status</button>
+                        </div>
+                      </form>
                     </div>
                   </div>
                 </div>

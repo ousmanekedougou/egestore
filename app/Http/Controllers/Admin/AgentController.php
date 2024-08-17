@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin\Admin;
-use App\Models\Departement;
-use App\Notifications\NouveauCompte\NouveauAgent;
+use App\Notifications\NouveauCompte\NouveauCompteAdmin;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -19,10 +19,9 @@ class AgentController extends Controller
 
     public function index(){
         if(Auth::guard('admin')->user()->status == 1){
-            $departements = Departement::all();
-            return view('admin.agent.index',['agents' => Admin::where('status','!=',1)->get(),'departements' => $departements]);
+            return view('admin.agent.index',['agents' => Admin::where('status','!=',1)->get()]);
         }else {
-            notify()->error('Vous n\'avier pas acces a cette page ⚡️', 'Acces reffuser');
+            Toastr::error('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }
@@ -48,8 +47,8 @@ class AgentController extends Controller
         ]);
         
         $email = Admin::where('email',$request->email)->first();
-        $email->notify(new NouveauAgent());
-        notify()->success('Votre agent a ete ajouter avec success ⚡️', 'Ajout Agent');
+        $email->notify(new NouveauCompteAdmin());
+        Toastr::success('Votre agent a bien été ajouté', 'Ajout d\'agents', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -58,10 +57,10 @@ class AgentController extends Controller
         $agent = Admin::where('email',$email)->where('confirmation_token',$token)->first();
         if ($agent) {
             $agent->update(['confirmation_token' => null , 'is_active' => ACTIVE]);
-            notify()->success('Votre compte agent a ete confirmer avec success ⚡️', 'Confirmation compte agent');
+            Toastr::success('Votre compte agent a bien été confirmé', 'Confirmation de compte agents', ["positionClass" => "toast-top-right"]);
             return redirect()->route('admin.login');
         }else {
-            notify()->error('Ce lien ne semble plus valide ⚡️', 'Expiration du lien');
+            Toastr::success('Ce lien n\'est plus valide', 'Lien invalide', ["positionClass" => "toast-top-right"]);
             return redirect()->route('utilisateur.index');
         }
     }
@@ -71,7 +70,7 @@ class AgentController extends Controller
             'status' => 'required|string|'
         ]);
         Admin::where('id',$id)->where('status','!=',1)->update(['status' => $request->status]);
-        notify()->success('Le status de votre agent a ete modifier avec success ⚡️', 'Modification Agent');
+        Toastr::success('Le status de votre agent a bien été modifié', 'Modification de agents', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -86,14 +85,14 @@ class AgentController extends Controller
             $token = str_replace('/','',Hash::make(Str::random(5)));
         }
         Admin::where('id',$id)->where('status','!=',1)->update(['is_active' => $request->is_active,'confirmation_token' => $token]);
-        notify()->success('Le status du compte de votre agent a ete modifier avec success ⚡️', 'Modification Compte Agent');
+        Toastr::success('Le status du compte agent a bien été modifié', 'Modification du compte de agents', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
     public function destroy($id){
         $agent = Admin::where('id',$id)->where('status','!=',1)->first();
         $agent->delete();
-        notify()->success('Votre agent a ete supprimer avec success ⚡️', 'Suppression Departement');
+        Toastr::success('Votre agent a bien été supprimé', 'Suppression d\'agents', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

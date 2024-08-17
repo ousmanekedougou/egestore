@@ -7,6 +7,7 @@ use App\Models\Magasin\Client;
 use App\Models\Magasin\Commande;
 use App\Models\Magasin\Magasin;
 use App\Models\User\User;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -89,7 +90,7 @@ class ReservationController extends Controller
             'status' => 2
         ]);
 
-        notify()->success('Votre reservation a bien ete ajouter ⚡️', 'Enregistrement de la commande');
+        Toastr::success('Votre reservation a bien été ajouté', 'Ajout de reservations', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -146,7 +147,7 @@ class ReservationController extends Controller
             'status' => 2
         ]);
 
-        notify()->success('Votre reservation a bien ete ajouter ⚡️', 'Enregistrement de la commande');
+        Toastr::success('Votre reservation a bien été ajouté', 'Ajout de reservations', ["positionClass" => "toast-top-right"]);
         return back();
 
     }
@@ -197,7 +198,7 @@ class ReservationController extends Controller
             'num_invoice' => $incvoiceNum
         ]);
 
-        notify()->success('Le status de cette reservation a ete mise a jour ⚡️', 'Status de reservation');
+        Toastr::success('Le status de catte reservation a bien été modifié', 'Modification de reservations', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -207,7 +208,7 @@ class ReservationController extends Controller
     public function destroy(string $id)
     {
         Commande::where('id',$id)->where('magasin_id',AuthMagasinAgent())->where('type',1)->delete();
-        notify()->success('Votre reservation a ete supprimer avec success ⚡️', 'Suppression de reservation');
+        Toastr::success('Votre reservation a bien été supprimé', 'Suppression de reservations', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

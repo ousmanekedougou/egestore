@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware\AppMiddleware;
 
+use Brian2694\Toastr\Facades\Toastr;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,9 +20,8 @@ class IsClient
         if (Auth::guard('web')->user()) {
             return $next($request);
         }else {
-            notify()->error('Vous n\'avies pas access a cette page ⚡️', 'Acces Refuser');
+            Toastr::error('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
             return back();
-            // return redirect()->route('user.login');
         }
     }
 }

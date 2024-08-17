@@ -7,6 +7,7 @@ use App\Models\Magasin\Client;
 use App\Models\Magasin\Magasin;
 use App\Models\Magasin\Order;
 use App\Models\Magasin\Product;
+use Brian2694\Toastr\Facades\Toastr;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,7 @@ class CartController extends Controller
             return view('magasin.cart.index',['clients' => $clients]);
         }
 
-        notify()->error('Votre panier est vide ⚡️', 'Produit existe');
+        Toastr::warning('Votre panier est vide', 'Acces au panier refuse', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -45,7 +46,7 @@ class CartController extends Controller
             Cart::destroy();
         }
         
-        notify()->success('Votre produit a ete ajouter au panier ⚡️', 'Ajouter au panier');
+        Toastr::success('Votre panier a bien été vidé', 'Vider le panier', ["positionClass" => "toast-top-right"]);
         return redirect()->route('magasin.home');
     }
 
@@ -57,19 +58,47 @@ class CartController extends Controller
         $duplicata = Cart::search(function ($cartItem, $rowId) use ($request){
             return $cartItem->id == $request->product_id;
         });
+        // dd($request->all());
+
+        $color = null;
+        $size = null;
+        $qty = null;
+
+        if($request->color != null)
+        {
+            $color = $request->color;
+        }else {
+            $color = null;
+        }
+
+        if($request->size != null)
+        {
+            $size = $request->size;
+        }else {
+            $size = null;
+        }
+
+        if($request->qty != null)
+        {
+            $qty = $request->qty;
+        }else {
+            $qty = 1;
+        }
+
 
 
         if ($duplicata->isNotEmpty()) {
-            notify()->error('Votre produit est deja dans le panier ⚡️', 'Produit existe');
+            Toastr::warning('Ce produit est déjà dans votre panier', 'Votre panier', ["positionClass" => "toast-top-right"]);
             return back();
         }
 
         $product = Product::where('id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->first();
 
-        Cart::add($product->id, $product->name, 1, $product->price)
+        $cart = Cart::add($product->id, $product->name, $qty, $product->price,array('size' => $size,'color' => $color))
             ->associate('App\Models\Magasin\Product');
+            // array('size' => $request->size,'color' => $request->color)
 
-        notify()->success('Votre produit a ete ajouter au panier ⚡️', 'Ajouter au panier');
+        Toastr::success('Votre produit a bien été ajouté au panier', 'Ajout au panier', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -85,7 +114,7 @@ class CartController extends Controller
             return back();
         }
 
-        notify()->error('Il n\'y a pas cette quantite pour ce produit ⚡️', 'Quantite');
+        Toastr::warning('Il n\' y a pas cette quantite pour ce produit', 'Qunatite inferierur', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -100,7 +129,7 @@ class CartController extends Controller
             Cart::update($rowId,$qty);
             return back();
         }
-        notify()->error('La quantite minimum est a 1 ⚡️', 'Quantite');
+        Toastr::warning('La quantite minimum du produit est a 1', 'Quantite minimum', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -118,7 +147,7 @@ class CartController extends Controller
     public function destroy($rowId)
     {
         Cart::remove($rowId);
-        notify()->success('Votre produit a ete supprimer dans le panier ⚡️', 'Suppression de produit');
+        Toastr::success('Votre produit a bien été supprimé dans le panier', 'Suppresion de produit', ["positionClass" => "toast-top-right"]);
         return back();
     }
 

@@ -17,12 +17,14 @@ class Magasin extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'slug',
         'email',
         'phone',
         'password',
         'admin_name',
         'logo',
-        'slug',
+        'inv_at',
+        'inv_status',
         'adresse',
         'is_active',
         'termsService',
@@ -62,6 +64,11 @@ class Magasin extends Authenticatable
     public function commandes()
     {
         return $this->hasMany(Commande::class);
+    }
+
+    public function ventes()
+    {
+        return $this->hasMany(Vente::class);
     }
    
 }

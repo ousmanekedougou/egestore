@@ -1,5 +1,5 @@
 @extends('layouts.app',['title' => 'magasin-affichage des produits'])
-
+<link href="{{asset('vendors/choices/choices.min.css')}}" rel="stylesheet" />
 @section('main-content')
 <div class="content">
    
@@ -22,9 +22,9 @@
             <button data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" class="btn btn-sm btn-outline-primary rounded-pill w-100 me-3 px-2 px-sm-4 fs-9 fs-sm-8">
               <span data-feather="edit-3" class="me-2"></span>Modifier ce produit
             </button>
-            <button  class="btn btn-sm btn-warning rounded-pill w-100 fs-9 fs-sm-8">
+            <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();" class="btn btn-sm btn-warning rounded-pill w-100 fs-9 fs-sm-8">
               <span data-feather="shopping-cart" class=" me-2"></span>Ajouter au panier
-            </button>
+            </a>
           </div>
         </div>
         <div class="col-12 col-lg-5">
@@ -52,46 +52,317 @@
             </div>
             <div>
               <div class="mb-3">
-                <p class="fw-semibold mb-2 text-body">Color : <span class="text-body-emphasis" data-product-color="data-product-color">Blue</span></p>
+                <p class="fw-semibold mb-2 text-body"><span class="text-body-emphasis" data-product-color="data-product-color">images</span> complémentaires</p>
                 <div class="d-flex product-color-variants" data-product-color-variants="data-product-color-variants">
                   
-                  <div class="rounded-1 border border-translucent me-2 active" data-variant="red" data-products-images='["{{Storage::url($product->image)}}"]'>
+                  <div class="rounded-1 border border-translucent me-2 active" data-variant="images" data-products-images='["{{Storage::url($product->image)}}"]'>
                     <img src="{{Storage::url($product->image)}}" alt="" width="38" />
                   </div>
-
-                    @foreach(json_decode($product->images, true) as $image)
-                      <div class="rounded-1 border border-translucent me-2" data-variant="Blue" data-products-images='["{{Storage::url($image)}}"]'>
-                        <img src="{{Storage::url($image)}}" alt="" width="38" />
-                      </div>
-                    @endforeach
+                  @if(AuthMagasinAgentVisible() == 1)
+                    @if($product->images != '')
+                      @foreach(json_decode($product->images, true) as $image)
+                        <div class="rounded-1 border border-translucent me-2" data-variant="images" data-products-images='["{{Storage::url($image)}}"]'>
+                          <img src="{{Storage::url($image)}}" alt="" width="38" />
+                        </div>
+                      @endforeach
+                    @endif
+                  @endif
                 </div>
               </div>
-
-              {{--
+              <form id="ajouterAuPanier-{{ $product->id }}" action="{{ route('magasin.panier.store') }}" method="POST" class="">
+                @csrf
+                <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <div class="row g-3 g-sm-5 align-items-end">
-                  <div class="col-12 col-sm-auto">
-                    <p class="fw-semibold mb-2 text-body">Size : </p>
-                    <div class="d-flex align-items-center"><select class="form-select w-auto">
-                        <option value="44">44</option>
-                        <option value="22">22</option>
-                        <option value="18">18</option>
-                      </select><a class="ms-2 fs-9 fw-semibold" href="#!">Size chart</a></div>
-                  </div>
+                  @if($product->colors != '')
+                    <div class="col-12 col-sm-auto">
+                      <p class="fw-semibold mb-2 text-body">Couleurs : </p>
+                      <div class="d-flex align-items-center">
+                        <select class="form-select w-auto @error('colors') is-invalid @enderror" name="color">
+                          @foreach(unserialize($product->colors) as $color)
+                            <option value="{{ $color }}">{{$color}}</option>
+                          @endforeach
+                        </select>
+                        @error('color')
+                          <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                          </span>
+                        @enderror
+                      </div>
+                    </div>
+                  @endif
+                  @if($product->sizes != '')
+                    <div class="col-12 col-sm-auto">
+                      <p class="fw-semibold mb-2 text-body">Tailles : </p>
+                      <div class="d-flex align-items-center">
+                        <select class="form-select w-auto @error('size') is-invalid @enderror" name="size">
+                          @foreach(unserialize($product->sizes) as $size)
+                            <option value="{{ $size }}">{{$size}}</option>
+                          @endforeach
+                        </select>
+                        @error('size')
+                          <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                          </span>
+                        @enderror
+                      </div>
+                    </div>
+                  @endif
                   <div class="col-12 col-sm">
-                    <p class="fw-semibold mb-2 text-body">Quantity : </p>
+                    <p class="fw-semibold mb-2 text-body">Quantite : </p>
                     <div class="d-flex justify-content-between align-items-end">
-                      <div class="d-flex flex-between-center" data-quantity="data-quantity"><button class="btn btn-phoenix-primary px-3" data-type="minus"><span class="fas fa-minus"></span></button><input class="form-control text-center input-spin-none bg-transparent border-0 outline-none" style="width:50px;" type="number" min="1" value="2" /><button class="btn btn-phoenix-primary px-3" data-type="plus"><span class="fas fa-plus"></span></button></div><button class="btn btn-phoenix-primary px-3 border-0"><span class="fas fa-share-alt fs-7"></span></button>
+                      <div class="d-flex flex-between-center" data-quantity="data-quantity">
+                        <span class="btn btn-phoenix-primary px-3" data-type="minus"><span class="fas fa-minus"></span></span>
+                        <input name="qty" class="form-control text-center input-spin-none bg-transparent border-0 outline-none" style="width:50px;" type="number" min="1" value="1" />
+                        <span class="btn btn-phoenix-primary px-3" data-type="plus"><span class="fas fa-plus"></span>
+                      </span>
+                    </div>
                     </div>
                   </div>
                 </div>
-              --}}
+              </form>
             </div>
           </div>
         </div>
       </div>
+      <ul class="nav nav-underline fs-9 mb-4" id="productTab" role="tablist">
+        <li class="nav-item"><a class="nav-link active" id="description-tab" data-bs-toggle="tab" href="#tab-description" role="tab" aria-controls="tab-description" aria-selected="true">Description</a></li>
+        <li class="nav-item"><a class="nav-link" id="specification-tab" data-bs-toggle="tab" href="#tab-specification" role="tab" aria-controls="tab-specification" aria-selected="false">Specifications</a></li>
+        <li class="nav-item"><a class="nav-link" id="inventaire-tab" data-bs-toggle="tab" href="#tab-inventaire" role="tab" aria-controls="tab-inventaire" aria-selected="false">Invantaire</a></li>
+        {{--<li class="nav-item"><a class="nav-link" id="reviews-tab" data-bs-toggle="tab" href="#tab-reviews" role="tab" aria-controls="tab-reviews" aria-selected="false">Ratings &amp; reviews</a></li>--}}
+      </ul>
+      <div class="row gx-3 gy-7">
+        <div class="col-12 col-lg-7 col-xl-8">
+          <div class="tab-content" id="productTabContent">
+            <div class="tab-pane pe-lg-6 pe-xl-12 fade show active text-body-emphasis" id="tab-description" role="tabpanel" aria-labelledby="description-tab">
+              <p class="mb-5">{{$product->desc}}</p>
+            </div>
+
+
+            <div class="tab-pane pe-lg-6 pe-xl-12 fade" id="tab-specification" role="tabpanel" aria-labelledby="specification-tab">
+              
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 40%"> </th>
+                    <th style="width: 60%"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="bg-body-highlight align-middle">
+                      <h6 class="mb-0 text-body text-uppercase fw-bolder px-4 fs-9 lh-sm">Couleurs</h6>
+                    </td>
+                    <td class="px-5 mb-0">
+                      @if($product->colors != '')
+                        @foreach(unserialize($product->colors) as $color)
+                          {{$color}}, 
+                        @endforeach
+                      @else
+                        NULL
+                      @endif
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="bg-body-highlight align-middle">
+                      <h6 class="mb-0 text-body text-uppercase fw-bolder px-4 fs-9 lh-sm">Tailles</h6>
+                    </td>
+                    <td class="px-5 mb-0">
+                      @if($product->sizes != '')
+                        @foreach(unserialize($product->sizes) as $size)
+                          {{$size}}, 
+                        @endforeach
+                      @else
+                        NULL
+                      @endif
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="bg-body-highlight align-middle">
+                      <h6 class="mb-0 text-body text-uppercase fw-bolder px-4 fs-9 lh-sm">Quantites</h6>
+                    </td>
+                    <td class="px-5 mb-0">{{ $product->quantity }}</td>
+                  </tr>
+                  <tr>
+                    <td class="bg-body-highlight align-middle">
+                      <h6 class="mb-0 text-body text-uppercase fw-bolder px-4 fs-9 lh-sm">Ventes du mois</h6>
+                    </td>
+                    <td class="px-5 mb-0">{{ $product->ventes->count() }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="tab-pane pe-lg-6 pe-xl-12 fade" id="tab-inventaire" role="tabpanel" aria-labelledby="inventaire-tab">
+              <h5 class="mb-0 ms-4 fw-bold">Informations avant vente</h5> <br>
+              <table class="table mb-4">
+                <thead>
+                  <tr>
+                    <th class="bg-body-highlight align-middle" style="width: 34%"> <h6 class="mb-0 text-body text-uppercase fw-bolder px-4 fs-9 lh-sm">Qts depart</h6> </th>
+                    <th class="bg-body-highlight align-middle" style="width: 33%"><h6 class="mb-0 text-body text-uppercase fw-bolder px-4 fs-9 lh-sm">Qts Vendus</h6></th>
+                    <th class="bg-body-highlight align-middle" style="width: 33%"><h6 class="mb-0 text-body text-uppercase fw-bolder px-4 fs-9 lh-sm">Qts Actuelle</h6></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="px-5 mb-0">{{ $product->stock }}</td>
+                    <td class="px-5 mb-0">{{ $product->ventes->count() }}</td>
+                    <td class="px-5 mb-0">{{ $product->quantity }}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h5 class="mb-0 ms-4 fw-bold mt-5">Nombre de ventes par jour</h5> <br>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="bg-body-highlight align-middle" style="width: 34%"> <h6 class="mb-0 text-body text-uppercase fw-bolder px-4 fs-9 lh-sm">Dates</h6> </th>
+                    <th class="bg-body-highlight align-middle text-end" style="width: 33%"><h6 class="mb-0 text-body text-uppercase fw-bolder px-4 fs-9 lh-sm">Quantites</h6></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($product->ventes as $vente)
+                    <tr>
+                      <td class="px-5 mb-0">{{date('d-m-Y', strtotime( $vente->date ))}}</td>
+                      <td class="px-5 mb-0 text-end">{{ $vente->quantity }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+
+
+            {{--
+            <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="reviews-tab">
+              <div class="bg-body-emphasis rounded-3 p-4 border border-translucent">
+                <div class="row g-3 justify-content-between mb-4">
+                  <div class="col-auto">
+                    <div class="d-flex align-items-center flex-wrap">
+                      <h2 class="fw-bolder me-3">4.9<span class="fs-8 text-body-quaternary fw-bold">/5</span></h2>
+                      <div class="me-3"><span class="fa fa-star text-warning fs-6"></span><span class="fa fa-star text-warning fs-6"></span><span class="fa fa-star text-warning fs-6"></span><span class="fa fa-star text-warning fs-6"></span><span class="fa fa-star-half-alt star-icon text-warning fs-6"></span></div>
+                      <p class="text-body mb-0 fw-semibold fs-7">6548 ratings and 567 reviews</p>
+                    </div>
+                  </div>
+                  <div class="col-auto"><button class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#reviewModal">Rate this product</button>
+                    <div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content p-4">
+                          <div class="d-flex flex-between-center mb-2">
+                            <h5 class="modal-title fs-8 mb-0">Your rating</h5><button class="btn p-0 fs-10">Clear</button>
+                          </div>
+                          <div class="mb-3" data-rater='{"starSize":32,"step":0.5}'></div>
+                          <div class="mb-3">
+                            <h5 class="text-body-highlight mb-3">Your review</h5><textarea class="form-control" id="reviewTextarea" rows="5" placeholder="Write your review"> </textarea>
+                          </div>
+                          <div class="dropzone dropzone-multiple p-0 mb-3" id="my-awesome-dropzone" data-dropzone>
+                            <div class="fallback"><input name="file" type="file" multiple></div>
+                            <div class="dz-preview d-flex flex-wrap">
+                              <div class="border border-translucent bg-body-emphasis rounded-3 d-flex flex-center position-relative me-2 mb-2" style="height:80px;width:80px;"><img class="dz-image" src="../../../assets/img/products/23.png" alt="..." data-dz-thumbnail><a class="dz-remove text-body-quaternary" href="#!" data-dz-remove><span data-feather="x"></span></a></div>
+                            </div>
+                            <div class="dz-message text-body-tertiary text-opacity-85 fw-bold fs-9 p-4" data-dz-message> Drag your photo here <span class="text-body-secondary">or </span><button class="btn btn-link p-0">Browse from device </button><br><img class="mt-3 me-2" src="../../../assets/img/icons/image-icon.png" width="24" alt=""></div>
+                          </div>
+                          <div class="d-sm-flex flex-between-center">
+                            <div class="form-check flex-1"><input class="form-check-input" id="reviewAnonymously" type="checkbox" value="" checked=""><label class="form-check-label mb-0 text-body-emphasis fw-semibold" for="reviewAnonymously">Review anonymously</label></div><button class="btn ps-0" data-bs-dismiss="modal">Close</button><button class="btn btn-primary rounded-pill">Submit</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-4 hover-actions-trigger btn-reveal-trigger">
+                  <div class="d-flex justify-content-between">
+                    <h5 class="mb-2"><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="text-body-secondary ms-1"> by</span> Zingko Kudobum</h5>
+                    <div class="btn-reveal-trigger position-static"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10"></span></button>
+                      <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
+                        <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-body-tertiary fs-9 mb-1">35 mins ago</p>
+                  <p class="text-body-highlight mb-3">100% satisfied</p>
+                  <div class="row g-2 mb-2">
+                    <div class="col-auto"><a href="../../../assets/img/e-commerce/review-11.jpg" data-gallery="gallery-0"><img src="../../../assets/img/e-commerce/review-11.jpg" alt="" height="164" /></a></div>
+                    <div class="col-auto"><a href="../../../assets/img/e-commerce/review-12.jpg" data-gallery="gallery-0"><img src="../../../assets/img/e-commerce/review-12.jpg" alt="" height="164" /></a></div>
+                    <div class="col-auto"><a href="../../../assets/img/e-commerce/review-13.jpg" data-gallery="gallery-0"><img src="../../../assets/img/e-commerce/review-13.jpg" alt="" height="164" /></a></div>
+                  </div>
+                  <div class="d-flex"><span class="fas fa-reply fa-rotate-180 me-2"></span>
+                    <div>
+                      <h5>Respond from store<span class="text-body-tertiary fs-9 ms-2">5 mins ago</span></h5>
+                      <p class="text-body-highlight mb-0">Thank you for your valuable feedback</p>
+                    </div>
+                  </div>
+                  <div class="hover-actions top-0"><button class="btn btn-sm btn-phoenix-secondary me-2"><span class="fas fa-thumbs-up"></span></button><button class="btn btn-sm btn-phoenix-secondary me-1"><span class="fas fa-thumbs-down"></span></button></div>
+                </div>
+                <div class="mb-4 hover-actions-trigger btn-reveal-trigger">
+                  <div class="d-flex justify-content-between">
+                    <h5 class="mb-2"><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa-regular fa-star text-warning-light"></span><span class="text-body-secondary ms-1"> by</span> Piere Auguste Renoir</h5>
+                    <div class="btn-reveal-trigger position-static"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10"></span></button>
+                      <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
+                        <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-body-tertiary fs-9 mb-1">23 Oct, 12:09 PM</p>
+                  <p class="text-body-highlight mb-1">Since the spring loaded event, I've been wanting an iMac, and it's exceeded my expectations. The screen is clear, the colors are vibrant (I got the blue one! ), and the performance is more than adequate for my needs as a college student. That's how good it is.</p>
+                  <div class="hover-actions top-0"><button class="btn btn-sm btn-phoenix-secondary me-2"><span class="fas fa-thumbs-up"></span></button><button class="btn btn-sm btn-phoenix-secondary me-1"><span class="fas fa-thumbs-down"></span></button></div>
+                </div>
+                <div class="mb-4 hover-actions-trigger btn-reveal-trigger">
+                  <div class="d-flex justify-content-between">
+                    <h5 class="mb-2"><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star-half-alt star-icon text-warning"></span><span class="fa-regular fa-star text-warning-light"></span><span class="text-body-secondary ms-1"> by</span> Abel Kablmann </h5>
+                    <div class="btn-reveal-trigger position-static"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10"></span></button>
+                      <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
+                        <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-body-tertiary fs-9 mb-1">21 Oct, 12:00 PM</p>
+                  <p class="text-body-highlight mb-1">Over the years, I've preferred Apple products. My job has allowed me to use Windows products on laptops and PCs. I've owned Windows laptops and desktops for home use in the past and will never use them again.</p>
+                  <div class="hover-actions top-0"><button class="btn btn-sm btn-phoenix-secondary me-2"><span class="fas fa-thumbs-up"></span></button><button class="btn btn-sm btn-phoenix-secondary me-1"><span class="fas fa-thumbs-down"></span></button></div>
+                </div>
+                <div class="mb-4 hover-actions-trigger btn-reveal-trigger">
+                  <div class="d-flex justify-content-between">
+                    <h5 class="mb-2"><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="text-body-secondary ms-1"> by</span> Pennywise Alfred</h5>
+                    <div class="btn-reveal-trigger position-static"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10"></span></button>
+                      <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
+                        <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-body-tertiary fs-9 mb-1">35 mins ago</p>
+                  <p class="text-body-highlight mb-3">Nice and beautiful product.</p>
+                  <div class="row g-2 mb-2">
+                    <div class="col-auto"><a href="../../../assets/img/e-commerce/review-14.jpg" data-gallery="gallery-3"><img src="../../../assets/img/e-commerce/review-14.jpg" alt="" height="164" /></a></div>
+                    <div class="col-auto"><a href="../../../assets/img/e-commerce/review-15.jpg" data-gallery="gallery-3"><img src="../../../assets/img/e-commerce/review-15.jpg" alt="" height="164" /></a></div>
+                    <div class="col-auto"><a href="../../../assets/img/e-commerce/review-16.jpg" data-gallery="gallery-3"><img src="../../../assets/img/e-commerce/review-16.jpg" alt="" height="164" /></a></div>
+                  </div>
+                  <div class="hover-actions top-0"><button class="btn btn-sm btn-phoenix-secondary me-2"><span class="fas fa-thumbs-up"></span></button><button class="btn btn-sm btn-phoenix-secondary me-1"><span class="fas fa-thumbs-down"></span></button></div>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <nav>
+                    <ul class="pagination mb-0">
+                      <li class="page-item"><a class="page-link" href="#!"><span class="fas fa-chevron-left"> </span></a></li>
+                      <li class="page-item"><a class="page-link" href="#!">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                      <li class="page-item active"><a class="page-link" href="#!">4</a></li>
+                      <li class="page-item"><a class="page-link" href="#!">5</a></li>
+                      <li class="page-item"><a class="page-link" href="#!"><span class="fas fa-chevron-right"></span></a></li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+            --}}
+          </div>
+        </div>
+        
+        
+        
+      </div>
     </div><!-- end of .container-->
   </section><!-- <section> close ============================-->
   <!-- ============================================-->
+
+ 
 
 
   <div class="card-body p-0">
@@ -170,6 +441,49 @@
               @enderror
             </div>
 
+            @if($product->colors != '')
+              <div class="mb-3 text-start">
+                <label for="organizerMultiple">Couleurs : @foreach(unserialize($product->colors) as $colorGet) <span class="text-primary fs-10 fw-4">{{ $colorGet }},</span> @endforeach</label>
+                <select class="form-select @error('colors') is-invalid @enderror" autocomplete="colors" id="organizerMultiple" name="colors[]" data-choices="data-choices" multiple="multiple" data-options='{"removeItemButton":true,"placeholder":true}'>
+                  <option value="">Sélectionner les couleures pour ce produit</option>
+                  @foreach(allColors() as $color)
+                    <option value="{{ $color->name }}">{{$color->name}} 
+                      <span class="text-danger" data-feather="circle" style="height: 70px; width: 70px;"></span>
+                    </option>
+                  @endforeach
+                </select>
+                @error('colors')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
+              </div>
+            @endif
+
+            @if($product->sizes != '')
+              <div class="mb-4 text-start">
+                <label for="organizerMultiple2">Tailles : @foreach(unserialize($product->sizes) as $sizeGet) <span class="text-info fs-10 fw-4">{{ $sizeGet }},</span> @endforeach</label>
+                <select class="form-select @error('sizes') is-invalid @enderror" autocomplete="sizes" id="organizerMultiple2" name="sizes[]" data-choices="data-choices" multiple="multiple" data-options='{"removeItemButton":true,"placeholder":true}'>
+                  <option value="">Sélectionner les tailles pour ce produit</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+                @error('sizes')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
+              </div>
+            @endif
+
             <div class="mb-3 text-start">
               <label class="form-label" for="email">Status du produit</label> <br>
               <div class="form-check form-check-inline">
@@ -190,9 +504,11 @@
               @if(AuthMagasinAgentVisible() == 1)
                 <div class="mb-3 text-start">
                   <label class="form-label" for="images">Modifier les images similaires (facultatif)</label> <br>
-                  @foreach(json_decode($product->images, true) as $image)
-                    <img src="{{Storage::url($image)}}" alt="" width="38" />
-                  @endforeach
+                  @if($product->images != '')
+                    @foreach(json_decode($product->images, true) as $image)
+                      <img src="{{Storage::url($image)}}" alt="" width="38" />
+                    @endforeach
+                  @endif
                   <input type="file" name="images[]" multiple="multiple" class="form-control form-control-sm mb-4" id="customFileSm"> 
                 </div>
               @endif
@@ -205,7 +521,7 @@
   </div>
 
 
-    <div class="modal fade" id="DeleteCompte-{{ $product->id }}" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal fade" id="DeleteProduct-{{ $product->id }}" tabindex="-1" style="display: none;" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -242,3 +558,4 @@
 
 </div>
 @endsection
+<script src="{{asset('vendors/choices/choices.min.js')}}"></script>

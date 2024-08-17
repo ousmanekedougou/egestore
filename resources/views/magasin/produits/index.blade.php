@@ -1,7 +1,8 @@
 @extends('layouts.app',['title' => 'magasin-produits'])
-
+<link href="{{asset('vendors/choices/choices.min.css')}}" rel="stylesheet" />
 @section('main-content')
-<div class="content">
+  <div class="content">
+
     <div class="mb-9">
       <div class="row g-3 mb-4">
         <div class="col-auto">
@@ -31,6 +32,8 @@
                   <th class="sort white-space-nowrap align-middle fs-10" scope="col" style="width:70px;"></th>
                   <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;" data-sort="product">PRODUITS</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">REFERENCES</th>
+                  <th class="sort align-middle ps-3" scope="col" data-sort="tags" style="width:100px;">COULEUR</th>
+                  <th class="sort align-middle ps-3" scope="col" data-sort="tags" style="width:100px;">TAILLES</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">QUANTITES</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">PRIX UNITAIRE</th>
                   <th class="sort align-middle ps-4" scope="col" data-sort="time" style="width:50px;">STATUS</th>
@@ -40,9 +43,21 @@
               <tbody class="list" id="products-table-body">
                 @foreach($subcategory->products as $product)
                   <tr class="position-static @if($product->quantity > 0 && $product->quantity < 10 ) bg-warning  @elseif($product->quantity == 0) bg-danger @endif">
-                    <td class="align-middle white-space-nowrap py-0"><a class="d-block border border-translucent rounded-2" target="_blank" href="{{ route('magasin.produit.edit',$product->id) }}"><img src="{{Storage::url($product->image)}}" alt="" width="53" /></a></td>
-                    <td class="product align-middle ps-4"><a class="fw-semibold line-clamp-3 mb-0 @if( $product->quantity < 10 ) text-white @endif" target="_blank" href="{{ route('magasin.produit.edit',$product->slug) }}">{{ $product->name }}</a></td>
+                    <td class="align-middle white-space-nowrap py-0"><a class="d-block border border-translucent rounded-2"  href="{{ route('magasin.produit.edit',$product->id) }}"><img src="{{Storage::url($product->image)}}" alt="" width="53" /></a></td>
+                    <td class="product align-middle ps-4"><a class="fw-semibold line-clamp-3 mb-0 @if( $product->quantity < 10 ) text-white @endif"  href="{{ route('magasin.produit.edit',$product->slug) }}">{{ $product->name }}</a></td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->reference }}</td>
+                    <td class="tags align-middle review ps-3" style="min-width:200px;">
+                      @if($product->colors != '')
+                        @foreach(unserialize($product->colors) as $colorGet)
+                          <span class="badge badge-tag mb-1"> {{ $colorGet }} </span>
+                        @endforeach
+                      @else 
+                        Null
+                      @endif
+                    </td>
+                    <td class="tags align-middle review ps-3" style="min-width:100px;">
+                      <span class="">@if($product->sizes != '') @foreach(unserialize($product->sizes) as $sizeGet) {{ $sizeGet }},  @endforeach @else Null @endif</span>
+                    </td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->quantity }}</td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->getPrice() }}</td>
                     <td class="total-spent align-middle white-space-nowrap fw-bold text-end ps-3 text-body-emphasis">
@@ -78,7 +93,6 @@
         </div>
       </div>
     </div>
-
 
     <div class="card-body p-0">
       <div class="p-4 code-to-copy">
@@ -148,7 +162,7 @@
 
               <div class="mb-3 text-start">
                 <label class="form-label" for="desc">Description du produit </label>
-                <textarea class="form-control @error('desc') is-invalid @enderror" id="desc" name="desc" required autocomplete="desc" rows="4"> </textarea>
+                <textarea class="form-control @error('desc') is-invalid @enderror" id="desc" value="{{ old('desc') }}" name="desc" required autocomplete="desc" rows="4"> </textarea>
                 @error('desc')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -173,13 +187,45 @@
                 @enderror
               </div>
 
+              <div class="mb-3 text-start">
+                <label for="organizerMultiple">Couleurs</label>
+                <select class="form-select @error('colors') is-invalid @enderror" autocomplete="colors" id="organizerMultiple" name="colors[]" data-choices="data-choices" multiple="multiple" data-options='{"removeItemButton":true,"placeholder":true}'>
+                  <option value="">Sélectionner les couleures pour ce produit</option>
+                  @foreach(allColors() as $color)
+                    <option value="{{ $color->name }}">{{$color->name}} 
+                      <span class="text-danger" data-feather="circle" style="height: 70px; width: 70px;"></span>
+                    </option>
+                  @endforeach
+                </select>
+                @error('colors')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
+              </div>
+
+              <div class="mb-4 text-start">
+                <label for="organizerMultiple2">Tailles</label>
+                <select class="form-select @error('sizes') is-invalid @enderror" autocomplete="sizes" id="organizerMultiple2" name="sizes[]" data-choices="data-choices" multiple="multiple" data-options='{"removeItemButton":true,"placeholder":true}'>
+                  <option value="">Sélectionner les tailles pour ce produit</option>
+                  <option value="X">X</option>
+                  <option value="XL">XL</option>
+                  <option value="XXL">XXL</option>
+                  <option value="25,5">25,5</option>
+                </select>
+                @error('sizes')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
+              </div>
+
               @if(AuthMagasinAgentVisible() == 1)
                 <div class="mb-3 text-start">
                   <label class="form-label" for="images">Ajouter des images similaires (facultatif)</label>
-                    <input type="file" name="images[]" multiple="multiple" class="form-control form-control-sm mb-4" id="customFileSm"> 
+                  <input type="file" name="images[]" multiple="multiple" class="form-control form-control-sm mb-4" id="customFileSm"> 
                 </div>
               @endif
-
 
               <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce produit</button>
             </form>
@@ -246,7 +292,7 @@
 
                 <div class="mb-3 text-start">
                   <label class="form-label" for="image">Image du produit</label>
-                  <img src="{{Storage::url($product->image)}}" alt="" width="38" />
+                  <img src="{{Storage::url($product->image)}}" alt="" width="38" style="float: right;"/>
                   <input class="form-control @error('image') is-invalid @enderror" id="image" name="image" type="file" value="{{ old('image') ?? $product->image }}"  autocomplete="image"/>
                   @error('image')
                       <span class="invalid-feedback" role="alert">
@@ -254,6 +300,47 @@
                       </span>
                   @enderror
                 </div>
+                @if($product->colors != '')
+                <div class="mb-3 text-start">
+                  <label for="organizerMultiple">Couleurs : @foreach(unserialize($product->colors) as $colorGet) <span class="text-primary fs-10 fw-4">{{ $colorGet }},</span> @endforeach</label>
+                  <select class="form-select @error('colors') is-invalid @enderror" autocomplete="colors" id="organizerMultiple" name="colors[]" data-choices="data-choices" multiple="multiple" data-options='{"removeItemButton":true,"placeholder":true}'>
+                    <option value="">Sélectionner les couleures pour ce produit</option>
+                    @foreach(allColors() as $color)
+                      <option value="{{ $color->name }}">{{$color->name}} 
+                        <span class="text-danger" data-feather="circle" style="height: 70px; width: 70px;"></span>
+                      </option>
+                    @endforeach
+                  </select>
+                  @error('colors')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
+                @endif
+                @if($product->sizes != '')
+                  <div class="mb-4 text-start">
+                    <label for="organizerMultiple2">Tailles : @foreach(unserialize($product->sizes) as $sizeGet) <span class="text-info fs-10 fw-4">{{ $sizeGet }},</span> @endforeach</label>
+                    <select class="form-select @error('sizes') is-invalid @enderror" autocomplete="sizes" id="organizerMultiple2" name="sizes[]" data-choices="data-choices" multiple="multiple" data-options='{"removeItemButton":true,"placeholder":true}'>
+                      <option value="">Sélectionner les tailles pour ce produit</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                    </select>
+                    @error('sizes')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
+                  </div>
+                @endif
 
                 <div class="mb-3 text-start">
                   <label class="form-label" for="desc">Description du produit </label>
@@ -326,8 +413,6 @@
       </div>
     @endforeach
 
-
-
     <footer class="footer position-absolute">
       <div class="row g-0 justify-content-between align-items-center h-100">
         <div class="col-12 col-sm-auto text-center">
@@ -339,6 +424,8 @@
       </div>
     </footer>
 
-
   </div>
 @endsection
+
+<script src="{{asset('vendors/choices/choices.min.js')}}"></script>
+

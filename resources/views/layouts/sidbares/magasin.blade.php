@@ -51,17 +51,17 @@
                         @endif
                     </div><!-- parent pages-->
                     {{--
-                    <div class="nav-item-wrapper">
-                        <a class="nav-link label-1" href="#" role="button" data-bs-toggle="" aria-expanded="false">
-                            <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="git-merge"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Locations</span></span></div>
-                        </a>
-                    </div><!-- parent pages-->
-                    
-                    <div class="nav-item-wrapper">
-                        <a class="nav-link label-1" href="#" role="button" data-bs-toggle="" aria-expanded="false">
-                            <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="git-merge"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Pointages</span></span></div>
-                        </a>
-                    </div><!-- parent pages-->
+                        <div class="nav-item-wrapper">
+                            <a class="nav-link label-1" href="#" role="button" data-bs-toggle="" aria-expanded="false">
+                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="git-merge"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Locations</span></span></div>
+                            </a>
+                        </div><!-- parent pages-->
+                        
+                        <div class="nav-item-wrapper">
+                            <a class="nav-link label-1" href="#" role="button" data-bs-toggle="" aria-expanded="false">
+                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="git-merge"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Pointages</span></span></div>
+                            </a>
+                        </div><!-- parent pages-->
                     --}}
 
                     @if(Cart::count() > 0)
@@ -73,11 +73,43 @@
                     @endif
 
                 </li>
+
                 <li class="nav-item">
                     <!-- label-->
-                    <p class="navbar-vertical-label">Produits par</p>
+                    <p class="navbar-vertical-label">Produits par catégorie</p>
                     <hr class="navbar-vertical-line" /><!-- parent pages-->
-                    @foreach(allCategorie() as $category)
+                    @foreach(allCategorieCommercial() as $category)
+                        <div class="nav-item-wrapper">
+                            <a class="nav-link dropdown-indicator label-1" href="#nv-e-commerce-{{ $category->id }}" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-e-commerce">
+                                <div class="d-flex align-items-center">
+                                    <div class="dropdown-indicator-icon">
+                                        <span class="fas fa-caret-right"></span>
+                                    </div><span class="nav-link-icon"><span data-feather="shopping-cart"></span></span><span class="nav-link-text">{{$category->name}}</span>
+                                </div>
+                            </a>
+                            <div class="parent-wrapper label-1">
+                                <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="nv-e-commerce-{{ $category->id }}">
+                                    <li class="collapsed-nav-item-title d-none">{{$category->name}}</li>
+                                    @foreach($category->sub_categories as $subcategory)
+                                        @if($subcategory->visible == 1)
+                                            <li class="nav-item">
+                                                <a class="nav-link dropdown-indicator {{ set_active_roote('magasin.produit.show') }}" href="{{ route('magasin.produit.show',$subcategory->slug) }}">
+                                                    <span class="nav-link-text">{{$subcategory->name}}</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div><!-- parent pages-->
+                    @endforeach
+                </li>
+
+                <li class="nav-item">
+                    <!-- label-->
+                    <p class="navbar-vertical-label">Location par catégorie</p>
+                    <hr class="navbar-vertical-line" /><!-- parent pages-->
+                    @foreach(allCategorieLocation() as $category)
                         <div class="nav-item-wrapper">
                             <a class="nav-link dropdown-indicator label-1" href="#nv-e-commerce-{{ $category->id }}" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-e-commerce">
                                 <div class="d-flex align-items-center">

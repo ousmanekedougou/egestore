@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Magasin\Product;
 use App\Models\Magasin\SubCategory;
+use Brian2694\Toastr\Facades\Toastr;
 
 class BagageController extends Controller
 {
@@ -76,7 +77,7 @@ class BagageController extends Controller
             'commande_id' => $request->reserve_id
         ]);
 
-        notify()->success('Votre produit a ete ajouter avec success ⚡️', 'Ajout produit');
+        Toastr::success('Votre bagage a bien été ajouté', 'Ajout de bagages', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -136,7 +137,7 @@ class BagageController extends Controller
             'commande_id' => $request->reserve_id
         ]);
 
-        notify()->success('Votre produit a ete modifier avec success ⚡️', 'Modification produit');
+        Toastr::success('Votre bagages a bien été modifié', 'Modification de bagages', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -147,7 +148,7 @@ class BagageController extends Controller
     {
 
         Bagage::where('id',$id)->where('magasin_id',AuthMagasinAgent())->delete();
-        notify()->success('Votre produit a ete supprimer avec success  ⚡️', 'Suppression bagage');
+        Toastr::success('Votre bagage a bien été supprimé', 'Suppression de bagages', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

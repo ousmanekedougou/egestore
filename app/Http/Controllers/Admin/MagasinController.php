@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Magasin;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 
 class MagasinController extends Controller
@@ -58,7 +59,7 @@ class MagasinController extends Controller
     public function update(Request $request, string $id)
     {
         Magasin::where('id',$id)->update(['is_active' => $request->is_active]);
-        notify()->success('Status du compte a bien ete modifier  ⚡️', 'Status compte magasin');
+        Toastr::success('Le status de ce compte magasin a bien été modifié', 'Modification de magasins', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -68,7 +69,7 @@ class MagasinController extends Controller
     public function destroy(string $id)
     {
         Magasin::where('id',$id)->delete();
-        notify()->success('Ce compte a bien ete supprimer  ⚡️', 'Supression compte magasin');
+        Toastr::success('Ce compte magasin a bien été supprimé', 'Suppression de magasins', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

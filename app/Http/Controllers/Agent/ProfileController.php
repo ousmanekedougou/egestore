@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Agent;
 
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Agent;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -70,7 +71,7 @@ class ProfileController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        notify()->success('Votre profile a ete mise a jour avec success ⚡️', 'Mise a jour de profile');
+        Toastr::success('Votre profile a bien été modifié', 'Modification de profiles', ["positionClass" => "toast-top-right"]);
         return back();
     }
 

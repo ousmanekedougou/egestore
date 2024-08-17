@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Magasin\Category;
+use App\Models\Magasin\Color;
 use App\Models\Magasin\Product;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Route;
@@ -55,9 +56,9 @@ if (!function_exists('AuthMagasinAgentVisible')) {
     }
 }
 
-if (!function_exists('allCategorie')){
+if (!function_exists('allCategorieCommercial')){
 
-    function allCategorie()
+    function allCategorieCommercial()
     {
         $magasinId = null;
 
@@ -67,7 +68,26 @@ if (!function_exists('allCategorie')){
             $magasinId = Auth::guard('agent')->user()->magasin->id;
         }
 
-        $categories = Category::where('magasin_id',$magasinId)->where('visible',1)->get();
+        $categories = Category::where('magasin_id',$magasinId)->where('visible',1)->where('type',1)->get();
+
+        return $categories;
+    }
+
+}
+
+if (!function_exists('allCategorieLocation')){
+
+    function allCategorieLocation()
+    {
+        $magasinId = null;
+
+        if (Auth::guard('magasin')->user()) {
+            $magasinId = Auth::guard('magasin')->user()->id;
+        }elseif (Auth::guard('agent')->user()) {
+            $magasinId = Auth::guard('agent')->user()->magasin->id;
+        }
+
+        $categories = Category::where('magasin_id',$magasinId)->where('visible',1)->where('type',2)->get();
 
         return $categories;
     }
@@ -81,7 +101,7 @@ if (!function_exists('ProductStockAlert')) {
         $ProductStockAlert = null;
         $ProductStockAlert = Product::where('magasin_id',AuthMagasinAgent())->where('quantity','>',0)->where('quantity','<',10)->get();
         if ($ProductStockAlert->count() > 0) {
-            return Toastr::warning('Vous avez ' .$ProductStockAlert->count(). ' produits dont le stock est en phase d\'epuisement', 'Title', ["positionClass" => "toast-top-right"]);
+            return Toastr::warning('Vous avez ' .$ProductStockAlert->count(). ' produits dont le stock est en phase d\'epuisement', 'Alerte d\'epuisement', ["positionClass" => "toast-top-right"]);
         }
     }
 }
@@ -93,7 +113,17 @@ if (!function_exists('ProductStockVide')) {
         $ProductStockVide = null;
         $ProductStockVide = Product::where('magasin_id',AuthMagasinAgent())->where('quantity',0)->get();
        if ($ProductStockVide->count() > 0) {
-            return Toastr::error('Vous avez ' .$ProductStockVide->count(). ' produits dont le stock est épuisé', 'Title', ["positionClass" => "toast-top-right"]);
+            return Toastr::error('Vous avez ' .$ProductStockVide->count(). ' produits dont le stock est épuisé', 'Produit epuise', ["positionClass" => "toast-top-right"]);
        }
     }
+}
+
+
+if (!function_exists('allColors')){
+
+    function allColors()
+    {
+        return Color::all();
+    }
+
 }
