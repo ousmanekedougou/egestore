@@ -35,20 +35,17 @@
 
                     <div class="nav-item-wrapper">
                         <a class="nav-link label-1 {{ set_active_roote('magasin.bon.index') }}" href="{{ route('magasin.bon.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
-                            <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="git-merge"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Clients pour bons</span></span></div>
+                            <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="file-text"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Clients bons</span></span></div>
                         </a>
                     </div><!-- parent pages-->
 
                     <div class="nav-item-wrapper">
-                        @if(AuthMagasinAgentVisible() == 1)
-                            <a class="nav-link label-1 {{ set_active_roote('magasin.client.index') }}" href="{{ route('magasin.client.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
-                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="users"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Clients abonnés</span></span></div>
-                            </a>
-                        @else
-                            <a class="nav-link label-1 {{ set_active_roote('magasin.agent.client') }}" href="{{ route('magasin.client.create') }}" role="button" data-bs-toggle="" aria-expanded="false">
-                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="users"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Mes clients</span></span></div>
-                            </a>
-                        @endif
+                        <a class="nav-link label-1 {{ set_active_roote('magasin.client.index') }}" href="{{ route('magasin.client.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="bell"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Abonnés</span></span></div>
+                        </a>
+                        <a class="nav-link label-1 {{ set_active_roote('magasin.agent.client') }}" href="{{ route('magasin.client.create') }}" role="button" data-bs-toggle="" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="users"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Fideles clients</span></span></div>
+                        </a>
                     </div><!-- parent pages-->
                     {{--
                         <div class="nav-item-wrapper">
@@ -63,14 +60,6 @@
                             </a>
                         </div><!-- parent pages-->
                     --}}
-
-                    @if(Cart::count() > 0)
-                    <div class="nav-item-wrapper">
-                        <a class="nav-link label-1" href="{{ route('magasin.panier.create') }}" role="button" data-bs-toggle="" aria-expanded="false">
-                            <div class="d-flex align-items-center text-warning"><span class="nav-link-icon"><span data-feather="shopping-cart"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Vider le panier</span></span></div>
-                        </a>
-                    </div>
-                    @endif
 
                 </li>
 

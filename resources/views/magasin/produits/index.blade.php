@@ -1,4 +1,4 @@
-@extends('layouts.app',['title' => 'magasin-produits'])
+@extends('layouts.app',['title' => 'produits'])
 <link href="{{asset('vendors/choices/choices.min.css')}}" rel="stylesheet" />
 @section('main-content')
   <div class="content">

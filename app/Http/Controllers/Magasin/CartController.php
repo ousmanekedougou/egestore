@@ -24,13 +24,10 @@ class CartController extends Controller
     {
         $clients = null;
         if(Cart::count() > 0){
-            if (AuthMagasinAgentVisible() == 1){
-                $magasin = Magasin::find(AuthMagasinAgent());
-                $clients = $magasin->users;
-            }else {
-                $clients = Client::where('magasin_id',AuthMagasinAgent())->get();
-            }
-            return view('magasin.cart.index',['clients' => $clients]);
+            $magasin = Magasin::find(AuthMagasinAgent());
+            $users = $magasin->users;
+            $clients = Client::where('magasin_id',AuthMagasinAgent())->get();
+            return view('magasin.cart.index',['clients' => $clients,'users' => $users]);
         }
 
         Toastr::warning('Votre panier est vide', 'Acces au panier refuse', ["positionClass" => "toast-top-right"]);

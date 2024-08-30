@@ -1,4 +1,4 @@
-@extends('layouts.app',['title' => 'magasin-clients fideles'])
+@extends('layouts.app',['title' => 'clients fideles'])
 
 @section('main-content')
   <div class="content">
@@ -35,7 +35,9 @@
                   <th class="sort align-middle text-end" scope="col" data-sort="total-orders" style="width:10%">TELEPHONES</th>
                   <th class="sort align-middle text-end" scope="col" data-sort="total-orders" style="width:15%">COMMANDES</th>
                   <th class="sort align-middle ps-7" scope="col" data-sort="city" style="width:25%;">VILLES</th>
-                  <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">DERNIER  COMMANDE</th>
+                  <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">COMPTES</th>
+                  <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">MONTANTS</th>
+                  <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">CREDITS</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">ACTIONS</th>
                 </tr>
               </thead>
@@ -50,10 +52,28 @@
                   <td class="total-orders align-middle white-space-nowrap fw-semibold text-center text-body-highlight">{{ $client->phone }}</td>
                   <td class="total-orders align-middle white-space-nowrap fw-semibold text-center text-body-highlight">{{ $client->getOrderCount($client->id) }}</td>
                   <td class="city align-middle white-space-nowrap text-body-highlight ps-7">Ville</td>
-                  <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">Dec 12, 12:56 PM</td>
+                  <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">
+                    <span class="badge badge-phoenix fs-10 @if($client->account == 1) badge-phoenix-info @elseif($client->account == 2) badge-phoenix-warning @else badge-phoenix-success @endif"> 
+                      @if($client->account == 1) Actif @elseif($client->account == 2) Passif @else Neutre @endif
+                      <span class="ms-1" 
+                        @if($client->account == 1)
+                          data-feather="chevrons-right"
+                        @elseif($client->account == 2)
+                          data-feather="x"
+                        @else 
+                          data-feather="check" 
+                        @endif
+                        style="height:12.8px;width:12.8px;">
+                      </span> 
+                    </span>
+                  </td>
+                  <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">{{$client->getAmount()}}</td>
+                  <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">{{$client->getCredit()}}</td>
                   <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
                     <span class="me-2 text-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $client->id }}" aria-controls="offcanvasRight-{{ $client->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
-                    <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $client->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
+                    @if($client->account == 3)
+                      <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $client->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
+                    @endif
                   </td>
                 </tr>
                 @endforeach
@@ -92,6 +112,8 @@
                       </span>
                   @enderror
               </div>
+
+
               <div class="mb-3 text-start">
                   <label class="form-label" for="email">Adresse email du client</label>
                   <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="email@gmail.com" required autocomplete="email">
@@ -102,6 +124,8 @@
                       </span>
                   @enderror
               </div>
+
+
               <div class="mb-3 text-start">
                   <label class="form-label" for="phone">Numero de telephone du client</label>
                   <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" placeholder="Numero de telephone du client" required autocomplete="phone">
@@ -111,6 +135,38 @@
                           <strong>{{ $message }}</strong>
                       </span>
                   @enderror
+              </div>
+
+              <div class="mb-3 text-start">
+                <label class="form-label" for="email">Status du montant du compte</label> <br>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input text-success @error('account') is-invalid @enderror" onchange="enableBrand(this)"  id="inlineRadio1" type="radio" name="account" value=" 1 ">
+                  <label class="form-check-label text-success mt-1" for="inlineRadio1">Actif</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input text-warning @error('account') is-invalid @enderror" onchange="enableBrand(this)"  id="inlineRadio2" type="radio" name="account" value=" 2 ">
+                  <label class="form-check-label text-warning mt-1" for="inlineRadio2">Passif</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input text-primary @error('account') is-invalid @enderror" onchange="enableBrand(this)"  id="inlineRadio3" type="radio" name="account" value=" 3 ">
+                  <label class="form-check-label text-primary mt-1" for="inlineRadio3">Neutre</label>
+                </div>
+                @error('account')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
+              </div>
+
+              <div class="mb-3 text-start d-none" id="clientNone">
+                <label class="form-label" for="amount">Montant Actif/passif a enregistrer</label>
+                <input id="amount" type="numeric" class="form-control @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount') }}" placeholder="Montant actif a depose (Facultatif)" autocomplete="amount">
+
+                @error('amount')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
               </div>
               <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce client</button>
             </form>
@@ -141,6 +197,7 @@
                         </span>
                     @enderror
                 </div>
+
                 <div class="mb-3 text-start">
                     <label class="form-label" for="email">Adresse email du client</label>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') ?? $client->email }}" placeholder="email@gmail.com" required autocomplete="email">
@@ -151,6 +208,7 @@
                         </span>
                     @enderror
                 </div>
+
                 <div class="mb-3 text-start">
                     <label class="form-label" for="phone">Numero de telephone du client</label>
                     <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') ?? $client->phone }}" placeholder="Numero de telephone du client" required autocomplete="phone">
@@ -161,6 +219,23 @@
                         </span>
                     @enderror
                 </div>
+
+                <div class="mb-3 text-start">
+                  @if($client->account == 2)
+                    <label class="form-label" for="amount">Entrer la tranche de reglage</label>
+                    <input id="amount" type="number" class="form-control @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount')  }}" placeholder="Entrer la tranche de reglage" required autocomplete="amount">
+                  @elseif($client->account == 3)
+                    <label class="form-label" for="amount">Montant a deposer (facutatif)</label>
+                    <input id="amount" type="number" class="form-control @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount') }}" placeholder="Montant a deposer (facutatif)" required autocomplete="amount">
+                  @endif
+
+                  @error('amount')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                  </div>
+
                 <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer les modification</button>
               </form>
             </div>
@@ -206,3 +281,15 @@
 
   </div>
 @endsection
+
+<script>
+   function enableBrand(answer){
+        
+        // declarartion de naissance
+        if (answer.value == 1 || answer.value == 2) {
+            document.getElementById('clientNone').classList.remove('d-none')
+        }else{
+            document.getElementById('clientNone').classList.add('d-none')
+        }
+      }
+</script>

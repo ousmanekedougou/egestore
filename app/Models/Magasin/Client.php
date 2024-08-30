@@ -14,8 +14,19 @@ class Client extends Model
         'email',
         'phone',
         'slug',
+        'amount',
+        'credit',
+        'account',
         'magasin_id',
     ];
+
+    public function getAmount(){
+        return number_format($this->amount,2, ',','.'). ' CFA';
+    }
+
+    public function getCredit(){
+        return number_format($this->credit,2, ',','.'). ' CFA';
+    }
 
     public function magasin()
     {

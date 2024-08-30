@@ -78,7 +78,7 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
     Route::resource('/sous-categorie', App\Http\Controllers\Magasin\SubCategoryController::class);
 
     Route::resource('/commande', App\Http\Controllers\Magasin\OrderController::class);
-    Route::post('commande/post',[App\Http\Controllers\Magasin\OrderController::class,'post'])->name('commande.post');
+    // Route::post('commande/post',[App\Http\Controllers\Magasin\OrderController::class,'post'])->name('commande.post');
     Route::get('pdf/{slug}',[App\Http\Controllers\Magasin\OrderController::class,'pdf'])->name('commande.pdf');
     Route::resource('/panier', App\Http\Controllers\Magasin\CartController::class);
     
@@ -88,7 +88,7 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
     Route::resource('/reserve', App\Http\Controllers\Magasin\ReservationController::class);
     Route::resource('/bagage', App\Http\Controllers\Magasin\BagageController::class);
     Route::resource('/bon', App\Http\Controllers\Magasin\BonController::class);
-    Route::post('post',[App\Http\Controllers\Magasin\BonController::class,'post'])->name('bon.post');
+    // Route::post('post',[App\Http\Controllers\Magasin\BonController::class,'post'])->name('bon.post');
     Route::post('reserve/post',[App\Http\Controllers\Magasin\ReservationController::class,'post'])->name('reserve.post');
 
 

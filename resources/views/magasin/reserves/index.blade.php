@@ -1,4 +1,4 @@
-@extends('layouts.app',['title' => 'magasin-commandes sous reserve'])
+@extends('layouts.app',['title' => 'commandes sous reserve'])
 
 @section('main-content')
 <div class="content">

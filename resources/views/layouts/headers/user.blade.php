@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg sticky-top py-3" data-navbar-soft-on-scroll="data-navbar-soft-on-scroll">
    <div class="container-small px-0 px-sm-3"><a class="navbar-brand" href="/">
        <div class="d-flex align-items-center"><img src="{{asset('assets/img/icons/logo.png')}}" alt="phoenix" width="27" />
-         <p class="logo-text ms-2">phoenix</p>
+         <p class="logo-text ms-2">SenMagasin</p>
        </div>
      </a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
      <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -13,27 +13,27 @@
           <li class="nav-item d-flex align-items-center">
             <div class="theme-control-toggle fa-icon-wait px-3">
               <input class="form-check-input ms-0 theme-control-toggle-input" type="checkbox" data-theme-control="phoenixTheme" value="dark" id="themeControlToggle" />
-              <label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Switch theme">
+              <label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Changer de theme">
                 <span class="icon" data-feather="moon"></span>
               </label>
-              <label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Switch theme">
+              <label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Changer de theme">
                 <span class="icon" data-feather="sun"></span>
               </label>
             </div>
           </li>
           <li class="nav-item dropdown">
             <a class="d-grid d-lg-flex align-items-center btn btn-primary" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-            Boutiques
+            Connexion
             </a>
             <div class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border mt-2" aria-labelledby="navbarDropdownUser">
               <div class="card position-relative border-0">
                 <div class="card-footer p-0 border-top border-translucent">
                   <ul class="nav d-flex flex-column my-3">
-                    <li class="nav-item"><a class="nav-link px-3" href="{{ route('magasin.login') }}"> <span class="me-2 text-body" data-feather="user-plus"></span>Boutiques</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="{{ route('magasin.login') }}"> <span class="me-2 text-body" data-feather="user-plus"></span>Administrateur</a></li>
                   </ul>
                   <hr />
                   <ul class="nav d-flex flex-column my-3">
-                    <li class="nav-item"><a class="nav-link px-3" href="{{ route('agent.login') }}"> <span class="me-2 text-body" data-feather="user-plus"></span>Agents </a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="{{ route('agent.login') }}"> <span class="me-2 text-body" data-feather="user-plus"></span>Agents commercial </a></li>
                   </ul>
                   <hr>
                   <div class="my-2 text-center fw-bold fs-10 text-body-quaternary"><a class="text-body-quaternary me-1" href="#!">Privacy policy</a>&bull;<a class="text-body-quaternary mx-1" href="#!">Terms</a>&bull;<a class="text-body-quaternary ms-1" href="#!">Cookies</a></div>

@@ -1,4 +1,4 @@
-@extends('layouts.app',['title' => 'magasin-bon de commande'])
+@extends('layouts.app',['title' => 'bon de commande'])
 
 @section('main-content')
 <div class="content">
@@ -111,8 +111,9 @@
             <h5 id="offcanvasRightLabel">Ajouter une commande de bon</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
-            <form  method="POST" action="@if(AuthMagasinAgentVisible() == 1) {{ route('magasin.bon.store') }} @else {{ route('magasin.bon.post') }} @endif" >
+            <form  method="POST" action="{{ route('magasin.bon.store') }}" >
               @csrf
+              {{--
               <select class="form-select mb-3 @error('client') is-invalid @enderror" name="client" id="client" aria-label="delivery type" onchange="enableBrand(this)">
                 <option></option>
                 <option value="-1">Un simple client</option>
@@ -126,6 +127,9 @@
               </span>
               @enderror
 
+              class="d-none" id="clientNone"
+              --}}
+
               <div class="mb-3 text-start">
                 <label class="form-label" for="bon_commande">Bon de commande (Facultatif)</label>
                 <input id="bon_commande" type="text" class="form-control @error('bon_commande') is-invalid @enderror" name="bon_commande" value="{{ old('bon_commande') }}" placeholder="Bon de commande (Facultatif)" autocomplete="bon_commande">
@@ -137,37 +141,35 @@
                 @enderror
               </div>
 
-              <div class="d-none" id="clientNone">
-                <div class="mb-3 text-start">
-                    <label class="form-label" for="name">Prenom et nom de votre client</label>
-                    <input id="name" type="text" placeholder="Prenom et nom de votre client" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+              <div class="mb-3 text-start">
+                  <label class="form-label" for="name">Prenom et nom de votre client</label>
+                  <input id="name" type="text" placeholder="Prenom et nom de votre client" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
-                    @error('name')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-                <div class="mb-3 text-start">
-                    <label class="form-label" for="email">Adresse email de votre client</label>
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="email@gmail.com" required autocomplete="email">
+                  @error('name')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+              </div>
+              <div class="mb-3 text-start">
+                  <label class="form-label" for="email">Adresse email de votre client</label>
+                  <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="email@gmail.com" required autocomplete="email">
 
-                    @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-                <div class="mb-3 text-start">
-                    <label class="form-label" for="phone">Numero de telephone de votre client</label>
-                    <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" placeholder="Numero de telephone de votre client" required autocomplete="phone">
+                  @error('email')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+              </div>
+              <div class="mb-3 text-start">
+                  <label class="form-label" for="phone">Numero de telephone de votre client</label>
+                  <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" placeholder="Numero de telephone de votre client" required autocomplete="phone">
 
-                    @error('phone')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+                  @error('phone')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
               </div>
 
               <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer cette commande</button>

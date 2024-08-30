@@ -59,95 +59,95 @@ class OrderController extends Controller
         return $pdf->download('Facture.pdf');
     }
 
-    public function post(Request $request)
-    {
-        if ($this->checkNotAvailable()) {
-            Toastr::warning('Un produit n\'est plus disponible dans votre panier', 'Indisponibilite de produits', ["positionClass" => "toast-top-right"]);
-            return back();
-        }
+    // public function post(Request $request)
+    // {
+    //     if ($this->checkNotAvailable()) {
+    //         Toastr::warning('Un produit n\'est plus disponible dans votre panier', 'Indisponibilite de produits', ["positionClass" => "toast-top-right"]);
+    //         return back();
+    //     }
 
-        $this->validate($request,[
-            'client' => 'required|string',
-            'name' => 'string',
-            'phone' => 'numeric',
-            'bon_commande' => 'string',
-        ]);
+    //     $this->validate($request,[
+    //         'client' => 'required|string',
+    //         'name' => 'string',
+    //         'phone' => 'numeric',
+    //         'bon_commande' => 'string',
+    //     ]);
 
 
-        $name = null;
-        $phone = null;
-        $client = null;
+    //     $name = null;
+    //     $phone = null;
+    //     $client = null;
         
-        if($request->client == -1){
-            $name = $request->name;
-            $phone = $request->phone;
-        }
+    //     if($request->client == -1){
+    //         $name = $request->name;
+    //         $phone = $request->phone;
+    //     }
 
-        $user = Client::where('id',$request->client)->first();
-        if ($user) {
-            $client = $user->id;
-        }else {
-            $client = null;
-        }
+    //     $user = Client::where('id',$request->client)->first();
+    //     if ($user) {
+    //         $client = $user->id;
+    //     }else {
+    //         $client = null;
+    //     }
 
-        // dd($client);
+    //     // dd($client);
         
 
-        $products = [];
-        $i = 0;
+    //     $products = [];
+    //     $i = 0;
 
-        foreach (Cart::content() as $product) {
-            $products['product_' .$i][] = $product->model->image;
-            $products['product_' .$i][] = $product->model->name;
-            $products['product_' .$i][] = $product->model->price;
-            $products['product_' .$i][] = $product->qty;
-            $products['product_' .$i][] = $product->options->color;
-            $products['product_' .$i][] = $product->options->size;
-            $i++;
+    //     foreach (Cart::content() as $product) {
+    //         $products['product_' .$i][] = $product->model->image;
+    //         $products['product_' .$i][] = $product->model->name;
+    //         $products['product_' .$i][] = $product->model->price;
+    //         $products['product_' .$i][] = $product->qty;
+    //         $products['product_' .$i][] = $product->options->color;
+    //         $products['product_' .$i][] = $product->options->size;
+    //         $i++;
 
-            $item = Product::find($product->model->id);
+    //         $item = Product::find($product->model->id);
 
-            $item->update(['quantity' => $item->quantity - $product->qty]);
+    //         $item->update(['quantity' => $item->quantity - $product->qty]);
 
-            Vente::create([
-                'slug' => str_replace('/','',Hash::make(Str::random(1).$product->model->name)),
-                'quantity' => $product->qty,
-                'date' => now(),
-                'product_id' => $product->model->id,
-                'magasin_id' => AuthMagasinAgent(),
-            ]);
-        }
+    //         Vente::create([
+    //             'slug' => str_replace('/','',Hash::make(Str::random(1).$product->model->name)),
+    //             'quantity' => $product->qty,
+    //             'date' => now(),
+    //             'product_id' => $product->model->id,
+    //             'magasin_id' => AuthMagasinAgent(),
+    //         ]);
+    //     }
 
-        // $code = $this->generateCode();
-        $verify = Order::where("magasin_id", AuthMagasinAgent())->latest()->first();
-        if ($verify) {
-            $newOrder = $verify->order + 1;
-        }else {
-            $newOrder = 00001;
-        }
+    //     // $code = $this->generateCode();
+    //     $verify = Order::where("magasin_id", AuthMagasinAgent())->latest()->first();
+    //     if ($verify) {
+    //         $newOrder = $verify->order + 1;
+    //     }else {
+    //         $newOrder = 00001;
+    //     }
 
-        $getAmount = Cart::subtotal();
-        $amount = str_replace(',', '', $getAmount);
+    //     $getAmount = Cart::subtotal();
+    //     $amount = str_replace(',', '', $getAmount);
 
-        Order::create([
-            'order' => $newOrder,
-            'name' => $name,
-            'phone' => $phone,
-            'magasin_id' => AuthMagasinAgent(),
-            'client_id' => $client,
-            'slug' => str_replace('/','',Hash::make(Str::random(2).$newOrder)),
-            'bon_commande' => $request->bon_commande,
-            'products' => serialize($products),
-            'date' => now(),
-            'amount' => number_format($amount,2, ',','.'),
-            'status' => 2
-        ]);
+    //     Order::create([
+    //         'order' => $newOrder,
+    //         'name' => $name,
+    //         'phone' => $phone,
+    //         'magasin_id' => AuthMagasinAgent(),
+    //         'client_id' => $client,
+    //         'slug' => str_replace('/','',Hash::make(Str::random(2).$newOrder)),
+    //         'bon_commande' => $request->bon_commande,
+    //         'products' => serialize($products),
+    //         'date' => now(),
+    //         'amount' => number_format($amount,2, ',','.'),
+    //         'status' => 2
+    //     ]);
 
-        Cart::destroy();
+    //     Cart::destroy();
 
-        Toastr::success('Votre commande a bien été ajouté', 'Ajout de commandes', ["positionClass" => "toast-top-right"]);
-        return redirect()->route('magasin.commande.index');
-    }
+    //     Toastr::success('Votre commande a bien été ajouté', 'Ajout de commandes', ["positionClass" => "toast-top-right"]);
+    //     return redirect()->route('magasin.commande.index');
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -160,28 +160,61 @@ class OrderController extends Controller
         }
 
         $this->validate($request,[
-            'client' => 'required|string',
+            // 'client' => 'required|string',
             'bon_commande' => 'string',
             'name' => 'string',
             'phone' => 'numeric',
         ]);
-
+        // dd(request('passif'));
         // dd($request->all());
 
         $name = null;
         $phone = null;
         $client = null;
+        $abonne = null;
+        $amount = str_replace(',', '', Cart::subtotal());
+
         
-        if($request->client == -1){
+        $userClient = Client::where('phone',$request->phone)->first();
+        if ($userClient) {
+            if ($request->passif != 1) {
+
+                if ($userClient->amount > $amount && $userClient->account == 1) {
+                    $userClient->update(['amount' => $userClient->amount - $amount]);
+                    $name = null;
+                    $phone = null;
+                    $client = $userClient->id;
+                }
+
+            }elseif ($request->passif == 1) {
+
+                if($userClient->credit == 0 && $userClient->amount == 0 && $userClient->account == 3){
+                    $userClient->update(['credit' => $amount,'account' => 2]);
+                    $name = null;
+                    $phone = null;
+                    $client = $userClient->id;
+                }
+
+            }else {
+                $userClient->update(['credit' => $userClient->credit,'amount' => $userClient->amount,'account' => $userClient->account]);
+                $client = $userClient->id;
+            }
+            
+        }else {
+            $client = null;
             $name = $request->name;
             $phone = $request->phone;
         }
 
-        $user = User::where('id',$request->client)->first();
+        $user = User::where('phone',$request->phone)->first();
         if ($user) {
-            $client = $user->id;
+            $abonne = $user->id;
+            $name = null;
+            $phone = null;
         }else {
-            $client = null;
+            $abonne = null;
+            $name = $request->name;
+            $phone = $request->phone;
         }
 
         // dd($client);
@@ -212,19 +245,20 @@ class OrderController extends Controller
             $newOrder = 00001;
         }
 
-        $getAmount = Cart::subtotal();
-        $amount = str_replace(',', '', $getAmount);
+        // $getAmount = Cart::subtotal();
+        
 
         Order::create([
             'order' => $newOrder,
             'name' => $name,
             'phone' => $phone,
             'magasin_id' => AuthMagasinAgent(),
-            'user_id' => $client,
+            'user_id' => $abonne,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$newOrder)),
             'bon_commande' => $request->bon_commande,
             'products' => serialize($products),
             'date' => now(),
+            'client_id' => $client,
             'amount' => number_format($amount,2, ',','.'),
             'status' => 2
         ]);

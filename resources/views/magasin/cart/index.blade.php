@@ -1,4 +1,4 @@
-@extends('layouts.app',['title' => 'magasin-panier'])
+@extends('layouts.app',['title' => 'panier'])
 
 @section('main-content')
 <div class="content">
@@ -69,7 +69,7 @@
                   <div class="d-flex flex-between-center mb-3">
                     <h3 class="card-title mb-0">Résumé</h3>
                   </div>
-                  <form action="@if(AuthMagasinAgentVisible() == 1) {{ route('magasin.commande.store') }} @else {{ route('magasin.commande.post') }} @endif" method="post">
+                  <form action="{{ route('magasin.commande.store') }}" method="post">
                     @csrf
                     <div class="mb-3 text-start">
                       <label class="form-label" for="bon_commande">Bon de commande (Facultatif)</label>
@@ -82,42 +82,61 @@
                       @enderror
                     </div>
 
-                    <label class="form-label" for="client">Selectionner un client</label>
-                    <select class="form-select mb-3 @error('client') is-invalid @enderror" name="client" id="client" aria-label="delivery type" onchange="enableBrand(this)">
-                      <option></option>
-                      <option value="-1">Un simple client</option>
-                      @foreach($clients as $client)
-                        <option value="{{ $client->id }}">{{ $client->name }}</option>
-                      @endforeach
-                    </select>
-                    @error('client')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
                     
-                    <div class="d-none" id="clientNone">
-                      <div class="mb-3 text-start ">
-                        <label class="form-label" for="name">Prenom et nom du client</label>
-                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Prenom et nom du client" autocomplete="name">
 
-                        @error('name')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                      </div>
-                      <div class="mb-3 text-start">
-                        <label class="form-label" for="phone">Numero de telephone</label>
-                        <input id="phone" type="numeric" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" placeholder="Numero de telephone" autocomplete="phone">
+                    {{--
+                      <label class="form-label" for="client">Selectionner un client</label>
+                      <select class="form-select mb-3 @error('client') is-invalid @enderror" name="client" aria-label="delivery type" onchange="enableBrand(this)">
+                        <option></option>
+                        <option value="-1">Un simple client</option>
+                        <optgroup label="Un client fideles">
+                          @foreach($clients as $client)
+                            <option value="{{ $client->id }}">{{ $client->name }} ( @if($client->account == 1) Actif @elseif($client->account == 2) Passif @else Neutre @endif )</option>
+                          @endforeach
+                        </optgroup>
 
-                        @error('phone')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+                        <optgroup label="Un client abonnes">
+                          @foreach($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }} ( @if($user->account == 1) Actif @elseif($user->account == 2) Passif @else Neutre @endif )</option>
+                          @endforeach
+                        </optgroup>
+                      </select>
+                      @error('client')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                      class="d-none" id="clientNone"
+                    --}}
+                    
+                    <div class="mb-3 text-start ">
+                      <label class="form-label" for="name">Prenom et nom du client</label>
+                      <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Prenom et nom du client" autocomplete="name">
+
+                      @error('name')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
+                    </div>
+                    <div class="mb-3 text-start">
+                      <label class="form-label" for="phone">Numero de telephone</label>
+                      <input id="phone" type="numeric" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" placeholder="Numero de telephone" autocomplete="phone">
+
+                      @error('phone')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
+                    </div>
+
+                    <div class="col-auto mb-3">
+                      <div class="form-check mb-0">
+                        <input class="form-check-input" name="passif" id="basic-checkbox" value="1" type="checkbox" />
+                        <label class="form-check-label mt-1" for="basic-checkbox">Accepter cette commande en credit</label>
                       </div>
                     </div>
+
                     {{--
                     <div>
                       <div class="d-flex justify-content-between">

@@ -15,7 +15,7 @@
           </a>
           <div class="text-center mb-7">
             <h3 class="text-body-highlight">Se connecter</h3>
-            <p class="text-body-tertiary">Accéder à votre compte agent</p>
+            <p class="text-body-tertiary">Accéder à votre compte agent commercial</p>
           </div>
           <form method="POST" action="{{ route('agent.login') }}">
             @csrf

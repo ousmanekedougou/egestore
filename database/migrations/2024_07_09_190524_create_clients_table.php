@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->integer('phone')->unique();
             $table->string('slug')->unique();
+            $table->integer('account')->nullable();
+            $table->integer('amount')->nullable();
+            $table->integer('credit')->nullable();
             $table
               ->foreignId("magasin_id")
               ->references("id")

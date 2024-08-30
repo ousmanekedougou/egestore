@@ -1,4 +1,4 @@
-@extends('layouts.app',['title' => 'magasin-commande'])
+@extends('layouts.app',['title' => 'commande'])
 
 @section('main-content')
 <div class="content">
@@ -59,14 +59,15 @@
                     <span class="badge badge-phoenix fs-10  @if($order->status == 1) badge-phoenix-success @elseif($order->status == 2) badge-phoenix-info @else badge-phoenix-warning @endif">
                       <span class="badge-label">@if($order->status == 1) Terminé @elseif($order->status == 2) Traitement @else Annulé @endif</span>
                       <span class="ms-1" 
-                      @if($order->status == 1)
-                        data-feather="check" 
-                      @elseif($order->status == 2)
-                        data-feather="chevrons-right"
-                      @else 
-                      data-feather="x"
-                      @endif
-                      style="height:12.8px;width:12.8px;"></span>
+                        @if($order->status == 1)
+                          data-feather="check" 
+                        @elseif($order->status == 2)
+                          data-feather="chevrons-right"
+                        @else 
+                        data-feather="x"
+                        @endif
+                        style="height:12.8px;width:12.8px;">
+                      </span>
                       
                       
                     </span>

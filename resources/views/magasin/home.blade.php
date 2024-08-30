@@ -1,4 +1,4 @@
-@extends('layouts.app',['title' => 'magasin-acceuil'])
+@extends('layouts.app',['title' => 'acceuil'])
 {{ProductStockAlert()}}
 {{ProductStockVide()}}
 @section('main-content')

@@ -23,13 +23,8 @@ class ClientController extends Controller
      */
     public function index()
     {
-        if (AuthMagasinAgentVisible() == 1) {
-            $magasin = Magasin::find(AuthMagasinAgent());
-            return view('magasin.clients.index',['clients' => $magasin->users]);
-        }else {
-            Toastr::error('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
-            return back();
-        }
+        $magasin = Magasin::find(AuthMagasinAgent());
+        return view('magasin.clients.index',['clients' => $magasin->users]);
     }
 
     /**
@@ -37,13 +32,8 @@ class ClientController extends Controller
      */
     public function create()
     {
-        if (AuthMagasinAgentVisible() == 0) {
-            $magasin = Magasin::find(AuthMagasinAgent());
-            return view('magasin.clients.simple',['clients' => $magasin->clients]);
-        }else {
-            Toastr::success('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
-            return back();
-        }
+        $magasin = Magasin::find(AuthMagasinAgent());
+        return view('magasin.clients.simple',['clients' => $magasin->clients]);
     }
 
     /**
@@ -55,14 +45,32 @@ class ClientController extends Controller
             'name' => 'required|string',
             'email' => 'string|email|unique:clients',
             'phone' => 'required|numeric|unique:clients',
+            'account' => 'numeric',
         ]);
+
+        // dd($request->account);
+
+        $amount = null;
+        $credit = null;
+
+        if($request->account == 1){
+            $amount = $request->amount;
+        }
+
+        if($request->account == 2){
+            $credit = $request->amount;
+        }
+        
 
         Client::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'magasin_id' => AuthMagasinAgent(),
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->email)),
+            'amount' => $amount,
+            'credit' => $credit,
+            'account' => $request->account,
+            'magasin_id' => AuthMagasinAgent(),
         ]);
 
         Toastr::success('Votre client a bien été ajouté', 'Ajout de clients', ["positionClass" => "toast-top-right"]);
@@ -104,11 +112,49 @@ class ClientController extends Controller
             'phone' => 'required|numeric',
         ]);
 
-        Client::where('id',$id)->where('magasin_id',AuthMagasinAgent())->update([
+        
+
+        $client = Client::where('id',$id)->where('magasin_id',AuthMagasinAgent())->first();
+        $amount = null;
+        $credit = null;
+        $account = null;
+
+        if($client->account == 2){
+            if ($request->amount <= $client->credit) {
+                if ($client->credit > $client->amount) {
+                    $amount = $client->amount + $request->amount;
+                    $account = 2;
+                    $credit = $client->credit;
+                }
+            }else {
+                Toastr::error('Ce montant est superieur a la somme acrediter', 'Surplus du montant', ["positionClass" => "toast-top-right"]);
+                return back();
+            }
+        }elseif ($client->account == 3) {
+            $amount = $request->amount;
+            $account = 1;
+            $credit = null;
+        }
+
+        // $account = 3;
+        // if($request->amount != null){
+        //     $amount = $request->amount;
+        //     $account = 1;
+        // }
+
+
+        $client->update([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'amount' => $amount,
+            'credit' => $credit,
+            'account' => $account,
         ]);
+
+        if ($client->credit == $client->amount) {
+            $client->update(['account' => 3,'amount' => null,'credit' => null]);
+        }
 
         Toastr::success('Votre client a bien été modifié', 'Modification de clients', ["positionClass" => "toast-top-right"]);
         return back();

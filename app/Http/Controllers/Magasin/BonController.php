@@ -40,59 +40,59 @@ class BonController extends Controller
         //
     }
 
-    public function post(Request $request)
-    {
-        $this->validate($request,[
-            'client' => 'required|string',
-            'bon_commande' => 'string',
-            'name' => 'string',
-            'email' => 'string|email',
-            'phone' => 'numeric',
-        ]);
+    // public function post(Request $request)
+    // {
+    //     $this->validate($request,[
+    //         'client' => 'required|string',
+    //         'bon_commande' => 'string',
+    //         'name' => 'string',
+    //         'email' => 'string|email',
+    //         'phone' => 'numeric',
+    //     ]);
 
-        $name = null;
-        $email = null;
-        $phone = null;
-        $client = null;
+    //     $name = null;
+    //     $email = null;
+    //     $phone = null;
+    //     $client = null;
         
-        if($request->client == -1){
-            $name = $request->name;
-            $email = $request->email;
-            $phone = $request->phone;
-        }
+    //     if($request->client == -1){
+    //         $name = $request->name;
+    //         $email = $request->email;
+    //         $phone = $request->phone;
+    //     }
 
-        $user = Client::where('id',$request->client)->first();
-        if ($user) {
-            $client = $user->id;
-        }else {
-            $client = null;
-        }
+    //     $user = Client::where('id',$request->client)->first();
+    //     if ($user) {
+    //         $client = $user->id;
+    //     }else {
+    //         $client = null;
+    //     }
 
-        $verify = Commande::where("magasin_id", AuthMagasinAgent())->where('type',0)->latest()->first();
-        if ($verify) {
-            $newOrder = $verify->order + 1;
-        }else {
-            $newOrder = 00001;
-        }
+    //     $verify = Commande::where("magasin_id", AuthMagasinAgent())->where('type',0)->latest()->first();
+    //     if ($verify) {
+    //         $newOrder = $verify->order + 1;
+    //     }else {
+    //         $newOrder = 00001;
+    //     }
 
-        Commande::create([
-            'order' => $newOrder,
-            'name' => $name,
-            'email' => $email,
-            'phone' => $phone,
-            'magasin_id' => AuthMagasinAgent(),
-            'client_id' => $client,
-            'slug' => str_replace('/','',Hash::make(Str::random(2).$newOrder)),
-            'bon_commande' => $request->bon_commande,
-            'date' => now(),
-            'type' => 0,
-            // 'amount' => number_format($amount,2, ',','.'),
-            'status' => 2
-        ]);
+    //     Commande::create([
+    //         'order' => $newOrder,
+    //         'name' => $name,
+    //         'email' => $email,
+    //         'phone' => $phone,
+    //         'magasin_id' => AuthMagasinAgent(),
+    //         'client_id' => $client,
+    //         'slug' => str_replace('/','',Hash::make(Str::random(2).$newOrder)),
+    //         'bon_commande' => $request->bon_commande,
+    //         'date' => now(),
+    //         'type' => 0,
+    //         // 'amount' => number_format($amount,2, ',','.'),
+    //         'status' => 2
+    //     ]);
 
-        Toastr::success('Votre résérvation a bien été ajouté', 'Ajout de résérvation', ["positionClass" => "toast-top-right"]);
-        return back();
-    }
+    //     Toastr::success('Votre résérvation a bien été ajouté', 'Ajout de résérvation', ["positionClass" => "toast-top-right"]);
+    //     return back();
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -100,7 +100,7 @@ class BonController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'client' => 'required|string',
+            // 'client' => 'required|string',
             'bon_commande' => 'string',
             'name' => 'string',
             'email' => 'string|email',
@@ -110,7 +110,9 @@ class BonController extends Controller
         $name = null;
         $email = null;
         $phone = null;
+        $user = null;
         $client = null;
+        // $amount = str_replace(',', '', Cart::subtotal());
         
         if($request->client == -1){
             $name = $request->name;
@@ -118,11 +120,29 @@ class BonController extends Controller
             $phone = $request->phone;
         }
 
-        $user = User::where('id',$request->client)->first();
-        if ($user) {
-            $client = $user->id;
+        $clientUser = Client::where('phone',$request->phone)->first();
+        if ($clientUser) {
+            if ($clientUser->account == 3) {
+                $client = $clientUser->id;
+            }else {
+                Toastr::error('Ce client a des actifs/passifs en cours', 'Bon non valide', ["positionClass" => "toast-top-right"]);
+                return back();
+            }
         }else {
             $client = null;
+            $name = $request->name;
+            $email = $request->email;
+            $phone = $request->phone;
+        }
+
+        $userGet = User::where('phone',$request->phone)->first();
+        if ($userGet) {
+            $user = $userGet->id;
+        }else {
+            $user = null;
+            $name = $request->name;
+            $email = $request->email;
+            $phone = $request->phone;
         }
 
         $verify = Commande::where("magasin_id", AuthMagasinAgent())->where('type',0)->latest()->first();
@@ -138,12 +158,13 @@ class BonController extends Controller
             'email' => $email,
             'phone' => $phone,
             'magasin_id' => AuthMagasinAgent(),
-            'user_id' => $client,
+            'user_id' => $user,
+            'client_id' => $client,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$newOrder)),
             'bon_commande' => $request->bon_commande,
             'date' => now(),
             'type' => 0,
-            // 'amount' => number_format($amount,2, ',','.'),
+            // 'amount' => $amount,
             'status' => 2
         ]);
 

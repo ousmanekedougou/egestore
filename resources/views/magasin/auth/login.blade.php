@@ -15,7 +15,7 @@
           </a>
           <div class="text-center mb-7">
             <h3 class="text-body-highlight">Se connecter</h3>
-            <p class="text-body-tertiary">Accéder à votre compte boutique</p>
+            <p class="text-body-tertiary">Accéder à votre compte administrateur</p>
           </div>
           <form method="POST" action="{{ route('magasin.login') }}">
             @csrf
