@@ -27,7 +27,8 @@ class Order extends Model
         'payment',
         'date',
         'delivery',
-        'status'
+        'status',
+        'type'
     ];
 
     

@@ -114,18 +114,18 @@ class BonController extends Controller
         $client = null;
         // $amount = str_replace(',', '', Cart::subtotal());
         
-        if($request->client == -1){
-            $name = $request->name;
-            $email = $request->email;
-            $phone = $request->phone;
-        }
+        // if($request->client == -1){
+        //     $name = $request->name;
+        //     $email = $request->email;
+        //     $phone = $request->phone;
+        // }
 
         $clientUser = Client::where('phone',$request->phone)->first();
         if ($clientUser) {
             if ($clientUser->account == 3) {
                 $client = $clientUser->id;
             }else {
-                Toastr::error('Ce client a des actifs/passifs en cours', 'Bon non valide', ["positionClass" => "toast-top-right"]);
+                Toastr::error('Ce client a des actifs / passifs en cours', 'Bon non valide', ["positionClass" => "toast-top-right"]);
                 return back();
             }
         }else {
@@ -164,7 +164,6 @@ class BonController extends Controller
             'bon_commande' => $request->bon_commande,
             'date' => now(),
             'type' => 0,
-            // 'amount' => $amount,
             'status' => 2
         ]);
 

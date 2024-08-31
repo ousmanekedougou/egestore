@@ -52,13 +52,18 @@ class ClientController extends Controller
 
         $amount = null;
         $credit = null;
+        $account = null;
 
         if($request->account == 1){
             $amount = $request->amount;
-        }
-
-        if($request->account == 2){
+            $account = 1;
+        }elseif($request->account == 2){
             $credit = $request->amount;
+            $account = 2;
+        }elseif ($request->account == 3 || $request->account == null) {
+            $credit = null;
+            $amount = null;
+            $account = 3;
         }
         
 
@@ -69,7 +74,7 @@ class ClientController extends Controller
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->email)),
             'amount' => $amount,
             'credit' => $credit,
-            'account' => $request->account,
+            'account' => $account,
             'magasin_id' => AuthMagasinAgent(),
         ]);
 
@@ -151,6 +156,14 @@ class ClientController extends Controller
             'credit' => $credit,
             'account' => $account,
         ]);
+
+        if ($client->account == 2 && $client->credit == $client->amount) {
+            $getOrder = Order::where('client_id',$client->id)
+                ->where('magasin_id',AuthMagasinAgent())
+                ->where('status',2)
+                ->where('type',2)->first();
+            $getOrder->update(['status' => 1 , 'type' => 1]);
+        }
 
         if ($client->credit == $client->amount) {
             $client->update(['account' => 3,'amount' => null,'credit' => null]);

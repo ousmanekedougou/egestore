@@ -32,9 +32,8 @@
                 <th class="sort align-middle text-end" scope="col" data-sort="total" style="width:60%;">TOTAL</th>
                 <th class="sort align-middle ps-8" scope="col" data-sort="customer" style="width:28%; min-width: 250px;">CLIENTS</th>
                 <th class="sort align-middle text-start pe-3" scope="col" data-sort="fulfilment_status" style="width:20%; min-width: 100px;">TELEPHONE</th>
-                <th class="sort align-middle pe-3 text-center" scope="col" data-sort="payment_status" style="width:12%; min-width: 200px;">BON DE COMMANDE</th>
                 <th class="sort align-middle pe-3" scope="col" data-sort="payment_status" style="width:10%;">STATUS</th>
-                <th class="sort align-middle text-start pe-3" scope="col" data-sort="delivery_type" style="width:30%;">LIVRAISON</th>
+                <th class="sort align-middle text-start pe-3" scope="col" data-sort="delivery_type" style="width:30%;">PAIEMENT</th>
                 <th class="sort align-middle text-center pe-3" scope="col" data-sort="date">DATE</th>
                 <th class="sort align-middle text-end pe-0" scope="col" data-sort="date">ACTIONS</th>
               </tr>
@@ -54,10 +53,9 @@
                     </a>
                   </td>
                   <td class="fulfilment_status align-middle white-space-nowrap text-start fw-bold text-body-tertiary">@if($order->user_id == '' && $order->client_id == '') {{ $order->phone }} @elseif($order->user_id != '') {{ $order->user->phone }} @elseif($order->client_id != '') {{ $order->client->phone }} @endif</td>
-                  <td class="total align-middle text-center fw-semibold text-body-highlight">@if($order->bon_commande != ''){{ $order->bon_commande }} @else Pas de bon @endif</td>
                   <td class="payment_status align-middle white-space-nowrap text-start fw-bold text-body-tertiary">
-                    <span class="badge badge-phoenix fs-10  @if($order->status == 1) badge-phoenix-success @elseif($order->status == 2) badge-phoenix-info @else badge-phoenix-warning @endif">
-                      <span class="badge-label">@if($order->status == 1) Terminé @elseif($order->status == 2) Traitement @else Annulé @endif</span>
+                    <span class="badge badge-phoenix fs-10  @if($order->status == 1) badge-phoenix-success @elseif($order->status == 2) badge-phoenix-info @elseif($order->status == 3) badge-phoenix-warning @endif">
+                      <span class="badge-label">@if($order->status == 1) Terminé @elseif($order->status == 2) En cours @elseif($order->status == 3) Annulé @endif</span>
                       <span class="ms-1" 
                         @if($order->status == 1)
                           data-feather="check" 
@@ -72,7 +70,7 @@
                       
                     </span>
                   </td>
-                  <td class="delivery_type align-middle white-space-nowrap text-body fs-9 text-start">Cash on delivery</td>
+                  <td class="delivery_type align-middle white-space-nowrap text-body fs-9 text-center fw-bold"> <span class="@if($order->type == 1) text-success @elseif($order->type == 2) text-warning @else text-info @endif"> @if($order->type == 1) Payé @elseif($order->type == 2) A crédit @else Non payé @endif </span></td>
                   <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{date('d-m-Y', strtotime( $order->date ))}}</td>
                   <td class=" align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">
                     <a href="{{ route('magasin.commande.edit',$order->slug) }}" target="_blank" class="me-2 text-success" data-fa-transform="shrink-3"><span data-feather="file-text" ></span></a>
@@ -139,7 +137,7 @@
                   <h6 class="mb-2">Selectionner un status</h6>
                   <select class="form-select mb-4 @error('status') is-invalid @enderror" name="status" id="status"aria-label="delivery type">
                     <option value="1" @if($order->status == 1) selected="" @endif>Terminé</option>
-                    <option value="2" @if($order->status == 2) selected="" @endif>Traitement</option>
+                    <option value="2" @if($order->status == 2) selected="" @endif>En cours</option>
                     <option value="3" @if($order->status == 3) selected="" @endif>Annulé</option>
                   </select>
                   @error('status')

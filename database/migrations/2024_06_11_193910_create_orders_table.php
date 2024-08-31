@@ -37,12 +37,13 @@ return new class extends Migration
             $table
               ->foreignId("client_id")
               ->references("id")
-              ->on("magasins")
+              ->on("clients")
               ->cascadeOnDelete()->nullable();
             $table->string('amount');
             $table->enum('payment', ['Success', 'Pending','Cancelled'])->nullable();
             $table->enum('delivery', ['Success', 'Pending','Cancelled'])->nullable();
             $table->integer('status')->nullable();
+            $table->integer('type')->nullable();
             $table->date('date');
             $table->timestamps();
         });

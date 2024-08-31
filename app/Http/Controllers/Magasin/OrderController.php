@@ -172,6 +172,8 @@ class OrderController extends Controller
         $phone = null;
         $client = null;
         $abonne = null;
+        $type = null;
+        $status = null;
         $amount = str_replace(',', '', Cart::subtotal());
 
         
@@ -179,31 +181,60 @@ class OrderController extends Controller
         if ($userClient) {
             if ($request->passif != 1) {
 
-                if ($userClient->amount > $amount && $userClient->account == 1) {
-                    $userClient->update(['amount' => $userClient->amount - $amount]);
-                    $name = null;
-                    $phone = null;
-                    $client = $userClient->id;
+                if ($userClient->account == 1) {
+                    if ($userClient->amount >= $amount) {
+                        $userClient->update(['amount' => $userClient->amount - $amount]);
+                        $client = $userClient->id;
+                        $type = 1;
+                        $status = 1;
+
+                        
+                        if ($userClient->amount == null) {
+                            $userClient->update(['account' => 3]);
+                        }
+                        
+                    }else {
+                        Toastr::warning('Le montant est insuffisant', 'Montant insuffisant', ["positionClass" => "toast-top-right"]);
+                        return back();
+                    }
+
+                    
+
+                }elseif ($userClient->account == 2) {
+                    Toastr::error('Ce clients a des passif en cours', 'Passifs en cours', ["positionClass" => "toast-top-right"]);
+                    return back();
+                }elseif($userClient->account == 3){
+                    if ($userClient->credit == 0 && $userClient->amount == 0) {
+                        $userClient->update(['credit' => $userClient->credit,'amount' => $userClient->amount,'account' => $userClient->account]);
+                        $client = $userClient->id;
+                        $status = 2;
+                    }
                 }
 
             }elseif ($request->passif == 1) {
 
-                if($userClient->credit == 0 && $userClient->amount == 0 && $userClient->account == 3){
-                    $userClient->update(['credit' => $amount,'account' => 2]);
-                    $name = null;
-                    $phone = null;
-                    $client = $userClient->id;
+                if($userClient->account == 3){
+                    if ($userClient->credit == 0 && $userClient->amount == 0) {
+                        $userClient->update(['credit' => $amount,'account' => 2]);
+                        $client = $userClient->id;
+                        $type = 2;
+                        $status = 2;
+                    }
+                }else {
+                    Toastr::error('Ce clients a des Actifs / Passifs en cours', 'Passifs en cours', ["positionClass" => "toast-top-right"]);
+                    return back();
                 }
 
-            }else {
-                $userClient->update(['credit' => $userClient->credit,'amount' => $userClient->amount,'account' => $userClient->account]);
-                $client = $userClient->id;
             }
+
+            $name = null;
+            $phone = null;
             
-        }else {
+        }elseif (!$userClient) {
             $client = null;
             $name = $request->name;
             $phone = $request->phone;
+            $status = 2;
         }
 
         $user = User::where('phone',$request->phone)->first();
@@ -217,7 +248,7 @@ class OrderController extends Controller
             $phone = $request->phone;
         }
 
-        // dd($client);
+        // dd($type);
         
 
         $products = [];
@@ -245,6 +276,7 @@ class OrderController extends Controller
             $newOrder = 00001;
         }
 
+
         // $getAmount = Cart::subtotal();
         
 
@@ -260,7 +292,8 @@ class OrderController extends Controller
             'date' => now(),
             'client_id' => $client,
             'amount' => number_format($amount,2, ',','.'),
-            'status' => 2
+            'status' => $status,
+            'type' => $type
         ]);
 
         Cart::destroy();

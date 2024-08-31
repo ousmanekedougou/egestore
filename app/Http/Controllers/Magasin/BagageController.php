@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Magasin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Bagage;
+use App\Models\Magasin\Commande;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -76,6 +77,10 @@ class BagageController extends Controller
             'magasin_id' => AuthMagasinAgent(),
             'commande_id' => $request->reserve_id
         ]);
+
+        $amountToday = $request->price * $request->quantity;
+        $commande = Commande::where('id',$request->reserve_id)->first();
+        $commande->update(['amount' =>  number_format($commande->amount + $amountToday,2, ',','.')]);
 
         Toastr::success('Votre bagage a bien été ajouté', 'Ajout de bagages', ["positionClass" => "toast-top-right"]);
         return back();
