@@ -28,11 +28,11 @@
             <header>
                <div class="row align-items-center">
                   <div class="col-7 text-start mb-3 mb-sm-0">
-                     <img id="logo" src="@if($order->magasin->logo == '') https://ui-avatars.com/api/?name={{$order->magasin->name}} @else {{(Storage::url($order->magasin->logo))}} @endif" title="Billig" alt="Billig">
+                     <img id="logo" src="@if($order->magasin->logo == '') https://ui-avatars.com/api/?name={{$order->magasin->name}} @else {{(Storage::url($order->magasin->logo))}} @endif" title="{{$order->magasin->name}}" alt="{{$order->magasin->name}}">
                   </div>
                   <div class="col-5 text-end">
                      <h4 class="mb-0 text-uppercase">Facture</h4>
-                     <p class="mb-0"><strong> Nº :</strong> {{$order->num_invoice }}</p>
+                     <p class="mb-0"><strong> Facture - Nº :</strong> {{$order->num_invoice }}</p>
                   </div>
                </div>
                <hr>
@@ -48,16 +48,21 @@
                   <div class="col-6 text-end order-sm-1">
                      <strong>Payez à : {{$authName}}, </strong>
                      <address>
-                        
                         {{$order->magasin->phone}}<br>
                         {{$order->magasin->adresse}}
+                        <strong>Facture @if($order->type == 1 && $order->status == 1) paye @elseif($order->type == 2) à crédit @endif</strong>
                      </address>
                   </div>
                   <div class="col-6 order-sm-0">
-                     <strong>Facturé à : @if($order->user_id == '' && $order->client_id == '') {{ $order->name }} @elseif($order->user_id != '') {{ $order->user->name }} @elseif($order->client_id != '') {{ $order->client->name }} @endif</strong>
+                     <strong>Facturé à : @if($order->user_id == '' && $order->client_id == '') {{ $order->name }} @elseif($order->user_id != '') {{ $order->user->name }} @elseif($order->client_id != '') {{ $order->client->name }} @endif</strong>,
                      <address>
-                        @if($order->user_id == '' && $order->client_id == '') {{ $order->phone }} @elseif($order->user_id != '') {{ $order->user->phone }} @elseif($order->client_id != '') {{ $order->client->phone }} @endif<br>
-                        @if($order->user_id == '' && $order->client_id == '') {{ $order->adresse }} @elseif($order->user_id != '') {{ $order->user->adresse }} @elseif($order->client_id != '') {{ $order->client->adresse }} @endif<br>
+                        Telephone : @if($order->user_id == '' && $order->client_id == '') {{ $order->phone }} @elseif($order->user_id != '') {{ $order->user->phone }} @elseif($order->client_id != '') {{ $order->client->phone }} @endif<br>
+                        
+                        @if($order->type == 2)
+                          @if($order->client_id != '')
+                            Vérsement éfféctuer  : {{number_format($order->client->amount,2, ',','.') }}  CFA
+                          @endif
+                        @endif
                         
                      </address>
                   </div>
@@ -90,14 +95,18 @@
                                  <td colspan="4" class="bg-light-2 text-end"><strong>Sub Total:</strong></td>
                                  <td class="bg-light-2 text-end">$1500.00</td>
                               </tr>
-                              <tr>
-                                 <td colspan="4" class="bg-light-2 text-end"><strong>Tax:</strong></td>
-                                 <td class="bg-light-2 text-end">$325.00</td>
-                              </tr>
                             --}}
+                            @if($order->type == 2)
+                              @if($order->client_id != '')
+                                <tr>
+                                  <td colspan="4" class="bg-light-2 text-end"><strong>Vérsement éfféctuer :</strong></td>
+                                  <td class="bg-light-2 text-end"> {{number_format($order->client->amount,2, ',','.') }} CFA</td>
+                                </tr>
+                              @endif
+                            @endif
                               <tr>
                                  <td colspan="4" class="bg-light-2 text-end border-0"><strong>Total:</strong></td>
-                                 <td class="bg-light-2 text-end border-0">{{ $order->amount }}</td>
+                                 <td class="bg-light-2 text-end border-0"> {{ $order->amount }} CFA</td>
                               </tr>
                            </tbody>
                         </table>
@@ -108,15 +117,17 @@
             <!-- Footer -->
             <footer class="text-center mt-4">
                <p class="text-1"><strong> Merci d'avoir choisi notre boutique </strong></p>
-               <div class="text-end py-9 border-bottom mb-4">
-                  @if($order->status == 1)
-                  <img class="mb-1" src="{{asset('assets/img/logos/payer.png')}}" alt="" />
-                  @endif
-                  <h6>Signataire autorisé</h6>
-                </div>
+                {{--
+                  <div class="text-end py-9 border-bottom mb-4">
+                    @if($order->status == 1)
+                    <img class="mb-1" src="{{asset('assets/img/logos/payer.png')}}" alt="" />
+                    @endif
+                    <h6>Signataire autorisé</h6>
+                  </div>
+                --}}
                <div class="btn-group btn-group-sm d-print-none"> 
-                  <a href="#" id="print_Button" onclick="printDiv()" class="btn btn-light border text-black-50 shadow-none"><i class="fa fa-print"></i> Print
-                  </a> <a href="#" class="btn btn-light border text-black-50 shadow-none"><i class="fa fa-download"></i> Download</a> </div>
+                  <a href="#" id="print_Button" onclick="printDiv()" class="btn btn-light border text-black-50 shadow-none ml-3"><i class="fa fa-print"></i> Imprimer
+                  </a> <a href="#" class="btn btn-light border text-black-50 shadow-none mr-3"><i class="fa fa-download"></i> Télécharger</a> </div>
             </footer>
          </div>
       </body>

@@ -282,6 +282,7 @@ class OrderController extends Controller
 
         Order::create([
             'order' => $newOrder,
+            // 'num_invoice' => ,
             'name' => $name,
             'phone' => $phone,
             'magasin_id' => AuthMagasinAgent(),
