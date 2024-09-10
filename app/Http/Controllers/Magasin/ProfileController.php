@@ -61,27 +61,55 @@ class ProfileController extends Controller
             'admin_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'phone' => ['required', 'numeric'],
-            'inv_at' => ['required', 'numeric'],
             'adresse' => ['required', 'string'],
             'visible' => ['required', 'boolean'],
             'password' => ['confirmed'],
         ]);
         $password = null;
-        if($request->password == ''){
+        $inv_at = null;
+        $imageName = null;
+        $logoName = null;
+
+        
+        if($request->password == null){
             $password = Auth::guard('magasin')->user()->password;
         }else {
             $password = Hash::make($request->password);
         }
+
+        if ($inv_at == '') {
+            $password = Auth::guard('magasin')->user()->inv_at;
+        }else {
+            $inv_at = $request->inv_at;
+        }
+        
+        if($request->hasFile('logo'))
+        {
+            $logoName = $request->logo->store('public/Profiles/Logos');
+        }else{
+            $logoName = Auth::guard('magasin')->user()->logo;
+        }
+
+        
+        if($request->hasFile('image'))
+        {
+            $imageName = $request->image->store('public/Profiles/Images');
+        }else{
+            $imageName = Auth::guard('magasin')->user()->image;
+        }
+
         Magasin::find(Auth::guard('magasin')->user()->id)
         ->update(
         [
+            'logo' => $logoName,
+            'image' => $imageName,
             'shop_name' => $request->shop_name,
             'admin_name' => $request->admin_name,
             'email' => $request->email,
             'phone' => $request->phone,
             'adresse' => $request->adresse,
             'visible' => $request->visible,
-            'inv_at' => $request->inv_at,
+            'inv_at' => $inv_at,
             'password' => $password,
         ]);
 

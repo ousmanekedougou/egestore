@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->integer('order')->unique();
-            $table->integer('num_invoice')->unique()->nullable();
+            $table->integer('order')->nullable();
             $table->string('name')->nullable();
             $table->integer('phone')->nullable();
             $table->string('slug');

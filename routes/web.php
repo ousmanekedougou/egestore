@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/')->name('utilisateur.')->group(function() 
 {
     Route::get('/',[App\Http\Controllers\User\HomeController::class,'index'])->name('index');
+    Route::get('/document',[App\Http\Controllers\User\DocumentController::class,'document'])->name('document');
 });
 
 Auth::routes();

@@ -32,7 +32,7 @@
                   </div>
                   <div class="col-5 text-end">
                      <h4 class="mb-0 text-uppercase">Facture</h4>
-                     <p class="mb-0"><strong> Facture - Nº :</strong> {{$order->num_invoice }}</p>
+                     <p class="mb-0"><strong> Facture - Nº : </strong>{{ str_pad($order->order, 5, '0', STR_PAD_LEFT) }}</p>
                   </div>
                </div>
                <hr>

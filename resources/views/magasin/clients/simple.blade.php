@@ -33,11 +33,11 @@
                   <th class="sort align-middle pe-5" scope="col" data-sort="customer" style="width:10%;">CLIENTS</th>
                   <th class="sort align-middle pe-5" scope="col" data-sort="email" style="width:20%;">EMAIL</th>
                   <th class="sort align-middle text-end" scope="col" data-sort="total-orders" style="width:10%">TELEPHONES</th>
-                  <th class="sort align-middle text-end" scope="col" data-sort="total-orders" style="width:15%">COMMANDES</th>
+                  <th class="sort align-middle text-end" scope="col" data-sort="total-spent" style="width:15%">COMMANDES</th>
                   <th class="sort align-middle ps-7" scope="col" data-sort="city" style="width:25%;">VILLES</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">COMPTES</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">MONTANTS</th>
-                  <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">CREDITS</th>
+                  <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-seen" style="width:10%;min-width: 150px;">CREDITS</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">ACTIONS</th>
                 </tr>
               </thead>

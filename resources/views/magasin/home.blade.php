@@ -52,7 +52,8 @@
       <div class="mb-4">
         <div class="d-flex flex-wrap gap-3">
           <div class="search-box">
-            <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Rechercher un produit" aria-label="Search" />
+            <form class="position-relative">
+              <input class="form-control search-input search" type="search" placeholder="Rechercher un produit" aria-label="Search" />
               <span class="fas fa-search search-box-icon"></span>
             </form>
           </div>
@@ -65,10 +66,10 @@
               <tr>
                 <th class="sort white-space-nowrap align-middle fs-10" scope="col" style="width:70px;"></th>
                 <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;" data-sort="product">PRODUITS</th>
-                <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">REFERENCES</th>
+                <th class="sort align-middle text-end ps-4" scope="col" data-sort="category" style="width:150px;">REFERENCES</th>
                 <th class="sort align-middle ps-3" scope="col" data-sort="tags" style="width:100px;">COULEUR</th>
-                <th class="sort align-middle ps-3" scope="col" data-sort="tags" style="width:100px;">TAILLES</th>
-                <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">QUANTITES</th>
+                <th class="sort align-middle ps-3" scope="col" data-sort="vendor" style="width:100px;">TAILLES</th>
+                <th class="sort align-middle text-end ps-4" scope="col" data-sort="time" style="width:150px;">QUANTITES</th>
                 <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">PRIX UNITAIRE</th>
                 <th class="sort text-end align-middle pe-1 ps-4" scope="col">PANIERS</th>
               </tr>

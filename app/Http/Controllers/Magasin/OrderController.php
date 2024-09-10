@@ -273,7 +273,7 @@ class OrderController extends Controller
         if ($verify) {
             $newOrder = $verify->order + 1;
         }else {
-            $newOrder = 00001;
+            $newOrder = 1;
         }
 
 
@@ -282,7 +282,6 @@ class OrderController extends Controller
 
         Order::create([
             'order' => $newOrder,
-            // 'num_invoice' => ,
             'name' => $name,
             'phone' => $phone,
             'magasin_id' => AuthMagasinAgent(),
@@ -341,23 +340,14 @@ class OrderController extends Controller
         ]);
 
         $dateUpdate = null;
-        $incvoiceNum = null;
         if($request->status == 1){
             $dateUpdate = now();
-
-            $num = Order::where("magasin_id", AuthMagasinAgent())->latest()->first();
-            if ($num) {
-                $incvoiceNum = $num->num_invoice + 1;
-            }else {
-                $incvoiceNum = 00001;
-            }
         }
 
         Order::where('id',$id)->where('magasin_id',AuthMagasinAgent())
         ->update(
         [   'status' => $request->status,
             'payment_created_at' => $dateUpdate,
-            'num_invoice' => $incvoiceNum
         ]);
 
         Toastr::success('Le status de cette commande a bien été modifé', 'Modification de commandes', ["positionClass" => "toast-top-right"]);

@@ -31,10 +31,10 @@
                 <tr>
                   <th class="sort white-space-nowrap align-middle fs-10" scope="col" style="width:70px;"></th>
                   <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;" data-sort="product">PRODUITS</th>
-                  <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">REFERENCES</th>
+                  <th class="sort align-middle text-end ps-4" scope="col" data-sort="category" style="width:150px;">REFERENCES</th>
                   <th class="sort align-middle ps-3" scope="col" data-sort="tags" style="width:100px;">COULEUR</th>
-                  <th class="sort align-middle ps-3" scope="col" data-sort="tags" style="width:100px;">TAILLES</th>
-                  <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">QUANTITES</th>
+                  <th class="sort align-middle ps-3" scope="col" data-sort="vendor" style="width:100px;">TAILLES</th>
+                  <th class="sort align-middle text-end ps-4" scope="col" data-sort="time" style="width:150px;">QUANTITES</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">PRIX UNITAIRE</th>
                   <th class="sort align-middle ps-4" scope="col" data-sort="time" style="width:50px;">STATUS</th>
                   <th class="sort text-end align-middle pe-0 ps-4" scope="col">ACTIONS</th>

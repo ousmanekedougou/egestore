@@ -5,7 +5,8 @@
       <button class="btn navbar-toggler navbar-toggler-humburger-icon hover-bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
       <a class="navbar-brand me-1 me-sm-3" href="{{route('magasin.home')}} ">
         <div class="d-flex align-items-center">
-          <div class="d-flex align-items-center"><img src="@if(Auth::guard('magasin')->user()->logo == '') https://ui-avatars.com/api/?name={{Auth::guard('magasin')->user()->name}} @else {{(Storage::url(Auth::guard('magasin')->user()->logo))}} @endif" width="27" />
+          <div class="d-flex align-items-center">
+            <img src="@if(Auth::guard('magasin')->user()->logo == '') https://ui-avatars.com/api/?name={{Auth::guard('magasin')->user()->name}} @else {{(Storage::url(Auth::guard('magasin')->user()->logo))}} @endif" width="27"/>
             <p class="logo-text ms-2 d-none d-sm-block">{{ Auth::guard('magasin')->user()->name }}</p>
           </div>
         </div>

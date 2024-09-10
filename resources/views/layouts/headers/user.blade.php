@@ -7,9 +7,9 @@
      </a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
      <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3 active" aria-current="page" href="documentation/getting-started.html">Documentation</a></li>
-          <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3" href="mailto:support@themewagon.com">Support</a></li>
-          <li class="nav-item"><a class="nav-link fs-9 fw-bold pe-1" href="https://themewagon.com/hire-us/" target="_blank">Hire us </a></li>
+          <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3 {{ set_active_roote('utilisateur.document') }}" aria-current="page" href="{{route('utilisateur.document')}}">Comment ça marche</a></li>
+          <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3" href="#">Termes & Politiques</a></li>
+          <li class="nav-item"><a class="nav-link fs-9 fw-bold pe-1" href="#">Hire us </a></li>
           <li class="nav-item d-flex align-items-center">
             <div class="theme-control-toggle fa-icon-wait px-3">
               <input class="form-check-input ms-0 theme-control-toggle-input" type="checkbox" data-theme-control="phoenixTheme" value="dark" id="themeControlToggle" />

@@ -40,9 +40,9 @@
                   @enderror
               </div>
             </div>
-            <div class="row flex-between-center mb-7">
+            <div class="row flex-between-center mb-3">
               <div class="col-auto">
-                <div class="form-check mb-0"><input class="form-check-input" id="basic-checkbox" type="checkbox" checked="checked" /><label class="form-check-label mb-0" for="basic-checkbox">Remember me</label></div>
+                <div class="form-check mb-0"><input class="form-check-input" id="basic-checkbox" type="checkbox"/><label class="form-check-label mb-0" for="basic-checkbox">Remember me</label></div>
               </div>
               <div class="col-auto"><a class="fs-9 fw-semibold" href="{{ route('password.request') }}">Mot de passe oublié ?</a></div>
             </div>
