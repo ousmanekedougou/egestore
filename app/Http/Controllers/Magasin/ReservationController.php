@@ -19,16 +19,9 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        if (AuthMagasinAgentVisible() == 1){
-            $magasin = Magasin::find(AuthMagasinAgent());
-            $clients = $magasin->users;
-        }else {
-            $clients = Client::where('magasin_id',AuthMagasinAgent())->get();
-        }
         return view('magasin.reserves.index',
         [
-            'reserves' => Commande::where('magasin_id',AuthMagasinAgent())->where('type',1)->orderBy('id','DESC')->get(),
-            'clients' => $clients
+            'reserves' => Commande::where('magasin_id',AuthMagasinAgent())->where('type',1)->orderBy('id','DESC')->get()
         ]);
     }
 
@@ -40,59 +33,6 @@ class ReservationController extends Controller
         //
     }
 
-    public function post(Request $request)
-    {
-        $this->validate($request,[
-            'client' => 'required|string',
-            'bon_commande' => 'string',
-            'name' => 'string',
-            'email' => 'string|email',
-            'phone' => 'numeric',
-        ]);
-
-        $name = null;
-        $email = null;
-        $phone = null;
-        $client = null;
-        
-        if($request->client == -1){
-            $name = $request->name;
-            $email = $request->email;
-            $phone = $request->phone;
-        }
-
-        $user = Client::where('id',$request->client)->first();
-        if ($user) {
-            $client = $user->id;
-        }else {
-            $client = null;
-        }
-
-        $verify = Commande::where("magasin_id", AuthMagasinAgent())->where('type',1)->latest()->first();
-        if ($verify) {
-            $newOrder = $verify->order + 1;
-        }else {
-            $newOrder = 00001;
-        }
-
-        Commande::create([
-            'order' => $newOrder,
-            'name' => $name,
-            'email' => $email,
-            'phone' => $phone,
-            'magasin_id' => AuthMagasinAgent(),
-            'client_id' => $client,
-            'slug' => str_replace('/','',Hash::make(Str::random(2).$newOrder)),
-            'bon_commande' => $request->bon_commande,
-            'date' => now(),
-            'type' => 1,
-            // 'amount' => number_format($amount,2, ',','.'),
-            'status' => 2
-        ]);
-
-        Toastr::success('Votre reservation a bien été ajouté', 'Ajout de reservations', ["positionClass" => "toast-top-right"]);
-        return back();
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -100,8 +40,6 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'client' => 'required|string',
-            'bon_commande' => 'string',
             'name' => 'string',
             'email' => 'string|email',
             'phone' => 'numeric',
@@ -110,26 +48,34 @@ class ReservationController extends Controller
         $name = null;
         $email = null;
         $phone = null;
-        $client = null;
-        
-        if($request->client == -1){
+        $UserId = null;
+        $clientId = null;
+
+        $user = User::where('phone',$request->phone)->first();
+        if ($user) {
+            $UserId = $user->id;
+        }else {
+            $UserId = null;
             $name = $request->name;
             $email = $request->email;
             $phone = $request->phone;
         }
 
-        $user = User::where('id',$request->client)->first();
-        if ($user) {
-            $client = $user->id;
+        $client = Client::where('phone',$request->phone)->first();
+        if ($client) {
+            $clientId = $client->id;
         }else {
-            $client = null;
+            $clientId = null;
+            $name = $request->name;
+            $email = $request->email;
+            $phone = $request->phone;
         }
 
         $verify = Commande::where("magasin_id", AuthMagasinAgent())->where('type',1)->latest()->first();
         if ($verify) {
             $newOrder = $verify->order + 1;
         }else {
-            $newOrder = 00001;
+            $newOrder = 1;
         }
 
         Commande::create([
@@ -138,9 +84,9 @@ class ReservationController extends Controller
             'email' => $email,
             'phone' => $phone,
             'magasin_id' => AuthMagasinAgent(),
-            'user_id' => $client,
+            'user_id' => $UserId,
+            'client_id' => $clientId,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$newOrder)),
-            'bon_commande' => $request->bon_commande,
             'date' => now(),
             'type' => 1,
             // 'amount' => number_format($amount,2, ',','.'),

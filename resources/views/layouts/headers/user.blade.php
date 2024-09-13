@@ -1,14 +1,16 @@
 
 <nav class="navbar navbar-expand-lg sticky-top py-3" data-navbar-soft-on-scroll="data-navbar-soft-on-scroll">
    <div class="container-small px-0 px-sm-3"><a class="navbar-brand" href="/">
-       <div class="d-flex align-items-center"><img src="{{asset('assets/img/icons/logo.png')}}" alt="phoenix" width="27" />
-         <p class="logo-text ms-2">SenMagasin</p>
+       <div class="d-flex align-items-center">
+       {{--<img src="{{asset('assets/img/icons/logo.png')}}" alt="phoenix" width="27" />--}}
+        <span class="logo-text" data-feather="shopping-bag" style="height: 25px; width: 25px;"></span>
+         <p class="logo-text ms-2">KStore</p>
        </div>
      </a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
      <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3 {{ set_active_roote('utilisateur.document') }}" aria-current="page" href="{{route('utilisateur.document')}}">Comment ça marche</a></li>
-          <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3" href="#">Termes & Politiques</a></li>
+          <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3 {{ set_active_roote('utilisateur.terme') }}" href="{{route('utilisateur.terme')}}">Termes & Politiques</a></li>
           <li class="nav-item"><a class="nav-link fs-9 fw-bold pe-1" href="#">Hire us </a></li>
           <li class="nav-item d-flex align-items-center">
             <div class="theme-control-toggle fa-icon-wait px-3">
@@ -23,7 +25,7 @@
           </li>
           <li class="nav-item dropdown">
             <a class="d-grid d-lg-flex align-items-center btn btn-primary" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-            Connexion
+            Connexion <span data-feather="chevron-down" class="ml-3"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border mt-2" aria-labelledby="navbarDropdownUser">
               <div class="card position-relative border-0">

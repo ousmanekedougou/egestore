@@ -149,7 +149,7 @@ class BonController extends Controller
         if ($verify) {
             $newOrder = $verify->order + 1;
         }else {
-            $newOrder = 00001;
+            $newOrder = 1;
         }
 
         Commande::create([

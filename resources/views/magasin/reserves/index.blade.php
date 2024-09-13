@@ -5,7 +5,7 @@
   <div class="mb-9">
     <div class="row g-3 mb-4">
       <div class="col-auto">
-        <h2 class="mb-0">Commandes sous reservation</h2>
+        <h2 class="mb-0">Commandes sous pro-format</h2>
       </div>
     </div>
     <div id="orderTable" data-list='{"valueNames":["order","total","customer","payment_status","fulfilment_status","delivery_type","date"],"page":10,"pagination":true}'>
@@ -13,14 +13,14 @@
         <div class="row g-3">
           <div class="col-auto">
             <div class="search-box">
-              <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Search orders" aria-label="Search" />
+              <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Rechercer des commandes pro-format" aria-label="Search" />
                 <span class="fas fa-search search-box-icon"></span>
               </form>
             </div>
           </div>
           <div class="col-auto">
             <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-              <span class="fas fa-plus me-2"></span>Ajouter une reservation
+              <span class="fas fa-plus me-2"></span>Ajouter une pro-format
             </button>
           </div>
         </div>
@@ -108,66 +108,40 @@
         <!-- Right Offcanvas-->
         <div class="offcanvas offcanvas-end" id="offcanvasRight" tabindex="-1" aria-labelledby="offcanvasRightLabel">
           <div class="offcanvas-header">
-            <h5 id="offcanvasRightLabel">Ajouter une commande de reservation</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <h5 id="offcanvasRightLabel">Ajouter une commande sous pro-format</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
-            <form  method="POST" action="@if(AuthMagasinAgentVisible() == 1) {{ route('magasin.reserve.store') }} @else {{ route('magasin.reserve.post') }} @endif" >
+            <form  method="POST" action="{{ route('magasin.reserve.store') }}" >
               @csrf
-              <select class="form-select mb-3 @error('client') is-invalid @enderror" name="client" id="client" aria-label="delivery type" onchange="enableBrand(this)">
-                <option></option>
-                <option value="-1">Un simple client</option>
-                @foreach($clients as $client)
-                  <option value="{{ $client->id }}">{{ $client->name }}</option>
-                @endforeach
-              </select>
-              @error('client')
-              <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-              @enderror
-
               <div class="mb-3 text-start">
-                <label class="form-label" for="bon_commande">Bon de commande (Facultatif)</label>
-                <input id="bon_commande" type="text" class="form-control @error('bon_commande') is-invalid @enderror" name="bon_commande" value="{{ old('bon_commande') }}" placeholder="Bon de commande (Facultatif)" autocomplete="bon_commande">
+                  <label class="form-label" for="name">Prenom et nom de votre client</label>
+                  <input id="name" type="text" placeholder="Prenom et nom de votre client" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
-                @error('bon_commande')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                  @error('name')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
               </div>
+              <div class="mb-3 text-start">
+                  <label class="form-label" for="email">Adresse email de votre client</label>
+                  <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="email@gmail.com" required autocomplete="email">
 
-              <div class="d-none" id="clientNone">
-                <div class="mb-3 text-start">
-                    <label class="form-label" for="name">Prenom et nom de votre client</label>
-                    <input id="name" type="text" placeholder="Prenom et nom de votre client" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                  @error('email')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+              </div>
+              <div class="mb-3 text-start">
+                  <label class="form-label" for="phone">Numero de telephone de votre client</label>
+                  <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" placeholder="Numero de telephone de votre client" required autocomplete="phone">
 
-                    @error('name')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-                <div class="mb-3 text-start">
-                    <label class="form-label" for="email">Adresse email de votre client</label>
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="email@gmail.com" required autocomplete="email">
-
-                    @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-                <div class="mb-3 text-start">
-                    <label class="form-label" for="phone">Numero de telephone de votre client</label>
-                    <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" placeholder="Numero de telephone de votre client" required autocomplete="phone">
-
-                    @error('phone')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+                  @error('phone')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
               </div>
 
               <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer cette reservation</button>
@@ -254,15 +228,3 @@
 
 </div>
 @endsection
-
-<script>
-   function enableBrand(answer){
-        
-        // declarartion de naissance
-        if (answer.value == -1) {
-            document.getElementById('clientNone').classList.remove('d-none')
-        }else{
-            document.getElementById('clientNone').classList.add('d-none')
-        }
-      }
-</script>

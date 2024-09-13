@@ -10,4 +10,8 @@ class DocumentController extends Controller
     public function document(){
         return view('user.document');
     }
+
+    public function terme(){
+        return view('user.terme');
+    }
 }

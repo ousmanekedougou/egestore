@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app',['title' => 'comment ça marche'])
 <meta name="msapplication-TileImage" content="{{asset('../assets/img/favicons/mstile-150x150.png')}}">
 @section('main-content')
 <div class="content" style="padding-left:6rem ;padding-right:6rem ;margin-top:-15px;">
@@ -162,7 +162,7 @@
                 <p class="fs-9 text-body-secondary w-sm-60 mb-3">
                   Nous faisons tout notre possible pour numeriser toutes les taches manuéles de votre entreprise.Ainsi nous avons 
                   integres quelques systémes de ventes tel que:
-
+                  
                   <li class="fs-9 fw-normal mb-2">
                     Un systéme de résérvation de bon de commande qui s'oppere par enregistre le client beneficiare du bon 
                     en suite lui ajouer les produits pour chaque commande effectue, c'est la manoeuvre avec la géstion des produit de vente.
@@ -199,7 +199,7 @@
               <div class="col">
                 <div class="d-flex justify-content-between">
                   <div class="d-flex mb-2">
-                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">Dernier option</h6>
+                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">Autres options</h6>
                   </div>
                   <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"><span class="fa-regular fa-clock me-1"></span>9:33pm</p>
                 </div>
@@ -225,12 +225,17 @@
               <div class="col">
                 <div class="d-flex justify-content-between">
                   <div class="d-flex mb-2">
-                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">Designing the dungeon</h6>
+                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">Creation de compte client</h6>
                   </div>
                   <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"><span class="fa-regular fa-clock me-1"></span>1:30pm</p>
                 </div>
-                <h6 class="fs-10 fw-normal mb-3">by <a class="fw-semibold" href="#!">John N. Ward</a></h6>
-                <p class="fs-9 text-body-secondary w-sm-60 mb-5">To get off the runway and paradigm shift, we should take brass tacks with above-the-board actionable analytics, ramp up with viral partnering, not the usual goat rodeo putting socks on an octopus. </p>
+                <h6 class="fs-10 fw-normal mb-3">by <a class="fw-semibold" href="#!">Comptes</a></h6>
+                <p class="fs-9 text-body-secondary w-sm-60 mb-5">
+                  Pour creer un compte client cliquer sur ce lien et renseigner les information demander tout en acceptanty notre politique et ternmes de 
+                  confidentialites. <br>
+                  Apres avoir valider l'inscription vous serez rediriger sur une page de validation de compte avec un code a entrer. <br>
+                  Veillez verifier votre adress email d'inscription et recuperer le code de validation du compte.
+                </p>
               </div>
             </div>
           </div>
@@ -244,12 +249,16 @@
               <div class="col">
                 <div class="d-flex justify-content-between">
                   <div class="d-flex mb-2">
-                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">How to take the headache <br class="d-sm-none"> out of Order</h6>
+                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">La particularite de KStore</h6>
                   </div>
                   <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"><span class="fa-regular fa-clock me-1"></span>8:32pm</p>
                 </div>
-                <h6 class="fs-10 fw-normal mb-3">by <a class="fw-semibold" href="#!">Edward Hopper</a></h6>
-                <p class="fs-9 text-body-secondary w-sm-60 mb-5">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.</p>
+                <h6 class="fs-10 fw-normal mb-3">Services</h6>
+                <p class="fs-9 text-body-secondary w-sm-60 mb-5">
+                  KStore est une application de gestion d'entreprise commercial, ce qui fait que vous aurez une multitude
+                  de services commercial dans votre profile avec une diversite des produits.
+                  Ainsi pour chaque entreprise vous pouvez acceder ses produits et faire vos achats. 
+                </p>
               </div>
             </div>
           </div>
@@ -263,12 +272,16 @@
               <div class="col">
                 <div class="d-flex justify-content-between">
                   <div class="d-flex mb-2">
-                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">Mandatory routine checkup</h6>
+                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">Un systeme d'abonnement</h6>
                   </div>
                   <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"><span class="fa-regular fa-clock me-1"></span>9:30pm</p>
                 </div>
-                <h6 class="fs-10 fw-normal mb-3">by <a class="fw-semibold" href="#!">Eye before Thy Hospital</a></h6>
-                <p class="fs-9 text-body-secondary w-sm-60 mb-5">To get the bitter butter out and take the better butter into the bitter dough to make a bitter bread and broad donut, not the usual yellow butter, but the white butterless butter.</p>
+                <h6 class="fs-10 fw-normal mb-3">Services</h6>
+                <p class="fs-9 text-body-secondary w-sm-60 mb-5">
+                  Le systeme d'abonnement avec les entreprise au choix permet de faciliter et d'automatiser les echanges 
+                  commerciaux entre les clients et les fournisseurs de produits.
+                  Avec l'abonnement le client est considerer comme un client fidel de l'entreprise et beneficie des privileges de ce service.
+                </p>
               </div>
             </div>
           </div>
@@ -282,12 +295,26 @@
               <div class="col">
                 <div class="d-flex justify-content-between">
                   <div class="d-flex mb-2">
-                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">Making bad butter better</h6>
+                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">Les systemes de ventes</h6>
                   </div>
                   <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"><span class="fa-regular fa-clock me-1"></span>8:30pm</p>
                 </div>
-                <h6 class="fs-10 fw-normal mb-3">by <a class="fw-semibold" href="#!">Edward Hopper</a></h6>
-                <p class="fs-9 text-body-secondary w-sm-60 mb-5">Check how long a fish might live out of water and if you can check the pulse to see if it's alive or not though it's okay to eat fish cause they don't have any feelings.</p>
+                <h6 class="fs-10 fw-normal mb-3">Service</h6>
+                <p class="fs-9 text-body-secondary w-sm-60 mb-1">
+                  Un client a plusieurs options pour faire des achats avec une entreprise dans l'application KStore.
+
+                  <li class="fs-9 fw-normal mb-2">
+                    Vous avez l'option des commande a credit, avec un accord entre vous et le fournisseur vous pouvez faire une
+                    commande a credit via votre compte client.
+                    Cette demande de commande sera valider par le fournisseur en question apres votre reservation avec l'etiquette (facture a credit)
+                  </li>
+
+                  <li class="fs-9 fw-normal mb-2">
+                    Il est aussi intégrer l'option de la commande par dépôt,
+                    Il consiste de déposer votre argent dans l'entreprise commercial de votre choix qui sera récupéré par des commandes de produits.
+                  </li>
+
+                </p>
               </div>
             </div>
           </div>
@@ -311,7 +338,7 @@
             </div>
           </div>
         </div>
-        <h4 class="py-3 border-y mb-5 ms-8">Les cannaux de paiement</h4>
+        <h4 class="py-3 border-y mb-5 ms-8">Les moyens de paiement</h4>
         <div class="timeline-basic mb-9">
           <div class="timeline-item">
             <div class="row g-3">
@@ -323,12 +350,15 @@
               <div class="col">
                 <div class="d-flex justify-content-between">
                   <div class="d-flex mb-2">
-                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">To take the ants out</h6>
+                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">Mobiles et bancaire</h6>
                   </div>
                   <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"><span class="fa-regular fa-clock me-1"></span>8:32pm</p>
                 </div>
-                <h6 class="fs-10 fw-normal mb-3">by <a class="fw-semibold" href="#!">Edward Hopper</a></h6>
-                <p class="fs-9 text-body-secondary w-sm-60 mb-5">Many ants are crawling into my PC and now they live in there to get highly skilled in web development and programming language that will make them earn better than the humans so that they’ll be able to buy off all the sugar out of the market.</p>
+                <h6 class="fs-10 fw-normal mb-3">Service</h6>
+                <p class="fs-9 text-body-secondary w-sm-60 mb-5">
+                  Pour une facilité de paiement nous avons intégré des moyens de paiement mobile et bancaire notamment :
+                  Wave, Orange Money,
+                </p>
               </div>
             </div>
           </div>
@@ -342,12 +372,12 @@
               <div class="col">
                 <div class="d-flex justify-content-between">
                   <div class="d-flex mb-2">
-                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">Added file</h6>
-                    <h6 class="mb-0 fs-9"><span class="fa-solid fa-file-pdf me-1 text-body-tertiary"></span><a href="#!">Readme.pdf</a></h6>
+                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">Termes & Politique de confidentialites</h6>
+                    <h6 class="mb-0 fs-9"><span class="fa-solid fa-file-pdf me-1 text-body-tertiary"></span><a href="{{ route('utilisateur.terme') }}">lien referenciel</a></h6>
                   </div>
                   <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"><span class="fa-regular fa-clock me-1"></span>10:33pm</p>
                 </div>
-                <h6 class="fs-10 fw-normal false">by <a class="fw-semibold" href="#!">John N. Ward</a></h6>
+                <h6 class="fs-10 fw-normal false"></h6>
                 <p class="fs-9 text-body-secondary w-sm-60 mb-0"></p>
               </div>
             </div>

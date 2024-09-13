@@ -10,12 +10,27 @@ use Illuminate\Support\Facades\Auth;
 if (!function_exists('page_title')) {
     function page_title($title)
     {
-        $base_title = 'senmagasin';
-        if ($title === '') {
-            return  $base_title;
-        } else {
-            return $title . ' | ' . $base_title;
+        $magasinName = null;
+        
+        if (Auth::guard('magasin')->user()) {
+            $magasinName = Auth::guard('magasin')->user()->name;
+        }elseif (Auth::guard('agent')->user()) {
+            $magasinName = Auth::guard('agent')->user()->magasin->name;
         }
+        
+        if (Auth::guard('magasin')->user() || Auth::guard('agent')->user()) {
+            $base_title = $magasinName;
+        }else {
+            $base_title = 'KStore';
+        }
+        return $base_title . ' - ' . $title ;
+        
+        // $base_title = 'KStore';
+        // if ($title === '') {
+        //     return  $base_title;
+        // } else {
+        //     return $title . ' | ' . $base_title;
+        // }
     }
 }
 
