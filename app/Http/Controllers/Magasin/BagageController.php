@@ -72,15 +72,20 @@ class BagageController extends Controller
             'price' => $request->price,
             'quantity' => $request->quantity,
             'type' => $request->type,
+            'amount' => $request->price * $request->quantity,
             'date' => $date,
             'image' => $imageName,
             'magasin_id' => AuthMagasinAgent(),
             'commande_id' => $request->reserve_id
         ]);
 
-        $amountToday = $request->price * $request->quantity;
-        $commande = Commande::where('id',$request->reserve_id)->first();
-        $commande->update(['amount' =>  number_format($commande->amount + $amountToday,2, ',','.')]);
+        // dd($request->price * $request->quantity);
+
+        $amountBagageTotal = Bagage::where('commande_id',$request->reserve_id)->where('magasin_id',AuthMagasinAgent())->sum('amount');
+        // dd($commande);
+        Commande::where('id',$request->reserve_id)
+            ->where('magasin_id',AuthMagasinAgent())
+            ->where('type',$request->type)->update(['amount' => $amountBagageTotal ]);
 
         Toastr::success('Votre bagage a bien été ajouté', 'Ajout de bagages', ["positionClass" => "toast-top-right"]);
         return back();
@@ -111,6 +116,7 @@ class BagageController extends Controller
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
         ]);
 
+
         $product = Bagage::where('id',$id)->where('magasin_id',AuthMagasinAgent())->first();
 
         $imageName = '';
@@ -135,12 +141,17 @@ class BagageController extends Controller
             'reference' => $request->reference,
             'price' => $request->price,
             'quantity' => $request->quantity,
+            'amount' => $request->price * $request->quantity,
             'type' => $request->type,
             'date' => $date,
             'image' => $imageName,
             'magasin_id' => AuthMagasinAgent(),
             'commande_id' => $request->reserve_id
         ]);
+
+        $amountBagageTotal = Bagage::where('commande_id',$request->reserve_id)->where('magasin_id',AuthMagasinAgent())->sum('amount');
+
+        $product->commande->update(['amount' => $amountBagageTotal ]);
 
         Toastr::success('Votre bagages a bien été modifié', 'Modification de bagages', ["positionClass" => "toast-top-right"]);
         return back();
@@ -151,8 +162,11 @@ class BagageController extends Controller
      */
     public function destroy(string $id)
     {
+        $bagage = Bagage::where('id',$id)->where('magasin_id',AuthMagasinAgent())->first();
 
-        Bagage::where('id',$id)->where('magasin_id',AuthMagasinAgent())->delete();
+        $bagage->commande->update(['amount' => $bagage->commande->amount - $bagage->amount ]);
+        
+        $bagage->delete();
         Toastr::success('Votre bagage a bien été supprimé', 'Suppression de bagages', ["positionClass" => "toast-top-right"]);
         return back();
     }

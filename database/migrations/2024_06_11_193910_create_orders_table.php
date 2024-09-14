@@ -38,7 +38,7 @@ return new class extends Migration
               ->references("id")
               ->on("clients")
               ->cascadeOnDelete()->nullable();
-            $table->string('amount');
+            $table->string('amount')->nullable();
             $table->enum('payment', ['Success', 'Pending','Cancelled'])->nullable();
             $table->enum('delivery', ['Success', 'Pending','Cancelled'])->nullable();
             $table->integer('status')->nullable();

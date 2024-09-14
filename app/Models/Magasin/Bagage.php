@@ -12,10 +12,11 @@ class Bagage extends Model
     protected $fillable = [
         'name',
         'slug',
+        'price',
         'quantity',
+        'amount',
         'reference',
         'image',
-        'price',
         'type',
         'date',
         'commande_id',

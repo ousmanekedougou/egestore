@@ -34,7 +34,7 @@
                   <div class="form-check mb-0 fs-8"><input class="form-check-input" id="checkbox-bulk-order-select" type="checkbox" data-bulk-select='{"body":"order-table-body"}' /></div>
                 </th>
                 <th class="sort white-space-nowrap align-middle pe-3" scope="col" data-sort="order" style="width:5%;">COMMANDES</th>
-                <th class="sort align-middle text-end" scope="col" data-sort="total" style="width:60%;">TOTAL</th>
+                <th class="sort align-middle text-center" scope="col" data-sort="total" style="width:150%;">TOTAL</th>
                 <th class="sort align-middle ps-8" scope="col" data-sort="customer" style="width:28%; min-width: 250px;">CLIENTS</th>
                 <th class="sort align-middle text-start pe-3" scope="col" data-sort="fulfilment_status" style="width:20%; min-width: 100px;">TELEPHONE</th>
                 <th class="sort align-middle pe-3 text-center" scope="col" data-sort="payment_status" style="width:12%; min-width: 200px;">BON DE COMMANDE</th>
@@ -50,8 +50,8 @@
                   <td class="fs-9 align-middle px-0 py-3">
                     <div class="form-check mb-0 fs-8"><input class="form-check-input" type="checkbox" data-bulk-select-row='{"order":2453,"total":87,"customer":{"avatar":"/team/32.webp","name":"Carry Anna"},"payment_status":{"label":"Complete","type":"badge-phoenix-success","icon":"check"},"fulfilment_status":{"label":"Cancelled","type":"badge-phoenix-secondary","icon":"x"},"delivery_type":"Cash on delivery","date":"Dec 12, 12:56 PM"}' /></div>
                   </td>
-                  <td class="order align-middle white-space-nowrap py-0"><a class="fw-semibold" href="{{ route('magasin.bon.show',$bon->id) }}"> Nº {{ $bon->order }}</a></td>
-                  <td class="total align-middle text-center fw-semibold text-body-highlight"><b>{{ $bon->amount }}</b></td>
+                  <td class="order align-middle white-space-nowrap py-0"><a class="fw-semibold" href="{{ route('magasin.bon.show',$bon->id) }}"> Nº-{{ str_pad($bon->order, 5, '0', STR_PAD_LEFT) }}</a></td>
+                  <td class="total align-middle text-center fw-semibold text-body-highlight"><b>{{ number_format($bon->amount,2, ',','.') }}</b></td>
                   <td class="customer align-middle white-space-nowrap ps-8">
                     <a class="d-flex align-items-center text-body" href="{{ route('magasin.bon.show',$bon->id) }}">
                       <div class="avatar avatar-m"><img class="rounded-circle" src="@if($bon->user_id != '' ) {{Storage::url($bon->user->image)}} @else {{asset('assets/img/team/avatar.webp')}} @endif" alt="" /></div>

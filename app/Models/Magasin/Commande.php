@@ -17,6 +17,7 @@ class Commande extends Model
         'phone',
         'slug',
         'bon_commande',
+        'amount',
         'magasin_id',
         'user_id',
         'client_id',

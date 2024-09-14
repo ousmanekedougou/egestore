@@ -207,7 +207,7 @@ class BonController extends Controller
             if ($num) {
                 $incvoiceNum = $num->num_invoice + 1;
             }else {
-                $incvoiceNum = 00001;
+                $incvoiceNum = 1;
             }
         }
 

@@ -34,7 +34,7 @@
                   <div class="form-check mb-0 fs-8"><input class="form-check-input" id="checkbox-bulk-order-select" type="checkbox" data-bulk-select='{"body":"order-table-body"}' /></div>
                 </th>
                 <th class="sort white-space-nowrap align-middle pe-3" scope="col" data-sort="order" style="width:5%;">COMMANDES</th>
-                <th class="sort align-middle text-end" scope="col" data-sort="total" style="width:60%;">TOTAL</th>
+                <th class="sort align-middle text-center" scope="col" data-sort="total" style="width:100%;">TOTAL</th>
                 <th class="sort align-middle ps-8" scope="col" data-sort="customer" style="width:28%; min-width: 250px;">CLIENTS</th>
                 <th class="sort align-middle text-start pe-3" scope="col" data-sort="fulfilment_status" style="width:20%; min-width: 100px;">TELEPHONE</th>
                 <th class="sort align-middle pe-3 text-center" scope="col" data-sort="payment_status" style="width:12%; min-width: 200px;">BON DE COMMANDE</th>
@@ -50,8 +50,8 @@
                   <td class="fs-9 align-middle px-0 py-3">
                     <div class="form-check mb-0 fs-8"><input class="form-check-input" type="checkbox" data-bulk-select-row='{"order":2453,"total":87,"customer":{"avatar":"/team/32.webp","name":"Carry Anna"},"payment_status":{"label":"Complete","type":"badge-phoenix-success","icon":"check"},"fulfilment_status":{"label":"Cancelled","type":"badge-phoenix-secondary","icon":"x"},"delivery_type":"Cash on delivery","date":"Dec 12, 12:56 PM"}' /></div>
                   </td>
-                  <td class="order align-middle white-space-nowrap py-0"><a class="fw-semibold" href="{{ route('magasin.reserve.show',$reserve->id) }}"> Nº {{ $reserve->order }}</a></td>
-                  <td class="total align-middle text-center fw-semibold text-body-highlight"><b>{{ $reserve->amount }}</b></td>
+                  <td class="order align-middle white-space-nowrap py-0"><a class="fw-semibold" href="{{ route('magasin.reserve.show',$reserve->id) }}">Nº-{{ str_pad($reserve->order, 5, '0', STR_PAD_LEFT) }}</a></td>
+                  <td class="total align-middle text-center fw-semibold text-body-highlight"><b>{{ number_format($reserve->amount,2, ',','.') }}</b></td>
                   <td class="customer align-middle white-space-nowrap ps-8">
                     <a class="d-flex align-items-center text-body" href="{{ route('magasin.reserve.show',$reserve->id) }}">
                       <div class="avatar avatar-m"><img class="rounded-circle" src="@if($reserve->user_id != '' ) {{Storage::url($reserve->user->image)}} @else {{asset('assets/img/team/avatar.webp')}} @endif" alt="" /></div>
@@ -113,6 +113,16 @@
           <div class="offcanvas-body">
             <form  method="POST" action="{{ route('magasin.reserve.store') }}" >
               @csrf
+              <div class="mb-3 text-start">
+                <label class="form-label" for="bon_commande">Bon de commande (Facultatif)</label>
+                <input id="bon_commande" type="text" class="form-control @error('bon_commande') is-invalid @enderror" name="bon_commande" value="{{ old('bon_commande') }}" placeholder="Bon de commande (Facultatif)" autocomplete="bon_commande">
+
+                @error('bon_commande')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+              </div>
               <div class="mb-3 text-start">
                   <label class="form-label" for="name">Prenom et nom de votre client</label>
                   <input id="name" type="text" placeholder="Prenom et nom de votre client" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>

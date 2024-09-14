@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('commandes', function (Blueprint $table) {
             $table->id();
             $table->integer('order')->nullable();
-            $table->integer('num_invoice')->unique()->nullable();
+            $table->integer('num_invoice')->nullable();
             $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->integer('phone')->nullable();

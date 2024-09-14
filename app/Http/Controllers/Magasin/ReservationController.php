@@ -89,7 +89,7 @@ class ReservationController extends Controller
             'slug' => str_replace('/','',Hash::make(Str::random(2).$newOrder)),
             'date' => now(),
             'type' => 1,
-            // 'amount' => number_format($amount,2, ',','.'),
+            'bon_commande' => $request->bon_commande,
             'status' => 2
         ]);
 
@@ -133,7 +133,7 @@ class ReservationController extends Controller
             if ($num) {
                 $incvoiceNum = $num->num_invoice + 1;
             }else {
-                $incvoiceNum = 00001;
+                $incvoiceNum = 1;
             }
         }
 

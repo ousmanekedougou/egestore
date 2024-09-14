@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('images')->nullable();
             $table->integer('price');
             $table->integer('quantity');
+            $table->string('amount')->nullable();
             $table->string('reference');
             $table->boolean('type')->default(false);
             $table
