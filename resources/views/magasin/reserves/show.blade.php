@@ -5,11 +5,11 @@
     <div class="mb-9">
       <div class="row g-3 mb-4">
         <div class="col-auto">
-          <h2 class="mb-3">Bagages sous reserve</h2>
+          <h2 class="mb-3">Bagages sous résérve</h2>
           <div class="d-sm-flex flex-between-center mb-3">
             <p class="text-body-secondary lh-sm mb-0 mt-2 mt-sm-0">
               Client : <a class="fw-bold" href="#!" style="margin-right: 15px;">  @if($reserve->user_id == '') {{ $reserve->name }} @else {{ $reserve->user->name }} @endif</a>
-              Telepone : <a class="fw-bold" href="#!"> @if($reserve->user_id == '') {{ $reserve->phone }} @else {{ $reserve->user->phone }} @endif</a>
+              Téléphone : <a class="fw-bold" href="#!"> @if($reserve->user_id == '') {{ $reserve->phone }} @else {{ $reserve->user->phone }} @endif</a>
             </p>
           </div>
         </div>
@@ -24,13 +24,13 @@
             </div>
             <div class="ms-xxl-auto">
               @if($reserve->status == 1)
-              <h4 class="mb-0">Cette commande de sous reservation a ete paye</h4>
+              <h4 class="mb-0">Cette commande de sous résérvation a été payé</h4>
               @elseif($reserve->status == 2)
                 <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                   <span class="fas fa-plus me-2"></span>Ajouter un produit
                 </button>
               @else
-                <h4 class="mb-0">Cette commande de sous reservation a ete anuler</h4>
+                <h4 class="mb-0">Cette commande de sous résérvation a été anuller</h4>
               @endif
             </div>
           </div>
