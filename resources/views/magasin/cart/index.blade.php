@@ -33,7 +33,7 @@
                             <td class="products align-middle"><a class="fw-semibold mb-0 line-clamp-2" href="product-details.html">{{$product->model->name}}</a></td>
                             <td class="color align-middle white-space-nowrap fs-9 text-body">{{ $product->options->color }}</td>
                             <td class="size align-middle white-space-nowrap text-body-tertiary fs-9 fw-semibold">{{ $product->options->size }}</td>
-                            <td class="price align-middle text-body fs-9 fw-semibold text-end" style="width: 100%;">{{$product->model->getPrice()}}</td>
+                            <td class="price align-middle text-body fs-9 fw-semibold text-end" style="width:auto;">{{$product->model->getPrice()}}</td>
                             <td class="quantity align-middle fs-8 ps-5">
                               <div class="input-group input-group-sm flex-nowrap" data-quantity="data-quantity">
                                 <a href="{{ route('magasin.panier.edit',$product->rowId) }}" class="btn btn-sm px-2" data-type="minus">-</a>
@@ -41,7 +41,7 @@
                                 <a class="btn btn-sm px-2" href="{{ route('magasin.panier.show',$product->rowId) }}" data-type="plus">+</a>
                               </div>
                             </td>
-                            <td class="total align-middle fw-bold text-body-highlight text-end"> {{$product->model->getProductSubtotal($product->subtotal())}}</td>
+                            <td class="total align-middle fw-bold text-body-highlight text-end fs-9"> {{$product->model->getProductSubtotal($product->subtotal())}}</td>
                             <td class="align-middle white-space-nowrap text-end pe-0 ps-3">
                               <a href="{{ route('magasin.panier.destroy',$product->rowId) }}" onclick="event.preventDefault(); document.getElementById('SupprimerAuPanier-{{ $product->id }}').submit();" class="btn btn-sm text-body-tertiary text-opacity-85 text-body-tertiary-hover me-2"><span class="text-warning" data-feather="trash-2"></span></a>
                               <form id="SupprimerAuPanier-{{ $product->id }}" action="{{ route('magasin.panier.destroy',$product->rowId) }}" method="POST" class="d-none">
@@ -56,7 +56,7 @@
                       @endif
                       <tr class="cart-table-row btn-reveal-trigger">
                         <td class="text-body-emphasis fw-semibold ps-0 fs-8" colspan="5">Montant total des articles :</td>
-                        <td class="text-body-emphasis fw-bold text-center fs-8">{{ number_format( str_replace(',', '', Cart::subtotal()),2, ',','.'). ' CFA'; }}</td>
+                        <td class="text-body-emphasis fw-bold text-center fs-9">{{ number_format( str_replace(',', '', Cart::subtotal()),2, ',','.'). ' CFA'; }}</td>
                       </tr>
                     </tbody>
                   </table>

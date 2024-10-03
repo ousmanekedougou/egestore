@@ -38,6 +38,7 @@ class AgentController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request){
+        // dd('store metode');
         $this->validate($request,[
             'name' => 'required|string',
             'email' => 'required|string|email|unique:agents',

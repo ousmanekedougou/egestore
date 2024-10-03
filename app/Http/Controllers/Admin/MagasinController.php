@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Magasin\Magasin;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MagasinController extends Controller
 {
@@ -68,7 +69,9 @@ class MagasinController extends Controller
      */
     public function destroy(string $id)
     {
-        Magasin::where('id',$id)->delete();
+        $magasin = Magasin::where('id',$id)->first();
+        Storage::delete($magasin->logo);
+        $magasin->delete();
         Toastr::success('Ce compte magasin a bien été supprimé', 'Suppression de magasins', ["positionClass" => "toast-top-right"]);
         return back();
     }

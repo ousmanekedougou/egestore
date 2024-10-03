@@ -35,9 +35,9 @@
                   <th class="sort align-middle text-end" scope="col" data-sort="total-orders" style="width:10%">TELEPHONES</th>
                   <th class="sort align-middle text-end" scope="col" data-sort="total-spent" style="width:15%">COMMANDES</th>
                   <th class="sort align-middle ps-7" scope="col" data-sort="city" style="width:25%;">VILLES</th>
-                  <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">COMPTES</th>
-                  <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">MONTANTS</th>
-                  <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-seen" style="width:10%;min-width: 150px;">CREDITS</th>
+                  <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">STATUS</th>
+                  <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">MT-PASSIF</th>
+                  <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-seen" style="width:10%;min-width: 150px;">MT-CREDITS</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">ACTIONS</th>
                 </tr>
               </thead>
@@ -159,8 +159,8 @@
               </div>
 
               <div class="mb-3 text-start d-none" id="clientNone">
-                <label class="form-label" for="amount">Montant Actif/passif a enregistrer</label>
-                <input id="amount" type="numeric" class="form-control @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount') }}" placeholder="Montant actif a depose (Facultatif)" autocomplete="amount">
+                <label class="form-label" for="amount">Montant Actif/passif a deposer</label>
+                <input id="amount" type="numeric" class="form-control @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount') }}" placeholder="Montant actif/passif a deposer" autocomplete="amount">
 
                 @error('amount')
                     <span class="invalid-feedback" role="alert">

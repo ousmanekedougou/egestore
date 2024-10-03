@@ -65,6 +65,7 @@ class ProfileController extends Controller
             'visible' => ['required', 'boolean'],
             'password' => ['confirmed'],
         ]);
+
         $password = null;
         $inv_at = null;
         $imageName = null;
@@ -77,8 +78,9 @@ class ProfileController extends Controller
             $password = Hash::make($request->password);
         }
 
-        if ($inv_at == '') {
-            $password = Auth::guard('magasin')->user()->inv_at;
+
+        if ($request->inv_at == null) {
+            $inv_at = Auth::guard('magasin')->user()->inv_at;
         }else {
             $inv_at = $request->inv_at;
         }

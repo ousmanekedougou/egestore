@@ -7,9 +7,7 @@
     
     <main class="main" id="top">
 
-        @if(Auth::guard('web')->user())
-            @include('layouts.headers.client') 
-        @elseif(Auth::guard('admin')->user())
+        @if(Auth::guard('admin')->user())
             @include('layouts.sidbares.admin')
         @elseif(Auth::guard('magasin')->user())
             @include('layouts.sidbares.magasin')
@@ -24,6 +22,8 @@
             @include('layouts.headers.magasin')
         @elseif(Auth::guard('agent')->user())
             @include('layouts.headers.agent')
+        @elseif(Auth::guard('web')->user())
+            @include('layouts.headers.client') 
         @else
             @include('layouts.headers.user')
         @endif

@@ -69,7 +69,8 @@
             <table class="table table-sm fs-9 mb-0">
               <thead>
                 <tr>
-                  <th class="sort align-middle pe-5" scope="col" data-sort="customer" style="width:10%;">MAGASINIERS</th>
+                  <th class="sort align-middle pe-5" scope="col" data-sort="customer" style="width:10%;">MAGASIN</th>
+                  <th class="sort align-middle pe-5" scope="col" data-sort="email" style="width:20%;">MAGASINIERS</th>
                   <th class="sort align-middle pe-5" scope="col" data-sort="email" style="width:20%;">EMAIL</th>
                   <th class="sort align-middle pe-5" scope="col" data-sort="email" style="width:20%;">TELEPHONES</th>
                   <th class="sort align-middle text-end" scope="col" data-sort="total-orders" style="width:10%">COMPTES</th>
@@ -80,9 +81,13 @@
                 @foreach($magasins as $magasin)
                 <tr class="hover-actions-trigger btn-reveal-trigger position-static">
                   <td class="customer align-middle white-space-nowrap pe-5"><a class="d-flex align-items-center text-body-emphasis" href="customer-details.html">
-                      <div class="avatar avatar-m"><img class="rounded-circle" src="../../../assets/img/team/32.webp" alt="" /></div>
-                      <p class="mb-0 ms-3 text-body-emphasis fw-bold">{{ $magasin->admin_name }}</p>
-                    </a></td>
+                      <div class="avatar avatar-m">
+                        <img class="rounded-circle" src="@if($magasin->logo == '') https://ui-avatars.com/api/?name={{$magasin->name}} @else {{(Storage::url($magasin->logo))}} @endif" alt="" />
+                      </div>
+                      <p class="mb-0 ms-3 text-body-emphasis fw-bold">{{ $magasin->name }}</p>
+                    </a>
+                  </td>
+                  <td class="email align-middle white-space-nowrap pe-5">{{ $magasin->admin_name }}</td>
                   <td class="email align-middle white-space-nowrap pe-5"><a class="fw-semibold" href="mailto:{{ $magasin->email }}">{{ $magasin->email }}</a></td>
                   <td class="total-spent align-middle white-space-nowrap fw-bold  ps-3 text-body-emphasis"> {{ $magasin->phone }} </td>
                   <td class="total-spent align-middle white-space-nowrap fw-bold ps-3 text-center text-body-emphasis"> @if($magasin->is_active == 1) <span class="badge badge-phoenix badge-phoenix-success">Actif</span> @else <span class="badge badge-phoenix badge-phoenix-warning">Desactive</span> @endif  </td>

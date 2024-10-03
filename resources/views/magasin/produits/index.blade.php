@@ -31,12 +31,12 @@
                 <tr>
                   <th class="sort white-space-nowrap align-middle fs-10" scope="col" style="width:70px;"></th>
                   <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;" data-sort="product">PRODUITS</th>
-                  <th class="sort align-middle text-end ps-4" scope="col" data-sort="category" style="width:150px;">REFERENCES</th>
-                  <th class="sort align-middle ps-3" scope="col" data-sort="tags" style="width:100px;">COULEUR</th>
-                  <th class="sort align-middle ps-3" scope="col" data-sort="vendor" style="width:100px;">TAILLES</th>
-                  <th class="sort align-middle text-end ps-4" scope="col" data-sort="time" style="width:150px;">QUANTITES</th>
-                  <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">PRIX UNITAIRE</th>
+                  <th class="sort align-middle text-end ps-4" scope="col" data-sort="category" style="width:50px;">REFERENCES</th>
+                  <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">P-UNITAIRE</th>
                   <th class="sort align-middle ps-4" scope="col" data-sort="time" style="width:50px;">STATUS</th>
+                  <th class="sort align-middle text-end ps-4" scope="col" data-sort="time" style="width:150px;">QUANTITES</th>
+                  <th class="sort align-middle ps-3" scope="col" data-sort="tags">COULEURS</th>
+                  <th class="sort align-middle ps-3" scope="col" data-sort="vendor">TAILLES</th>
                   <th class="sort text-end align-middle pe-0 ps-4" scope="col">ACTIONS</th>
                 </tr>
               </thead>
@@ -46,37 +46,59 @@
                     <td class="align-middle white-space-nowrap py-0"><a class="d-block border border-translucent rounded-2"  href="{{ route('magasin.produit.edit',$product->id) }}"><img src="{{Storage::url($product->image)}}" alt="" width="53" /></a></td>
                     <td class="product align-middle ps-4"><a class="fw-semibold line-clamp-3 mb-0 @if( $product->quantity < 10 ) text-white @endif"  href="{{ route('magasin.produit.edit',$product->slug) }}">{{ $product->name }}</a></td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->reference }}</td>
-                    <td class="tags align-middle review ps-3" style="min-width:200px;">
-                      @if($product->colors != '')
-                        @foreach(unserialize($product->colors) as $colorGet)
-                          <span class="badge badge-tag mb-1"> {{ $colorGet }} </span>
-                        @endforeach
-                      @else 
-                        Null
-                      @endif
-                    </td>
-                    <td class="tags align-middle review ps-3" style="min-width:100px;">
-                      <span class="">@if($product->sizes != '') @foreach(unserialize($product->sizes) as $sizeGet) {{ $sizeGet }},  @endforeach @else Null @endif</span>
-                    </td>
-                    <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->quantity }}</td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->getPrice() }}</td>
                     <td class="total-spent align-middle white-space-nowrap fw-bold text-end ps-3 text-body-emphasis">
                       @if($product->visible == 1) <span class="badge badge-phoenix badge-phoenix-success">Visible</span> @else <span class="badge badge-phoenix badge-phoenix-warning">Cacher</span> @endif
                     </td>
-                    <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
-                      @if($product->quantity > 0)
+                    
+                    <form id="ajouterAuPanier-{{ $product->id }}" action="{{ route('magasin.panier.store') }}" method="POST" class="">
+                      @csrf
+                      <input type="hidden" name="product_id" value="{{ $product->id }}">  
+                      <td class="price align-middle white-space-nowrap text-left fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">
+                       
+                        <div class="input-group w-auto">
+                          <span class="input-group-text text-center p-1">{{ $product->quantity }}</span>
+                          <input class="form-control p-1" type="quantity" name="qty" aria-label="qty"/>
+                        </div>
+                      </td>
+                      <td class="align-middle review ps-3">
+                        @if($product->colors != '')
+                        <select class="form-select form-select-sm w-auto p-1" aria-label="Default select example .form-select-sm" name="color">
+                        <option>Choisir</option>
+                          @foreach(unserialize($product->colors) as $colorGet)
+                            <option value="{{ $colorGet }}"> {{$colorGet}} </option>
+                          @endforeach
+                        </select>
+                        @else 
+                          Null
+                        @endif
+                      </td>
+
+                      <td class="align-middle review ps-3" >
+                        @if($product->sizes != '')
+                        <select class="form-select form-select-sm w-auto p-1" aria-label=".form-select-sm example" name="size">
+                        <option>Choisir</option>
+                          @foreach(unserialize($product->sizes) as $sizeGet)
+                            <option value="{{ $sizeGet }}"> {{$sizeGet}} </option>
+                          @endforeach
+                        </select>
+                        @else 
+                          Null
+                        @endif
+                      </td>
+                    
+                      <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
+                        @if($product->quantity > 0)
                         <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-2 @if( $product->quantity < 10 ) text-white @else text-warning  @endif" data-feather="shopping-cart" data-fa-transform="shrink-3"></span></a>
-                        <form id="ajouterAuPanier-{{ $product->id }}" action="{{ route('magasin.panier.store') }}" method="POST" class="d-none">
-                          @csrf
-                          <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        </form>
-                      @else
-                      <span class="text-white" style="margin-right: 4px;">Indisponible</span>
-                      @endif
-                      
-                      <span class="me-2 @if( $product->quantity < 10 ) text-white @else text-success  @endif" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
-                      <span class="me-2 @if( $product->quantity < 10 ) text-white @else text-danger  @endif" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
-                    </td>
+                        
+                        @else
+                        <span class="text-white" style="margin-right: 4px;">Indisponible</span>
+                        @endif
+                        
+                        <span class="me-2 @if( $product->quantity < 10 ) text-white @else text-success  @endif" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
+                        <span class="me-2 @if( $product->quantity < 10 ) text-white @else text-danger  @endif" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
+                      </td>
+                    </form>
                   </tr>
                 @endforeach
               </tbody>

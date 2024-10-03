@@ -9,7 +9,7 @@
            <div class="col-auto">
              <a class="text-decoration-none" href="/">
                <div class="d-flex align-items-center"><img src="{{asset('assets/img/icons/logo.png')}}" alt="phoenix" width="27" />
-                 <p class="logo-text ms-2">phoenix</p>
+                 <p class="logo-text ms-2">KStore</p>
                </div>
              </a>
            </div>

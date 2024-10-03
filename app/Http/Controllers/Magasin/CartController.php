@@ -91,7 +91,7 @@ class CartController extends Controller
 
         $product = Product::where('id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->first();
 
-        $cart = Cart::add($product->id, $product->name, $qty, $product->price,array('size' => $size,'color' => $color))
+        Cart::add($product->id, $product->name, $qty, $product->price,array('size' => $size,'color' => $color))
             ->associate('App\Models\Magasin\Product');
             // array('size' => $request->size,'color' => $request->color)
 
@@ -145,7 +145,11 @@ class CartController extends Controller
     {
         Cart::remove($rowId);
         Toastr::success('Votre produit a bien été supprimé dans le panier', 'Suppresion de produit', ["positionClass" => "toast-top-right"]);
-        return back();
+        if (Auth::guard('magasin')->user()) {
+            return redirect()->route(('magasin.home'));
+        }else {
+            return redirect()->route(('agent.home'));
+        }
     }
 
 

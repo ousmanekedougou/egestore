@@ -111,7 +111,7 @@
       </div>
       <div class="tab-content" id="profileTabContent">
         <div class="tab-pane fade show active" id="tab-personal-info" role="tabpanel" aria-labelledby="personal-info-tab">
-          <form method="POST" action="{{ route('magasin.profile.update',0) }}">
+          <form method="POST" action="{{ route('magasin.profile.update',Auth::guard('magasin')->user()->id) }}">
             @csrf
             @method('PUT')
             <div class="row g-3 mb-5">
