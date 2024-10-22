@@ -3,6 +3,8 @@
 
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
     @include('layouts.head')
+    @section('headSection')
+    @show
 <body>
     
     <main class="main" id="top">
@@ -37,6 +39,9 @@
     </main>
      
         @include('layouts.js')
+
+    @section('footerSection')
+    @show
 
 </body>
 </html>

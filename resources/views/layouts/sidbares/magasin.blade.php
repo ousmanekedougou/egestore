@@ -93,7 +93,7 @@
                         </div><!-- parent pages-->
                     @endforeach
                 </li>
-
+                {{--
                 <li class="nav-item">
                     <!-- label-->
                     <p class="navbar-vertical-label">Location par catégorie</p>
@@ -124,6 +124,7 @@
                         </div><!-- parent pages-->
                     @endforeach
                 </li>
+                --}}
             </ul>
         </div>
     </div>

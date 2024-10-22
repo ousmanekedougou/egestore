@@ -1,5 +1,4 @@
 @extends('layouts.app',['title' => 'agents'])
-
 @section('main-content')
   <div class="content">
 

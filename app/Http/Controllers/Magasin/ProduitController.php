@@ -37,17 +37,25 @@ class ProduitController extends Controller
      */
     public function store(Request $request)
     {
+        // $colors = explode(",",$request->colors);
+        // dd($colors);
         
         $this->validate($request,[
             'name' => 'required|string|unique:products',
             'reference' => 'required|string',
             'price' => 'required|numeric',
             'quantity' => 'required|numeric',
+            'qty_alert' => 'required|numeric',
+            'exp_date' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp', 
+            // 'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp', 
             'desc' => 'required|string',
             'visible' => 'required|boolean',
+            'promot' => 'boolean',
         ]);
+
+        
+        
 
 
         $imageName = '';
@@ -56,32 +64,32 @@ class ProduitController extends Controller
             $imageName = $request->image->store('public/Products');
         }
 
-        $data = [];
-        if ($request->hasFile('images')) {
-            foreach ($request->images as $image) {
-                $imageStore = $image->store('Products/ImageSimilaires');
-                $data[] = $imageStore;
-            }
-        }
+        // $data = [];
+        // if ($request->hasFile('images')) {
+        //     foreach ($request->images as $image) {
+        //         $imageStore = $image->store('Products/ImageSimilaires');
+        //         $data[] = $imageStore;
+        //     }
+        // }
 
-        $sizes = [];
-        if ($request->sizes) {
-            foreach ($request->sizes as $size) {
-                $sizes['name'][] = $size;
-            }
-        }
+        // $sizes = [];
+        // if ($request->sizes) {
+        //     foreach ($request->sizes as $size) {
+        //         $sizes['name'][] = $size;
+        //     }
+        // }
 
         $colors = null;
         $sizes = null;
 
         if ($request->colors != '') {
-            $colors = $request->colors;
+            $colors = explode(",",$request->colors);
         }else {
             $colors = null;
         }
 
         if ($request->sizes != '') {
-            $sizes = $request->sizes;
+            $sizes = explode(",",$request->sizes);
         }else {
             $sizes = null;
         }
@@ -92,13 +100,16 @@ class ProduitController extends Controller
             'reference' => $request->reference,
             'price' => $request->price,
             'quantity' => $request->quantity,
+            'qty_alert' => $request->qty_alert,
             'stock' => $request->quantity,
-            'desc' => $request->desc,
             'image' => $imageName,
-            'images' => json_encode($data),
-            'visible' => $request->visible,
+            'exp_date' => $request->exp_date,
             'colors' => serialize($colors),
             'sizes' => serialize($sizes),
+            'desc' => $request->desc,
+            // 'images' => json_encode($data),
+            'promot' => $request->promot,
+            'visible' => $request->visible,
             'magasin_id' => AuthMagasinAgent(),
             'sub_category_id' => $request->sub_category_id
         ]);
@@ -129,10 +140,21 @@ class ProduitController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        
+
+        // dd($sizes);
         $this->validate($request,[
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
         ]);
+
+        $colors = null;
+        $sizes = null;
+        $promot = null;
+        $spaceColor = str_replace(' ', '', $request->colors);
+        $spaceSize = str_replace(' ', '', $request->sizes);
+        $getcolors = explode(",",$spaceColor);
+        $getsizes = explode(",",$spaceSize);
 
         $product = Product::where('id',$id)->where('magasin_id',AuthMagasinAgent())->first();
 
@@ -156,20 +178,27 @@ class ProduitController extends Controller
             $imagesUpdate = $product->images;
         }
 
-        $colors = null;
-        $sizes = null;
+        
 
         if ($request->colors != '') {
-            $colors = serialize($request->colors);
+            $colors = serialize($getcolors);
         }else {
             $colors = $product->colors;
         }
 
         if ($request->sizes != '') {
-            $sizes = serialize($request->sizes);
+            $sizes = serialize($getsizes);
         }else {
             $sizes = $product->sizes;
         }
+
+        if ($request->promot != null) {
+            $promot = 1;
+        }else {
+            $promot = 0;
+        }
+
+
 
         $product->update([
             'name' => $request->name,
@@ -178,10 +207,13 @@ class ProduitController extends Controller
             'price' => $request->price,
             'quantity' => $request->quantity,
             'stock' => $request->quantity,
+            'qty_alert' => $request->qty_alert,
             'desc' => $request->desc,
             'image' => $imageName,
             'images' => $imagesUpdate,
             'visible' => $request->visible,
+            'promot' => $promot,
+            'exp_date' => $request->exp_date,
             'colors' => $colors,
             'sizes' => $sizes,
             'magasin_id' => AuthMagasinAgent(),

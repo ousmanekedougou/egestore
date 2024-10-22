@@ -44,7 +44,7 @@ class AgentController extends Controller
             'email' => 'required|string|email|unique:agents',
             'phone' => 'required|numeric|unique:agents',
         ]);
-
+        
         Agent::create([
             'name' => $request->name,
             'email' => $request->email,

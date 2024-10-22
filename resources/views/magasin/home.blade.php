@@ -19,7 +19,15 @@
           </div>
           <div class="row align-items-center g-4">
             <div class="col-12 col-md-auto">
-              <div class="d-flex align-items-center"><span class="fa-stack" style="min-height: 46px;min-width: 46px;"><span class="fa-solid fa-square fa-stack-2x dark__text-opacity-50 text-success-light" data-fa-transform="down-4 rotate--10 left-4"></span><span class="fa-solid fa-circle fa-stack-2x stack-circle text-stats-circle-success" data-fa-transform="up-4 right-3 grow-2"></span><span class="fa-stack-1x fa-solid fa-star text-success " data-fa-transform="shrink-2 up-8 right-6"></span></span>
+              <div class="d-flex align-items-center"><span class="fa-stack" style="min-height: 46px;min-width: 46px;"><span class="fa-solid fa-square fa-stack-2x dark__text-opacity-50 text-primary-light" data-fa-transform="down-4 rotate--10 left-4"></span><span class="fa-solid fa-circle fa-stack-2x stack-circle text-stats-circle-primary" data-fa-transform="up-4 right-3 grow-2"></span><span class="fa-stack-1x fa-solid fa-user-circle text-primary " data-fa-transform="shrink-2 up-8 right-6"></span></span>
+                <div class="ms-3">
+                  <h4 class="mb-0">{{ $clients }} Client(s)</h4>
+                  <p class="text-body-secondary fs-9 mb-0">Awating processing</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-auto">
+              <div class="d-flex align-items-center"><span class="fa-stack" style="min-height: 46px;min-width: 46px;"><span class="fa-solid fa-square fa-stack-2x dark__text-opacity-50 text-success-light" data-fa-transform="down-4 rotate--10 left-4"></span><span class="fa-solid fa-circle fa-stack-2x stack-circle text-stats-circle-success" data-fa-transform="up-4 right-3 grow-2"></span><span class="fa-stack-1x fa-solid fa-shopping-bag text-success " data-fa-transform="shrink-2 up-8 right-6"></span></span>
                 <div class="ms-3">
                   <h4 class="mb-0">{{ $commandes }} Commande(s)</h4>
                   <p class="text-body-secondary fs-9 mb-0">Awating processing</p>
@@ -50,13 +58,11 @@
 
     <div id="products" data-list='{"valueNames":["product","price","category","tags","vendor","time"],"page":10,"pagination":true}'>
       <div class="mb-4">
-        <div class="d-flex flex-wrap gap-3">
-          <div class="search-box">
-            <form class="position-relative">
-              <input class="form-control search-input search" type="search" placeholder="Rechercher un produit" aria-label="Search" />
-              <span class="fas fa-search search-box-icon"></span>
-            </form>
-          </div>
+        <div class="search-box">
+          <form class="position-relative">
+            <input class="form-control search-input search" type="search" placeholder="Rechercher un produit" aria-label="Search" />
+            <span class="fas fa-search search-box-icon"></span>
+          </form>
         </div>
       </div>
       <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis border-top border-bottom border-translucent position-relative top-1">
@@ -76,7 +82,7 @@
             </thead>
             <tbody class="list" id="products-table-body">
               @foreach($products as $product)
-                <tr class="position-static @if($product->quantity > 0 && $product->quantity < 10 ) bg-warning  @elseif($product->quantity == 0) bg-danger @endif">
+                <tr class="position-static @if($product->quantity <= $product->qty_alert ) bg-warning  @elseif($product->quantity == 0) bg-danger @endif">
                   <td class="align-middle white-space-nowrap py-0"><a class="d-block border border-translucent rounded-2" href="{{ route('magasin.produit.edit',$product->id) }}"><img src="{{Storage::url($product->image)}}" alt="" width="53" /></a></td>
                   <td class="product align-middle ps-4"><a class="fw-semibold line-clamp-3 mb-0 @if( $product->quantity < 10 ) text-white @endif" href="{{ route('magasin.produit.edit',$product->slug) }}">{{ $product->name }}</a></td>
                   <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->reference }}</td>
@@ -94,7 +100,7 @@
                      </td>
                      <td class="align-middle review ps-3">
                        @if($product->colors != '')
-                       <select class="form-select form-select-sm w-auto p-1" aria-label="Default select example .form-select-sm" name="color">
+                       <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label="Default select example .form-select-sm" name="color">
                        <option>Choisir</option>
                          @foreach(unserialize($product->colors) as $colorGet)
                            <option value="{{ $colorGet }}"> {{$colorGet}} </option>
@@ -107,7 +113,7 @@
 
                      <td class="align-middle review ps-3" >
                        @if($product->sizes != '')
-                       <select class="form-select form-select-sm w-auto p-1" aria-label=".form-select-sm example" name="size">
+                       <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label=".form-select-sm example" name="size">
                        <option>Choisir</option>
                          @foreach(unserialize($product->sizes) as $sizeGet)
                            <option value="{{ $sizeGet }}"> {{$sizeGet}} </option>
@@ -152,6 +158,10 @@
         </div>
       </div>
     </footer>
-    
   </div>
 @endsection
+
+
+
+
+

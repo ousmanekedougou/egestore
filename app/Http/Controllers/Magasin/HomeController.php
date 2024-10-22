@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Magasin;
 use App\Http\Controllers\Controller;
+use App\Models\Magasin\Client;
 use App\Models\Magasin\Commande;
 use App\Models\Magasin\Order;
 use App\Models\Magasin\Product;
@@ -32,6 +33,7 @@ class HomeController extends Controller
         $commandes = Order::where('magasin_id',AuthMagasinAgent())->where('status','!=',1)->count();
         $bons = Commande::where('magasin_id',AuthMagasinAgent())->where('type',0)->where('status','!=',1)->count();
         $pro_format = Commande::where('magasin_id',AuthMagasinAgent())->where('type',1)->where('status','!=',1)->count();
+        $clients = Client::where('magasin_id',AuthMagasinAgent())->count();
 
         $paimentNotification = null;
         $isPaymentDay = false;
@@ -55,6 +57,7 @@ class HomeController extends Controller
             'commandes'           => $commandes,
             'bons'                => $bons,
             'pro_format'          => $pro_format,
+            'clients'             => $clients,
         ]);
     }
 }

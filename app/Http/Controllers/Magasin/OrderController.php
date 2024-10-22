@@ -36,8 +36,9 @@ class OrderController extends Controller
      */
     public function create()
     {
-        
+        return view('magasin.nouvelle.index');
     }
+
 
     public function pdf($slug)
     {
@@ -247,9 +248,6 @@ class OrderController extends Controller
             $name = $request->name;
             $phone = $request->phone;
         }
-
-        // dd($type);
-        
 
         $products = [];
         $i = 0;

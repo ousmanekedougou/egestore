@@ -12,39 +12,44 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->string('slug')->unique();
-            $table->string('image');
-            $table->text('images')->nullable();
-            $table->integer('price');
-            $table->integer('quantity');
-            $table->integer('stock')->nullable();
-            $table->text('colors')->nullable();
-            $table->text('sizes')->nullable();
-            $table->string('reference');
-            $table->boolean('visible')->default(false);
-            $table->text('desc');
-            
-            $table
-              ->foreignId("magasin_id")
-              ->references("id")
-              ->on("magasins")
-              ->cascadeOnDelete();
+          $table->id();
+          $table->string('name')->unique();
+          $table->string('slug')->unique();
+          $table->string('image');
+          $table->text('images')->nullable();
+          $table->integer('price_achat')->nullable();
+          $table->integer('price');
+          $table->integer('price_revenu')->nullable();
+          $table->integer('quantity');
+          $table->integer('qty_alert');
+          $table->integer('stock')->nullable();
+          $table->text('colors')->nullable();
+          $table->text('sizes')->nullable();
+          $table->string('reference');
+          $table->boolean('visible')->default(false);
+          $table->boolean('promot')->default(false);
+          $table->text('desc')->nullable();
+          $table->date('exp_date')->nullable();
+          
+          $table
+            ->foreignId("magasin_id")
+            ->references("id")
+            ->on("magasins")
+            ->cascadeOnDelete();
 
-            $table
-              ->foreignId("order_id")
-              ->references("id")
-              ->on("orders")
-              ->cascadeOnDelete()->nullable();
-              
-            $table
-              ->foreignId("sub_category_id")
-              ->references("id")
-              ->on("sub_categories")
-              ->cascadeOnDelete();
-            $table->rememberToken();
-            $table->timestamps();
+          $table
+            ->foreignId("order_id")
+            ->references("id")
+            ->on("orders")
+            ->cascadeOnDelete()->nullable();
+            
+          $table
+            ->foreignId("sub_category_id")
+            ->references("id")
+            ->on("sub_categories")
+            ->cascadeOnDelete();
+          $table->rememberToken();
+          $table->timestamps();
         });
     }
 
