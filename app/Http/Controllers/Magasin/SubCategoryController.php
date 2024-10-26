@@ -40,11 +40,16 @@ class SubCategoryController extends Controller
     {
         $this->validate($request,[
             'name' => 'required|string|unique:sub_categories',
-            'type' => 'required|numeric',
+            // 'type' => 'required|numeric',
             'visible' => 'required|boolean',
         ]);
 
-        SubCategory::create(['name' => $request->name,'type' => $request->type,'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),'visible' => $request->visible,'category_id' => $request->category_id]);
+        SubCategory::create([
+            'name' => $request->name,
+            // 'type' => $request->type,
+            'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
+            'visible' => $request->visible,
+            'category_id' => $request->category_id]);
 
         Toastr::success('Votre sous-categorie a bien été ajouté', 'Ajout de sous-categories', ["positionClass" => "toast-top-right"]);
         return back();
@@ -71,7 +76,11 @@ class SubCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        SubCategory::where('id',$id)->update(['name' => $request->name,'type' => $request->type,'visible' => $request->visible,'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name))]);
+        SubCategory::where('id',$id)->update([
+            'name' => $request->name,
+            // 'type' => $request->type,
+            'visible' => $request->visible,
+            'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name))]);
         Toastr::success('Le status de catte sous-categorie a bien été modifié', 'Modification de sous-categories', ["positionClass" => "toast-top-right"]);
         return back();
     }

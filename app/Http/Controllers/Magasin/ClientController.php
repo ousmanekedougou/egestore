@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Magasin\Client;
 use App\Models\Magasin\Magasin;
 use App\Models\Magasin\Order;
+use App\Models\Magasin\Payment;
 use App\Models\User\User;
 use Brian2694\Toastr\Facades\Toastr;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -50,19 +52,19 @@ class ClientController extends Controller
 
         // dd($request->account);
 
-        $amount = null;
+        $depot = null;
         $credit = null;
         $account = null;
 
         if($request->account == 1){
-            $amount = $request->amount;
+            $depot = $request->amount;
             $account = 1;
         }elseif($request->account == 2){
             $credit = $request->amount;
             $account = 2;
         }elseif ($request->account == 3 || $request->account == null) {
             $credit = null;
-            $amount = null;
+            $depot = null;
             $account = 3;
         }
         
@@ -72,7 +74,8 @@ class ClientController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->email)),
-            'amount' => $amount,
+            'amount' => null,
+            'depot' => $depot,
             'credit' => $credit,
             'account' => $account,
             'magasin_id' => AuthMagasinAgent(),
@@ -123,29 +126,39 @@ class ClientController extends Controller
         $amount = null;
         $credit = null;
         $account = null;
-
+        $depot = null;
+        
         if($client->account == 2){
             if ($request->amount <= $client->credit) {
                 if ($client->credit > $client->amount) {
                     $amount = $client->amount + $request->amount;
                     $account = 2;
                     $credit = $client->credit;
+                    Payment::create(['client_id' => $id,'magasin_id' => AuthMagasinAgent(),'date' => Carbon::now(),'amount' => $request->amount]);
                 }
             }else {
                 Toastr::error('Ce montant est superieur a la somme acrediter', 'Surplus du montant', ["positionClass" => "toast-top-right"]);
                 return back();
             }
         }elseif ($client->account == 3) {
-            $amount = $request->amount;
-            $account = 1;
-            $credit = null;
+            if ($request->account == 1) {
+                // dd($request->account);
+                $depot = $request->amount;
+                $account = 1;
+                $credit = null;
+            }elseif($request->account == 2) {
+                $credit = $request->amount;
+                $account = 2;
+                $depot = null;
+            }else{
+                $account = 3;
+                $depot = null;
+                $credit = null;
+                $amount = null;
+            }
         }
 
-        // $account = 3;
-        // if($request->amount != null){
-        //     $amount = $request->amount;
-        //     $account = 1;
-        // }
+        // dd($account);
 
 
         $client->update([
@@ -153,20 +166,22 @@ class ClientController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'amount' => $amount,
+            'depot' => $depot,
             'credit' => $credit,
             'account' => $account,
         ]);
 
+
         if ($client->account == 2 && $client->credit == $client->amount) {
-            $getOrder = Order::where('client_id',$client->id)
+            Order::where('client_id',$client->id)
                 ->where('magasin_id',AuthMagasinAgent())
                 ->where('status',2)
-                ->where('type',2)->first();
-            $getOrder->update(['status' => 1 , 'type' => 1]);
-        }
+                ->where('type',2)->update(['status' => 1 , 'type' => 1]);
 
-        if ($client->credit == $client->amount) {
             $client->update(['account' => 3,'amount' => null,'credit' => null]);
+            Payment::where('client_id',$client->id)
+                ->where('magasin_id',AuthMagasinAgent())->delete();
+
         }
 
         Toastr::success('Votre client a bien été modifié', 'Modification de clients', ["positionClass" => "toast-top-right"]);

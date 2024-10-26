@@ -16,6 +16,8 @@ class Client extends Model
         'slug',
         'amount',
         'credit',
+        'payments',
+        'depot',
         'account',
         'magasin_id',
     ];
@@ -26,6 +28,10 @@ class Client extends Model
 
     public function getCredit(){
         return number_format($this->credit,2, ',','.'). ' CFA';
+    }
+
+    public function getDepot(){
+        return number_format($this->depot,2, ',','.'). ' CFA';
     }
 
     public function magasin()
@@ -41,6 +47,11 @@ class Client extends Model
     public function commandes()
     {
         return $this->hasMany(Commande::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 
     public function getOrderCount($id){

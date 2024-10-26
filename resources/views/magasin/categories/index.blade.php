@@ -91,22 +91,22 @@
                       </span>
                   @enderror
               </div>
+              {{-- 
+                <div class="mb-3 text-start">
+                  <label class="form-label" for="type">Selecetionner le type de cette categorie</label>
+                  <select class="form-select @error('type') is-invalid @enderror" name="type" aria-label="Default select example">
+                    <option selected=""></option>
+                    <option value="1">Commercial</option>
+                    <option value="2">Location de materiel</option>
+                  </select>
 
-              <div class="mb-3 text-start">
-                <label class="form-label" for="type">Selecetionner le type de cette categorie</label>
-                <select class="form-select @error('type') is-invalid @enderror" name="type" aria-label="Default select example">
-                  <option selected=""></option>
-                  <option value="1">Commercial</option>
-                  <option value="2">Location de materiel</option>
-                </select>
-
-                @error('type')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-              </div>
-
+                  @error('type')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+              --}}
               <div class="mb-3 text-start">
                 <label class="form-label" for="email">Status de la categories</label> <br>
                 <div class="form-check form-check-inline">
@@ -152,21 +152,21 @@
                       </span>
                   @enderror
               </div>
+              {{--  
+                <div class="mb-3 text-start">
+                  <label class="form-label" for="type">Selecetionner le type de cette categorie</label>
+                  <select class="form-select @error('type') is-invalid @enderror" name="type" aria-label="Default select example">
+                    <option value="1" @if($category->type == 1) selected @endif>Commercial</option>
+                    <option value="2" @if($category->type == 2) selected @endif>Location de materiel</option>
+                  </select>
 
-              <div class="mb-3 text-start">
-                <label class="form-label" for="type">Selecetionner le type de cette categorie</label>
-                <select class="form-select @error('type') is-invalid @enderror" name="type" aria-label="Default select example">
-                  <option value="1" @if($category->type == 1) selected @endif>Commercial</option>
-                  <option value="2" @if($category->type == 2) selected @endif>Location de materiel</option>
-                </select>
-
-                @error('type')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-              </div>
-
+                  @error('type')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+              --}}
               <div class="mb-3 text-start">
                 <label class="form-label" for="email">Status de la categories</label> <br>
                 <div class="form-check form-check-inline">

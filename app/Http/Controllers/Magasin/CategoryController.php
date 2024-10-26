@@ -40,11 +40,16 @@ class CategoryController extends Controller
     {
         $this->validate($request,[
             'name' => 'required|string|unique:categories',
-            'type' => 'required|numeric',
+            // 'type' => 'required|numeric',
             'visible' => 'required|boolean',
         ]);
 
-        Category::create(['name' => $request->name,'type' => $request->type,'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),'visible' => $request->visible,'magasin_id' => AuthMagasinAgent()]);
+        Category::create([
+            'name' => $request->name,
+            // 'type' => $request->type,
+            'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
+            'visible' => $request->visible,
+            'magasin_id' => AuthMagasinAgent()]);
 
         Toastr::success('Votre categorie a bien été ajouté', 'Ajout de categories', ["positionClass" => "toast-top-right"]);
         return back();
@@ -74,7 +79,7 @@ class CategoryController extends Controller
         Category::where('id',$id)->where('magasin_id',AuthMagasinAgent())
         ->update(
             ['name' => $request->name,
-            'type' => $request->type,
+            // 'type' => $request->type,
             'visible' => $request->visible,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name))
             ]);

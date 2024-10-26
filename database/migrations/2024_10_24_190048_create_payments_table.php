@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clients', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->integer('phone')->unique();
-            $table->string('slug')->unique();
-            $table->integer('account')->nullable();
+            $table->date('date')->nullable();
             $table->integer('amount')->nullable();
-            $table->integer('depot')->nullable();
-            $table->integer('credit')->nullable();
+            $table
+              ->foreignId("client_id")
+              ->references("id")
+              ->on("clients")
+              ->cascadeOnDelete()->nullable();
             $table
               ->foreignId("magasin_id")
               ->references("id")
@@ -35,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clients');
+        Schema::dropIfExists('payments');
     }
 };

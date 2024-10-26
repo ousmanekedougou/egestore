@@ -36,6 +36,7 @@
                   <th class="sort align-middle text-end" scope="col" data-sort="total-spent" style="width:15%">COMMANDES</th>
                   <th class="sort align-middle ps-7" scope="col" data-sort="city" style="width:25%;">VILLES</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">STATUS</th>
+                  <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">MONTANT</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">MT-PASSIF</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-seen" style="width:10%;min-width: 150px;">MT-CREDITS</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">ACTIONS</th>
@@ -45,7 +46,7 @@
                 @foreach($clients as $client)
                 <tr class="hover-actions-trigger btn-reveal-trigger position-static">
                   <td class="customer align-middle white-space-nowrap pe-5"><a class="d-flex align-items-center text-body-emphasis" href="{{ route('magasin.client.edit',$client->id) }}">
-                      <div class="avatar avatar-m"><img class="rounded-circle" src="{{asset('assets/img/team/avatar.webp')}}" alt="" /></div>
+                      <div class="avatar avatar-m"><img class="rounded-circle" src="https://ui-avatars.com/api/?name={{$client->name}}" alt="" /></div>
                       <p class="mb-0 ms-3 text-body-emphasis fw-bold">{{ $client->name }}</p>
                     </a></td>
                   <td class="email align-middle white-space-nowrap pe-5"><a class="fw-semibold" href="mailto:{{$client->email}}">{{$client->email}}</a></td>
@@ -68,6 +69,7 @@
                     </span>
                   </td>
                   <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">{{$client->getAmount()}}</td>
+                  <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">{{$client->getDepot()}}</td>
                   <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">{{$client->getCredit()}}</td>
                   <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
                     <span class="me-2 text-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $client->id }}" aria-controls="offcanvasRight-{{ $client->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
@@ -183,7 +185,76 @@
             <div class="offcanvas-header">
               <h5 id="offcanvasRightLabel">Modification d'un client</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
+            
             <div class="offcanvas-body">
+              <div class="row mb-3">
+                <div class="col-xl-12 col-xxl-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row align-items-center g-3 mb-3">
+                        <div class="col-12 col-sm-auto flex-1">
+                          <div class="d-md-flex d-xl-block align-items-center justify-content-between mb-5">
+                            <div class="d-flex align-items-center mb-3 mb-md-0 mb-xl-3">
+                              <div class="avatar avatar-xl me-3"><img class="rounded-circle" src="https://ui-avatars.com/api/?name={{$client->name}}" alt="" /></div>
+                              <div>
+                                <h5>{{ $client->name }}</h5>
+                                <div style="width: 100%;">
+                                  <span class="badge badge-phoenix @if($client->account == 1) badge-phoenix-info @elseif($client->account == 2) badge-phoenix-warning @else badge-phoenix-success @endif mt-2 me-2">
+                                    @if($client->account == 1) Compte actif @elseif($client->account == 2) Compte passif @else Compte neutre @endif
+                                  </span>
+                                  <span class="badge badge-phoenix badge-phoenix-secondary">
+                                  @if($client->account == 1) Depot : {{ $client->getDepot() }} @elseif($client->account == 2) Credit  : {{ $client->getCredit() }} @else Montant  : {{ $client->getAmount() }} @endif
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          @if ($client->account == 2)
+                          <div class="progress mb-2" style="height:5px">
+                            <div class="progress-bar bg-primary-lighter" data-bs-theme="light" role="progressbar" style="width: 40%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                          <div class="d-flex align-items-center justify-content-between">
+                            <p class="mb-0"> Montant @if($client->account == 1) actif depenser @elseif($client->account == 2) des reglages @endif</p>
+                            <div>
+                              <span class="d-inline-block lh-sm me-1" data-feather="money" style="height:16px;width:16px;"></span>
+                              <span class="d-inline-block lh-sm"> {{ $client->getAmount() }}</span>
+                            </div>
+                          </div>
+
+                          <div class="d-flex align-items-center justify-content-between bg-primary-lighter mt-3 p-1">
+                            <p class="mb-0"> Il vous reste a paye </p>
+                            <div>
+                              <span class="d-inline-block lh-sm me-1" data-feather="money" style="height:16px;width:16px;"></span>
+                              <span class="d-inline-block lh-sm"> {{ $client->credit - $client->amount }}</span>
+                            </div>
+                          </div>
+                          @endif
+                        </div>
+                      </div>
+                      @if ($client->account == 2)
+                      <div class="table-responsive scrollbar">
+                        <table class="reports-details-chart-table table table-sm fs-9 mb-0">
+                          <thead>
+                            <tr>
+                              <th class="align-middle pe- text-body-tertiary fw-bold fs-10 text-uppercase text-nowrap" scope="col" style="width:35%;">Date de paiement</th>
+                              <th class="align-middle text-end ps-4 text-body-tertiary fw-bold fs-10 text-uppercase" scope="col" style="width:30%;">Montant payer</th>
+                            </tr>
+                          </thead>
+                          <tbody class="list" id="report-data-body">
+                            @foreach ($client->payments as $payment)
+                              <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                                <td class="align-middle white-space-nowrap fw-semibold text-body-highlight py-2">{{ date("d-m-Y", strtotime($payment->date)) }}</td>
+                                <td class="align-middle text-end white-space-nowrap ps-4 fw-semibold text-body-highlight"><span class="badge badge-phoenix badge-phoenix-info">{{ $payment->getAmount() }}</span></td>
+                              </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                      </div>
+                      @endif
+                    </div>
+                  </div>
+                </div>
+              </div>
               <form method="POST" action="{{ route('magasin.client.update',$client->id) }}">
                 @csrf
                 @method('PUT')
@@ -222,19 +293,38 @@
 
                 <div class="mb-3 text-start">
                   @if($client->account == 2)
-                    <label class="form-label" for="amount">Entrer la tranche de reglage</label>
-                    <input id="amount" type="number" class="form-control @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount')  }}" placeholder="Entrer la tranche de reglage" required autocomplete="amount">
+                    <label class="form-label mb-1" for="amount">Entrer la tranche de reglage</label>
+                    <input id="amount" type="number" class="form-control  @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount')  }}" placeholder="Entrer la tranche de reglage" required autocomplete="amount">
                   @elseif($client->account == 3)
-                    <label class="form-label" for="amount">Montant a deposer (facutatif)</label>
-                    <input id="amount" type="number" class="form-control @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount') }}" placeholder="Montant a deposer (facutatif)" required autocomplete="amount">
-                  @endif
-
-                  @error('amount')
-                      <span class="invalid-feedback" role="alert">
+                    <div class="mb-2">
+                      <label class="form-label" for="email">Status du montant du compte</label> <br>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input text-success @error('account') is-invalid @enderror" id="inlineRadioEditA-{{ $client->id }}" type="radio" name="account" value=" 1 ">
+                        <label class="form-check-label text-success mt-1" for="inlineRadioEditA-{{ $client->id }}">Actif</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input text-warning @error('account') is-invalid @enderror" id="inlineRadioEditB-{{ $client->id }}" type="radio" name="account" value=" 2 ">
+                        <label class="form-check-label text-warning mt-1" for="inlineRadioEditB-{{ $client->id }}">Passif</label>
+                      </div>
+                      @error('account')
+                        <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                    </div>
+                    
+                    <div class="mb-3 text-start">
+                      <label class="form-label" for="amount">Montant Actif/passif a deposer</label>
+                      <input id="amount" type="numeric" class="form-control @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount') }}" placeholder="Montant actif/passif a deposer" autocomplete="amount">
+                      
+                      @error('amount')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
                       </span>
-                  @enderror
-                  </div>
+                      @enderror
+                    </div>
+                  @endif
+                </div>
 
                 <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer les modification</button>
               </form>
@@ -284,8 +374,6 @@
 
 <script>
    function enableBrand(answer){
-        
-        // declarartion de naissance
         if (answer.value == 1 || answer.value == 2) {
             document.getElementById('clientNone').classList.remove('d-none')
         }else{
