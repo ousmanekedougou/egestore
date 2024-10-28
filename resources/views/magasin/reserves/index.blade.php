@@ -5,7 +5,7 @@
   <div class="mb-9">
     <div class="row g-3 mb-4">
       <div class="col-auto">
-        <h2 class="mb-0">Commandes sous pro-format</h2>
+        <h2 class="mb-0">Reservations sous pro-format</h2>
       </div>
     </div>
     <div id="orderTable" data-list='{"valueNames":["order","total","customer","payment_status","fulfilment_status","delivery_type","date"],"page":10,"pagination":true}'>
@@ -13,7 +13,7 @@
         <div class="row g-3">
           <div class="col-auto">
             <div class="search-box">
-              <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Rechercer des commandes pro-format" aria-label="Search" />
+              <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Rechercer des reservations pro-format" aria-label="Search" />
                 <span class="fas fa-search search-box-icon"></span>
               </form>
             </div>
@@ -33,13 +33,13 @@
                 <th class="white-space-nowrap fs-9 align-middle ps-0" style="width:26px;">
                   <div class="form-check mb-0 fs-8"><input class="form-check-input" id="checkbox-bulk-order-select" type="checkbox" data-bulk-select='{"body":"order-table-body"}' /></div>
                 </th>
-                <th class="sort white-space-nowrap align-middle pe-3" scope="col" data-sort="order" style="width:5%;">COMMANDES</th>
+                <th class="sort white-space-nowrap align-middle pe-3" scope="col" data-sort="order" style="width:5%;">Nº RESERVES</th>
                 <th class="sort align-middle text-center" scope="col" data-sort="total" style="width:100%;">TOTAL</th>
                 <th class="sort align-middle ps-8" scope="col" data-sort="customer" style="width:28%; min-width: 250px;">CLIENTS</th>
                 <th class="sort align-middle text-start pe-3" scope="col" data-sort="fulfilment_status" style="width:20%; min-width: 100px;">TELEPHONE</th>
                 <th class="sort align-middle pe-3 text-center" scope="col" data-sort="payment_status" style="width:12%; min-width: 200px;">BON DE COMMANDE</th>
                 <th class="sort align-middle pe-3" scope="col" data-sort="payment_status" style="width:10%;">STATUS</th>
-                <th class="sort align-middle text-start pe-3" scope="col" data-sort="delivery_type" style="width:30%;">LIVRAISON</th>
+                <th class="sort align-middle text-start pe-3" scope="col" data-sort="delivery_type" style="width:30%;">METHODES</th>
                 <th class="sort align-middle text-center pe-3" scope="col" data-sort="date">DATE</th>
                 <th class="sort align-middle text-end pe-0" scope="col" data-sort="date">ACTIONS</th>
               </tr>
@@ -76,7 +76,17 @@
                       
                     </span>
                   </td>
-                  <td class="delivery_type align-middle white-space-nowrap text-body fs-9 text-start">Cash on delivery</td>
+                  <td class="delivery_type align-middle white-space-nowrap text-body fs-9 text-start">
+                    @if (1 + 1 == true)
+                      Wave
+                    @elseif (1 - 1 == true)
+                      Orange Money
+                    @elseif (1 * 1 == 2)
+                      Cache
+                    @else
+                      NULL
+                    @endif
+                  </td>
                   <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{date('d-m-Y', strtotime( $reserve->date ))}}</td>
                   <td class=" align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">
                     @if($reserve->status == 1)
@@ -191,13 +201,13 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Status de la commande</h5><button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><svg class="svg-inline--fa fa-xmark fs-9" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path></svg><!-- <span class="fas fa-times fs-9"></span> Font Awesome fontawesome.com --></button>
+              <h5 class="modal-title" id="exampleModalLabel">Status de la reservation</h5><button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><svg class="svg-inline--fa fa-xmark fs-9" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path></svg><!-- <span class="fas fa-times fs-9"></span> Font Awesome fontawesome.com --></button>
             </div>
             <form action="{{ route('magasin.reserve.update',$reserve->id) }}" method="post">
               @csrf
               {{ method_field('PUT') }}
               <div class="modal-body">
-                <p class="text-body-tertiary lh-lg mb-3"> Commande Nº {{ $reserve->order }} de  {{$reserve->name}} </p>
+                <p class="text-body-tertiary lh-lg mb-3"> Reservation Nº {{ $reserve->order }} de  {{$reserve->name}} </p>
                 <p class="text-body-tertiary lh-lg mb-3">
                   <h6 class="mb-2">Selectionner un status</h6>
                   <select class="form-select mb-4 @error('status') is-invalid @enderror" name="status" id="status"aria-label="delivery type">
@@ -211,6 +221,26 @@
                   </span>
                   @enderror
                 </p>
+                <div class="mb-3 text-start">
+                  <label class="form-label" for="email">Methode de paiement</label> <br>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input text-primary @error('methode') is-invalid @enderror" @if($reserve->methode == 1) checked="" @endif id="inlineRadioA-{{ $reserve->id }}" type="radio" name="methode" value=" 1 ">
+                    <label class="form-check-label text-primary" for="inlineRadioA-{{ $reserve->id }}" style="margin-top: 2px;">Wave</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input text-warning @error('methode') is-invalid @enderror" @if($reserve->methode == 2) checked="" @endif id="inlineRadioB-{{ $reserve->id }}" type="radio" name="methode" value=" 0 ">
+                    <label class="form-check-label text-warning" for="inlineRadioB-{{ $reserve->id }}" style="margin-top: 2px;">Orange Money</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input text-success @error('methode') is-invalid @enderror" @if($reserve->methode == 3) checked="" @endif id="inlineRadioC-{{ $reserve->id }}" type="radio" name="methode" value=" 0 ">
+                    <label class="form-check-label text-success" for="inlineRadioC-{{ $reserve->id }}" style="margin-top: 2px;">Cache</label>
+                  </div>
+                  @error('methode')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
               </div>
               <div class="modal-footer">
                 <button class="btn btn-success" type="submit">Enregistre le status</button>

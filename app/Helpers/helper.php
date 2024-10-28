@@ -56,6 +56,21 @@ if (!function_exists('AuthMagasinAgent')) {
     }
 }
 
+if (!function_exists('AuthLogedNow')) {
+    function AuthLogedNow()
+    {
+        $auth = null;
+
+        if (Auth::guard('magasin')->user()) {
+            $auth = Auth::guard('magasin')->user();
+        }elseif (Auth::guard('agent')->user()) {
+            $auth = Auth::guard('agent')->user()->magasin->first();
+        }
+
+        return $auth;
+    }
+}
+
 if (!function_exists('AuthMagasinAgentVisible')) {
     function AuthMagasinAgentVisible()
     {
@@ -131,14 +146,4 @@ if (!function_exists('ProductStockVide')) {
             return Toastr::error('Vous avez ' .$ProductStockVide->count(). ' produits dont le stock est épuisé', 'Produit epuise', ["positionClass" => "toast-top-right"]);
        }
     }
-}
-
-
-if (!function_exists('allColors')){
-
-    function allColors()
-    {
-        return Color::all();
-    }
-
 }
