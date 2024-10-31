@@ -1,5 +1,9 @@
 @extends('layouts.app',['title' => 'affichage des produits'])
-<link href="{{asset('vendors/choices/choices.min.css')}}" rel="stylesheet" />
+@section('headSection')
+  <link href="{{asset('vendors/choices/choices.min.css')}}" rel="stylesheet" />
+  <link href="{{asset('assets/css/bootstrap-tagsinput.css')}}" rel="stylesheet" />
+  <link href="{{asset('vendors/flatpickr/flatpickr.min.css')}}" rel="stylesheet" /> 
+@endsection
 @section('main-content')
 <div class="content">
    
@@ -388,7 +392,8 @@
                 @enderror
             </div>
 
-            <div class="mb-3 text-start">
+            <div class="row mb-3 text-start">
+              <div class="col-lg-6">
                 <label class="form-label" for="reference">Reference du produit</label>
                 <input id="reference" type="text" placeholder="Reference du produit" class="form-control @error('reference') is-invalid @enderror" name="reference" value="{{ old('reference') ?? $product->reference }}" required autocomplete="reference" autofocus>
 
@@ -397,9 +402,8 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-            </div>
-
-            <div class="mb-3 text-start">
+              </div>
+              <div class="col-lg-6">
                 <label class="form-label" for="price">Prix du produit</label>
                 <input id="price" type="numeric" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') ?? $product->price }}" placeholder="Prix du produit" required autocomplete="price">
 
@@ -408,28 +412,79 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
+              </div>
             </div>
-            <div class="mb-3 text-start">
-                <label class="form-label" for="quantity">Quantite du produit</label>
-                <input id="quantity" type="quantity" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') ?? $product->quantity }}" placeholder="Quantite du produit" required autocomplete="quantity">
+            <div class="row mb-3 text-start">
+                <div class="col-lg-6">
+                  <label class="form-label" for="quantity">Quantite du produit</label>
+                  <input id="quantity" type="quantity" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') ?? $product->quantity }}" placeholder="Quantite du produit" required autocomplete="quantity">
 
-                @error('quantity')
+                  @error('quantity')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+                <div class="col-lg-6">
+                  <label class="form-label" for="qty_alert">Quantite d'alerte</label>
+                  <input id="qty_alert" type="qty_alert" class="form-control @error('qty_alert') is-invalid @enderror" name="qty_alert" value="{{ old('qty_alert') ?? $product->qty_alert }}" placeholder="Quantite d'alerte" required autocomplete="qty_alert">
+
+                  @error('qty_alert')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+            </div>
+
+            <div class="row mb-3 text-start">
+              <div class="col-lg-6">
+                <label class="form-label" for="image">Image du produit</label>
+                <img src="{{Storage::url($product->image)}}" alt="" width="38" style="float: right;"/>
+                <input class="form-control @error('image') is-invalid @enderror" id="image" name="image" type="file" value="{{ old('image') ?? $product->image }}"  autocomplete="image"/>
+                @error('image')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-            </div>
+              </div>
+              <div class="col-lg-6">
+                <label class="form-label mb-3" for="datepicker">Date d'expiration</label>
+                <input type="text" id="datepicker" class="form-control datetimepicker @error('exp_date') is-invalid @enderror" name="exp_date" value="{{ old('exp_date') ?? $product->exp_date }}" data-options='{"disableMobile":true,"dateFormat":"d/m/y"}' required autocomplete="exp_date">
 
+                @error('exp_date')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+              </div>
+            </div>
+            @if($product->colors != '')
             <div class="mb-3 text-start">
-              <label class="form-label" for="image">Image du produit</label>
-              <img src="{{Storage::url($product->image)}}" alt="" width="38" />
-              <input class="form-control @error('image') is-invalid @enderror" id="image" name="image" type="file" value="{{ old('image') ?? $product->image }}"  autocomplete="image"/>
-              @error('image')
+              <label class="form-label" for="colors">Modifier les couleurs</label>
+              <input id="colorsUpdate" type="text"  class="form-control colorsUpdate @error('colors') is-invalid @enderror" name="colors" value="@foreach(unserialize($product->colors) as $colorGet) {{ old('colors') ?? $colorGet }},  @endforeach" required autocomplete="colors" autofocus>
+
+              @error('colors')
                   <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
                   </span>
               @enderror
             </div>
+            @endif
+
+
+            @if($product->sizes != '')
+            <div class="mb-3 text-start">
+              <label class="form-label" for="sizes">Modifier les tailles</label>
+              <input id="sizesUpdate" type="text"  class="form-control sizesUpdate @error('sizes') is-invalid @enderror" name="sizes" value="@foreach(unserialize($product->sizes) as $sizeGet) {{ old('sizes') ?? $sizeGet }},  @endforeach" required autocomplete="sizes" autofocus>
+
+              @error('sizes')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+              @enderror
+            </div>
+            @endif
 
             <div class="mb-3 text-start">
               <label class="form-label" for="desc">Description du produit </label>
@@ -441,79 +496,54 @@
               @enderror
             </div>
 
-            @if($product->colors != '')
-              <div class="mb-3 text-start">
-                <label for="organizerMultiple">Couleurs : @foreach(unserialize($product->colors) as $colorGet) <span class="text-primary fs-10 fw-4">{{ $colorGet }},</span> @endforeach</label>
-                <select class="form-select @error('colors') is-invalid @enderror" autocomplete="colors" id="organizerMultiple" name="colors[]" data-choices="data-choices" multiple="multiple" data-options='{"removeItemButton":true,"placeholder":true}'>
-                  <option value="">Sélectionner les couleures pour ce produit</option>
-                  @foreach(allColors() as $color)
-                    <option value="{{ $color->name }}">{{$color->name}} 
-                      <span class="text-danger" data-feather="circle" style="height: 70px; width: 70px;"></span>
-                    </option>
-                  @endforeach
-                </select>
-                @error('colors')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
-            @endif
-
-            @if($product->sizes != '')
-              <div class="mb-4 text-start">
-                <label for="organizerMultiple2">Tailles : @foreach(unserialize($product->sizes) as $sizeGet) <span class="text-info fs-10 fw-4">{{ $sizeGet }},</span> @endforeach</label>
-                <select class="form-select @error('sizes') is-invalid @enderror" autocomplete="sizes" id="organizerMultiple2" name="sizes[]" data-choices="data-choices" multiple="multiple" data-options='{"removeItemButton":true,"placeholder":true}'>
-                  <option value="">Sélectionner les tailles pour ce produit</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                </select>
-                @error('sizes')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
-            @endif
-
             <div class="mb-3 text-start">
               <label class="form-label" for="email">Status du produit</label> <br>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input text-success @error('visible') is-invalid @enderror" @if($product->visible == 1) checked="" @endif id="inlineRadioA-{{ $product->id }}" type="radio" name="visible" value=" 1 ">
-                <label class="form-check-label text-success" for="inlineRadioA-{{ $product->id }}">Visible</label>
+              
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-check">
+                    <input class="form-check-input @error('promot') is-invalid @enderror" id="flexCheckDefault-{{ $product->id }}" name="promot" type="checkbox" @if($product->promot == 1) checked @endif value="1" />
+                    <label class="form-check-label mt-1" for="flexCheckDefault-{{ $product->id }}">En promotion</label>
+                  </div>
+                  @error('promot')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input text-success @error('visible') is-invalid @enderror" @if($product->visible == 1) checked="" @endif id="inlineRadioA-{{ $product->id }}" type="radio" name="visible" value=" 1 ">
+                    <label class="form-check-label text-success" for="inlineRadioA-{{ $product->id }}">Visible</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input text-warning @error('visible') is-invalid @enderror" @if($product->visible == 0) checked="" @endif id="inlineRadioB-{{ $product->id }}" type="radio" name="visible" value=" 0 ">
+                    <label class="form-check-label text-warning" for="inlineRadioB-{{ $product->id }}">Cacher</label>
+                  </div>
+                  @error('visible')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
               </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input text-warning @error('visible') is-invalid @enderror" @if($product->visible == 0) checked="" @endif id="inlineRadioB-{{ $product->id }}" type="radio" name="visible" value=" 0 ">
-                <label class="form-check-label text-warning" for="inlineRadioB-{{ $product->id }}">Cacher</label>
-              </div>
-              @error('visible')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror
+
             </div>
 
-              @if(AuthMagasinAgentVisible() == 1)
-                <div class="mb-3 text-start">
-                  <label class="form-label" for="images">Modifier les images similaires (facultatif)</label> <br>
+            @if(AuthMagasinAgentVisible() == 1)
+              <div class="mb-3 text-start">
+                <label class="form-label" for="images">Modifier les images similaires (facultatif)</label> <br>
                   @if($product->images != '')
                     @foreach(json_decode($product->images, true) as $image)
                       <img src="{{Storage::url($image)}}" alt="" width="38" />
                     @endforeach
                   @endif
                   <input type="file" name="images[]" multiple="multiple" class="form-control form-control-sm mb-4" id="customFileSm"> 
-                </div>
-              @endif
+              </div>
+            @endif
 
-            <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce produit</button>
+            <button class="btn btn-primary w-100 mb-3" type="submit">Modifier ce produit</button>
           </form>
         </div>
       </div>
@@ -558,4 +588,15 @@
 
 </div>
 @endsection
+@section('footerSection')
+<script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/js/bootstrap-tagsinput.js') }}"></script> 
 <script src="{{asset('vendors/choices/choices.min.js')}}"></script>
+<script src="{{asset('vendors/flatpickr/flatpickr.min.js')}}"></script>
+<script type="text/javascript">
+  $("#colors").tagsinput();
+  $("#sizes").tagsinput();
+  $(".colorsUpdate").tagsinput();
+  $(".sizesUpdate").tagsinput();
+</script>
+@endsection

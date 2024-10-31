@@ -44,6 +44,7 @@ return new class extends Migration
             $table->integer('status')->nullable();
             $table->integer('type')->nullable();
             $table->date('date');
+            $table->integer('methode')->nullable();
             $table->timestamps();
         });
     }

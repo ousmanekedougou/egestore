@@ -200,6 +200,7 @@ class BonController extends Controller
 
         $dateUpdate = null;
         $incvoiceNum = null;
+        $methode = null;
         if($request->status == 1){
             $dateUpdate = now();
 
@@ -209,13 +210,16 @@ class BonController extends Controller
             }else {
                 $incvoiceNum = 1;
             }
+
+            $methode = $request->methode;
         }
 
         Commande::where('id',$id)->where('magasin_id',AuthMagasinAgent())
         ->update(
         [   'status' => $request->status,
             'payment_created_at' => $dateUpdate,
-            'num_invoice' => $incvoiceNum
+            'num_invoice' => $incvoiceNum,
+            'methode' => $methode
         ]);
 
         Toastr::success('Le status de cette résérvation a bien été modifié', 'Modification de résérvation', ["positionClass" => "toast-top-right"]);

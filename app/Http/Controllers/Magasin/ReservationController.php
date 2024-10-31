@@ -122,6 +122,7 @@ class ReservationController extends Controller
 
         $this->validate($request,[
             'status' => 'required|numeric',
+            'methode' => 'required|numeric',
         ]);
 
         $dateUpdate = null;
@@ -141,7 +142,8 @@ class ReservationController extends Controller
         ->update(
         [   'status' => $request->status,
             'payment_created_at' => $dateUpdate,
-            'num_invoice' => $incvoiceNum
+            'num_invoice' => $incvoiceNum,
+            'methode' => $request->methode
         ]);
 
         Toastr::success('Le status de catte reservation a bien été modifié', 'Modification de reservations', ["positionClass" => "toast-top-right"]);

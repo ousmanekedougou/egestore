@@ -17,9 +17,10 @@ return new class extends Migration
           $table->string('slug')->unique();
           $table->string('image');
           $table->text('images')->nullable();
-          $table->integer('price_achat')->nullable();
           $table->integer('price');
+          $table->integer('price_achat')->nullable();
           $table->integer('price_revenu')->nullable();
+          $table->integer('promo_price')->nullable();
           $table->integer('quantity');
           $table->integer('qty_alert');
           $table->integer('stock')->nullable();
@@ -30,6 +31,7 @@ return new class extends Migration
           $table->boolean('promot')->default(false);
           $table->text('desc')->nullable();
           $table->date('exp_date')->nullable();
+          $table->integer('suply_id')->nullable();
           
           $table
             ->foreignId("magasin_id")

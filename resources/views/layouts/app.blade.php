@@ -34,8 +34,9 @@
         @section('main-content')
         
         @show
-
+        
         @include('layouts.footer')
+
     </main>
      
         @include('layouts.js')

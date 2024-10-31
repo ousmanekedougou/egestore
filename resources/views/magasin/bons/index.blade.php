@@ -77,22 +77,23 @@
                     </span>
                   </td>
                   <td class="delivery_type align-middle white-space-nowrap text-body fs-9 text-start">
-                    @if (1 + 1 == true)
+                    @if ($bon->methode == 1)
                       Wave
-                    @elseif (1 - 1 == true)
+                    @elseif ($bon->methode == 2)
                       Orange Money
-                    @elseif (1 * 1 == 2)
+                    @elseif ($bon->methode == 3)
                       Cache
                     @else
-                      NULL
+                      Non paye
                     @endif
                   </td>
                   <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{date('d-m-Y', strtotime( $bon->date ))}}</td>
                   <td class=" align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">
                     @if($bon->status == 1)
                       <a href="{{ route('magasin.bon.edit',$bon->slug) }}" class="me-2 text-success" data-fa-transform="shrink-3"><span data-feather="file-text" ></span></a>
+                    @elseif ($bon->status != 1)
+                      <span class="me-2 text-info" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $bon->id }}" data-feather="shopping-bag" data-fa-transform="shrink-3"></span>
                     @endif
-                    <span class="me-2 text-info" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $bon->id }}" data-feather="shopping-bag" data-fa-transform="shrink-3"></span>
                     <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $bon->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
                   </td>
                 </tr>
@@ -113,7 +114,7 @@
   </div>
 
 
-  <div class="card-body p-0">
+    <div class="card-body p-0">
       <div class="p-4 code-to-copy">
         <!-- Right Offcanvas-->
         <div class="offcanvas offcanvas-end" id="offcanvasRight" tabindex="-1" aria-labelledby="offcanvasRightLabel">
@@ -228,10 +229,10 @@
                 <p class="text-body-tertiary lh-lg mb-3"> Commande Nº {{ $bon->order }} de  {{$bon->name}} </p>
                 <p class="text-body-tertiary lh-lg mb-3">
                   <h6 class="mb-2">Selectionner un status</h6>
-                  <select class="form-select mb-4 @error('status') is-invalid @enderror" name="status" id="status"aria-label="delivery type">
-                    <option value="1" @if($bon->status == 1) selected="" @endif>Terminé</option>
-                    <option value="2" @if($bon->status == 2) selected="" @endif>Traitement</option>
-                    <option value="3" @if($bon->status == 3) selected="" @endif>Annulé</option>
+                  <select onchange="enableBrand(this)" class="form-select mb-4 @error('status') is-invalid @enderror" name="status" id="status"aria-label="delivery type">
+                    <option value="1"  @if($bon->status == 1) selected=""@endif>Terminé</option>
+                    <option value="2"  @if($bon->status == 2) selected=""@endif>Traitement</option>
+                    <option value="3"  @if($bon->status == 3) selected=""@endif>Annulé</option>
                   </select>
                   @error('status')
                   <span class="invalid-feedback" role="alert">
@@ -239,18 +240,18 @@
                   </span>
                   @enderror
                 </p>
-                <div class="mb-3 text-start">
+                <div class="mb-3 text-start d-none" id="clientNone" data-id="{{ $bon->id }}">
                   <label class="form-label" for="email">Methode de paiement</label> <br>
                   <div class="form-check form-check-inline">
                     <input class="form-check-input text-primary @error('methode') is-invalid @enderror" @if($bon->methode == 1) checked="" @endif id="inlineRadioA-{{ $bon->id }}" type="radio" name="methode" value=" 1 ">
                     <label class="form-check-label text-primary" for="inlineRadioA-{{ $bon->id }}" style="margin-top: 2px;">Wave</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input text-warning @error('methode') is-invalid @enderror" @if($bon->methode == 2) checked="" @endif id="inlineRadioB-{{ $bon->id }}" type="radio" name="methode" value=" 0 ">
+                    <input class="form-check-input text-warning @error('methode') is-invalid @enderror" @if($bon->methode == 2) checked="" @endif id="inlineRadioB-{{ $bon->id }}" type="radio" name="methode" value=" 2 ">
                     <label class="form-check-label text-warning" for="inlineRadioB-{{ $bon->id }}" style="margin-top: 2px;">Orange Money</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input text-success @error('methode') is-invalid @enderror" @if($bon->methode == 3) checked="" @endif id="inlineRadioC-{{ $bon->id }}" type="radio" name="methode" value=" 0 ">
+                    <input class="form-check-input text-success @error('methode') is-invalid @enderror" @if($bon->methode == 3) checked="" @endif id="inlineRadioC-{{ $bon->id }}" type="radio" name="methode" value=" 3 ">
                     <label class="form-check-label text-success" for="inlineRadioC-{{ $bon->id }}" style="margin-top: 2px;">Cache</label>
                   </div>
                   @error('methode')
@@ -288,13 +289,11 @@
 @endsection
 
 <script>
-   function enableBrand(answer){
-        
-        // declarartion de naissance
-        if (answer.value == -1) {
-            document.getElementById('clientNone').classList.remove('d-none')
-        }else{
-            document.getElementById('clientNone').classList.add('d-none')
-        }
+    function enableBrand(answer){
+      if (answer.value == 1) {
+          document.getElementById('clientNone').classList.remove('d-none')
+      }else{
+          document.getElementById('clientNone').classList.add('d-none')
       }
+    }
 </script>

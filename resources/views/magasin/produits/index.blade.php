@@ -249,33 +249,44 @@
               <div class="mb-3 text-start">
                 <label class="form-label mb-2" for="">Status du produit</label> <br>
                 <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-check">
-                    <input class="form-check-input @error('promot') is-invalid @enderror" id="flexCheckDefault" name="promot" type="checkbox" value="1" />
-                    <label class="form-check-label mt-1" for="flexCheckDefault">En promotion</label>
+                  <div class="col-lg-6">
+                    <div class="form-check">
+                      <input onchange="enableBrand(this)" class="form-check-input @error('promot') is-invalid @enderror" id="flexCheckDefault" name="promot" type="checkbox" value="1" />
+                      <label class="form-check-label mt-1" for="flexCheckDefault">En promotion</label>
+                    </div>
+                    @error('promot')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
                   </div>
-                  @error('promot')
-                    <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                </div>
-                
-                <div class="col-lg-6">
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input text-success @error('visible') is-invalid @enderror"  id="inlineRadio1" type="radio" name="visible" value=" 1 ">
-                    <label class="form-check-label text-succes mt-1" for="inlineRadio1">Visible</label>
+                  
+                  <div class="col-lg-6">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input text-success @error('visible') is-invalid @enderror"  id="inlineRadio1" type="radio" name="visible" value=" 1 ">
+                      <label class="form-check-label text-succes mt-1" for="inlineRadio1">Visible</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input text-warning @error('visible') is-invalid @enderror"  id="inlineRadio2" type="radio" name="visible" value=" 0 ">
+                      <label class="form-check-label text-warning mt-1" for="inlineRadio2">Cacher</label>
+                    </div>
+                    @error('visible')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
                   </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input text-warning @error('visible') is-invalid @enderror"  id="inlineRadio2" type="radio" name="visible" value=" 0 ">
-                    <label class="form-check-label text-warning mt-1" for="inlineRadio2">Cacher</label>
+
+                  <div class="col-lg-12 mb-3 d-none" id="clientNone">
+                    <label class="form-label" for="price">Prix du produit</label>
+                    <input id="price" type="numeric" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" placeholder="Prix du produit" required autocomplete="price">
+
+                    @error('price')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
                   </div>
-                  @error('visible')
-                    <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                </div>
                 </div>
               </div>
 
@@ -468,7 +479,7 @@
                   </div>
                 @endif
 
-                <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce produit</button>
+                <button class="btn btn-primary w-100 mb-3" type="submit">Modifier ce produit</button>
               </form>
             </div>
           </div>
@@ -524,6 +535,17 @@
   $("#sizes").tagsinput();
   $(".colorsUpdate").tagsinput();
   $(".sizesUpdate").tagsinput();
+</script>
+
+
+<script>
+    function enableBrand(answer){
+      if (answer.value == 1) {
+          document.getElementById('clientNone').classList.remove('d-none')
+      }else{
+          document.getElementById('clientNone').classList.add('d-none')
+      }
+    }
 </script>
 
 @endsection

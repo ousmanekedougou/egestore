@@ -77,14 +77,14 @@
                     </span>
                   </td>
                   <td class="delivery_type align-middle white-space-nowrap text-body fs-9 text-start">
-                    @if (1 + 1 == true)
+                    @if ($reserve->methode == 1)
                       Wave
-                    @elseif (1 - 1 == true)
+                    @elseif ($reserve->methode == 2)
                       Orange Money
-                    @elseif (1 * 1 == 2)
+                    @elseif ($reserve->methode == 3)
                       Cache
                     @else
-                      NULL
+                      Non paye
                     @endif
                   </td>
                   <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{date('d-m-Y', strtotime( $reserve->date ))}}</td>
@@ -228,11 +228,11 @@
                     <label class="form-check-label text-primary" for="inlineRadioA-{{ $reserve->id }}" style="margin-top: 2px;">Wave</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input text-warning @error('methode') is-invalid @enderror" @if($reserve->methode == 2) checked="" @endif id="inlineRadioB-{{ $reserve->id }}" type="radio" name="methode" value=" 0 ">
+                    <input class="form-check-input text-warning @error('methode') is-invalid @enderror" @if($reserve->methode == 2) checked="" @endif id="inlineRadioB-{{ $reserve->id }}" type="radio" name="methode" value=" 2 ">
                     <label class="form-check-label text-warning" for="inlineRadioB-{{ $reserve->id }}" style="margin-top: 2px;">Orange Money</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input text-success @error('methode') is-invalid @enderror" @if($reserve->methode == 3) checked="" @endif id="inlineRadioC-{{ $reserve->id }}" type="radio" name="methode" value=" 0 ">
+                    <input class="form-check-input text-success @error('methode') is-invalid @enderror" @if($reserve->methode == 3) checked="" @endif id="inlineRadioC-{{ $reserve->id }}" type="radio" name="methode" value=" 3 ">
                     <label class="form-check-label text-success" for="inlineRadioC-{{ $reserve->id }}" style="margin-top: 2px;">Cache</label>
                   </div>
                   @error('methode')
