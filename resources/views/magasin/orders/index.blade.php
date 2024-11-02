@@ -73,7 +73,7 @@
                   <td class="delivery_type align-middle white-space-nowrap text-body fs-9 text-center fw-bold"> <span class="@if($order->type == 1) text-success @elseif($order->type == 2) text-warning @else text-info @endif"> @if($order->type == 1) Payé @elseif($order->type == 2) A crédit @else Non payé @endif </span></td>
                   <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{date('d-m-Y', strtotime( $order->date ))}}</td>
                   <td class=" align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">
-                    <a href="{{ route('magasin.commande.edit',$order->slug) }}" target="_blank" class="me-2 text-success" data-fa-transform="shrink-3"><span data-feather="file-text" ></span></a>
+                    <span target="_blank" class="me-2 text-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop-{{ $order->id }}" aria-controls="offcanvasTop" data-fa-transform="shrink-3"><span data-feather="file-text" ></span></span>
                     <span class="me-2 text-info" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $order->id }}" data-feather="shopping-bag" data-fa-transform="shrink-3"></span>
                     @if($order->status != 1)
                       <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $order->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
@@ -156,6 +156,174 @@
         </div>
       </div>
     @endforeach 
+
+
+    @foreach($orders as $order)
+      <div class="offcanvas offcanvas-top h-auto" id="offcanvasTop-{{ $order->id }}" tabindex="-1" aria-labelledby="offcanvasTopLabel">
+        <div class="offcanvas-header">
+          <h2 id="offcanvasTopLabel" class="mb-0">FACTURE</h2>
+          <button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <!-- <section> begin ============================-->
+          <section class="pt-5 pb-9 bg-body-emphasis dark__bg-gray-1200 border-top">
+            <div class="container-small">
+              <div class="d-flex justify-content-between align-items-end mb-4">
+                <h2 class="mb-0"></h2>
+                <div>
+                  <button class="btn btn-phoenix-secondary">
+                    <span class="fa-solid fa-print me-sm-2"></span>
+                    <span class="d-none d-sm-inline-block">Imprimer</span>
+                  </button>
+                </div>
+              </div>
+              <div class="bg-body dark__bg-gray-1100 p-4 mb-4 rounded-2">
+                <div class="row g-4">
+                  <div class="col-12 col-lg-3">
+                    <div class="row g-4 g-lg-2">
+                      <div class="col-12 col-sm-6 col-lg-12 mb-3">
+                        <div class="row align-items-center g-0">
+                          <div class="col-auto col-lg-6 col-xl-5">
+                            <p class="fs-9 text-body-secondary fw-semibold mb-0">
+                              <img class="bg-red" class="rounded-circle" src="@if ($order->logo != '') {{(Storage::url($order->magasin->logo))}} @else https://ui-avatars.com/api/?name={{$order->magasin->name}} @endif" alt="" />
+                            </p>
+                          </div>
+                          <div class="col-auto col-lg-6 col-xl-7">
+                            <h6 class="mb-0 me-3">{{ $order->magasin->name }}</h6>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-sm-6 col-lg-12">
+                        <div class="row align-items-center g-0">
+                          <div class="col-auto col-lg-6 col-xl-5">
+                            <h6 class="mb-0 me-3">Facture No :</h6>
+                          </div>
+                          <div class="col-auto col-lg-6 col-xl-7">
+                            <p class="fs-9 text-body-secondary fw-semibold mb-0">#FLR978282</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-sm-6 col-lg-12">
+                        <div class="row align-items-center g-0">
+                          <div class="col-auto col-lg-6 col-xl-5">
+                            <h6 class="me-3">Date :</h6>
+                          </div>
+                          <div class="col-auto col-lg-6 col-xl-7">
+                            <p class="fs-9 text-body-secondary fw-semibold mb-0">19.06.2019</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-lg-5">
+                    <div class="row g-4 gy-lg-5">
+                      <div class="col-12 col-lg-8">
+                        <h6 class="mb-2 me-3">Vendu par :</h6>
+                        <p class="fs-9 text-body-secondary fw-semibold mb-0">
+                          @if (Auth::guard('magasin')->user())
+                            {{ Auth::guard('magasin')->user()->admin_name }}
+                          @elseif (Auth::guard('agant')->user())
+                            Agent : {{ Auth::guard('agent')->user()->name }}
+                          @endif
+                        </p>
+                      </div>
+                      <div class="col-12 col-lg-4">
+                        <h6 class="mb-2"> RCCM :</h6>
+                        <p class="fs-9 text-body-secondary fw-semibold mb-0">XVCJ963782008</p>
+                      </div>
+                      <div class="col-12 col-lg-4">
+                        <h6 class="mb-2"> NINEA :</h6>
+                        <p class="fs-9 text-body-secondary fw-semibold mb-0">IX9878123TC</p>
+                      </div>
+                      <div class="col-12 col-lg-4">
+                        <h6 class="mb-2"> Commande No :</h6>
+                        <p class="fs-9 text-body-secondary fw-semibold mb-0">A-8934792734</p>
+                      </div>
+                      <div class="col-12 col-lg-4">
+                        <h6 class="mb-2">Date commande:</h6>
+                        <p class="fs-9 text-body-secondary fw-semibold mb-0">19.06.2019</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="row g-4">
+                      <div class="col-12 col-lg-6">
+                        <h6 class="mb-2"> Le client :</h6>
+                        <div class="fs-9 text-body-secondary fw-semibold mb-0">
+                          <p class="mb-2">{{ $order->name }},</p>
+                          <p class="mb-2">{{ $order->email }}</p>
+                          <p class="mb-0">{{ $order->phone }}</p>
+                          <p class="mb-2">{{ $order->adresse }}</p>
+                        </div>
+                      </div>
+                      <div class="col-12 col-lg-6">
+                        <h6 class="mb-2"> Le fournisseur :</h6>
+                        <div class="fs-9 text-body-secondary fw-semibold mb-0">
+                          <p class="mb-2">{{ $order->magasin->name }},</p>
+                          <p class="mb-2">{{ $order->magasin->email }},</p>
+                          <p class="mb-0">{{ $order->magasin->phone }},</p>
+                          <p class="mb-2">{{ $order->magasin->adresse }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="px-0">
+                <div class="table-responsive scrollbar">
+                  <table class="table fs-9 text-body mb-0">
+                    <thead class="bg-body-secondary">
+                      <tr>
+                        <th scope="col" style="width: 24px;"></th>
+                        <th scope="col" style="min-width: 60px;">SL NO.</th>
+                        <th scope="col" style="min-width: 360px;">Produits</th>
+                        <th class="ps-5" scope="col" style="min-width: 150px;">Couleurs</th>
+                        <th scope="col" style="width: 60px;">Tailles</th>
+                        <th class="text-end" scope="col" style="width: 80px;">Quantites</th>
+                        <th class="text-end" scope="col" style="width: 100px;">Prix</th>
+                        <th class="text-end" scope="col" style="min-width: 60px;">Total</th>
+                        <th scope="col" style="width: 24px;"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    @foreach(unserialize($order->products) as $product)
+                      <tr>
+                        <td class="border-0"></td>
+                        <td class="align-middle">1</td>
+                        <td class="align-middle">
+                          <p class="line-clamp-1 mb-0 fw-semibold">{{$product[1]}}</p>
+                        </td>
+                        <td class="align-middle ps-5">@if($product[4] != ''){{$product[4]}} @else Null @endif</td>
+                        <td class="align-middle text-body-tertiary fw-semibold">@if($product[5] != ''){{$product[5]}} @else Null @endif</td>
+                        <td class="align-middle text-end text-body-highlight fw-semibold">{{$product[2]}}</td>
+                        <td class="align-middle text-end fw-semibold">{{$product[3]}}</td>
+                        <td class="align-middle text-end fw-semibold">{{$product[2] * $product[3]}}</td>
+                        <td class="border-0"></td>
+                      </tr>
+                    @endforeach
+                      <tr class="bg-body-secondary">
+                        <td class="align-middle ps-4 fw-bold text-body-highlight" colspan="3">Grand Total</td>
+                        <td class="align-middle fw-bold text-body-highlight" colspan="3">Three Hundred and Ninenty Eight USD</td>
+                        <td></td>
+                        <td class="align-middle text-end fw-bold">{{ $order->amount }}</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="text-end py-9 border-bottom"><img class="mb-3" src="../../../assets/img/logos/phoenix-mart.png" alt="" />
+                  <h4>Authorized Signatory</h4>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between mt-4"><button class="btn btn-primary"><span class="fa-solid fa-bag-shopping me-2"></span>Browse more items</button>
+                <div><button class="btn btn-phoenix-secondary"><span class="fa-solid fa-print me-sm-2"></span><span class="d-none d-sm-inline-block">Imprimer</span></button></div>
+              </div>
+            </div><!-- end of .container-->
+          </section><!-- <section> close ============================-->
+          <!-- ============================================-->
+        </div>
+      </div>
+    @endforeach
 
 
 

@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('logo')->nullable();
             $table->string('adresse')->nullable();
+            $table->string('registre_com')->nullable();
+            $table->string('ninea')->nullable();
             $table->string('confirmation_token')->nullable();
             $table->integer('code_validation')->length(6)->nullable();
             $table->dateTime("expired_at")->nullable();
