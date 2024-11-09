@@ -36,56 +36,70 @@ class BagageController extends Controller
         //
     }
 
+    public function post(Request $request){
+        $this->validate($request,[
+            'inputs' => 'required',
+        ]);
+
+        // dd($request->inputs);
+
+        foreach ($request->inputs as $input) 
+        {
+            Bagage::create([
+                'name' => $input['name'],
+                'slug' => str_replace('/','',Hash::make(Str::random(2).$input['name'])),
+                'reference' => $input['reference'],
+                'price' => $input['price'],
+                'quantity' => $input['qty'],
+                'type' => $request->type,
+                'amount' => $input['price'] * $input['qty'],
+                'date' => now(),
+                'magasin_id' => AuthMagasinAgent(),
+                'commande_id' => $request->reserve_id
+            ]);
+        }
+
+        $amountBagageTotal = Bagage::where('commande_id',$request->reserve_id)->where('magasin_id',AuthMagasinAgent())->sum('amount');
+        // dd($commande);
+        Commande::where('id',$request->reserve_id)
+            ->where('magasin_id',AuthMagasinAgent())
+            ->where('type',1)->update(['amount' => $amountBagageTotal ]);
+
+        Toastr::success('Votre bagage a bien été ajouté', 'Ajout de bagages', ["positionClass" => "toast-top-right"]);
+        return back();
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name' => 'required|string',
-            'reference' => 'required|string',
-            'price' => 'required|numeric',
-            'quantity' => 'required|numeric',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
+            'inputs' => 'required',
         ]);
-
-        // dd($request->all());
-
-        $imageName = '';
-        if($request->hasFile('image'))
+        foreach ($request->inputs as $input) 
         {
-            $imageName = $request->image->store('public/Products');
+            Bagage::create([
+                'name' => $input['name'],
+                'slug' => str_replace('/','',Hash::make(Str::random(2).$input['name'])),
+                'reference' => $input['reference'],
+                'price' => $input['price'],
+                'quantity' => $input['qty'],
+                'type' => $request->type,
+                'amount' => $input['price'] * $input['qty'],
+                'date' => now(),
+                'magasin_id' => AuthMagasinAgent(),
+                'commande_id' => $request->reserve_id
+            ]);
         }
-
-        $date = null;
-
-        if ($request->date == '') {
-            $date = now();
-        }else{
-            $date = $request->date;
-        }
-
-        Bagage::create([
-            'name' => $request->name,
-            'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
-            'reference' => $request->reference,
-            'price' => $request->price,
-            'quantity' => $request->quantity,
-            'type' => $request->type,
-            'amount' => $request->price * $request->quantity,
-            'date' => $date,
-            'image' => $imageName,
-            'magasin_id' => AuthMagasinAgent(),
-            'commande_id' => $request->reserve_id
-        ]);
 
         // dd($request->price * $request->quantity);
 
-        $amountBagageTotal = Bagage::where('commande_id',$request->reserve_id)->where('magasin_id',AuthMagasinAgent())->sum('amount');
-        // dd($commande);
+        $amountBagageTotal = Bagage::where('commande_id',$request->reserve_id)->where('type',$request->type)->where('magasin_id',AuthMagasinAgent())->sum('amount');
+        // dd($amountBagageTotal);
         Commande::where('id',$request->reserve_id)
             ->where('magasin_id',AuthMagasinAgent())
-            ->where('type',$request->type)->update(['amount' => $amountBagageTotal ]);
+            ->where('type',0)->update(['amount' => $amountBagageTotal ]);
 
         Toastr::success('Votre bagage a bien été ajouté', 'Ajout de bagages', ["positionClass" => "toast-top-right"]);
         return back();
@@ -112,28 +126,8 @@ class BagageController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this->validate($request,[
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
-        ]);
-
-
         $product = Bagage::where('id',$id)->where('magasin_id',AuthMagasinAgent())->first();
 
-        $imageName = '';
-        if($request->hasFile('image'))
-        {
-            $imageName = $request->image->store('public/Products');
-        }else{
-            $imageName = $product->image;
-        }
-
-        $date = null;
-
-        if ($request->date == '') {
-            $date = $product->date;
-        }else{
-            $date = $request->date;
-        }
 
         $product->update([
             'name' => $request->name,
@@ -143,8 +137,6 @@ class BagageController extends Controller
             'quantity' => $request->quantity,
             'amount' => $request->price * $request->quantity,
             'type' => $request->type,
-            'date' => $date,
-            'image' => $imageName,
             'magasin_id' => AuthMagasinAgent(),
             'commande_id' => $request->reserve_id
         ]);

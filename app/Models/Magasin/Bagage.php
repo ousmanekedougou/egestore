@@ -16,7 +16,6 @@ class Bagage extends Model
         'quantity',
         'amount',
         'reference',
-        'image',
         'type',
         'date',
         'commande_id',

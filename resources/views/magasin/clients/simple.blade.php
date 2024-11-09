@@ -37,7 +37,7 @@
                   <th class="sort align-middle ps-7" scope="col" data-sort="city" style="width:25%;">VILLES</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">STATUS</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">MONTANT</th>
-                  <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">MT-PASSIF</th>
+                  <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">MT-ACTIFS</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-seen" style="width:10%;min-width: 150px;">MT-CREDITS</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">ACTIONS</th>
                 </tr>

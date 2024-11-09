@@ -61,38 +61,45 @@
                   <td class="fulfilment_status align-middle white-space-nowrap text-start fw-bold text-body-tertiary">@if($reserve->user_id == '' && $reserve->client_id == '') {{ $reserve->phone }} @elseif($reserve->user_id != '') {{ $reserve->user->phone }} @elseif($reserve->client_id != '') {{ $reserve->client->phone }} @endif</td>
                   <td class="total align-middle text-center fw-semibold text-body-highlight">@if($reserve->bon_commande != ''){{ $reserve->bon_commande }} @else Pas de bon @endif</td>
                   <td class="payment_status align-middle white-space-nowrap text-start fw-bold text-body-tertiary">
-                    <span class="badge badge-phoenix fs-10  @if($reserve->status == 1) badge-phoenix-success @elseif($reserve->status == 2) badge-phoenix-info @else badge-phoenix-warning @endif">
-                      <span class="badge-label">@if($reserve->status == 1) Terminé @elseif($reserve->status == 2) Traitement @else Annulé @endif</span>
+                    <span class="badge badge-phoenix fs-10 @if ($reserve->bagages->count() > 0)   @if($reserve->status == 1) badge-phoenix-success @elseif($reserve->status == 2) badge-phoenix-info @else badge-phoenix-warning @endif @else badge-phoenix-secondary @endif">
+                      <span class="badge-label">@if ($reserve->bagages->count() > 0)  @if($reserve->status == 1) Terminé @elseif($reserve->status == 2) En cours @else Annulé @endif @else 0 commande @endif</span>
                       <span class="ms-1" 
-                      @if($reserve->status == 1)
-                        data-feather="check" 
-                      @elseif($reserve->status == 2)
-                        data-feather="chevrons-right"
-                      @else 
-                      data-feather="x"
+                      @if ($reserve->bagages->count() > 0) 
+                        @if($reserve->status == 1)
+                          data-feather="check" 
+                        @elseif($reserve->status == 2)
+                          data-feather="chevrons-right"
+                        @else 
+                        data-feather="x"
+                        @endif
                       @endif
                       style="height:12.8px;width:12.8px;"></span>
                       
                       
                     </span>
                   </td>
-                  <td class="delivery_type align-middle white-space-nowrap text-body fs-9 text-start">
-                    @if ($reserve->methode == 1)
-                      Wave
-                    @elseif ($reserve->methode == 2)
-                      Orange Money
-                    @elseif ($reserve->methode == 3)
-                      Cache
+                  <td class="delivery_type align-middle white-space-nowrap text-body fs-9 text-center">
+                    @if ($reserve->bagages->count() > 0) 
+                      @if ($reserve->methode == 1)
+                        <span class="text-info">Wave</span>
+                      @elseif ($reserve->methode == 2)
+                        <span class="text-warning">Orange Money</span>
+                      @elseif ($reserve->methode == 3)
+                        <span class="text-success">En cache</span>
+                      @else
+                        Non paye
+                      @endif
                     @else
-                      Non paye
+                    0 commande
                     @endif
                   </td>
                   <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{date('d-m-Y', strtotime( $reserve->date ))}}</td>
                   <td class=" align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">
                     @if($reserve->status == 1)
                       <a href="{{ route('magasin.reserve.edit',$reserve->slug) }}" class="me-2 text-success" data-fa-transform="shrink-3"><span data-feather="file-text" ></span></a>
+                    @elseif($reserve->status != 1)
+                      <span class="me-2 text-info" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $reserve->id }}" data-feather="shopping-bag" data-fa-transform="shrink-3"></span>
                     @endif
-                    <span class="me-2 text-info" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $reserve->id }}" data-feather="shopping-bag" data-fa-transform="shrink-3"></span>
                     <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $reserve->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
                   </td>
                 </tr>
@@ -210,9 +217,10 @@
                 <p class="text-body-tertiary lh-lg mb-3"> Reservation Nº {{ $reserve->order }} de  {{$reserve->name}} </p>
                 <p class="text-body-tertiary lh-lg mb-3">
                   <h6 class="mb-2">Selectionner un status</h6>
-                  <select class="form-select mb-4 @error('status') is-invalid @enderror" name="status" id="status"aria-label="delivery type">
+                  <select onchange="enableBrand(this)" class="form-select mb-4 @error('status') is-invalid @enderror" name="status" id="status"aria-label="delivery type">
+                    <option value=""></option>
                     <option value="1" @if($reserve->status == 1) selected="" @endif>Terminé</option>
-                    <option value="2" @if($reserve->status == 2) selected="" @endif>Traitement</option>
+                    <option value="2" @if($reserve->status == 2) selected="" @endif>En cours</option>
                     <option value="3" @if($reserve->status == 3) selected="" @endif>Annulé</option>
                   </select>
                   @error('status')
@@ -221,7 +229,7 @@
                   </span>
                   @enderror
                 </p>
-                <div class="mb-3 text-start">
+                <div class="mb-3 text-start d-none" id="clientNone" data-id="{{ $reserve->id }}">
                   <label class="form-label" for="email">Methode de paiement</label> <br>
                   <div class="form-check form-check-inline">
                     <input class="form-check-input text-primary @error('methode') is-invalid @enderror" @if($reserve->methode == 1) checked="" @endif id="inlineRadioA-{{ $reserve->id }}" type="radio" name="methode" value=" 1 ">
@@ -268,3 +276,13 @@
 
 </div>
 @endsection
+
+<script>
+    function enableBrand(answer){
+      if (answer.value == 1) {
+          document.getElementById('clientNone').classList.remove('d-none')
+      }else{
+          document.getElementById('clientNone').classList.add('d-none')
+      }
+    }
+</script>

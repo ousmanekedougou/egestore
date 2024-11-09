@@ -5,7 +5,7 @@
     <div class="mb-9">
       <div class="row g-3 mb-4">
         <div class="col-auto">
-          <h2 class="mb-3">Bagages sous bon</h2>
+          <h2 class="mb-3">Produits sous bon</h2>
           <div class="d-sm-flex flex-between-center mb-3">
             <p class="text-body-secondary lh-sm mb-0 mt-2 mt-sm-0">
               Client : <a class="fw-bold" href="#!" style="margin-right: 15px;">  @if($bon->user_id == '') {{ $bon->name }} @else {{ $bon->user->name }} @endif</a>
@@ -24,10 +24,12 @@
             </div>
             <div class="ms-xxl-auto">
               @if($bon->status == 1)
-              <h4 class="mb-0">Cette commande de sous reservation a ete paye</h4>
+                <a href="{{ route('magasin.bon.delete',$bon->id) }}" class="btn btn-warning">
+                  <span data-feather="trash-2" data-fa-transform="shrink-3" class="me-2"></span>Vider ce stock
+                </a>
               @elseif($bon->status == 2)
-                <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                  <span class="fas fa-plus me-2"></span>Ajouter un produit
+                <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                  <span class="fas fa-plus me-2"></span>Ajouter des produits
                 </button>
               @else
                 <h4 class="mb-0">Cette commande de sous reservation a ete anuler</h4>
@@ -40,7 +42,6 @@
             <table class="table fs-9 mb-0">
               <thead>
                 <tr>
-                  <th class="sort white-space-nowrap align-middle fs-10" scope="col" style="width:70px;"></th>
                   <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;" data-sort="product">PRODUITS</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">REFERENCES</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">QUANTITES</th>
@@ -53,17 +54,8 @@
               <tbody class="list" id="products-table-body">
                 @foreach($bon->bagages as $product)
                   <tr class="position-static">
-                    <td class="align-middle white-space-nowrap py-0">
-                      <a class="d-block border border-translucent rounded-2" target="_blank" href="{{ route('magasin.bon.edit',$product->id) }}">
-                        <img src="
-                        @if($product->image == '') https://ui-avatars.com/api/?name={{$product->name}} @else {{Storage::url($product->image)}} @endif
-                        
-                        
-                        " alt="" width="53" />
-                      </a>
-                    </td>
-                    <td class="product align-middle ps-4"><a class="fw-semibold line-clamp-3 mb-0" target="_blank" href="{{ route('magasin.bon.edit',$product->slug) }}">{{ $product->name }}</a></td>
-                    <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ $product->reference }}</td>
+                    <td class="product align-middle ps-4"><span class="fw-semibold line-clamp-3 mb-0">{{ $product->name }}</span></td>
+                    <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">@if ($product->reference != '') {{ $product->reference }} @else null @endif</td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ $product->quantity }}</td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ $product->getPrice() }}</td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ number_format($product->price * $product->quantity,2, ',','.') }} CFA</td>
@@ -73,7 +65,7 @@
                       <span class="me-2 text-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
                       <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
                     @else
-                          <span class="me-2 text-center">Paye</span>
+                          <span class="me-2 text-center text-success">Paye</span>
                     @endif
                     </td>
                   </tr>
@@ -102,7 +94,7 @@
             <h5 id="offcanvasRightLabel">Ajouter un produit</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
-            <form method="POST" action="{{ route('magasin.bagage.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('magasin.bagage.store') }}">
               @csrf
               <input type="hidden" name="reserve_id" value="{{ $bon->id }}">
               <input type="hidden" name="type" value="0">
@@ -149,30 +141,74 @@
                   @enderror
               </div>
 
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="date">La date de bon</label>
-                  <input id="date" type="date" class="form-control @error('date') is-invalid @enderror" name="date" value="{{ old('date') }}" placeholder="La date de bon"  autocomplete="date">
-
-                  @error('date')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-
-              <div class="mb-3 text-start">
-                <label class="form-label" for="image">Image du produit</label>
-                <input class="form-control @error('image') is-invalid @enderror" id="image" name="image" type="file" value="{{ old('image') }}" autocomplete="image"/>
-                @error('image')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-              </div>
-
               <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce produit</button>
             </form>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="offcanvas offcanvas-top h-auto w-auto" id="offcanvasTop" tabindex="-1" aria-labelledby="offcanvasTopLabel">
+      <div class="offcanvas-header">
+        <h5 id="offcanvasTopLabel"></h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="mb-9">
+          <div class="row g-2 mb-4">
+            <div class="col-auto">
+              <h2 class="mb-0">Ajouter des produits</h2>
+            </div>
+          </div>
+          <div id="products" data-list='{"valueNames":["customer","email","total-orders","total-spent","city","last-seen","last-order"],"page":10,"pagination":true}'>
+            <form action="{{ route('magasin.bagage.store') }}" method="post"> 
+              @csrf
+              <input type="hidden" name="reserve_id" value="{{ $bon->id }}">
+              <input type="hidden" name="type" value="1">
+              <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis border-top border-bottom border-translucent position-relative top-1">
+               
+                <div class="table-responsive scrollbar-overlay mx-n1 px-1">
+                  <table class="table table-sm fs-9 mb-0" id="table">
+                    <thead>
+                      <tr>
+                        <th class="sort align-middle pe-5 text-center" scope="col" data-sort="customer" style="width:35%;">DESIGNATION</th>
+                        <th class="sort align-middle ps-7 text-center" scope="col" data-sort="city" style="width:20%;">REFERENCE</th>
+                        <th class="sort align-middle pe-5 text-center" scope="col" data-sort="email" style="width:13%;">QUANTITE</th>
+                        <th class="sort align-middle text-center ps-3" scope="col" data-sort="total-spent" style="width:15%">PRIX UNITAIRE</th>
+                        <th class="sort align-middle text-center pe-0" scope="col" data-sort="last-order" style="width:10%;">ACTIONS</th>
+                      </tr>
+                    </thead>
+                    <tbody class="list" id="customers-table-body">
+                      <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                        <td class="customer align-middle white-space-nowrap pe-5 text-center">
+                          <input type="text" placeholder="Designation" class="form-control @error('name') is-invalid @enderror" name="inputs[0][name]" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                        </td>
+                        <td class="city align-middle white-space-nowrap text-body-highlight ps-7 text-center">
+                          <input type="text" placeholder="Reference" class="form-control @error('reference') is-invalid @enderror" name="inputs[0][reference]" value="{{ old('reference') }}" autocomplete="reference" autofocus>
+                        </td>
+                        <td class="email align-middle white-space-nowrap pe-5 text-center">
+                          <input type="number" placeholder="Quantite" class="form-control @error('quantite') is-invalid @enderror" name="inputs[0][qty]" value="{{ old('quantite') }}" required autocomplete="quantite" autofocus>
+                        </td>
+                        <td class="total-spent align-middle white-space-nowrap fw-bold ps-3 text-body-emphasis text-center">
+                          <input type="number" placeholder="Prix unitaire" class="form-control @error('price') is-invalid @enderror" name="inputs[0][price]" value="{{ old('price') }}" required autocomplete="price" autofocus>
+                        </td>
+                        <td class="last-order align-middle white-space-nowrap text-body-tertiary text-center">
+                          <button type="button" class="btn btn-primary" id="add">
+                            <span class="fas fa-plus me-2"></span>Ajouter
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="row align-items-center justify-content-between mt-3 py-2 pe-0 fs-9">
+                    <button type="submit" class="btn btn-success">
+                      <span class="fas fa-check me-2"></span>Enregistre les produits
+                    </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
         </div>
       </div>
     </div>
@@ -186,7 +222,7 @@
               <h5 id="offcanvasRightLabel">Modification de produit</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-              <form method="POST" action="{{ route('magasin.bagage.update',$product->id) }}" enctype="multipart/form-data">
+              <form method="POST" action="{{ route('magasin.bagage.update',$product->id) }}">
                 @csrf
                 {{ method_field('PUT') }}
                 <input type="hidden" name="reserve_id" value="{{ $bon->id }}">
@@ -232,27 +268,6 @@
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
-                </div>
-
-                <div class="mb-3 text-start">
-                    <label class="form-label" for="date">La date de bon</label>
-                    <input id="date" type="date" class="form-control @error('date') is-invalid @enderror" name="date" value="{{ old('date') ?? $product->date }}" placeholder="La date de bon" autocomplete="date">
-
-                    @error('date')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-
-                <div class="mb-3 text-start">
-                  <label class="form-label" for="image">Image du produit</label>
-                  <input class="form-control @error('image') is-invalid @enderror" id="image" name="image" type="file" value="{{ old('image') ?? $product->image }}"  autocomplete="image"/>
-                  @error('image')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
                 </div>
 
                 <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce produit</button>
@@ -303,3 +318,45 @@
 
   </div>
 @endsection
+
+<script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
+<script>
+  $(document).ready(function(){
+    var i = 0;
+    $('#add').click(function(){
+      i++;
+      $('#table').append(
+        `
+        <tbody class="list" id="customers-table-body">
+          <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+
+            <td class="customer align-middle white-space-nowrap pe-5 text-center">
+              <input type="text" placeholder="Designation" class="form-control @error('name') is-invalid @enderror" name="inputs[`+i+`][name]" value="{{ old('name') }}" required autocomplete="name" autofocus>
+            </td>
+            <td class="city align-middle white-space-nowrap text-body-highlight ps-7 text-center">
+              <input type="text" placeholder="Reference" class="form-control @error('reference') is-invalid @enderror" name="inputs[`+i+`][reference]" value="{{ old('reference') }}"  autocomplete="reference" autofocus>
+            </td>
+            <td class="email align-middle white-space-nowrap pe-5 text-center">
+              <input type="number" placeholder="Quantite" class="form-control @error('quantite') is-invalid @enderror" name="inputs[`+i+`][qty]" value="{{ old('quantite') }}" required autocomplete="quantite" autofocus>
+            </td>
+            <td class="total-spent align-middle white-space-nowrap fw-bold ps-3 text-body-emphasis text-center">
+              <input type="number" placeholder="Prix unitaire" class="form-control @error('price') is-invalid @enderror" name="inputs[`+i+`][price]" value="{{ old('price') }}" required autocomplete="price" autofocus>
+            </td>
+
+            <td class="last-order align-middle white-space-nowrap text-body-tertiary text-center">
+              <button type="button" class="btn btn-danger remove-table-row">
+                <span class="fas fa-trash me-2"></span>Supprimer
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        `
+      )
+    });
+
+    $(document).on('click','.remove-table-row', function(){
+      $(this).parents('tr').remove();
+    });
+
+  });
+</script>

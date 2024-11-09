@@ -66,6 +66,8 @@ class ProfileController extends Controller
             'password' => ['confirmed'],
         ]);
 
+        // dd($request->shop_name);
+
         $password = null;
         $inv_at = null;
         $imageName = null;
@@ -105,13 +107,15 @@ class ProfileController extends Controller
         [
             'logo' => $logoName,
             'image' => $imageName,
-            'shop_name' => $request->shop_name,
+            'name' => $request->shop_name,
             'admin_name' => $request->admin_name,
             'email' => $request->email,
             'phone' => $request->phone,
             'adresse' => $request->adresse,
             'visible' => $request->visible,
             'inv_at' => $inv_at,
+            'registre_com' => $request->rccm,
+            'ninea' => $request->ninea,
             'password' => $password,
         ]);
 

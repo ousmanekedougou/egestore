@@ -162,7 +162,7 @@ class OrderController extends Controller
 
         $this->validate($request,[
             // 'client' => 'required|string',
-            'bon_commande' => 'string',
+            // 'bon_commande' => 'string',
             'name' => 'string',
             'phone' => 'numeric',
         ]);
@@ -183,8 +183,13 @@ class OrderController extends Controller
             if ($request->passif != 1) {
 
                 if ($userClient->account == 1) {
-                    if ($userClient->amount >= $amount) {
-                        $userClient->update(['amount' => $userClient->amount - $amount]);
+                    if ($userClient->depot >= $amount) {
+
+                        $userClient->update(
+                        [
+                            'amount' => $userClient->amount + $amount,
+                            'depot'  => $userClient->depot - $amount
+                        ]);
                         $client = $userClient->id;
                         $type = 1;
                         $status = 1;
@@ -337,15 +342,22 @@ class OrderController extends Controller
             'status' => 'required|numeric',
         ]);
 
-        $dateUpdate = null;
-        if($request->status == 1){
-            $dateUpdate = now();
+        $type = null;
+
+        if ($request->status == 1) {
+            $this->validate($request,[
+                'methode' => 'required|numeric',
+            ]);
+            $type = 1;
         }
+
 
         Order::where('id',$id)->where('magasin_id',AuthMagasinAgent())
         ->update(
         [   'status' => $request->status,
-            'payment_created_at' => $dateUpdate,
+            'payment_created_at' => now(),
+            'methode' => $request->methode,
+            'type' => $type
         ]);
 
         Toastr::success('Le status de cette commande a bien été modifé', 'Modification de commandes', ["positionClass" => "toast-top-right"]);

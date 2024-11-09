@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('price');
             $table->integer('quantity');
             $table->string('amount')->nullable();
-            $table->string('reference');
+            $table->string('reference')->nullable();
             $table->boolean('type')->default(false);
             $table
                 ->foreignId("commande_id")

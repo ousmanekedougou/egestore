@@ -6,14 +6,6 @@
       <div class="col-auto">
         <h2 class="mb-0">Profile</h2>
       </div>
-      {{--
-      <div class="col-auto">
-        <div class="row g-2 g-sm-3">
-          <div class="col-auto"><button class="btn btn-phoenix-danger"><span class="fas fa-trash-alt me-2"></span>Delete customer</button></div>
-          <div class="col-auto"><button class="btn btn-phoenix-secondary"><span class="fas fa-key me-2"></span>Reset password</button></div>
-        </div>
-      </div>
-      --}}
     </div>
     <div class="row g-3 mb-6">
       <div class="col-12 col-lg-8">
@@ -192,6 +184,26 @@
                     @enderror
                   </div>
                 </div>
+              </div>
+
+              <div class="col-12 col-lg-6">
+                <label class="form-label text-body-highlight fs-8 ps-0 text-lowercase lh-sm" for="rccm">Registre de commerce</label>
+                <input id="rccm" type="text" placeholder="Registre de commerce" class="form-control @error('rccm') is-invalid @enderror" name="rccm" value="{{ old('rccm') ?? Auth::guard('magasin')->user()->registre_com }}"  autocomplete="rccm" autofocus>
+                @error('rccm')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+              </div>
+              <div class="col-12 col-lg-6">
+                <label class="form-label text-body-highlight fs-8 ps-0 text-lowercase  lh-sm" for="ninea">NINEA</label>
+                <input id="ninea" type="text" placeholder="NINEA" class="form-control @error('ninea') is-invalid @enderror" name="ninea" value="{{ old('ninea') ?? Auth::guard('magasin')->user()->ninea }}"  autocomplete="ninea" autofocus>
+
+                @error('ninea')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
               </div>
               
               <div class="col-12 col-lg-6">

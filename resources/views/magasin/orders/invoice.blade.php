@@ -1,389 +1,257 @@
 
-
 <!DOCTYPE html>
-<html lang="en">
-   
-<!-- Mirrored from webartinfo.com/templatemonster/billig/invoice.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 20 Jul 2024 16:08:06 GMT -->
+<html class="no-js" lang="en">
+
+
+<!-- Mirrored from html.laralink.com/invoma/general_4.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Nov 2024 15:16:40 GMT -->
 <head>
-      <meta charset="utf-8">
-      <meta content="width=device-width, initial-scale=1.0" name="viewport">
-      <title>Facture de {{ $authName }}</title>
-      <meta content="#" name="description">
-      <meta content="#" name="keywords">
-      <!-- Favicons -->
-      <link href="assets/img/logo.png" rel="icon">
-      <link href="assets/img/logo.png" rel="apple-touch-icon">
-      <!-- Fontawesome -->
-       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-      <!-- Vendor CSS Files -->
-      <link href="{{asset('assets/css/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-      <!-- Template Main CSS File -->
-      <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
-   </head>
-   <body class="bg-light">
-      <body data-new-gr-c-s-check-loaded="14.995.0" data-gr-ext-installed="">
-         <!-- Container --> 
-         <div class="container-fluid Billig-container shadow-sm" id="print">
-            <!-- Header -->
-            <header>
-               <div class="row align-items-center">
-                  <div class="col-7 text-start mb-3 mb-sm-0">
-                     <img id="logo" src="@if($order->magasin->logo == '') https://ui-avatars.com/api/?name={{$order->magasin->name}} @else {{(Storage::url($order->magasin->logo))}} @endif" title="{{$order->magasin->name}}" alt="{{$order->magasin->name}}">
-                  </div>
-                  <div class="col-5 text-end">
-                     <h4 class="mb-0 text-uppercase">Facture</h4>
-                     <p class="mb-0"><strong> Facture - Nº : </strong>{{ str_pad($order->order, 5, '0', STR_PAD_LEFT) }}</p>
-                  </div>
-               </div>
-               <hr>
-            </header>
-            <!-- Main Content -->
-            <main>
-               <div class="row">
-                  <div class="col-6"><strong>Date:</strong> {{date('d-m-Y', strtotime( $order->payment_created_at ))}}</div>
-                  <div class="col-6 text-end"> <strong>BC :</strong> {{$order->bon_commande }}</div>
-               </div>
-               <hr>
-               <div class="row">
-                  <div class="col-6 text-end order-sm-1">
-                     <strong>Payez à : {{$authName}}, </strong>
-                     <address>
-                        {{$order->magasin->phone}}<br>
-                        {{$order->magasin->adresse}}
-                        <strong>Facture @if($order->type == 1 && $order->status == 1) paye @elseif($order->type == 2) à crédit @endif</strong>
-                     </address>
-                  </div>
-                  <div class="col-6 order-sm-0">
-                     <strong>Facturé à : @if($order->user_id == '' && $order->client_id == '') {{ $order->name }} @elseif($order->user_id != '') {{ $order->user->name }} @elseif($order->client_id != '') {{ $order->client->name }} @endif</strong>,
-                     <address>
-                        Telephone : @if($order->user_id == '' && $order->client_id == '') {{ $order->phone }} @elseif($order->user_id != '') {{ $order->user->phone }} @elseif($order->client_id != '') {{ $order->client->phone }} @endif<br>
-                        
-                        @if($order->type == 2)
-                          @if($order->client_id != '')
-                            Vérsement éfféctuer  : {{number_format($order->client->amount,2, ',','.') }}  CFA
-                          @endif
-                        @endif
-                        
-                     </address>
-                  </div>
-               </div>
-               <div class="card">
-                  <div class="card-body p-0">
-                     <div class="table-responsive">
-                        <table class="table mb-0">
-                           <thead>
-                           <tr>
-                              <td class="col-3 border-0"><strong>Designations</strong></td>
-                              <td></td>
-                              <td class="col-1 border-0 text-center"><strong>Quantites</strong></td>
-                              <td class="col-2 border-0 text-end"><strong>Prix unitaire</strong></td>
-                              <td class="col-2 text-end border-0"><strong>Prix total</strong></td>
-                           </tr>
-                        </thead>
-                           <tbody>
-                            @foreach(unserialize($order->products) as $product)
-                              <tr>
-                                 <td class="col-3">{{$product[1]}}</td>
-                                 <td></td>
-                                 <td class="col-1 text-center">{{$product[3]}}</td>
-                                 <td class="col-2 text-end">{{number_format($product[2],2, ',','.') }} CFA</td>
-                                 <td class="col-2 text-end">{{number_format($product[2] * $product[3],2, ',','.') }} CFA</td>
-                              </tr>
-                            @endforeach
-                            {{--
-                              <tr>
-                                 <td colspan="4" class="bg-light-2 text-end"><strong>Sub Total:</strong></td>
-                                 <td class="bg-light-2 text-end">$1500.00</td>
-                              </tr>
-                            --}}
-                            @if($order->type == 2)
-                              @if($order->client_id != '')
-                                <tr>
-                                  <td colspan="4" class="bg-light-2 text-end"><strong>Vérsement éfféctuer :</strong></td>
-                                  <td class="bg-light-2 text-end"> {{number_format($order->client->amount,2, ',','.') }} CFA</td>
-                                </tr>
-                              @endif
-                            @endif
-                              <tr>
-                                 <td colspan="4" class="bg-light-2 text-end border-0"><strong>Total:</strong></td>
-                                 <td class="bg-light-2 text-end border-0"> {{ $order->amount }} CFA</td>
-                              </tr>
-                           </tbody>
-                        </table>
-                     </div>
-                  </div>
-               </div>
-            </main>
-            <!-- Footer -->
-            <footer class="text-center mt-4">
-               <p class="text-1"><strong> Merci d'avoir choisi notre boutique </strong></p>
-                {{--
-                  <div class="text-end py-9 border-bottom mb-4">
-                    @if($order->status == 1)
-                    <img class="mb-1" src="{{asset('assets/img/logos/payer.png')}}" alt="" />
-                    @endif
-                    <h6>Signataire autorisé</h6>
-                  </div>
-                --}}
-               <div class="btn-group btn-group-sm d-print-none"> 
-                  <a href="#" id="print_Button" onclick="printDiv()" class="btn btn-light border text-black-50 shadow-none ml-3"><i class="fa fa-print"></i> Imprimer
-                  </a> <a href="#" class="btn btn-light border text-black-50 shadow-none mr-3"><i class="fa fa-download"></i> Télécharger</a> </div>
-            </footer>
-         </div>
-      </body>
-   <div id="preloader"></div>
-   <!-- Vendor JS Files -->
-   <script src="{{asset('assets/js/jquery/jquery.min.js')}}"></script>    
-   <!-- Template Main JS File -->
-   <script src="{{asset('assets/js/main.js')}}"></script>
-   <script type="text/javascript">
-        function printDiv(){
-            var printContents = document.getElementById('print').innerHTML;
-            var originalContents = document.body.innerHTML;
-            document.body.innerHTML = printContents;
-            window.print();
-            document.body.innerHTML = originalContents;
-            location.reload();
-        }
-    </script>
-   </body>
+  <!-- Meta Tags -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Laralink">
+  <!-- Site Title -->
+  <title>{{ $order->magasin->name }} - FACTURE</title>
+  <link rel="stylesheet" href="{{ asset('assets/css/invoice.css') }}">
+</head>
 
-<!-- Mirrored from webartinfo.com/templatemonster/billig/invoice.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 20 Jul 2024 16:08:10 GMT -->
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{{-- 
-  @extends('layouts.app',['title' => 'magasin-facture des commande'])
-  @section('main-content')
-    <div class="content">
-      
-      <!-- ============================================-->
-          <!-- <section> begin ============================-->
-          <section class="pt-5 pb-9 bg-body-emphasis dark__bg-gray-1200">
-            <div class="container-small">
-              <div class="d-flex justify-content-between align-items-end mb-4">
-                <h2 class="mb-0">FACTURE</h2>
-                <div>
-                  <button class="btn btn-phoenix-secondary me-2">
-                    <span class="fa-solid fa-download me-sm-2"></span>
-                    <a href="{{ route('magasin.commande.pdf',$order->slug) }}" class="d-none d-sm-inline-block">Telecherger</a>
-                  </button>
-                  <button class="btn btn-phoenix-primary">
-                    <span class="fa-solid fa-print me-sm-2"></span>
-                    <span class="d-none d-sm-inline-block">Imprimer</span>
-                  </button>
-                  <button class="btn btn-phoenix-success">
-                    <span class="fa-solid fa-share me-sm-2"></span>
-                    <span class="d-none d-sm-inline-block">Partager par email</span>
-                  </button>
+<body>
+  <div class="tm_container">
+    <div class="tm_invoice_wrap">
+      <div class="tm_invoice tm_style2 tm_type1 tm_accent_border" id="tm_download_section">
+        <div class="tm_invoice_in">
+          <div class="tm_invoice_head tm_top_head tm_mb20 tm_mb10_md">
+            <div class="tm_invoice_left">
+              <div class="tm_logo">
+                <img style="border-radius: 100%;" class="rounded-circle" src="@if ($order->logo != '') {{(Storage::url($order->magasin->logo))}} @else https://ui-avatars.com/api/?name={{$order->magasin->name}} @endif" alt="Logo">
+              </div>
+            </div>
+            <div class="tm_invoice_right">
+              <div class="tm_grid_row tm_col_3">
+                <div class="tm_text_center">
+                  <p class="tm_accent_color tm_mb0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512" fill="currentColor"><path d="M424 80H88a56.06 56.06 0 00-56 56v240a56.06 56.06 0 0056 56h336a56.06 56.06 0 0056-56V136a56.06 56.06 0 00-56-56zm-14.18 92.63l-144 112a16 16 0 01-19.64 0l-144-112a16 16 0 1119.64-25.26L256 251.73l134.18-104.36a16 16 0 0119.64 25.26z"/></svg>
+                  </p>
+                  {{$order->magasin->email}}
+                </div>
+                <div class="tm_text_center">
+                  <p class="tm_accent_color tm_mb0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512" fill="currentColor"><path d="M391 480c-19.52 0-46.94-7.06-88-30-49.93-28-88.55-53.85-138.21-103.38C116.91 298.77 93.61 267.79 61 208.45c-36.84-67-30.56-102.12-23.54-117.13C45.82 73.38 58.16 62.65 74.11 52a176.3 176.3 0 0128.64-15.2c1-.43 1.93-.84 2.76-1.21 4.95-2.23 12.45-5.6 21.95-2 6.34 2.38 12 7.25 20.86 16 18.17 17.92 43 57.83 52.16 77.43 6.15 13.21 10.22 21.93 10.23 31.71 0 11.45-5.76 20.28-12.75 29.81-1.31 1.79-2.61 3.5-3.87 5.16-7.61 10-9.28 12.89-8.18 18.05 2.23 10.37 18.86 41.24 46.19 68.51s57.31 42.85 67.72 45.07c5.38 1.15 8.33-.59 18.65-8.47 1.48-1.13 3-2.3 4.59-3.47 10.66-7.93 19.08-13.54 30.26-13.54h.06c9.73 0 18.06 4.22 31.86 11.18 18 9.08 59.11 33.59 77.14 51.78 8.77 8.84 13.66 14.48 16.05 20.81 3.6 9.53.21 17-2 22-.37.83-.78 1.74-1.21 2.75a176.49 176.49 0 01-15.29 28.58c-10.63 15.9-21.4 28.21-39.38 36.58A67.42 67.42 0 01391 480z"/></svg>
+                  </p>
+                  {{$order->magasin->phone}}
+                </div>
+                <div class="tm_text_center">
+                  <p class="tm_accent_color tm_mb0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512" fill="currentColor"><circle cx="256" cy="192" r="32"/><path d="M256 32c-88.22 0-160 68.65-160 153 0 40.17 18.31 93.59 54.42 158.78 29 52.34 62.55 99.67 80 123.22a31.75 31.75 0 0051.22 0c17.42-23.55 51-70.88 80-123.22C397.69 278.61 416 225.19 416 185c0-84.35-71.78-153-160-153zm0 224a64 64 0 1164-64 64.07 64.07 0 01-64 64z"/></svg>
+                  </p>
+                  {{$order->magasin->adresse}}
                 </div>
               </div>
-              <div class="bg-body dark__bg-gray-1100 p-4 mb-4 rounded-2">
-                <div class="row g-4">
-                  <div class="col-12 col-lg-3">
-                    <div class="row g-4 g-lg-2">
-                      <div class="col-12 col-sm-6 col-lg-12">
-                        <div class="row align-items-center g-0">
-                          <div class="col-auto col-lg-6 col-xl-5">
-                            <h6 class="mb-0 me-3">Invoice No :</h6>
-                          </div>
-                          <div class="col-auto col-lg-6 col-xl-7">
-                            <p class="fs-9 text-body-secondary fw-semibold mb-0">{{ $order->num_invoice }}</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-12 col-sm-6 col-lg-12">
-                        <div class="row align-items-center g-0">
-                          <div class="col-auto col-lg-6 col-xl-5">
-                            <h6 class="me-2">Invoice Date :</h6>
-                          </div>
-                          <div class="col-auto col-lg-6 col-xl-7">
-                            <p class="fs-9 text-body-secondary fw-semibold mb-0">{{date('d-m-Y', strtotime( $order->payment_created_at ))}}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-lg-5">
-                    <div class="row g-4 gy-lg-5">
-                      <div class="col-12 col-lg-8">
-                        <h6 class="mb-2 me-3">Vendu par :</h6>
-                        <p class="fs-9 text-body-secondary fw-semibold mb-0">{{$authName}}<br />{{$order->magasin->adresse}}</p>
-                      </div>
-                      <div class="col-12 col-lg-4">
-                        <h6 class="mb-2"> PAN No :</h6>
-                        <p class="fs-9 text-body-secondary fw-semibold mb-0">XVCJ963782008</p>
-                      </div>
-                      <div class="col-12 col-lg-4">
-                        <h6 class="mb-2"> Bon de commande </h6>
-                        <p class="fs-9 text-body-secondary fw-semibold mb-0">@if($order->bon_commande != '') {{$order->bon_commande}} @else Pas de bon @endif</p>
-                      </div>
-                      <div class="col-12 col-lg-4">
-                        <h6 class="mb-2"> Commande No :</h6>
-                        <p class="fs-9 text-body-secondary fw-semibold mb-0">{{$order->order}}</p>
-                      </div>
-                      <div class="col-12 col-lg-4">
-                        <h6 class="mb-2"> Commande Date :</h6>
-                        <p class="fs-9 text-body-secondary fw-semibold mb-0">{{date('d-m-Y', strtotime( $order->date ))}}</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6 col-lg-4">
-                    <div class="row g-4">
-                      <div class="col-12 col-lg-6">
-                        <h6 class="mb-2"> Adresse de facturation:</h6>
-                        <div class="fs-9 text-body-secondary fw-semibold mb-0">
-                          <p class="mb-2">{{$order->magasin->name}},</p>
-                          <p class="mb-2">{{$order->magasin->adresse}}</p>
-                          <p class="mb-2">{{$order->magasin->email}}</p>
-                          <p class="mb-0">{{$order->magasin->phone}}</p>
-                        </div>
-                      </div>
-                      <div class="col-12 col-lg-6">
-                        <h6 class="mb-2"> Adresse de livraison:</h6>
-                        <div class="fs-9 text-body-secondary fw-semibold mb-0">
-                          <p class="mb-2">@if($order->user_id == '' && $order->client_id == '') {{ $order->name }} @elseif($order->user_id != '') {{ $order->user->name }} @elseif($order->client_id != '') {{ $order->client->name }} @endif,</p>
-                          <p class="mb-2">@if($order->user_id == '' && $order->client_id == '') {{ $order->adresse }} @elseif($order->user_id != '') {{ $order->user->adresse }} @elseif($order->client_id != '') {{ $order->client->adresse }} @endif</p>
-                          <p class="mb-2">@if($order->user_id == '' && $order->client_id == '') {{ $order->email }} @elseif($order->user_id != '') {{ $order->user->email }} @elseif($order->client_id != '') {{ $order->client->email }} @endif</p>
-                          <p class="mb-0">@if($order->user_id == '' && $order->client_id == '') {{ $order->phone }} @elseif($order->user_id != '') {{ $order->user->phone }} @elseif($order->client_id != '') {{ $order->client->phone }} @endif</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="px-0">
-                <div class="table-responsive scrollbar">
-                  <table class="table fs-9 text-body mb-0">
-                    <thead class="bg-body-secondary">
-                      <tr>
-                        <th scope="col" style="width: 24px;"></th>
-                        <th scope="col" style="min-width: 60px;">SL NO.</th>
-                        <th scope="col" style="min-width: 360px;">Designation</th>
-                        <th class="text-end" scope="col" style="width: 100px;"></th>
-                        <th class="text-end" scope="col" style="width: 100px;"></th>
-                        <th class="text-end" scope="col" style="width: 100px;"></th>
-                        <th class="text-end" scope="col" style="width: 80px;">Quantites</th>
-                        <th class="text-end" scope="col" style="width: 100px;"></th>
-                        <th class="text-end" scope="col" style="width: 150px;">Prix unitaire</th>
-                        <th class="text-end" scope="col" style="width: 100px;"></th>
-                        <th class="text-end" scope="col" style="min-width: 100px;">Prix total</th>
-                        <th scope="col" style="width: 24px;"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @foreach(unserialize($order->products) as $product)
-                        <tr>
-                          <td class="border-0"></td>
-                          <td class="align-middle">1</td>
-                          <td class="align-middle">
-                            <p class="line-clamp-1 mb-0 fw-semibold">{{$product[1]}}</p>
-                          </td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td class="align-middle text-center text-body-highlight fw-semibold">{{$product[3]}}</td>
-                          <td></td>
-                          <td class="align-middle text-center fw-semibold">{{$product[2]}}</td>
-                          <td></td>
-                          <td class="align-middle text-end fw-semibold">{{$product[2] * $product[3]}} CFA</td>
-                          <td class="border-0"></td>
-                        </tr>
-                      @endforeach
-                      <tr class="bg-body-secondary">
-                        <td></td>
-                        <td class="align-middle fw-semibold" colspan="9">Subtotal</td>
-                        <td class="align-middle text-end fw-bold">$398</td>
-                        <td></td>
-                      </tr>
-
-                      <tr>
-                        <td class="border-0"></td>
-                      </tr>
-
-                      <tr>
-                        <td class="border-0"></td>
-                        <td colspan="6"></td>
-                        <td class="align-middle fw-bold ps-15" colspan="3">Shipping Cost</td>
-                        <td class="align-middle text-end fw-semibold" colspan="1">$50</td>
-                        <td class="border-0"></td>
-                      </tr>
-                      <tr>
-                        <td></td>
-                        <td colspan="6"></td>
-                        <td class="align-middle fw-bold ps-15" colspan="2">Discount/Voucher</td>
-                        <td class="align-middle text-end fw-semibold text-danger" colspan="2">-$50</td>
-                        <td></td>
-                      </tr>
-
-                      <tr class="bg-body-secondary">
-                        <td class="align-middle ps-4 fw-bold text-body-highlight" colspan="3">Grand Total</td>
-                        <td class="align-middle fw-bold text-body-highlight" colspan="7">Trois cent vingt-huit USD</td>
-                        <td class="align-middle text-end fw-bold">{{ $order->amount }}</td>
-                        <td></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="text-end py-9 border-bottom">
-                  <img class="mb-3" src="{{asset('assets/img/logos/payer.png')}}" alt="" />
-                  <h4>Signataire autorisé</h4>
-                </div>
-                <div class="text-center py-4 mb-9">
-                  <p class="mb-0">Merci d'avoir choisi notre boutique</p>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between">
-                <button class="btn btn-primary"><span class="fa-solid fa-bag-shopping me-2"></span>Browse more items</button>
-                <div>
-                  <button class="btn btn-phoenix-secondary me-2">
-                    <span class="fa-solid fa-download me-sm-2"></span>
-                    <span class="d-none d-sm-inline-block">Telecherger</span>
-                  </button>
-                  <button class="btn btn-phoenix-primary">
-                    <span class="fa-solid fa-print me-sm-2"></span>
-                    <span class="d-none d-sm-inline-block">Imprimer</span>
-                  </button>
-                  <button class="btn btn-phoenix-success">
-                    <span class="fa-solid fa-share me-sm-2"></span>
-                    <span class="d-none d-sm-inline-block">Partager par email</span>
-                  </button>
-                </div>
-              </div>
-            </div><!-- end of .container-->
-          </section><!-- <section> close ============================-->
-          <!-- ============================================-->
-
-
-
-
-
-      <footer class="footer position-absolute">
-        <div class="row g-0 justify-content-between align-items-center h-100">
-          <div class="col-12 col-sm-auto text-center">
-            <p class="mb-0 mt-2 mt-sm-0 text-body">Thank you for creating with Phoenix<span class="d-none d-sm-inline-block"></span><span class="d-none d-sm-inline-block mx-1">|</span><br class="d-sm-none" />2024 &copy;<a class="mx-1" href="https://themewagon.com/">Themewagon</a></p>
+            </div>
+            <div class="tm_shape_bg tm_accent_bg"></div>
           </div>
-          <div class="col-12 col-sm-auto text-center">
-            <p class="mb-0 text-body-tertiary text-opacity-85">v1.16.0</p>
+          <div class="tm_invoice_info tm_mb10">
+            <div class="tm_invoice_info_left">
+              <p class="tm_mb2"><b>Facture à:</b></p>
+              <p>
+                <b class="tm_f16 tm_primary_color">@if($order->client_id != '') {{ $order->client->name }} @elseif ($order->user_id != '') {{ $order->user->name }} @else {{ $order->name }}@endif</b> <br>
+                @if($order->client_id != '') {{ $order->client->adresse }} @elseif ($order->user_id != '') {{ $order->user->adresse }} @else {{ $order->adresse }}@endif <br>
+                @if($order->client_id != '') {{ $order->client->email }} @elseif ($order->user_id != '') {{ $order->user->email }} @else {{ $order->email }}@endif <br>
+                @if($order->client_id != '') {{ $order->client->phone }} @elseif ($order->user_id != '') {{ $order->user->phone }} @else {{ $order->phone }}@endif
+              </p>
+            </div>
+            <div class="tm_invoice_info_right">
+              <div class="tm_f50 tm_text_uppercase tm_text_center tm_invoice_title tm_mb15 tm_ternary_color tm_mobile_hide">FACTURE</div>
+              <div class="tm_grid_row tm_col_3 tm_invoice_info_in tm_round_border tm_gray_bg">
+                <div>
+                  <span>Numéro  No:</span> <br>
+                  <b class="tm_f15 tm_accent_color">#{{ str_pad($order->order, 5, '0', STR_PAD_LEFT) }}</b>
+                </div>
+                <div>
+                  <span>Facture Date:</span> <br>
+                  <b class="tm_f15 tm_accent_color">{{date('d-m-Y', strtotime( Carbon\Carbon::now() ))}}</b>
+                </div>
+                <div>
+                  <span>Grand Total:</span> <br>
+                  <b class="tm_f15 tm_accent_color">{{ $order->amount }} CFA</b>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tm_table tm_style1">
+            <div class="tm_round_border">
+              <div class="tm_table_responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th class="tm_width_7 tm_semi_bold tm_primary_color">Designations</th>
+                      <th class="tm_width_2 tm_semi_bold tm_primary_color">Couleurs</th>
+                      <th class="tm_width_2 tm_semi_bold tm_primary_color">Tailles</th>
+                      <th class="tm_width_2 tm_semi_bold tm_primary_color">Prix</th>
+                      <th class="tm_width_1 tm_semi_bold tm_primary_color">Qty</th>
+                      <th class="tm_width_2 tm_semi_bold tm_primary_color tm_text_right">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  @foreach(unserialize($order->products) as $product)
+                    <tr class="tm_gray_bg">
+                      <td class="tm_width_7">
+                        <p class="tm_m0 tm_f16 tm_primary_color">{{$product[1]}}</p>
+                      </td>
+                      <td class="tm_width_2">@if($product[4] != ''){{$product[4]}} @else Null @endif</td>
+                      <td class="tm_width_2">@if($product[5] != ''){{$product[5]}} @else Null @endif</td>
+                      <td class="tm_width_2">{{$product[2]}}</td>
+                      <td class="tm_width_1">{{$product[3]}}</td>
+                      <td class="tm_width_2 tm_text_right">{{$product[2] * $product[3]}}</td>
+                    </tr>
+                  @endforeach
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="tm_invoice_footer tm_mb15 tm_m0_md">
+              <div class="tm_left_footer">
+                <div class="tm_mb10 tm_m0_md"></div>
+                <p class="tm_mb5">
+                  <b class="tm_primary_color">RCCM</b> <br>
+                  {{ $order->magasin->registre_com }}
+                </p>
+                <p class="tm_mb0">
+                  <b class="tm_primary_color">NINEA:</b> <br>
+                  {{ $order->magasin->ninea }}
+                </p>
+              </div>
+              <div class="tm_right_footer">
+                <table class="tm_mb15">
+                  <tbody>
+                    <tr>
+                      <td class="tm_width_3 tm_primary_color tm_border_none tm_bold">Paye par :</td>
+                      <td class="tm_width_3 tm_primary_color tm_text_right tm_border_none tm_bold">
+                      @if ($order->methode == 1)
+                        Wave
+                      @elseif ($order->methode == 2)
+                        Orange Money
+                      @elseif ($order->methode == 3)
+                        En cache
+                      @else
+                        Non paye
+                      @endif
+                      </td>
+                    {{-- 
+                    </tr>
+                    <tr>
+                      <td class="tm_width_3 tm_danger_color tm_border_none tm_pt0">Discount 10%</td>
+                      <td class="tm_width_3 tm_danger_color tm_text_right tm_border_none tm_pt0">+$164</td>
+                    </tr>
+                    <tr>
+                      <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Tax 5%</td>
+                      <td class="tm_width_3 tm_primary_color tm_text_right tm_border_none tm_pt0">+$82</td>
+                    </tr>
+                    --}}
+                    <tr>
+                      <td class="tm_width_3 tm_border_top_0 tm_bold tm_f18 tm_white_color tm_accent_bg tm_radius_6_0_0_6">Grand Total	</td>
+                      <td class="tm_width_3 tm_border_top_0 tm_bold tm_f18 tm_primary_color tm_text_right tm_white_color tm_accent_bg tm_radius_0_6_6_0">{{ $order->amount }} CFA</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="tm_invoice_footer tm_type1">
+              <div class="tm_left_footer"></div>
+              <div class="tm_right_footer">
+                <div class="tm_sign tm_text_center">
+                  <img src="assets/img/sign.html" alt="Signature">
+                  <p class="tm_m0 tm_ternary_color">{{ $order->magasin->admin_name }}</p>
+                  <p class="tm_m0 tm_f16 tm_primary_color">Gestionnaire des comptes</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tm_bottom_invoice">
+            <div class="tm_bottom_invoice_left">
+              <p class="tm_m0 tm_f18 tm_accent_color tm_mb5">Nous vous remercions de votre confiance.</p>
+              <p class="tm_primary_color tm_f12 tm_m0 tm_bold">Terms & Condition</p>
+              <p class="tm_m0 tm_f12">IInvoice was created on a computer and is valid without the signature and seal.</p>
+            </div>
+            <div class="tm_bottom_invoice_right tm_mobile_hide">
+              <div class="tm_logo"><img style="border-radius: 100%;" class="rounded-circle" src="@if ($order->logo != '') {{(Storage::url($order->magasin->logo))}} @else https://ui-avatars.com/api/?name={{$order->magasin->name}} @endif" alt="Logo"></div>
+            </div>
           </div>
         </div>
-      </footer>
-
-
+      </div>
+      <div class="tm_invoice_btns tm_hide_print">
+        <a href="javascript:window.print()" class="tm_invoice_btn tm_color1">
+          <span class="tm_btn_icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M384 368h24a40.12 40.12 0 0040-40V168a40.12 40.12 0 00-40-40H104a40.12 40.12 0 00-40 40v160a40.12 40.12 0 0040 40h24" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><rect x="128" y="240" width="256" height="208" rx="24.32" ry="24.32" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M384 128v-24a40.12 40.12 0 00-40-40H168a40.12 40.12 0 00-40 40v24" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><circle cx="392" cy="184" r="24" fill='currentColor'/></svg>
+          </span>
+          <span class="tm_btn_text">Imprimer</span>
+        </a>
+        <button id="tm_download_btn" class="tm_invoice_btn tm_color2">
+          <span class="tm_btn_icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M320 336h76c55 0 100-21.21 100-75.6s-53-73.47-96-75.6C391.11 99.74 329 48 256 48c-69 0-113.44 45.79-128 91.2-60 5.7-112 35.88-112 98.4S70 336 136 336h56M192 400.1l64 63.9 64-63.9M256 224v224.03" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+          </span>
+          <span class="tm_btn_text">Télécharger</span>
+        </button>
+      </div>
     </div>
-  @endsection
+  </div>
+  <script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('assets/js/jspdf.min.js') }}"></script>
+  <script src="{{ asset('assets/js/html2canvas.min.js') }}"></script>
+  <script>
+     /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+  /////////////////   Down Load Button Function   /////////////////
+  *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+ 
+(function ($) {
+  'use strict';
 
---}}
+  $('#tm_download_btn').on('click', function () {
+    var downloadSection = $('#tm_download_section');
+    var cWidth = downloadSection.width();
+    var cHeight = downloadSection.height();
+    var topLeftMargin = 0;
+    var pdfWidth = cWidth + topLeftMargin * 2;
+    var pdfHeight = pdfWidth * 1.5 + topLeftMargin * 2;
+    var canvasImageWidth = cWidth;
+    var canvasImageHeight = cHeight;
+    var totalPDFPages = Math.ceil(cHeight / pdfHeight) - 1;
+
+    html2canvas(downloadSection[0], { allowTaint: true }).then(function (
+      canvas
+    ) {
+      canvas.getContext('2d');
+      var imgData = canvas.toDataURL('image/png', 1.0);
+      var pdf = new jsPDF('p', 'pt', [pdfWidth, pdfHeight]);
+      pdf.addImage(
+        imgData,
+        'PNG',
+        topLeftMargin,
+        topLeftMargin,
+        canvasImageWidth,
+        canvasImageHeight
+      );
+      for (var i = 1; i <= totalPDFPages; i++) {
+        pdf.addPage(pdfWidth, pdfHeight);
+        pdf.addImage(
+          imgData,
+          'PNG',
+          topLeftMargin,
+          -(pdfHeight * i) + topLeftMargin * 0,
+          canvasImageWidth,
+          canvasImageHeight
+        );
+      }
+      pdf.save('download.pdf');
+    });
+  });
+
+})(jQuery);
+
+  </script>
+
+
+</body>
+
+<!-- Mirrored from html.laralink.com/invoma/general_4.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 08 Nov 2024 15:16:42 GMT -->
+</html>

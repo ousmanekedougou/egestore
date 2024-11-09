@@ -108,7 +108,8 @@
                       <p class="text-body-tertiary lh-lg mb-3"> Commande Nº {{ $order->order }} de  {{$order->name}} </p>
                       <p class="text-body-tertiary lh-lg mb-3">
                         <h6 class="mb-2">Selectionner un status</h6>
-                        <select class="form-select mb-4 @error('status') is-invalid @enderror" name="status" id="status"aria-label="delivery type">
+                        <select onchange="enableBrand(this)" class="form-select mb-4 @error('status') is-invalid @enderror" name="status" id="status"aria-label="delivery type">
+                          <option value=""></option>
                           <option class="text-success" value="1" @if($order->status == 1) selected="" @endif>Terminé</option>
                           <option class="text-primary" value="2" @if($order->status == 2) selected="" @endif>En cours</option>
                           <option class="text-danger" value="3" @if($order->status == 3) selected="" @endif>Annulé</option>
@@ -119,6 +120,26 @@
                         </span>
                         @enderror
                       </p>
+                      <div class="mb-3 text-start d-none" id="clientNone" data-id="{{ $order->id }}">
+                        <label class="form-label" for="email">Methode de paiement</label> <br>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input text-primary @error('methode') is-invalid @enderror" @if($order->methode == 1) checked="" @endif id="inlineRadioA-{{ $order->id }}" type="radio" name="methode" value=" 1 ">
+                          <label class="form-check-label text-primary" for="inlineRadioA-{{ $order->id }}" style="margin-top: 2px;">Wave</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input text-warning @error('methode') is-invalid @enderror" @if($order->methode == 2) checked="" @endif id="inlineRadioB-{{ $order->id }}" type="radio" name="methode" value=" 2 ">
+                          <label class="form-check-label text-warning" for="inlineRadioB-{{ $order->id }}" style="margin-top: 2px;">Orange Money</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input text-success @error('methode') is-invalid @enderror" @if($order->methode == 3) checked="" @endif id="inlineRadioC-{{ $order->id }}" type="radio" name="methode" value=" 3 ">
+                          <label class="form-check-label text-success" for="inlineRadioC-{{ $order->id }}" style="margin-top: 2px;">Cache</label>
+                        </div>
+                        @error('methode')
+                          <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                          </span>
+                        @enderror
+                      </div>
                     </div>
                     <div class="modal-footer">
                       <button class="btn btn-success" style="width: 100%;" type="submit">Enregistre le status</button>
@@ -143,3 +164,13 @@
     </footer>
   </div>
 @endsection
+
+<script>
+    function enableBrand(answer){
+      if (answer.value == 1) {
+          document.getElementById('clientNone').classList.remove('d-none')
+      }else{
+          document.getElementById('clientNone').classList.add('d-none')
+      }
+    }
+</script>

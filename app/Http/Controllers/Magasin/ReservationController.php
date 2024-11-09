@@ -9,6 +9,7 @@ use App\Models\Magasin\Magasin;
 use App\Models\User\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
@@ -109,9 +110,19 @@ class ReservationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $slug)
     {
-        //
+        $authName = null;
+
+        if (Auth::guard('magasin')->user()) {
+            $authName = Auth::guard('magasin')->user()->name;
+        }elseif (Auth::guard('agent')->user()) {
+            $authName = Auth::guard('agent')->user()->name;
+        }
+        return view('magasin.reserves.invoice',[
+            'reserve' => Commande::where('slug',$slug)->where('magasin_id',AuthMagasinAgent())->where('type',1)->first(),
+            'authName' => $authName
+        ]);
     }
 
    /**
@@ -122,12 +133,14 @@ class ReservationController extends Controller
 
         $this->validate($request,[
             'status' => 'required|numeric',
-            'methode' => 'required|numeric',
         ]);
 
         $dateUpdate = null;
         $incvoiceNum = null;
         if($request->status == 1){
+            $this->validate($request,[
+                'methode' => 'required|numeric',
+            ]);
             $dateUpdate = now();
 
             $num = Commande::where("magasin_id", AuthMagasinAgent())->where('type',1)->latest()->first();
@@ -157,6 +170,21 @@ class ReservationController extends Controller
     {
         Commande::where('id',$id)->where('magasin_id',AuthMagasinAgent())->where('type',1)->delete();
         Toastr::success('Votre reservation a bien été supprimé', 'Suppression de reservations', ["positionClass" => "toast-top-right"]);
+        return back();
+    }
+
+    public function delete(string $id){
+        $deleteBagages = Commande::where('id',$id)->where('magasin_id',AuthMagasinAgent())->where('type',1)->first();
+        foreach ($deleteBagages->bagages as $bag) {
+            $bag->delete();
+        }
+        $deleteBagages->update(
+            [   'status' => 2,
+                'amount' => null,
+                'payment_created_at' => null,
+                'num_invoice' => null,
+                'methode' => null
+            ]);
         return back();
     }
 }
