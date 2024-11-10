@@ -109,7 +109,9 @@
                     @if($bon->status == 1)
                       <a target="_blank" href="{{ route('magasin.bon.edit',$bon->slug) }}" class="me-2 text-success" data-fa-transform="shrink-3"><span data-feather="file-text" ></span></a>
                     @elseif ($bon->status != 1)
-                      <span class="me-2 text-info" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $bon->id }}" data-feather="shopping-bag" data-fa-transform="shrink-3"></span>
+                      @if ($bon->bagages->count() > 0)
+                        <span class="me-2 text-info" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $bon->id }}" data-feather="shopping-bag" data-fa-transform="shrink-3"></span>
+                      @endif
                     @endif
                     <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $bon->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
                   </td>

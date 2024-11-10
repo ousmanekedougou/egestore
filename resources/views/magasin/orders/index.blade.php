@@ -95,9 +95,11 @@
                   <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{date('d-m-Y', strtotime( $order->date ))}}</td>
                   <td class=" align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">
                     @if($order->status == 1)
-                      <a href="{{ route('magasin.commande.edit',$order->slug) }}" target="_blank" class="me-2 text-success"  data-fa-transform="shrink-3"><span data-feather="file-text" ></span></span></a>
+                    <a href="{{ route('magasin.commande.edit',$order->slug) }}" target="_blank" class="me-2 text-success"  data-fa-transform="shrink-3"><span data-feather="file-text" ></span></span></a>
                     @elseif($order->status != 1)
-                      <span class="me-2 text-info" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $order->id }}" data-feather="shopping-bag" data-fa-transform="shrink-3"></span>
+                      @if (unserialize($order->products)->count() > 0)
+                        <span class="me-2 text-info" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $order->id }}" data-feather="shopping-bag" data-fa-transform="shrink-3"></span>
+                      @endif
                     @endif
                     <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $order->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
                   </td>

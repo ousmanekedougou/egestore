@@ -130,37 +130,43 @@ class ReservationController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
-        $this->validate($request,[
-            'status' => 'required|numeric',
-        ]);
-
-        $dateUpdate = null;
-        $incvoiceNum = null;
-        if($request->status == 1){
+        $commande = Commande::where('id',$id)->where('type',1)->where('magasin_id',AuthMagasinAgent())->first();
+        if ($commande->bagages->count() > 0) 
+        {
             $this->validate($request,[
-                'methode' => 'required|numeric',
+                'status' => 'required|numeric',
             ]);
-            $dateUpdate = now();
-
-            $num = Commande::where("magasin_id", AuthMagasinAgent())->where('type',1)->latest()->first();
-            if ($num) {
-                $incvoiceNum = $num->num_invoice + 1;
-            }else {
-                $incvoiceNum = 1;
+    
+            $dateUpdate = null;
+            $incvoiceNum = null;
+            if($request->status == 1){
+                $this->validate($request,[
+                    'methode' => 'required|numeric',
+                ]);
+                $dateUpdate = now();
+    
+                $num = Commande::where("magasin_id", AuthMagasinAgent())->where('type',1)->latest()->first();
+                if ($num) {
+                    $incvoiceNum = $num->num_invoice + 1;
+                }else {
+                    $incvoiceNum = 1;
+                }
             }
+    
+            $commande->update(
+            [   'status' => $request->status,
+                'payment_created_at' => $dateUpdate,
+                'num_invoice' => $incvoiceNum,
+                'methode' => $request->methode
+            ]);
+    
+            Toastr::success('Le status de catte reservation a bien été modifié', 'Modification de reservations', ["positionClass" => "toast-top-right"]);
+            return back();
+        }else {
+            Toastr::error('Vous n\'aviez pas de produit pour cette reservation', 'Pas de produit', ["positionClass" => "toast-top-right"]);
+            return back();
         }
-
-        Commande::where('id',$id)->where('magasin_id',AuthMagasinAgent())
-        ->update(
-        [   'status' => $request->status,
-            'payment_created_at' => $dateUpdate,
-            'num_invoice' => $incvoiceNum,
-            'methode' => $request->methode
-        ]);
-
-        Toastr::success('Le status de catte reservation a bien été modifié', 'Modification de reservations', ["positionClass" => "toast-top-right"]);
-        return back();
+        
     }
 
     /**

@@ -23,7 +23,11 @@ class Bagage extends Model
     ];
 
     public function getPrice(){
-        return number_format($this->price,2, ',','.'). ' CFA';
+        return number_format($this->price,2, ',','.'). ' cfa';
+    }
+
+    public function getTotalPrice(){
+        return number_format($this->price * $this->quantity,2, ',','.'). ' cfa';
     }
 
     public function commande()

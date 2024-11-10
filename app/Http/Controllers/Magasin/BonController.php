@@ -204,42 +204,47 @@ class BonController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
-        $this->validate($request,[
-            'status' => 'required|numeric',
-        ]);
-
-        $dateUpdate = null;
-        $incvoiceNum = null;
-        $methode = null;
-        
-        if($request->status == 1){
+        $commande = Commande::where('id',$id)->where('type',0)->where('magasin_id',AuthMagasinAgent())->first();
+        if ($commande->bagages->count() > 0) 
+        {
             $this->validate($request,[
-                'methode' => 'required|numeric',
+                'status' => 'required|numeric',
             ]);
 
-            $dateUpdate = now();
+            $dateUpdate = null;
+            $incvoiceNum = null;
+            $methode = null;
+            
+            if($request->status == 1){
+                $this->validate($request,[
+                    'methode' => 'required|numeric',
+                ]);
 
-            $num = Commande::where("magasin_id", AuthMagasinAgent())->where('type',0)->latest()->first();
-            if ($num) {
-                $incvoiceNum = $num->num_invoice + 1;
-            }else {
-                $incvoiceNum = 1;
+                $dateUpdate = now();
+
+                $num = Commande::where("magasin_id", AuthMagasinAgent())->where('type',0)->latest()->first();
+                if ($num) {
+                    $incvoiceNum = $num->num_invoice + 1;
+                }else {
+                    $incvoiceNum = 1;
+                }
+
+                $methode = $request->methode;
             }
 
-            $methode = $request->methode;
+            $commande->update(
+            [   'status' => $request->status,
+                'payment_created_at' => $dateUpdate,
+                'num_invoice' => $incvoiceNum,
+                'methode' => $methode
+            ]);
+
+            Toastr::success('Le status de cette résérvation a bien été modifié', 'Modification de résérvation', ["positionClass" => "toast-top-right"]);
+            return back();
+        }else {
+            Toastr::error('Vous n\'aviez pas de produit pour ce bon', 'Pas de produit', ["positionClass" => "toast-top-right"]);
+            return back();
         }
-
-        Commande::where('id',$id)->where('magasin_id',AuthMagasinAgent())
-        ->update(
-        [   'status' => $request->status,
-            'payment_created_at' => $dateUpdate,
-            'num_invoice' => $incvoiceNum,
-            'methode' => $methode
-        ]);
-
-        Toastr::success('Le status de cette résérvation a bien été modifié', 'Modification de résérvation', ["positionClass" => "toast-top-right"]);
-        return back();
     }
 
     /**

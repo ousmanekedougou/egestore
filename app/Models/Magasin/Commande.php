@@ -31,6 +31,10 @@ class Commande extends Model
         'status'
     ];
 
+    public function getAmount(){
+        return number_format($this->amount,2, ',','.'). ' cfa';
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
