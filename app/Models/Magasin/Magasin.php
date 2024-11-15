@@ -43,11 +43,6 @@ class Magasin extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
-    public function provisoires()
-    {
-        return $this->hasMany(Provisoire::class);
-    }
-
     public function clients()
     {
         return $this->hasMany(Client::class);
@@ -76,6 +71,11 @@ class Magasin extends Authenticatable
     public function ventes()
     {
         return $this->hasMany(Vente::class);
+    }
+
+    public function supllies()
+    {
+        return $this->hasMany(Supply::class);
     }
    
 }

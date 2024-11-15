@@ -97,6 +97,11 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
     Route::get('reserve/delete/{id}',[App\Http\Controllers\Magasin\ReservationController::class,'delete'])->name('reserve.delete');
 
 
+    // Les fournisseurs
+    Route::resource('/fournisseurs', App\Http\Controllers\Magasin\SupplyController::class);
+    Route::get('/fournisseurs/{id}/addSupply', [App\Http\Controllers\Magasin\SupplyController::class,'addSupply'])->name('fournisseurs.addSupply');
+
+
     // login des admin
     Route::get('/login',[App\Http\Controllers\Magasin\Auth\LoginController::class,'showLoginForm'])->name('login');
     Route::post('/login',[App\Http\Controllers\Magasin\Auth\LoginController::class, 'login'])->name('login');

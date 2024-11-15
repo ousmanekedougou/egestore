@@ -5,28 +5,43 @@
             <ul class="navbar-nav flex-column" id="navbarVerticalNav">
                 <li class="nav-item">
                     <!-- label-->
-                    <p class="navbar-vertical-label">Pages</p>
+                    <p class="navbar-vertical-label">Gestion des achats</p>
                     <hr class="navbar-vertical-line" /><!-- parent pages-->
                     @if(Auth::guard('magasin')->user())
                         <div class="nav-item-wrapper">
-                            <a class="nav-link label-1 {{ set_active_roote('magasin.agent.index') }} " href="{{ route('magasin.agent.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
-                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="user" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Fornisseurs</span></span></div>
+                            <a class="nav-link label-1 {{ set_active_roote('magasin.fournisseurs.index') }} " href="{{ route('magasin.fournisseurs.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
+                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="user" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Autres magasins</span></span></div>
                             </a>
                         </div><!-- parent pages-->
-
+                        <div class="nav-item-wrapper">
+                            <a class="nav-link label-1 {{ set_active_roote('magasin.agent.index') }} " href="{{ route('magasin.agent.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
+                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="user" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Fournisseurs</span></span></div>
+                            </a>
+                        </div><!-- parent pages-->
+                        <div class="nav-item-wrapper">
+                            <a class="nav-link label-1 {{ set_active_roote('magasin.agent.index') }} " href="{{ route('magasin.agent.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
+                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="user" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Pro-Format</span></span></div>
+                            </a>
+                        </div><!-- parent pages-->
+                        
+                        <p class="navbar-vertical-label">Gestion des agents</p>
+                        <hr class="navbar-vertical-line" /><!-- parent pages-->
                         <div class="nav-item-wrapper">
                             <a class="nav-link label-1 {{ set_active_roote('magasin.agent.index') }} " href="{{ route('magasin.agent.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
                                 <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="user" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Agents</span></span></div>
                             </a>
                         </div><!-- parent pages-->
                     @endif
-
+                    <p class="navbar-vertical-label">Mes categories</p>
+                    <hr class="navbar-vertical-line" /><!-- parent pages-->
                     <div class="nav-item-wrapper">
                         <a class="nav-link label-1 {{ set_active_roote('magasin.categorie.index') }}" href="{{ route('magasin.categorie.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
                             <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="figma"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Catégories</span></span></div>
                         </a>
                     </div><!-- parent pages-->
 
+                    <p class="navbar-vertical-label">Gestion des commandes</p>
+                    <hr class="navbar-vertical-line" /><!-- parent pages-->
                     <div class="nav-item-wrapper">
                         <a class="nav-link label-1 {{ set_active_roote('magasin.commande.index') }}" href="{{ route('magasin.commande.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
                             <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="shopping-bag"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Commandes</span></span></div>
@@ -45,6 +60,8 @@
                         </a>
                     </div><!-- parent pages-->
 
+                    <p class="navbar-vertical-label">Gestion des clients</p>
+                    <hr class="navbar-vertical-line" /><!-- parent pages-->
                     <div class="nav-item-wrapper">
                         <a class="nav-link label-1 {{ set_active_roote('magasin.client.index') }}" href="{{ route('magasin.client.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
                             <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="bell"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Abonnés</span></span></div>

@@ -28,7 +28,8 @@ class Order extends Model
         'date',
         'delivery',
         'status',
-        'type'
+        'type',
+        'methode'
     ];
 
     

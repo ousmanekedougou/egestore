@@ -16,8 +16,8 @@ class HomeController extends Controller
         }elseif (Auth::guard('agent')->user()) {
             return redirect()->route('agent.home');
         }else {
-            // return redirect()->route('magasin.login');
             return view('magasin.auth.login');
+            // return redirect()->route('magasin.login');
         }
     }
 }

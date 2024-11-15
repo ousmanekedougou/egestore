@@ -31,7 +31,7 @@ return new class extends Migration
           $table->boolean('promot')->default(false);
           $table->text('desc')->nullable();
           $table->date('exp_date')->nullable();
-          $table->integer('suply_id')->nullable();
+          $table->integer('supply_id')->nullable();
           
           $table
             ->foreignId("magasin_id")
