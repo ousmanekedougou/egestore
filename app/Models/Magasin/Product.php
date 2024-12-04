@@ -29,6 +29,8 @@ class Product extends Model
         'desc',
         'colors',
         'sizes',
+        'supply_id',
+        'supply_name',
         'order_id',
         'sub_category_id'
     ];

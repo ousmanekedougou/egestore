@@ -234,6 +234,21 @@
                     </span>
                 @enderror
               </div>
+
+              <div class="mb-3 text-start">
+                <label for="organizerSingle">Sélectionner un fournisseur</label>
+                <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
+                  <option value="">Sélectionner un...</option>
+                  @foreach ($supplies as $supplie)
+                    <option value="{{ old('supply_id') ?? $supplie->id }}">@if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
+                  @endforeach
+                </select>
+                @error('supply_id')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
+              </div>
              
 
               <div class="mb-3 text-start">
@@ -278,10 +293,10 @@
                   </div>
 
                   <div class="col-lg-12 mb-3 d-none" id="clientNone">
-                    <label class="form-label" for="price">Prix du produit</label>
-                    <input id="price" type="numeric" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" placeholder="Prix du produit" required autocomplete="price">
+                    <label class="form-label" for="price_promotion">Prix du produit en promotion</label>
+                    <input id="price_promotion" type="numeric" class="form-control @error('price_promotion') is-invalid @enderror" name="price_promotion" value="{{ old('price_promotion') }}" placeholder="Prix du produit" autocomplete="price_promotion">
 
-                    @error('price')
+                    @error('price_promotion')
                       <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
                       </span>

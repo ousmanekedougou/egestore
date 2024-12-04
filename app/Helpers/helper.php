@@ -98,7 +98,7 @@ if (!function_exists('allCategorieCommercial')){
             $magasinId = Auth::guard('agent')->user()->magasin->id;
         }
 
-        $categories = Category::where('magasin_id',$magasinId)->where('visible',1)->where('type',1)->get();
+        $categories = Category::where('magasin_id',$magasinId)->where('visible',1)->get();
 
         return $categories;
     }
@@ -117,7 +117,7 @@ if (!function_exists('allCategorieLocation')){
             $magasinId = Auth::guard('agent')->user()->magasin->id;
         }
 
-        $categories = Category::where('magasin_id',$magasinId)->where('visible',1)->where('type',2)->get();
+        $categories = Category::where('magasin_id',$magasinId)->where('visible',1)->get();
 
         return $categories;
     }

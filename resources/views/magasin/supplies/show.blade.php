@@ -1,4 +1,4 @@
-@extends('layouts.app',['title' => 'Produits'])
+@extends('layouts.app',['title' => 'Produits des fournisseurs'])
 
 @section('main-content')
 <div class="content">
@@ -77,7 +77,7 @@
             <li class="nav-item" data-nav-item="data-nav-item">
               <div class="search-box ecommerce-search-box">
                 <form class="position-relative">
-                  <input class="form-control search-input search form-control-md" type="search" placeholder="Rechercher votre magasin" aria-label="Search" />
+                  <input class="form-control search-input search form-control-md" type="search" placeholder="Rechercher vos produits" aria-label="Search" />
                   <span class="fas fa-search search-box-icon"></span>
                 </form>
               </div>

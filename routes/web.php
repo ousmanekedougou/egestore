@@ -98,8 +98,10 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
 
 
     // Les fournisseurs
-    Route::resource('/fournisseurs', App\Http\Controllers\Magasin\SupplyController::class);
+    Route::resource('/autres-magasins', App\Http\Controllers\Magasin\SupplyController::class);
+    Route::get('/fournisseurs', [App\Http\Controllers\Magasin\SupplyController::class,'create'])->name('fournisseurs.create');
     Route::get('/fournisseurs/{id}/addSupply', [App\Http\Controllers\Magasin\SupplyController::class,'addSupply'])->name('fournisseurs.addSupply');
+    Route::get('/fournisseurs/{id}/deleteSupply', [App\Http\Controllers\Magasin\SupplyController::class,'destroy'])->name('fournisseurs.destroy');
 
 
     // login des admin

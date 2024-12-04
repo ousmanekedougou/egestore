@@ -19,7 +19,7 @@ class Supply extends Model
         'registre_com',
         'ninea',
         'status',
-        'supply_id',
+        'owner_id',
         'magasin_id'
     ];
 

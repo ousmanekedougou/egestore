@@ -14,7 +14,7 @@
                   <h2 class="mb-3">Autres magasins</h2>
                 </div>
                 <div class="col-12 col-sm-4 col-md-3 col-lg-8">
-                  <div class="search-box ecommerce-search-box w-100">
+                  <div class="search-box  w-100">
                     <form class="position-relative">
                       <input class="form-control search-input search form-control-md" type="search" placeholder="Rechercher votre magasin" aria-label="Search" />
                       <span class="fas fa-search search-box-icon"></span>
@@ -38,15 +38,11 @@
               <div class="col-6 col-sm-4 col-md-3 col-lg-2 hover-actions-trigger btn-reveal-trigger">
                 <div class="border border-translucent d-flex flex-center rounded-3 mb-3 p-4" style="height:180px;"><img class="mw-100" src="@if($magasin->logo == '') https://ui-avatars.com/api/?name={{$magasin->name}} @else {{(Storage::url($magasin->logo))}} @endif" alt="{{ $magasin->name }}" /></div>
                 <h5 class="mb-2">{{ $magasin->name }}</h5>
-                <div class="mb-1 fs-9"><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa-regular fa-star text-warning-light"></span></div>
-                <p class="text-body-quaternary fs-9 mb-2 fw-semibold">(1263 people rated)</p><a class="btn btn-link p-0" href="#!">A propos<span class="fas fa-chevron-right ms-1 fs-10"></span></a>
+                <a class="btn btn-link p-0" href="#!">A propos<span class="fas fa-chevron-right ms-1 fs-10"></span></a>
                 <div class="hover-actions top-0 end-0 mt-2 me-3">
                   <div class="btn-reveal-trigger"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal p-2 lh-1 bg-body-highlight rounded-1" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-9"></span></button>
-                    <div class="dropdown-menu dropdown-menu-end py-2">
-                      <a class="dropdown-item" target="_blank" href="{{ route('magasin.fournisseurs.show',$magasin->slug) }}">Voire les produits</a>
+                    <div class="dropdown-menu dropdown-menu-end py-0">
                       <a class="dropdown-item" href="{{ route('magasin.fournisseurs.addSupply',$magasin->id) }}">Ajouter comme fornisseur</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item text-danger" href="#!">Retirer comme fournisseur</a>
                     </div>
                   </div>
                 </div>

@@ -9,12 +9,12 @@
                     <hr class="navbar-vertical-line" /><!-- parent pages-->
                     @if(Auth::guard('magasin')->user())
                         <div class="nav-item-wrapper">
-                            <a class="nav-link label-1 {{ set_active_roote('magasin.fournisseurs.index') }} " href="{{ route('magasin.fournisseurs.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
+                            <a class="nav-link label-1 {{ set_active_roote('magasin.autres-magasins.index') }} " href="{{ route('magasin.autres-magasins.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
                                 <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="user" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Autres magasins</span></span></div>
                             </a>
                         </div><!-- parent pages-->
                         <div class="nav-item-wrapper">
-                            <a class="nav-link label-1 {{ set_active_roote('magasin.agent.index') }} " href="{{ route('magasin.agent.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
+                            <a class="nav-link label-1 {{ set_active_roote('magasin.fournisseurs.create') }} " href="{{ route('magasin.fournisseurs.create') }}" role="button" data-bs-toggle="" aria-expanded="false">
                                 <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="user" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Fournisseurs</span></span></div>
                             </a>
                         </div><!-- parent pages-->

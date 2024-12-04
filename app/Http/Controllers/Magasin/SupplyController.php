@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Magasin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Magasin;
+use App\Models\Magasin\Product;
 use App\Models\Magasin\Supply;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class SupplyController extends Controller
 {
@@ -20,19 +24,31 @@ class SupplyController extends Controller
     }
 
     public function addSupply($id){
-        Supply::create([
-            'supply_id' => $id,
-            'magasin_id' => AuthMagasinAgent()
-        ]);
-        return back();
+        $magasin = Magasin::where('is_active',1)->where('confirmation_token',null)->where('id',$id)->first();
+        $supplyExist = Supply::where('owner_id',AuthMagasinAgent())->where('magasin_id',$magasin->id)->first();
+        if ($supplyExist) {
+            Toastr::error('Ce magasin est deja ajoute comme fournisseur', 'Ce magasin existe', ["positionClass" => "toast-top-right"]);
+            return back();
+        }else {
+            Supply::create([
+                'owner_id' => AuthMagasinAgent(),
+                'magasin_id' => $magasin->id,
+                'slug' => str_replace('/','',Hash::make(Str::random(2).$magasin->name)),
+                'logo' => $magasin->logo
+            ]);
+            Toastr::success('Ce magasin a ete ajouter comme fourniseur', 'Ajout fournisseur', ["positionClass" => "toast-top-right"]);
+            return back();
+        }
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create($id)
+    public function create()
     {
-        
+        return view('magasin.supplies.supplie',[
+            'supplies' => Supply::where('owner_id',AuthMagasinAgent())->get()
+        ]);
     }
 
     /**
@@ -40,7 +56,35 @@ class SupplyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:supplies',
+            'phone' => 'required|numeric|unique:supplies',
+            'registre_com' => 'required|string|unique:supplies',
+            'ninea' => 'required|string|unique:supplies',
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
+        ]);
+
+        $logoName = '';
+        if(request()->hasFile('logo'))
+        {
+            $logoName = $request->logo->store('public/Magasin/Logo');
+        }
+
+        Supply::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
+            'logo' =>  $logoName,
+            'owner_id' => AuthMagasinAgent(),
+            'magasin_id' => null,
+            'registre_com' => $request->registre_com,
+            'ninea' => $request->ninea
+        ]);
+
+        Toastr::success('Votre fournisseur a ete ajouter', 'Ajout fournisseur', ["positionClass" => "toast-top-right"]);
+        return back();
     }
 
     /**
@@ -48,9 +92,10 @@ class SupplyController extends Controller
      */
     public function show(string $slug)
     {
-        return view('magasin.supplies.product',
+        // dd(request()->slug);
+        return view('magasin.supplies.show',
             [
-                'magasin' => Magasin::where('slug',$slug)->where('is_active',1)->where('confirmation_token',null)->where('id','!=',AuthMagasinAgent())->first()
+                'magasin' => Magasin::where('slug',request()->slug)->where('is_active',1)->where('confirmation_token',null)->where('id','!=',AuthMagasinAgent())->first()
             ]
         );
     }
@@ -68,7 +113,35 @@ class SupplyController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $this->validate($request,[
+            'name' => 'required|string',
+            'email' => 'required|string|email',
+            'phone' => 'required|numeric',
+            'registre_com' => 'required|string',
+            'ninea' => 'required|string',
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
+        ]);
+
+        $logoName = '';
+        if(request()->hasFile('logo'))
+        {
+            $logoName = $request->logo->store('public/Magasin/Logo');
+        }
+
+        Supply::where('id',$id)->where('owner_id',AuthMagasinAgent())->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
+            'logo' =>  $logoName,
+            'owner_id' => AuthMagasinAgent(),
+            'magasin_id' => null,
+            'registre_com' => $request->registre_com,
+            'ninea' => $request->ninea
+        ]);
+
+        Toastr::success('Votre fournisseur a ete modifier', 'Modification fournisseur', ["positionClass" => "toast-top-right"]);
+        return back();
     }
 
     /**
@@ -76,6 +149,10 @@ class SupplyController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $supplyGet = Supply::where('id',$id)->where('owner_id',AuthMagasinAgent())->first();
+        Product::where('supply_id',$supplyGet->id)->where('magasin_id',AuthMagasinAgent())->update(['supply_id' => null,'supply_name' => $supplyGet->name]);
+        $supplyGet->delete();
+        Toastr::success('Fournisseur retirer avec success', 'Suppression fournisseur', ["positionClass" => "toast-top-right"]);
+        return back();
     }
 }

@@ -28,10 +28,11 @@ return new class extends Migration
           $table->text('sizes')->nullable();
           $table->string('reference');
           $table->boolean('visible')->default(false);
-          $table->boolean('promot')->default(false);
+          $table->boolean('promot')->default(false)->nullable();
           $table->text('desc')->nullable();
           $table->date('exp_date')->nullable();
           $table->integer('supply_id')->nullable();
+          $table->string('supply_name')->nullable();
           
           $table
             ->foreignId("magasin_id")

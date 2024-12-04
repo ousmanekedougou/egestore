@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Magasin\Product;
 use App\Models\Magasin\SubCategory;
+use App\Models\Magasin\Supply;
 use Brian2694\Toastr\Facades\Toastr;
 class ProduitController extends Controller
 {
@@ -47,6 +48,7 @@ class ProduitController extends Controller
             'quantity' => 'required|numeric',
             'qty_alert' => 'required|numeric',
             'exp_date' => 'required',
+            'supply_id' => 'required|numeric',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
             // 'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp', 
             'desc' => 'required|string',
@@ -111,6 +113,7 @@ class ProduitController extends Controller
             'promot' => $request->promot,
             'visible' => $request->visible,
             'magasin_id' => AuthMagasinAgent(),
+            'supply_id' => $request->supply_id,
             'sub_category_id' => $request->sub_category_id
         ]);
         Toastr::success('Votre produit a bien été ajouté', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
@@ -124,7 +127,11 @@ class ProduitController extends Controller
      */
     public function show(string $slug)
     {
-        return view('magasin.produits.index',['subcategory' => SubCategory::where('slug',$slug)->first()]);
+        return view('magasin.produits.index',
+            [
+                'subcategory' => SubCategory::where('slug',$slug)->first(),
+                'supplies'    => Supply::where('owner_id',AuthMagasinAgent())->get()     
+            ]);
     }
 
     /**
@@ -216,6 +223,7 @@ class ProduitController extends Controller
             'exp_date' => $request->exp_date,
             'colors' => $colors,
             'sizes' => $sizes,
+            'supply_id' => $request->supply_id,
             'magasin_id' => AuthMagasinAgent(),
             'sub_category_id' => $request->sub_category_id
         ]);
@@ -229,7 +237,6 @@ class ProduitController extends Controller
      */
     public function destroy(string $id)
     {
-
         Product::where('id',$id)->where('magasin_id',AuthMagasinAgent())->delete();
         Toastr::success('Votre produit a bien été supprimé', 'Supression de produits', ["positionClass" => "toast-top-right"]);
         return back();
