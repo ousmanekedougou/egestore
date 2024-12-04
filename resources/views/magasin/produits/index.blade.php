@@ -437,6 +437,21 @@
                 </div>
                 @endif
 
+              <div class="mb-3 text-start">
+                <label for="organizerSingle">Sélectionner un fournisseur</label>
+                <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
+                  <option value="">Sélectionner un...</option>
+                  @foreach ($supplies as $supplie)
+                    <option value="{{ old('supply_id') ?? $supplie->id }}" @if($supplie->id == $product->supply_id) selected="" @endif > @if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
+                  @endforeach
+                </select>
+                @error('supply_id')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
+              </div>
+
                 <div class="mb-3 text-start">
                   <label class="form-label" for="desc">Description du produit </label>
                   <textarea class="form-control @error('desc') is-invalid @enderror" id="desc" name="desc" required autocomplete="desc" rows="4"> {{ $product->desc}} </textarea>
