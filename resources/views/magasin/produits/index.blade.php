@@ -48,7 +48,7 @@
                 @foreach($subcategory->products as $product)
                   <tr class="position-static @if($product->quantity <= $product->qty_alert ) bg-warning  @elseif($product->quantity == 0) bg-danger @endif">
                     <td class="align-middle white-space-nowrap py-0"><a class="d-block border border-translucent rounded-2"  href="{{ route('magasin.produit.edit',$product->id) }}"><img src="{{Storage::url($product->image)}}" alt="" width="53" /></a></td>
-                    <td class="product align-middle ps-4"><a class="fw-semibold line-clamp-3 mb-0 @if( $product->quantity < 10 ) text-white @endif"  href="{{ route('magasin.produit.edit',$product->slug) }}">{{ $product->name }}</a></td>
+                    <td class="product align-middle ps-4"><a class="fw-semibold line-clamp-3 mb-0 @if( $product->quantity < 10 ) text-white @endif"  href="{{ route('magasin.produit.edit',$product->id) }}">{{ $product->name }}</a></td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->reference }}</td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->getPrice() }}</td>
                     <td class="total-spent align-middle white-space-nowrap fw-bold text-end ps-3 text-body-emphasis">
@@ -93,14 +93,13 @@
                     
                       <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
                         @if($product->quantity > 0)
-                        <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-2 @if( $product->quantity < 10 ) text-white @else text-warning  @endif" data-feather="shopping-cart" data-fa-transform="shrink-3"></span></a>
-                        
+                          <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-2 @if( $product->quantity < 10 ) text-white @else text-warning  @endif" data-feather="shopping-cart" data-fa-transform="shrink-3"></span></a>
                         @else
-                        <span class="text-white" style="margin-right: 4px;">Indisponible</span>
+                          <span class="text-white" style="margin-right: 4px;">Indisponible</span>
                         @endif
                         
-                        <span class="me-2 @if( $product->quantity < 10 ) text-white @else text-success  @endif" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
-                        <span class="me-2 @if( $product->quantity < 10 ) text-white @else text-danger  @endif" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
+                        <span class="me-2 @if( $product->quantity < $product->qty_alert ) text-white @else text-success  @endif" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
+                        <span class="me-2 @if( $product->quantity < $product->qty_alert ) text-white @else text-danger  @endif" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
                       </td>
                     </form>
                   </tr>
@@ -265,9 +264,9 @@
                 <label class="form-label mb-2" for="">Status du produit</label> <br>
                 <div class="row">
                   <div class="col-lg-6">
-                    <div class="form-check">
-                      <input onchange="enableBrand(this)" class="form-check-input @error('promot') is-invalid @enderror" id="flexCheckDefault" name="promot" type="checkbox" value="1" />
-                      <label class="form-check-label mt-1" for="flexCheckDefault">En promotion</label>
+                    <div class="form-check form-switch">
+                      <input onchange="enableBrand(this)" class="form-check-input @error('promot') is-invalid @enderror" id="flexSwitchCheckDefault" name="promot" type="checkbox" value="1" />
+                      <label class="form-check-label mt-1" for="flexSwitchCheckDefault">En promotion</label>
                     </div>
                     @error('promot')
                       <span class="invalid-feedback" role="alert">
@@ -391,7 +390,7 @@
                 <div class="row mb-3 text-start">
                   <div class="col-lg-6">
                     <label class="form-label" for="image">Image du produit</label>
-                    <img src="{{Storage::url($product->image)}}" alt="" width="38" style="float: right;"/>
+                    <img class="rounded-circle" src="{{Storage::url($product->image)}}" alt="" width="38" style="float: right;"/>
                     <input class="form-control @error('image') is-invalid @enderror" id="image" name="image" type="file" value="{{ old('image') ?? $product->image }}"  autocomplete="image"/>
                     @error('image')
                         <span class="invalid-feedback" role="alert">
@@ -400,7 +399,7 @@
                     @enderror
                   </div>
                   <div class="col-lg-6">
-                    <label class="form-label mb-3" for="datepicker">Date d'expiration</label>
+                    <label class="form-label" for="datepicker">Date d'expiration</label>
                     <input type="text" id="datepicker" class="form-control datetimepicker @error('exp_date') is-invalid @enderror" name="exp_date" value="{{ old('exp_date') ?? $product->exp_date }}" data-options='{"disableMobile":true,"dateFormat":"d/m/y"}' required autocomplete="exp_date">
 
                     @error('exp_date')
@@ -437,20 +436,20 @@
                 </div>
                 @endif
 
-              <div class="mb-3 text-start">
-                <label for="organizerSingle">Sélectionner un fournisseur</label>
-                <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
-                  <option value="">Sélectionner un...</option>
-                  @foreach ($supplies as $supplie)
-                    <option value="{{ old('supply_id') ?? $supplie->id }}" @if($supplie->id == $product->supply_id) selected="" @endif > @if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
-                  @endforeach
-                </select>
-                @error('supply_id')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
+                <div class="mb-3 text-start">
+                  <label for="organizerSingle">Sélectionner un fournisseur</label>
+                  <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
+                    <option value="">Sélectionner un...</option>
+                    @foreach ($supplies as $supplie)
+                      <option value="{{ old('supply_id') ?? $supplie->id }}" @if($supplie->id == $product->supply_id) selected="" @endif > @if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
+                    @endforeach
+                  </select>
+                  @error('supply_id')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
 
                 <div class="mb-3 text-start">
                   <label class="form-label" for="desc">Description du produit </label>
@@ -467,9 +466,9 @@
                   
                   <div class="row">
                     <div class="col-lg-6">
-                      <div class="form-check">
-                        <input class="form-check-input @error('promot') is-invalid @enderror" id="flexCheckDefault-{{ $product->id }}" name="promot" type="checkbox" @if($product->promot == 1) checked @endif value="1" />
-                        <label class="form-check-label mt-1" for="flexCheckDefault-{{ $product->id }}">En promotion</label>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input @error('promot') is-invalid @enderror" id="flexSwitchCheckDefault-{{ $product->id }}" name="promot" type="checkbox" @if($product->promot == 1) checked @endif value="1" />
+                        <label class="form-check-label mt-1" for="flexSwitchCheckDefault-{{ $product->id }}">En promotion</label>
                       </div>
                       @error('promot')
                         <span class="invalid-feedback" role="alert">
@@ -570,7 +569,7 @@
 
 <script>
     function enableBrand(answer){
-      if (answer.value == 1) {
+      if (answer.checked == 1) {
           document.getElementById('clientNone').classList.remove('d-none')
       }else{
           document.getElementById('clientNone').classList.add('d-none')

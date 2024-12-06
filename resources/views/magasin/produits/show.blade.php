@@ -34,7 +34,7 @@
         <div class="col-12 col-lg-5">
           <div class="d-flex flex-column justify-content-between h-100">
             <div>
-              <div class="d-flex flex-wrap">
+              <div class="d-flex flex-wrap mb-2">
                 <div class="me-2"><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span></div>
                 <p class="text-primary fw-semibold mb-2">
                   <ol class="breadcrumb mb-0">
@@ -43,12 +43,20 @@
                   </ol>  
                 </p>
               </div>
-              <div class="d-flex flex-wrap align-items-start mb-3"><span class="badge text-bg-success fs-9 rounded-pill me-2 fw-semibold">#1 Meilleur vendeur</span><a class="fw-semibold" href="#!">{{$product->name}}</a></div>
-              <div class="d-flex flex-wrap align-items-center">
-                <h1 class="me-3">{{$product->getPrice()}}</h1>
-                <p class="text-body-quaternary text-decoration-line-through fs-6 mb-0 me-3">{{$product->getPrice()}}</p>
+              <h4 class="mb-3 lh-sm">{{$product->name}}</h4>
+              @if($product->promot == 1)
+              <div class="d-flex flex-wrap align-items-start mb-3">
+                <span class="badge text-bg-info fs-9 rounded-pill me-2 fw-semibold">#En promotion</span>
               </div>
-              <p class="text-success fw-semibold fs-7 mb-2">Dans le stock {{ $product->quantity }}</p>
+              @endif
+              <div class="d-flex flex-wrap align-items-center">
+                <h1 class="me-3">@if($product->promot == 1) {{$product->getPromotPrice()}} @else {{$product->getPrice()}} @endif</h1>
+                <p class="text-body-quaternary text-decoration-line-through fs-6 mb-0 me-3">@if($product->promot == 1){{$product->getPrice()}} @endif</p>
+              </div>
+              <div class="d-flex flex-wrap align-items-start mb-3">
+                <span class="badge text-bg-primary fs-8 rounded-pill me-2 fw-bold">Il vous reste {{ $product->quantity }} articles dans le stock pour ce produit</span>
+              </div>
+              <h5 class="mb-3 lh-sm">Description du produit</h5>
               <p class="mb-2 text-body-secondary">
                 {{$product->desc}}
               </p>
@@ -487,6 +495,21 @@
             @endif
 
             <div class="mb-3 text-start">
+                  <label for="organizerSingle">Sélectionner un fournisseur</label>
+                  <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
+                    <option value="">Sélectionner un...</option>
+                    @foreach ($supplies as $supplie)
+                      <option value="{{ old('supply_id') ?? $supplie->id }}" @if($supplie->id == $product->supply_id) selected="" @endif > @if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
+                    @endforeach
+                  </select>
+                  @error('supply_id')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
+
+            <div class="mb-3 text-start">
               <label class="form-label" for="desc">Description du produit </label>
               <textarea class="form-control @error('desc') is-invalid @enderror" id="desc" name="desc" required autocomplete="desc" rows="4"> {{ $product->desc}} </textarea>
               @error('desc')
@@ -501,9 +524,9 @@
               
               <div class="row">
                 <div class="col-lg-6">
-                  <div class="form-check">
-                    <input class="form-check-input @error('promot') is-invalid @enderror" id="flexCheckDefault-{{ $product->id }}" name="promot" type="checkbox" @if($product->promot == 1) checked @endif value="1" />
-                    <label class="form-check-label mt-1" for="flexCheckDefault-{{ $product->id }}">En promotion</label>
+                  <div class="form-check form-switch">
+                    <input onchange="enableBrand(this)" class="form-check-input @error('promot') is-invalid @enderror" id="flexSwitchCheckDefault" name="promot" type="checkbox" @if($product->promot == 1) checked @endif value="1" />
+                    <label class="form-check-label mt-1" for="flexSwitchCheckDefault">En promotion</label>
                   </div>
                   @error('promot')
                     <span class="invalid-feedback" role="alert">
@@ -527,7 +550,19 @@
                     </span>
                   @enderror
                 </div>
+
+                <div class="col-lg-12 mb-3 @if($product->promot != 1) d-none @endif" id="clientEditNone">
+                  <label class="form-label" for="price_promotion">Prix du produit en promotion</label>
+                  <input id="price_promotion" type="numeric" class="form-control @error('price_promotion') is-invalid @enderror" name="price_promotion" value="{{ old('price_promotion') ?? $product->promo_price }}" placeholder="Prix du produit" autocomplete="price_promotion">
+
+                  @error('price_promotion')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
               </div>
+              
 
             </div>
 
@@ -598,5 +633,16 @@
   $("#sizes").tagsinput();
   $(".colorsUpdate").tagsinput();
   $(".sizesUpdate").tagsinput();
+</script>
+
+
+<script>
+    function enableBrand(answer){
+      if (answer.checked == 1) {
+          document.getElementById('clientEditNone').classList.remove('d-none')
+      }else{
+          document.getElementById('clientEditNone').classList.add('d-none')
+      }
+    }
 </script>
 @endsection

@@ -136,28 +136,31 @@ class ReservationController extends Controller
             $this->validate($request,[
                 'status' => 'required|numeric',
             ]);
-    
+            
             $dateUpdate = null;
             $incvoiceNum = null;
+            $methode = null;
             if($request->status == 1){
                 $this->validate($request,[
                     'methode' => 'required|numeric',
                 ]);
                 $dateUpdate = now();
-    
+                
                 $num = Commande::where("magasin_id", AuthMagasinAgent())->where('type',1)->latest()->first();
                 if ($num) {
                     $incvoiceNum = $num->num_invoice + 1;
                 }else {
                     $incvoiceNum = 1;
                 }
+                
+                $methode = $request->methode;
             }
     
             $commande->update(
             [   'status' => $request->status,
                 'payment_created_at' => $dateUpdate,
                 'num_invoice' => $incvoiceNum,
-                'methode' => $request->methode
+                'methode' => $methode
             ]);
     
             Toastr::success('Le status de catte reservation a bien été modifié', 'Modification de reservations', ["positionClass" => "toast-top-right"]);

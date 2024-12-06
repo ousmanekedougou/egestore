@@ -11,6 +11,35 @@
           </div>
         </div>
       </a>
+      <nav class="ecommerce-navbar navbar-expand navbar-light bg-body-emphasis justify-content-between">
+        <div class="container-small d-flex flex-between-center" data-navbar="data-navbar">
+          <div class="dropdown"><button class="btn text-body ps-0 pe-5 text-nowrap dropdown-toggle dropdown-caret-none" data-category-btn="data-category-btn" data-bs-toggle="dropdown"><span class="fas fa-bars me-2"></span>Toutes vos categories</button>
+            <div class="dropdown-menu border border-translucent py-0 category-dropdown-menu">
+              <div class="card border-0 scrollbar" style="max-height: 657px;">
+                <div class="card-body p-6 pb-3">
+                  <div class="row gx-7 gy-5 mb-5">
+                    @foreach(allCategorieCommercial() as $category)
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <div class="d-flex align-items-center mb-3"><span class="text-primary me-2" data-feather="pocket" style="stroke-width:3;"></span>
+                          <h6 class="text-body-highlight mb-0 text-nowrap">{{$category->name}}</h6>
+                        </div>
+                        <div class="ms-n2">
+                            @foreach($category->sub_categories as $subcategory)
+                              @if($subcategory->visible == 1)
+                                <a class="text-body-emphasis d-block mb-1 text-decoration-none bg-body-highlight-hover px-2 py-1 rounded-2 {{ set_active_roote('magasin.produit.show') }}" href="{{ route('magasin.produit.show',$subcategory->slug) }}">{{$subcategory->name}}</a>
+                              @endif
+                            @endforeach
+                        </div>
+                      </div>
+                    @endforeach
+                  </div>
+                  <div class="text-center border-top border-translucent pt-3"><a class="fw-bold" href="#!">See all Categories<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
     </div>
     <ul class="navbar-nav navbar-nav-icons flex-row">
       @if(Cart::count() > 0)
@@ -20,6 +49,9 @@
             </a>
         </li>
       @endif
+      <li class="nav-item">
+        
+      </li>
       <li class="nav-item">
         <div class="theme-control-toggle fa-icon-wait px-2"><input class="form-check-input ms-0 theme-control-toggle-input" type="checkbox" data-theme-control="phoenixTheme" value="dark" id="themeControlToggle" /><label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Changement de thème"><span class="icon" data-feather="moon"></span></label><label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Changement de thème"><span class="icon" data-feather="sun"></span></label></div>
       </li>
@@ -219,7 +251,7 @@
             <div class="card-body p-0">
               <div class="text-center pt-4 pb-3">
                 <div class="avatar avatar-xl ">
-                  <img class="rounded-circle " src="@if(Auth::guard('magasin')->user()->image == '') https://ui-avatars.com/api/?name={{Auth::guard('magasin')->user()->admin_name}} @else {{(Storage::url(Auth::guard('magasin')->user()->image))}} @endif" alt="" />
+                  <img class="rounded-circle" src="@if(Auth::guard('magasin')->user()->image == '') https://ui-avatars.com/api/?name={{Auth::guard('magasin')->user()->admin_name}} @else {{(Storage::url(Auth::guard('magasin')->user()->image))}} @endif" alt="" />
                 </div>
                 <h6 class="mt-2 text-body-emphasis">{{ Auth::guard('magasin')->user()->admin_name }}</h6>
               </div>
@@ -248,6 +280,7 @@
         </div>
       </li>
     </ul>
+
   </div>
 </nav>
 

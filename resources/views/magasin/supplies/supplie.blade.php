@@ -190,8 +190,9 @@
                   @enderror
               </div>
               <div class="mb-3 text-start">
-                <label class="form-label" for="logo">Logo du fournisseur <span style="float: right;"><img src="{{$supplie->logo}}" alt="" sizes="" srcset=""></span></label>
-                <input class="form-control @error('logo') is-invalid @enderror" id="logo" name="logo" type="file" value="{{ old('logo') ?? $supplie->logo }}" required autocomplete="logo"/>
+                <label class="form-label"  for="logo">Logo du fournisseur</label>
+                <img class="rounded-circle" src="{{Storage::url($supplie->logo)}}" alt="" width="38" style="float: right;"/>
+                <input class="form-control @error('logo') is-invalid @enderror" id="logo" name="logo" type="file" value="{{ old('logo') ?? $supplie->logo }}" autocomplete="logo"/>
                 @error('logo')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

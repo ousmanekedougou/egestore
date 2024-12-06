@@ -28,7 +28,8 @@ class Commande extends Model
         'date',
         'type',
         'delivery',
-        'status'
+        'status',
+        'methode',
     ];
 
     public function getAmount(){

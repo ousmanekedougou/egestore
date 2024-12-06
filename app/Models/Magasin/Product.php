@@ -26,6 +26,7 @@ class Product extends Model
         'qty_alert',
         'exp_date',
         'promot',
+        'promo_price',
         'desc',
         'colors',
         'sizes',
@@ -37,6 +38,10 @@ class Product extends Model
 
     public function getPrice(){
         return number_format($this->price,2, ',','.'). ' CFA';
+    }
+
+    public function getPromotPrice(){
+        return number_format($this->promo_price,2, ',','.'). ' CFA';
     }
 
     public function getProductSubtotal($productSubtotal){

@@ -24,21 +24,18 @@ return new class extends Migration
             $table->dateTime('payment_created_at')->nullable();
             $table->integer('tva')->nullable();
             $table->boolean('type')->default(false);
-            $table
-            ->foreignId("user_id")
-            ->references("id")
-            ->on("users")
-            ->cascadeOnDelete()->nullable();
-            $table
-            ->foreignId("magasin_id")
-            ->references("id")
-            ->on("magasins")
-            ->cascadeOnDelete();
-            $table
-            ->foreignId("client_id")
-            ->references("id")
-            ->on("magasins")
-            ->cascadeOnDelete()->nullable();
+            $table->foreignId("user_id")
+                ->references("id")
+                ->on("users")
+                ->cascadeOnDelete()->nullable();
+            $table->foreignId("magasin_id")
+                ->references("id")
+                ->on("magasins")
+                ->cascadeOnDelete();
+            $table->foreignId("client_id")
+                ->references("id")
+                ->on("magasins")
+                ->cascadeOnDelete()->nullable();
             $table->string('amount')->nullable();
             $table->enum('payment', ['Success', 'Pending','Cancelled'])->nullable();
             $table->enum('delivery', ['Success', 'Pending','Cancelled'])->nullable();

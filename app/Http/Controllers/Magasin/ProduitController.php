@@ -81,6 +81,19 @@ class ProduitController extends Controller
         //     }
         // }
 
+        $validatePromotion = '';
+
+        if($request->promot == null){
+            $validatePromotion = null;
+        }else {
+            if($request->price_promotion < $request->price){
+                $validatePromotion = $request->price_promotion;
+            }else {
+                Toastr::error('Le prix de la promotion doit etre inferieure au prix normale', 'Erreur du prix de la promotion', ["positionClass" => "toast-top-right"]);
+                return back();
+            }
+        }
+
         $colors = null;
         $sizes = null;
 
@@ -111,6 +124,7 @@ class ProduitController extends Controller
             'desc' => $request->desc,
             // 'images' => json_encode($data),
             'promot' => $request->promot,
+            'promo_price' => $validatePromotion,
             'visible' => $request->visible,
             'magasin_id' => AuthMagasinAgent(),
             'supply_id' => $request->supply_id,
@@ -137,23 +151,38 @@ class ProduitController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $slug)
+    public function edit(int $id)
     {
-        return view('magasin.produits.show',['product' => Product::where('slug',$slug)->where('magasin_id',AuthMagasinAgent())->first()]);
+        return view('magasin.produits.show',
+        [
+            'product'   => Product::where('id',$id)->where('magasin_id',AuthMagasinAgent())->first(),
+            'supplies'  => Supply::where('owner_id',AuthMagasinAgent())->get()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, int $id)
     {
-        
-
-        // dd($sizes);
+        // dd('cjj');
         $this->validate($request,[
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
         ]);
+
+        $validatePromotion = '';
+
+        if($request->promot == null){
+            $validatePromotion = null;
+        }else {
+            if($request->price_promotion < $request->price){
+                $validatePromotion = $request->price_promotion;
+            }else {
+                Toastr::error('Le prix de la promotion doit etre inferieure au prix normale', 'Erreur du prix de la promotion', ["positionClass" => "toast-top-right"]);
+                return back();
+            }
+        }
 
         $colors = null;
         $sizes = null;
@@ -220,6 +249,7 @@ class ProduitController extends Controller
             'images' => $imagesUpdate,
             'visible' => $request->visible,
             'promot' => $promot,
+            'promo_price' => $validatePromotion,
             'exp_date' => $request->exp_date,
             'colors' => $colors,
             'sizes' => $sizes,

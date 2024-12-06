@@ -54,7 +54,7 @@
                   <td class="total align-middle text-center fw-semibold text-body-highlight"><b>{{ number_format($reserve->amount,2, ',','.') }}</b></td>
                   <td class="customer align-middle white-space-nowrap ps-8">
                     <a class="d-flex align-items-center text-body" href="{{ route('magasin.reserve.show',$reserve->id) }}">
-                      <div class="avatar avatar-m"><img class="rounded-circle" src="@if($reserve->user_id != '' ) {{Storage::url($reserve->user->image)}} @else {{asset('assets/img/team/avatar.webp')}} @endif" alt="" /></div>
+                      <div class="avatar avatar-m"><img class="rounded-circle" src="@if($reserve->user_id != '' ) {{Storage::url($reserve->user->image)}} @else https://ui-avatars.com/api/?name=@if($reserve->user_id == '' && $reserve->client_id == '') {{ $reserve->name }} @elseif($reserve->user_id != '') {{ $reserve->user->name }} @elseif($reserve->client_id != '') {{ $reserve->client->name }} @endif @endif" alt="" /></div>
                       <h6 class="mb-0 ms-3 text-body">@if($reserve->user_id == '' && $reserve->client_id == '') {{ $reserve->name }} @elseif($reserve->user_id != '') {{ $reserve->user->name }} @elseif($reserve->client_id != '') {{ $reserve->client->name }} @endif</h6>
                     </a>
                   </td>
@@ -62,7 +62,7 @@
                   <td class="total align-middle text-center fw-semibold text-body-highlight">@if($reserve->bon_commande != ''){{ $reserve->bon_commande }} @else Pas de bon @endif</td>
                   <td class="payment_status align-middle white-space-nowrap text-start fw-bold text-body-tertiary">
                     <span class="badge badge-phoenix fs-10 @if ($reserve->bagages->count() > 0)   @if($reserve->status == 1) badge-phoenix-success @elseif($reserve->status == 2) badge-phoenix-info @else badge-phoenix-warning @endif @else badge-phoenix-secondary @endif">
-                      <span class="badge-label">@if ($reserve->bagages->count() > 0)  @if($reserve->status == 1) Terminé @elseif($reserve->status == 2) En cours @else Annulé @endif @else 0 commande @endif</span>
+                      <span class="badge-label">@if ($reserve->bagages->count() > 0)  @if($reserve->status == 1) Terminé @elseif($reserve->status == 2) En cours @else Annulé @endif  @endif</span>
                       <span class="ms-1" 
                       @if ($reserve->bagages->count() > 0) 
                         @if($reserve->status == 1)

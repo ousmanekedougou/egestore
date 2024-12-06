@@ -20,14 +20,16 @@ class Bagage extends Model
         'date',
         'commande_id',
         'magasin_id',
+        'image',
+        'images',
     ];
 
     public function getPrice(){
-        return number_format($this->price,2, ',','.'). ' cfa';
+        return number_format($this->price,2, ',','.'). ' CFA';
     }
 
     public function getTotalPrice(){
-        return number_format($this->price * $this->quantity,2, ',','.'). ' cfa';
+        return number_format($this->price * $this->quantity,2, ',','.'). ' CFA';
     }
 
     public function commande()
