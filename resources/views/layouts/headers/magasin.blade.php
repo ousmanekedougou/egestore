@@ -20,7 +20,7 @@
                   <div class="row gx-7 gy-5 mb-5">
                     @foreach(allCategorieCommercial() as $category)
                       <div class="col-12 col-sm-6 col-md-4">
-                        <div class="d-flex align-items-center mb-3"><span class="text-primary me-2" data-feather="pocket" style="stroke-width:3;"></span>
+                        <div class="d-flex align-items-center mb-3"><span class="text-primary me-2" data-feather="{{ $category->icon }}" style="stroke-width:3;"></span>
                           <h6 class="text-body-highlight mb-0 text-nowrap">{{$category->name}}</h6>
                         </div>
                         <div class="ms-n2">
@@ -33,7 +33,7 @@
                       </div>
                     @endforeach
                   </div>
-                  <div class="text-center border-top border-translucent pt-3"><a class="fw-bold" href="#!">See all Categories<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a></div>
+                  <div class="text-center border-top border-translucent pt-3"></div>
                 </div>
               </div>
             </div>

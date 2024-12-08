@@ -91,6 +91,16 @@
                       </span>
                   @enderror
               </div>
+              <div class="mb-3 text-start">
+                  <label class="form-label" for="icon">Ajouter la valeur de l'icone</label>
+                  <input id="icon" type="text" placeholder="Ajouter la valeur de l'icone" class="form-control @error('icon') is-invalid @enderror" name="icon" value="{{ old('icon') }}" required autocomplete="icon" autofocus>
+
+                  @error('icon')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+              </div>
               {{-- 
                 <div class="mb-3 text-start">
                   <label class="form-label" for="type">Selecetionner le type de cette categorie</label>
@@ -147,6 +157,16 @@
                   <input id="name" type="text"  class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $category->name }}" required autocomplete="name" autofocus>
 
                   @error('name')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+              </div>
+              <div class="mb-3 text-start">
+                  <label class="form-label" for="icon">Modifier la valeur de l'icone</label>
+                  <input id="icon" type="text" placeholder="Modifier la valeur de l'icone" class="form-control @error('icon') is-invalid @enderror" name="icon" value="{{ old('icon') ?? $category->icon }}" required autocomplete="icon" autofocus>
+
+                  @error('icon')
                       <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
                       </span>
@@ -215,16 +235,7 @@
     @endforeach
 
 
-    <footer class="footer position-absolute">
-      <div class="row g-0 justify-content-between align-items-center h-100">
-        <div class="col-12 col-sm-auto text-center">
-          <p class="mb-0 mt-2 mt-sm-0 text-body">Thank you for creating with Phoenix<span class="d-none d-sm-inline-block"></span><span class="d-none d-sm-inline-block mx-1">|</span><br class="d-sm-none" />2024 &copy;<a class="mx-1" href="https://themewagon.com/">Themewagon</a></p>
-        </div>
-        <div class="col-12 col-sm-auto text-center">
-          <p class="mb-0 text-body-tertiary text-opacity-85">v1.16.0</p>
-        </div>
-      </div>
-    </footer>
+    @include('layouts.footer_admin')
 
   </div>
 @endsection

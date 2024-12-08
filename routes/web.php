@@ -67,6 +67,7 @@ Route::prefix('/admin')->name('admin.')->group(function()
 Route::prefix('/magasin')->name('magasin.')->group(function() {
 
     Route::get('/home',[App\Http\Controllers\Magasin\HomeController::class,'index'])->name('home');
+    Route::get('/icons',[App\Http\Controllers\Magasin\HomeController::class,'icon'])->name('icons');
     Route::put('/compte/{email}/{token}',[App\Http\Controllers\Magasin\Auth\RegisterController::class,'confirmCompte'])->name('confirme');
     Route::get('/verify/{email}/{token}',[App\Http\Controllers\Magasin\Auth\RegisterController::class,'verifyCompte'])->name('verify');
     Route::get('/register',[App\Http\Controllers\Magasin\Auth\RegisterController::class,'index'])->name('register');
@@ -102,6 +103,9 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
     Route::get('/fournisseurs', [App\Http\Controllers\Magasin\SupplyController::class,'create'])->name('fournisseurs.create');
     Route::get('/fournisseurs/{id}/addSupply', [App\Http\Controllers\Magasin\SupplyController::class,'addSupply'])->name('fournisseurs.addSupply');
     Route::get('/fournisseurs/{id}/deleteSupply', [App\Http\Controllers\Magasin\SupplyController::class,'destroy'])->name('fournisseurs.destroy');
+    
+    Route::resource('/devis', App\Http\Controllers\Magasin\SupplyOrderController::class);
+    Route::resource('/devis-produits', App\Http\Controllers\Magasin\SupplyOrderProductController::class);
 
 
     // login des admin

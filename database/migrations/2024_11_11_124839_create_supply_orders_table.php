@@ -12,32 +12,33 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('supply_orders', function (Blueprint $table) {
-            $table->id();
-            $table->integer('order')->nullable();
-            $table->string('slug');
-            $table->string('bon_commande')->nullable();
-            $table->string('payment_intent_id')->unique()->nullable();
-            $table->text('products');
-            $table->dateTime('payment_created_at')->nullable();
-            $table->integer('tva')->nullable();
-            $table
-              ->foreignId("magasin_id")
-              ->references("id")
-              ->on("magasins")
-              ->cascadeOnDelete();
-            $table
-              ->foreignId("supply_id")
-              ->references("id")
-              ->on("supplies")
-              ->cascadeOnDelete()->nullable();
-            $table->string('amount')->nullable();
-            $table->enum('payment', ['Success', 'Pending','Cancelled'])->nullable();
-            $table->enum('delivery', ['Success', 'Pending','Cancelled'])->nullable();
-            $table->integer('status')->nullable();
-            $table->integer('type')->nullable();
-            $table->date('date');
-            $table->integer('methode')->nullable();
-            $table->timestamps();
+          $table->id();
+          $table->integer('order')->nullable();
+          $table->string('slug');
+          $table->string('bon_commande')->nullable();
+          $table->string('payment_intent_id')->unique()->nullable();
+          $table->dateTime('payment_created_at')->nullable();
+          $table->integer('tva')->nullable();
+          $table
+            ->foreignId("magasin_id")
+            ->references("id")
+            ->on("magasins")
+            ->cascadeOnDelete();
+          $table
+            ->foreignId("supply_id")
+            ->references("id")
+            ->on("supplies")
+            ->cascadeOnDelete()->nullable();
+          $table->string('amount')->nullable();
+          $table->enum('payment', ['Success', 'Pending','Cancelled'])->nullable();
+          $table->enum('delivery', ['Success', 'Pending','Cancelled'])->nullable();
+          $table->integer('status')->nullable();
+          $table->boolean('recept')->default(0);
+          $table->boolean('request')->default(0);
+          $table->integer('type')->nullable();
+          $table->date('date');
+          $table->integer('methode')->nullable();
+          $table->timestamps();
         });
     }
 

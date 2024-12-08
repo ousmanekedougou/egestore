@@ -28,7 +28,7 @@ class Supply extends Model
         return $this->belongsTo(Magasin::class);
     }
 
-    public function suply_orders()
+    public function supply_orders()
     {
         return $this->hasMany(SupplyOrder::class);
     }

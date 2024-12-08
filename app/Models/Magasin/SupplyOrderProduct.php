@@ -26,7 +26,7 @@ class SupplyOrderProduct extends Model
         'sub_category_id'
     ];
 
-    public function supplyOrder()
+    public function supply_order()
     {
         return $this->belongsTo(supplyOrder::class);
     }

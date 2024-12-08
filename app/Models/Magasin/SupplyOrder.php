@@ -32,7 +32,7 @@ class SupplyOrder extends Model
         return $this->belongsTo(Supply::class);
     }
 
-    public function suply_order_products()
+    public function supply_order_products()
     {
         return $this->hasMany(SupplyOrderProduct::class);
     }

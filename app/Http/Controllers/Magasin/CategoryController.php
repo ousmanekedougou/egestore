@@ -40,12 +40,14 @@ class CategoryController extends Controller
     {
         $this->validate($request,[
             'name' => 'required|string|unique:categories',
+            'icon' => 'required|string',
             // 'type' => 'required|numeric',
             'visible' => 'required|boolean',
         ]);
 
         Category::create([
             'name' => $request->name,
+            'icon' => $request->icon,
             // 'type' => $request->type,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
             'visible' => $request->visible,
@@ -78,10 +80,12 @@ class CategoryController extends Controller
     {
         Category::where('id',$id)->where('magasin_id',AuthMagasinAgent())
         ->update(
-            ['name' => $request->name,
-            // 'type' => $request->type,
-            'visible' => $request->visible,
-            'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name))
+            [
+                'name' => $request->name,
+                'icon' => $request->icon,
+                // 'type' => $request->type,
+                'visible' => $request->visible,
+                'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name))
             ]);
         Toastr::success('le status de votre categorie a bien été modifié', 'Modification de categories', ["positionClass" => "toast-top-right"]);
         return back();

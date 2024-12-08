@@ -1,15 +1,15 @@
-@extends('layouts.app',['title' => 'affichage des bon de commande'])
+@extends('layouts.app',['title' => 'affichage des commandes de devis'])
 
 @section('main-content')
 <div class="content">
     <div class="mb-9">
       <div class="row g-3 mb-4">
         <div class="col-auto">
-          <h2 class="mb-3">Produits sous bon</h2>
+          <h2 class="mb-3">Produits de la commande de devis </h2>
           <div class="d-sm-flex flex-between-center mb-3">
             <p class="text-body-secondary lh-sm mb-0 mt-2 mt-sm-0">
-              Client : <a class="fw-bold" href="#!" style="margin-right: 15px;">  @if($bon->user_id == '') {{ $bon->name }} @else {{ $bon->user->name }} @endif</a>
-              Telepone : <a class="fw-bold" href="#!"> @if($bon->user_id == '') {{ $bon->phone }} @else {{ $bon->user->phone }} @endif</a>
+              Email : <a class="fw-bold" href="#!" style="margin-right: 15px;"> @if($supplyOrder->supply_id != ''){{ $supplyOrder->supply->magasin->email }}@else {{ $supplyOrder->supply->email }} @endif</a>
+              Téléphone : <a class="fw-bold" href="#!"> @if($supplyOrder->supply_id != ''){{ $supplyOrder->supply->magasin->phone }}@else {{ $supplyOrder->supply->phone }} @endif</a>
             </p>
           </div>
         </div>
@@ -23,16 +23,14 @@
               </form>
             </div>
             <div class="ms-xxl-auto">
-              @if($bon->status == 1)
-                <a href="{{ route('magasin.bon.delete',$bon->id) }}" class="btn btn-warning">
+              @if($supplyOrder->status == 1)
+                <a href="{{ route('magasin.reserve.delete',$supplyOrder->id) }}" class="btn btn-warning">
                   <span data-feather="trash-2" data-fa-transform="shrink-3" class="me-2"></span>Vider ce stock
                 </a>
-              @elseif($bon->status == 2)
+              @elseif($supplyOrder->status == 2)
                 <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
                   <span class="fas fa-plus me-2"></span>Ajouter des produits
                 </button>
-              @else
-                <h4 class="mb-0">Cette commande de sous reservation a ete anuler</h4>
               @endif
             </div>
           </div>
@@ -42,7 +40,7 @@
             <table class="table fs-9 mb-0">
               <thead>
                 <tr>
-                  <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;" data-sort="product">PRODUITS</th>
+                  <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;" data-sort="product">DESIGNATIONS</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">REFERENCES</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">QUANTITES</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">PRIX UNITAIRE</th>
@@ -52,21 +50,23 @@
                 </tr>
               </thead>
               <tbody class="list" id="products-table-body">
-                @foreach($bon->bagages as $product)
+                @foreach($supplyOrder->supply_order_products as $product)
                   <tr class="position-static">
-                    <td class="product align-middle ps-4"><span class="fw-semibold line-clamp-3 mb-0">{{ $product->name }}</span></td>
+                    
+                  <td class="align-middle white-space-nowrap py-0"><a class="d-block border border-translucent rounded-2"  href="{{ route('magasin.produit.edit',$product->id) }}"><img src="{{Storage::url($product->image)}}" alt="" width="53" /></a></td>
+                    <td class="product align-middle ps-4">
+                      <a class="fw-semibold line-clamp-3 mb-0 @if( $product->quantity < 10 ) text-white @endif"  href="{{ route('magasin.produit.edit',$product->id) }}">
+                        {{ $product->name }}
+                      </a>
+                    </td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">@if ($product->reference != '') {{ $product->reference }} @else null @endif</td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ $product->quantity }}</td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ $product->getPrice() }}</td>
-                    <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ number_format($product->price * $product->quantity,2, ',','.') }} CFA</td>
-                    <td class="time align-middle white-space-nowrap text-body-tertiary text-opacity-85 ps-4">{{date('d-m-Y', strtotime( $product->date ))}}</td>
+                    <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ number_format($product->amount,2, ',','.') }} CFA</td>
+                    <td class="time align-middle white-space-nowrap text-body-tertiary text-opacity-85 ps-4">{{date('d-m-Y', strtotime( $product->created_at ))}}</td>
                     <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
-                    @if ($product->commande->status != 1)
                       <span class="me-2 text-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
                       <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
-                    @else
-                          <span class="me-2 text-center text-success">Paye</span>
-                    @endif
                     </td>
                   </tr>
                 @endforeach
@@ -86,67 +86,7 @@
     </div>
 
 
-    <div class="card-body p-0">
-      <div class="p-4 code-to-copy">
-        <!-- Right Offcanvas-->
-        <div class="offcanvas offcanvas-end" id="offcanvasRight" tabindex="-1" aria-labelledby="offcanvasRightLabel">
-          <div class="offcanvas-header">
-            <h5 id="offcanvasRightLabel">Ajouter un produit</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body">
-            <form method="POST" action="{{ route('magasin.bagage.store') }}">
-              @csrf
-              <input type="hidden" name="reserve_id" value="{{ $bon->id }}">
-              <input type="hidden" name="type" value="0">
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="name">Titre du produit</label>
-                  <input id="name" type="text" placeholder="Titre du produit" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                  @error('name')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="reference">Reference du produit</label>
-                  <input id="reference" type="text" placeholder="Reference du produit" class="form-control @error('reference') is-invalid @enderror" name="reference" value="{{ old('reference') }}" required autocomplete="reference" autofocus>
-
-                  @error('reference')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="price">Prix du produit</label>
-                  <input id="price" type="numeric" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" placeholder="Prix du produit" required autocomplete="price">
-
-                  @error('price')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="quantity">Quantite du produit</label>
-                  <input id="quantity" type="quantity" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" placeholder="Quantite du produit" required autocomplete="quantity">
-
-                  @error('quantity')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-
-              <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce produit</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+    
 
     <div class="offcanvas offcanvas-top h-auto w-auto" id="offcanvasTop" tabindex="-1" aria-labelledby="offcanvasTopLabel">
       <div class="offcanvas-header">
@@ -160,9 +100,9 @@
             </div>
           </div>
           <div id="products" data-list='{"valueNames":["customer","email","total-orders","total-spent","city","last-seen","last-order"],"page":10,"pagination":true}'>
-            <form action="{{ route('magasin.bagage.store') }}" method="post"> 
+            <form action="{{ route('magasin.bagage.post') }}" method="post"> 
               @csrf
-              <input type="hidden" name="reserve_id" value="{{ $bon->id }}">
+              <input type="hidden" name="reserve_id" value="{{ $supplyOrder->id }}">
               <input type="hidden" name="type" value="1">
               <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis border-top border-bottom border-translucent position-relative top-1">
                
@@ -170,10 +110,10 @@
                   <table class="table table-sm fs-9 mb-0" id="table">
                     <thead>
                       <tr>
-                        <th class="sort align-middle pe-5 text-center" scope="col" data-sort="customer" style="width:35%;">DESIGNATION</th>
-                        <th class="sort align-middle ps-7 text-center" scope="col" data-sort="city" style="width:20%;">REFERENCE</th>
-                        <th class="sort align-middle pe-5 text-center" scope="col" data-sort="email" style="width:13%;">QUANTITE</th>
-                        <th class="sort align-middle text-center ps-3" scope="col" data-sort="total-spent" style="width:15%">PRIX UNITAIRE</th>
+                        <th class="sort align-middle pe-5 text-start" scope="col" data-sort="customer" style="width:35%;">DESIGNATION DU PRODUIT</th>
+                        <th class="sort align-middle ps-7 text-start" scope="col" data-sort="city" style="width:20%;">REFERENCE DU PRODUIT</th>
+                        <th class="sort align-middle pe-5 text-start" scope="col" data-sort="email" style="width:13%;">QUANTITE DU PRODUIT</th>
+                        <th class="sort align-middle text-start ps-3" scope="col" data-sort="total-spent" style="width:15%">IMAGE DU PRODUIT</th>
                         <th class="sort align-middle text-center pe-0" scope="col" data-sort="last-order" style="width:10%;">ACTIONS</th>
                       </tr>
                     </thead>
@@ -188,8 +128,8 @@
                         <td class="email align-middle white-space-nowrap pe-5 text-center">
                           <input type="number" placeholder="Quantite" class="form-control @error('quantite') is-invalid @enderror" name="inputs[0][qty]" value="{{ old('quantite') }}" required autocomplete="quantite" autofocus>
                         </td>
-                        <td class="total-spent align-middle white-space-nowrap fw-bold ps-3 text-body-emphasis text-center">
-                          <input type="number" placeholder="Prix unitaire" class="form-control @error('price') is-invalid @enderror" name="inputs[0][price]" value="{{ old('price') }}" required autocomplete="price" autofocus>
+                        <td class="email align-middle white-space-nowrap ml-3 pe-5 text-center">
+                          <input class="form-control @error('image') is-invalid @enderror" id="image" name="inputs[0][image]" type="file" value="{{ old('image') }}" autocomplete="image"/>
                         </td>
                         <td class="last-order align-middle white-space-nowrap text-body-tertiary text-center">
                           <button type="button" class="btn btn-primary" id="add">
@@ -213,7 +153,7 @@
       </div>
     </div>
 
-    @foreach($bon->bagages as $product)
+    @foreach($supplyOrder->supply_order_products as $product)
       <div class="card-body p-0">
         <div class="p-4 code-to-copy">
           <!-- Right Offcanvas-->
@@ -225,8 +165,8 @@
               <form method="POST" action="{{ route('magasin.bagage.update',$product->id) }}">
                 @csrf
                 {{ method_field('PUT') }}
-                <input type="hidden" name="reserve_id" value="{{ $bon->id }}">
-                <input type="hidden" name="type" value="0">
+                <input type="hidden" name="reserve_id" value="{{ $supplyOrder->id }}">
+                <input type="hidden" name="type" value="1">
                 <div class="mb-3 text-start">
                     <label class="form-label" for="name">Titre du produit</label>
                     <input id="name" type="text" placeholder="Titre du produit" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $product->name }}" required autocomplete="name" autofocus>
@@ -279,7 +219,7 @@
     @endforeach
 
 
-    @foreach($bon->bagages  as $product)
+    @foreach($supplyOrder->supply_order_products  as $product)
       <div class="modal fade" id="DeleteCompte-{{ $product->id }}" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -330,10 +270,9 @@
             <td class="email align-middle white-space-nowrap pe-5 text-center">
               <input type="number" placeholder="Quantite" class="form-control @error('quantite') is-invalid @enderror" name="inputs[`+i+`][qty]" value="{{ old('quantite') }}" required autocomplete="quantite" autofocus>
             </td>
-            <td class="total-spent align-middle white-space-nowrap fw-bold ps-3 text-body-emphasis text-center">
-              <input type="number" placeholder="Prix unitaire" class="form-control @error('price') is-invalid @enderror" name="inputs[`+i+`][price]" value="{{ old('price') }}" required autocomplete="price" autofocus>
+            <td class="email align-middle white-space-nowrap pe-5 ml-3 text-center">
+              <input type="file" class="form-control @error('image') is-invalid @enderror" name="inputs[`+i+`][image]" value="{{ old('image') }}" required autocomplete="image" autofocus>
             </td>
-
             <td class="last-order align-middle white-space-nowrap text-body-tertiary text-center">
               <button type="button" class="btn btn-danger remove-table-row">
                 <span class="fas fa-trash me-2"></span>Supprimer

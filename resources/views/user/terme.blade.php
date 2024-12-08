@@ -1,7 +1,7 @@
-@extends('layouts.app',['title' => 'termes & politique de confidentialites'])
+@extends('layouts.app',['title' => 'térmes & politique de confidentialités'])
 @section('main-content')
 <div class="content">
-    <h2 class="text-bold mb-5 text-center">Termes & Politique de confidentialites</h2>
+    <h2 class="text-bold mb-5 text-center">Termes & Politique de confidentialités</h2>
     <div class="row gx-xl-8 gx-xxl-11">
         <div class="col-xl-2"></div>
         <div class="col-xl-8 scrollbar">

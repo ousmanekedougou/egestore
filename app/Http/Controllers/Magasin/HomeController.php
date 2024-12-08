@@ -60,4 +60,8 @@ class HomeController extends Controller
             'clients'             => $clients,
         ]);
     }
+
+    public function icon(){
+        return view('magasin.icons.index');
+    }
 }

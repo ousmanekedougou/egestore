@@ -10,17 +10,17 @@
                     @if(Auth::guard('magasin')->user())
                         <div class="nav-item-wrapper">
                             <a class="nav-link label-1 {{ set_active_roote('magasin.autres-magasins.index') }} " href="{{ route('magasin.autres-magasins.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
-                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="user" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Autres magasins</span></span></div>
+                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="briefcase" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Autres magasins</span></span></div>
                             </a>
                         </div><!-- parent pages-->
                         <div class="nav-item-wrapper">
                             <a class="nav-link label-1 {{ set_active_roote('magasin.fournisseurs.create') }} " href="{{ route('magasin.fournisseurs.create') }}" role="button" data-bs-toggle="" aria-expanded="false">
-                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="user" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Fournisseurs</span></span></div>
+                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="gift" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Fournisseurs</span></span></div>
                             </a>
                         </div><!-- parent pages-->
                         <div class="nav-item-wrapper">
                             <a class="nav-link label-1 {{ set_active_roote('magasin.agent.index') }} " href="{{ route('magasin.agent.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
-                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="user" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Pro-Format</span></span></div>
+                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="box" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">C-Gros-porteur</span></span></div>
                             </a>
                         </div><!-- parent pages-->
                         
@@ -28,7 +28,7 @@
                         <hr class="navbar-vertical-line" /><!-- parent pages-->
                         <div class="nav-item-wrapper">
                             <a class="nav-link label-1 {{ set_active_roote('magasin.agent.index') }} " href="{{ route('magasin.agent.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
-                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="user" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Agents</span></span></div>
+                                <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="user-check" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Agents</span></span></div>
                             </a>
                         </div><!-- parent pages-->
                     @endif
@@ -36,7 +36,7 @@
                     <hr class="navbar-vertical-line" /><!-- parent pages-->
                     <div class="nav-item-wrapper">
                         <a class="nav-link label-1 {{ set_active_roote('magasin.categorie.index') }}" href="{{ route('magasin.categorie.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
-                            <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="figma"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Catégories</span></span></div>
+                            <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="menu"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Catégories</span></span></div>
                         </a>
                     </div><!-- parent pages-->
 
@@ -50,7 +50,7 @@
 
                     <div class="nav-item-wrapper">
                         <a class="nav-link label-1 {{ set_active_roote('magasin.reserve.index') }}" href="{{ route('magasin.reserve.index') }}" role="button" data-bs-toggle="" aria-expanded="false">
-                            <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="git-merge"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Pro-format</span></span></div>
+                            <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="file-plus"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Sous-reserves</span></span></div>
                         </a>
                     </div><!-- parent pages-->
 
@@ -96,7 +96,7 @@
                                 <div class="d-flex align-items-center">
                                     <div class="dropdown-indicator-icon">
                                         <span class="fas fa-caret-right"></span>
-                                    </div><span class="nav-link-icon"><span data-feather="shopping-cart"></span></span><span class="nav-link-text">{{$category->name}}</span>
+                                    </div><span class="nav-link-icon"><span data-feather="{{ $category->icon }}"></span></span><span class="nav-link-text">{{$category->name}}</span>
                                 </div>
                             </a>
                             <div class="parent-wrapper label-1">
@@ -151,7 +151,12 @@
             </ul>
         </div>
     </div>
-    <div class="navbar-vertical-footer"><button class="btn navbar-vertical-toggle border-0 fw-semibold w-100 white-space-nowrap d-flex align-items-center"><span class="uil uil-left-arrow-to-left fs-8"></span><span class="uil uil-arrow-from-right fs-8"></span><span class="navbar-vertical-footer-text ms-2">Collapsed View</span></button></div>
+    <div class="navbar-vertical-footer">
+        <a href="{{ route('magasin.icons') }}" target="_blank" class="{{ set_active_roote('magasin.autres-magasins.index') }} btn navbar-vertical-toggle border-0 fw-semibold w-100 white-space-nowrap d-flex align-items-center">
+            <span data-feather="grid" class="fs-8"></span>
+            <span class="navbar-vertical-footer-text ms-2">Services icons</span>
+        </a>
+    </div>
 </nav>
 
 

@@ -22,7 +22,7 @@ class IsAdmin
         }else {
             if (Auth::guard('admin')->logout()) {
                 Toastr::error('Temps de connexion expire', 'Connexion expire', ["positionClass" => "toast-top-right"]);
-                return redirect()->guest(route('admin.login'));
+                return redirect()->guest('admin/login');
             }else {
                 Toastr::warning('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
                 return back();

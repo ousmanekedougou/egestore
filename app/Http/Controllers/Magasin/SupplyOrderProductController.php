@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Magasin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Magasin\SupplyOrder;
 use Illuminate\Http\Request;
 
 class SupplyOrderProductController extends Controller
@@ -34,9 +35,12 @@ class SupplyOrderProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        //
+        return view('magasin.supplies.product',
+        [
+            'supplyOrder' => SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('slug',$slug)->latest()->where('request',1)->first()
+        ]);
     }
 
     /**

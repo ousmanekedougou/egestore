@@ -37,10 +37,11 @@
               <div class="hover-actions top-0 end-0 mt-2 me-3">
                 <div class="btn-reveal-trigger"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal p-2 lh-1 bg-body-highlight rounded-1" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-9"></span></button>
                   <div class="dropdown-menu dropdown-menu-end py-0">
+                    <a class="dropdown-item" href="{{ route('magasin.devis.show',$supplie->slug) }}">Voire les commandes</a>
+                    @if ($supplie->magasin_id == '')
+                    <a class="dropdown-item text-primary" href="" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $supplie->id }}" aria-controls="offcanvasRight">Modifier ce fournisseur</a>
+                    @endif
                     <a class="dropdown-item text-danger" href="{{ route('magasin.fournisseurs.destroy',$supplie->id) }}">Retirer comme fournisseur</a>
-                  @if ($supplie->magasin_id == '')
-                    <a class="dropdown-item text-primary" href="" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $supplie->id }}" aria-controls="offcanvasRight">Modifier</a>
-                  @endif
                   </div>
                 </div>
               </div>
@@ -231,16 +232,7 @@
     @endforeach
 
 
-    <footer class="footer position-absolute">
-      <div class="row g-0 justify-content-between align-items-center h-100">
-        <div class="col-12 col-sm-auto text-center">
-          <p class="mb-0 mt-2 mt-sm-0 text-body">Thank you for creating with Phoenix<span class="d-none d-sm-inline-block"></span><span class="d-none d-sm-inline-block mx-1">|</span><br class="d-sm-none" />2024 &copy;<a class="mx-1" href="https://themewagon.com/">Themewagon</a></p>
-        </div>
-        <div class="col-12 col-sm-auto text-center">
-          <p class="mb-0 text-body-tertiary text-opacity-85">v1.16.0</p>
-        </div>
-      </div>
-    </footer>
+    @include('layouts.footer_admin')
 
   </div>
 @endsection

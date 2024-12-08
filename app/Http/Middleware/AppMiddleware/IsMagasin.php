@@ -23,7 +23,7 @@ class IsMagasin
         }else {
             if (Auth::guard('magasin')->logout()) {
                 Toastr::error('Temps de connexion expire', 'Connexion expire', ["positionClass" => "toast-top-right"]);
-                return redirect()->guest(route('magasin.login'));
+                return redirect()->guest('/');
             }else {
                 Toastr::warning('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
                 return back();

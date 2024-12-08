@@ -227,5 +227,9 @@
         </div>
       </div>
     </div>
+
+    @include('layouts.footer_admin')
+
+
   </div>
 @endsection
