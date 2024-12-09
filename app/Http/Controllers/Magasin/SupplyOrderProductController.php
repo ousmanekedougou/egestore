@@ -82,7 +82,7 @@ class SupplyOrderProductController extends Controller
     {
         return view('magasin.supplies.product',
         [
-            'supplyOrder' => SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('slug',$slug)->latest()->first()
+            'supplyOrder' => SupplyOrder::where("magasin_id", AuthMagasinAgent())->orWhere('request_id',AuthMagasinAgent())->where('slug',$slug)->first()
         ]);
     }
 
@@ -117,6 +117,14 @@ class SupplyOrderProductController extends Controller
                 $sizes = $product->sizes;
             }
 
+            $imageName = '';
+            if($request->hasFile('image'))
+            {
+                $imageName = $request->image->store('public/Supplies/Products');
+            }else{
+                $imageName = $product->image;
+            }
+
             $product->update([
                 'name' => $request->name,
                 'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
@@ -125,8 +133,33 @@ class SupplyOrderProductController extends Controller
                 'colors' => $colors,
                 'sizes' => $sizes,
                 'magasin_id' => AuthMagasinAgent(),
+                'image' => $imageName,
                 'supply_order_id' => $request->supply_order_id
             ]);
+            Toastr::success('Votre produit a bien ete modifier', 'Modification du produit', ["positionClass" => "toast-top-right"]);
+            return back();
+        }else {
+            Toastr::warning('Vous ne pouvez plus modifier ce produit', 'Modification non accepter', ["positionClass" => "toast-top-right"]);
+            return back();
+        }
+    }
+
+    public function updatePrice(Request $request, string $id)
+    {
+        $product = SupplyOrderProduct::where('id',$id)->where('supply_order_id',$request->supply_order_id)->first();
+        
+        if ($product->supply_order->status == 2) {
+
+            $product->update([
+                'price' => $request->price,
+                'amount' => $product->price * $product->quantity
+            ]);
+
+            // $product->supply_order->update(['amount' => $product->price * $product->quantity]);
+
+            Toastr::success('Le prix du produit a bien ete modifier', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
+            return back();
+
         }else {
             Toastr::warning('Vous ne pouvez plus modifier ce produit', 'Modification non accepter', ["positionClass" => "toast-top-right"]);
             return back();

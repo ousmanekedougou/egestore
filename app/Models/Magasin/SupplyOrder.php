@@ -23,6 +23,7 @@ class SupplyOrder extends Model
         'date',
         'delivery',
         'status',
+        'request_id',
         'type',
         'methode'
     ];
@@ -30,6 +31,11 @@ class SupplyOrder extends Model
     public function supply()
     {
         return $this->belongsTo(Supply::class);
+    }
+
+    public function magasin()
+    {
+        return $this->belongsTo(Magasin::class);
     }
 
     public function supply_order_products()

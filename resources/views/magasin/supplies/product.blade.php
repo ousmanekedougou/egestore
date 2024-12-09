@@ -10,8 +10,9 @@
           <h2 class="mb-3">Produits de la commande de devis </h2>
           <div class="d-sm-flex flex-between-center mb-3">
             <p class="text-body-secondary lh-sm mb-0 mt-2 mt-sm-0">
-              Email : <a class="fw-bold" href="#!" style="margin-right: 15px;"> @if($supplyOrder->supply_id != ''){{ $supplyOrder->supply->magasin->email }}@else {{ $supplyOrder->supply->email }} @endif</a>
-              Téléphone : <a class="fw-bold" href="#!"> @if($supplyOrder->supply_id != ''){{ $supplyOrder->supply->magasin->phone }}@else {{ $supplyOrder->supply->phone }} @endif</a>
+              Magasin : <a class="fw-bold" href="#!" style="margin-right: 15px;"> @if($supplyOrder->request_id != AuthMagasinAgent()) @if($supplyOrder->supply_id != ''){{ $supplyOrder->supply->magasin->name }}@else {{ $supplyOrder->supply->name }} @endif @else {{ $supplyOrder->magasin->name }} @endif</a>
+              Email : <a class="fw-bold" href="#!" style="margin-right: 15px;"> @if($supplyOrder->request_id != AuthMagasinAgent()) @if($supplyOrder->supply_id != ''){{ $supplyOrder->supply->magasin->email }}@else {{ $supplyOrder->supply->email }} @endif @else {{ $supplyOrder->magasin->email }} @endif</a>
+              Téléphone : <a class="fw-bold" href="#!">@if($supplyOrder->request_id != AuthMagasinAgent()) @if($supplyOrder->supply_id != ''){{ $supplyOrder->supply->magasin->phone }}@else {{ $supplyOrder->supply->phone }} @endif  @else {{ $supplyOrder->magasin->phone }} @endif</a>
             </p>
           </div>
         </div>
@@ -24,17 +25,19 @@
                 <span class="fas fa-search search-box-icon"></span>
               </form>
             </div>
-            <div class="ms-xxl-auto">
-              @if($supplyOrder->status == 1)
-                <a href="{{ route('magasin.reserve.delete',$supplyOrder->id) }}" class="btn btn-warning">
-                  <span data-feather="trash-2" data-fa-transform="shrink-3" class="me-2"></span>Vider ce stock
-                </a>
-              @elseif($supplyOrder->status == 2)
-                <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                  <span class="fas fa-plus me-2"></span>Ajouter des produits
-                </button>
-              @endif
-            </div>
+            @if($supplyOrder->request_id != AuthMagasinAgent())
+              <div class="ms-xxl-auto">
+                @if($supplyOrder->status == 1)
+                  <a href="{{ route('magasin.reserve.delete',$supplyOrder->id) }}" class="btn btn-warning">
+                    <span data-feather="trash-2" data-fa-transform="shrink-3" class="me-2"></span>Vider ce stock
+                  </a>
+                @elseif($supplyOrder->status == 2)
+                  <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                    <span class="fas fa-plus me-2"></span>Ajouter des produits
+                  </button>
+                @endif
+              </div>
+            @endif
           </div>
         </div>
         <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis border-top border-bottom border-translucent position-relative top-1">
@@ -81,8 +84,12 @@
                       @if($product->supply_order->status == 1)
                         <span class="badge badge-phoenix badge-phoenix-success fs-10"> Valider </span>
                       @elseif($product->supply_order->status == 2)
-                        @if($product->price == 0)
-                          <span class="me-2 text-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
+                        @if($supplyOrder->request_id != AuthMagasinAgent())
+                          @if ($product->price == 0)
+                            <span class="me-2 text-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
+                          @endif
+                        @else
+                          <span class="me-2 text-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRightB-{{ $product->id }}" aria-controls="offcanvasRightB-{{ $product->id }}" data-feather="edit" data-fa-transform="shrink-3"></span>
                         @endif
                         <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
                       @endif
@@ -253,7 +260,50 @@
                 </div>
                 @endif
 
+                <div class="mb-3 text-start">
+                  <label class="form-label" for="image">Image du produit</label>
+                  <img class="rounded-circle" src="{{Storage::url($product->image)}}" alt="" width="38" style="float: right;"/>
+                  <input class="form-control @error('image') is-invalid @enderror" id="image" name="image" type="file" value="{{ old('image') ?? $product->image }}"  autocomplete="image"/>
+                  @error('image')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+
                 <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce produit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    @endforeach
+
+    @foreach($supplyOrder->supply_order_products as $product)
+      <div class="card-body p-0">
+        <div class="p-4 code-to-copy">
+          <!-- Right Offcanvas-->
+          <div class="offcanvas offcanvas-end" id="offcanvasRightB-{{ $product->id }}" tabindex="-1" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+              <h5 id="offcanvasRightLabel">Modification de produit</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <form method="POST" action="{{ route('magasin.devis-produits.updatePrice',$product->id) }}">
+                @csrf
+                {{ method_field('PUT') }}
+                <input type="hidden" name="supply_order_id" value="{{ $supplyOrder->id }}">
+                <div class="mb-3 text-start">
+                    <label class="form-label" for="price">Le prix du produit</label>
+                    <input id="price" type="text" placeholder="Le prix du produit" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') ?? $product->price }}" required autocomplete="price" autofocus>
+
+                    @error('price')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer les modifications</button>
               </form>
             </div>
           </div>

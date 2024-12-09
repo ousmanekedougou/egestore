@@ -34,7 +34,7 @@ return new class extends Migration
           $table->integer('delivery')->nullable();
           $table->integer('status')->nullable();
           // $table->boolean('recept')->default(0);
-          // $table->boolean('request')->default(0);
+          $table->integer('request_id')->nullable();
           $table->integer('type')->nullable();
           $table->date('date');
           $table->integer('methode')->nullable();

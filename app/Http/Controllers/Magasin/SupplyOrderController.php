@@ -19,7 +19,7 @@ class SupplyOrderController extends Controller
     {
         return view('magasin.supplies.vendor_order',
         [
-            'order' => SupplyOrder::where('supply_id',AuthMagasinAgent())->get()
+            'orders' => SupplyOrder::where('request_id',AuthMagasinAgent())->get()
         ]);
     }
 
@@ -54,6 +54,8 @@ class SupplyOrderController extends Controller
         }
 
         $verifyBonCommande = SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('supply_id',$request->supply_id)->where('bon_commande',$request->bon_commande)->first();
+        $supply_magasin = Supply::where('id',$request->supply_id)->first();
+        // dd($supply_magasin);
         if ($verifyBonCommande) {
             Toastr::error('Ce bon de commande existe pour ce magasin', 'Error du bon de commande', ["positionClass" => "toast-top-right"]);
             return back();
@@ -67,6 +69,7 @@ class SupplyOrderController extends Controller
                 'magasin_id' => AuthMagasinAgent(),
                 'status' => 2,
                 'delivery' => 2,
+                'request_id' => $supply_magasin->magasin->id 
             ]);
             Toastr::success('Votre commande de devis a bien été ajouté', 'Ajout de commande devis', ["positionClass" => "toast-top-right"]);
             return back();
@@ -115,6 +118,51 @@ class SupplyOrderController extends Controller
 
         Toastr::success('Votre commande de devis a bien été modifier', 'Ajout de commande devis', ["positionClass" => "toast-top-right"]);
         return back();
+    }
+    
+    public function status(Request $request, string $id)
+    {
+        // dd('jjj');
+        $commande = SupplyOrder::where('id',$id)->where('request_id',AuthMagasinAgent())->first();
+        if ($commande->supply_order_products->count() > 0) 
+        {
+            $this->validate($request,[
+                'status' => 'required|numeric',
+            ]);
+            
+            $dateUpdate = null;
+            $incvoiceNum = null;
+            $methode = null;
+            if($request->status == 1){
+                $this->validate($request,[
+                    'methode' => 'required|numeric',
+                ]);
+                $dateUpdate = now();
+                
+                $num = SupplyOrder::where("request_id", AuthMagasinAgent())->latest()->first();
+                if ($num) {
+                    $incvoiceNum = $num->num_invoice + 1;
+                }else {
+                    $incvoiceNum = 1;
+                }
+                
+                $methode = $request->methode;
+            }
+    
+            $commande->update(
+            [   'status' => $request->status,
+                'payment_created_at' => $dateUpdate,
+                'num_invoice' => $incvoiceNum,
+                'methode' => $methode
+            ]);
+    
+            Toastr::success('Le status de cette commande a bien été modifié', 'Modification de reservations', ["positionClass" => "toast-top-right"]);
+            return back();
+        }else {
+            Toastr::error('Vous n\'aviez pas de produit pour cette commande', 'Pas de produit', ["positionClass" => "toast-top-right"]);
+            return back();
+        }
+        
     }
 
     /**

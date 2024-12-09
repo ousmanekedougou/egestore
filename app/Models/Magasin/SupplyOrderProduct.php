@@ -22,6 +22,7 @@ class SupplyOrderProduct extends Model
         'desc',
         'colors',
         'sizes',
+        'amount',
         'supply_order_id',
         'sub_category_id'
     ];
