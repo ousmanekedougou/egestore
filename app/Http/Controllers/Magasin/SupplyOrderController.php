@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Magasin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Magasin\Commande;
 use App\Models\Magasin\Supply;
 use App\Models\Magasin\SupplyOrder;
 use Brian2694\Toastr\Facades\Toastr;
@@ -18,15 +17,23 @@ class SupplyOrderController extends Controller
      */
     public function index()
     {
-        //
+        return view('magasin.supplies.vendor_order',
+        [
+            'order' => SupplyOrder::where('supply_id',AuthMagasinAgent())->get()
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($id)
     {
-        //
+        SupplyOrder::where('id',$id)->where('supply_id',request()->supply_id)->where('magasin_id',AuthMagasinAgent())
+            ->update([
+                'delivery' => 1
+            ]);
+        Toastr::success('Votre livraison a bien été valideé', 'Suppression de commandes', ["positionClass" => "toast-top-right"]);
+        return back();
     }
 
     /**
@@ -39,14 +46,14 @@ class SupplyOrderController extends Controller
             'deivery_date' => 'require|date',
         ]);
 
-        $verify = SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('supply_id',$request->supply_id)->latest()->where('request',1)->first();
+        $verify = SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('supply_id',$request->supply_id)->latest()->first();
         if ($verify) {
             $newOrder = $verify->order + 1;
         }else {
             $newOrder = 1;
         }
 
-        $verifyBonCommande = SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('supply_id',$request->supply_id)->where('bon_commande',$request->bon_commande)->where('request',1)->first();
+        $verifyBonCommande = SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('supply_id',$request->supply_id)->where('bon_commande',$request->bon_commande)->first();
         if ($verifyBonCommande) {
             Toastr::error('Ce bon de commande existe pour ce magasin', 'Error du bon de commande', ["positionClass" => "toast-top-right"]);
             return back();
@@ -59,7 +66,7 @@ class SupplyOrderController extends Controller
                 'supply_id' => $request->supply_id,
                 'magasin_id' => AuthMagasinAgent(),
                 'status' => 2,
-                'request' => 1
+                'delivery' => 2,
             ]);
             Toastr::success('Votre commande de devis a bien été ajouté', 'Ajout de commande devis', ["positionClass" => "toast-top-right"]);
             return back();
@@ -83,9 +90,12 @@ class SupplyOrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $slug)
     {
-        //
+        return view('magasin.supplies.invoice',
+        [
+            'order' => SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('id',$slug)->where('delivery',1)->first()
+        ]);
     }
 
     /**
@@ -93,7 +103,18 @@ class SupplyOrderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $this->validate($request,[
+            'bon_commande' => 'required|string',
+            'deivery_date' => 'require|date',
+        ]);
+        
+        SupplyOrder::where('id',$id)->where("magasin_id", AuthMagasinAgent())->where('supply_id',$request->supply_id)->update([
+            'bon_commande' => $request->bon_commande,
+            'date' => $request->delivery_date,
+        ]);
+
+        Toastr::success('Votre commande de devis a bien été modifier', 'Ajout de commande devis', ["positionClass" => "toast-top-right"]);
+        return back();
     }
 
     /**
@@ -101,7 +122,7 @@ class SupplyOrderController extends Controller
      */
     public function destroy(string $id)
     {
-        SupplyOrder::where('id',$id)->where('supply_id',request()->supply_id)->where('magasin_id',AuthMagasinAgent())->where('request',1)->delete();
+        SupplyOrder::where('id',$id)->where('supply_id',request()->supply_id)->where('magasin_id',AuthMagasinAgent())->delete();
         Toastr::success('Votre commande de devis a bien été supprimé', 'Suppression de commandes', ["positionClass" => "toast-top-right"]);
         return back();
     }

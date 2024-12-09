@@ -82,7 +82,7 @@ class SupplyOrderProductController extends Controller
     {
         return view('magasin.supplies.product',
         [
-            'supplyOrder' => SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('slug',$slug)->latest()->where('request',1)->first()
+            'supplyOrder' => SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('slug',$slug)->latest()->first()
         ]);
     }
 

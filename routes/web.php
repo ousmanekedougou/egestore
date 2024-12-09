@@ -105,6 +105,7 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
     Route::get('/fournisseurs/{id}/deleteSupply', [App\Http\Controllers\Magasin\SupplyController::class,'destroy'])->name('fournisseurs.destroy');
     
     Route::resource('/devis', App\Http\Controllers\Magasin\SupplyOrderController::class);
+    Route::put('devis/create/{id}',[App\Http\Controllers\Magasin\SupplyOrderController::class,'create'])->name('devis.create');
     Route::resource('/devis-produits', App\Http\Controllers\Magasin\SupplyOrderProductController::class);
 
 

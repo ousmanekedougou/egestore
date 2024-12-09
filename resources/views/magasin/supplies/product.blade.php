@@ -57,8 +57,8 @@
                 @foreach($supplyOrder->supply_order_products as $product)
                   <tr class="position-static">
                     
-                    <td class="align-middle white-space-nowrap py-0"><a class="d-block border border-translucent rounded-2"  href="{{ route('magasin.produit.edit',$product->id) }}"><img src="{{Storage::url($product->image)}}" alt="" width="53" /></a></td>
-                    <td class="product align-middle ps-4"><a class="fw-semibold line-clamp-3 mb-0 @if( $product->quantity < 10 ) text-white @endif"  href="{{ route('magasin.produit.edit',$product->id) }}">{{ $product->name }}</a></td>
+                    <td class="align-middle white-space-nowrap py-0"><a href="#!" class="d-block border border-translucent rounded-2"  data-bs-toggle="modal" data-bs-target="#scrollingLong-{{ $product->id }} "><img src="{{Storage::url($product->image)}}" alt="" width="53" /></a></td>
+                    <td class="product align-middle ps-4"><a href="#!" class="fw-semibold line-clamp-3 mb-0 @if( $product->quantity < 10 ) text-white @endif"  data-bs-toggle="modal" data-bs-target="#scrollingLong-{{ $product->id }}">{{ $product->name }}</a></td>
                     <td class="price align-middle white-space-nowrap text-start fw-bold text-body-tertiary ps-4">@if ($product->reference != '') {{ $product->reference }} @else null @endif</td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ $product->quantity }}</td>
                     <td class="tags align-middle review pb-2 ps-3" style="min-width:225px;">
@@ -79,9 +79,11 @@
                     <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ number_format($product->amount,2, ',','.') }} CFA</td>
                     <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
                       @if($product->supply_order->status == 1)
-                        <a href="{{ route('magasin.devis-produits.edit',$product->slug) }}" class="me-2 text-success" data-fa-transform="shrink-3"><span data-feather="file-text" ></span></a>
+                        <span class="badge badge-phoenix badge-phoenix-success fs-10"> Valider </span>
                       @elseif($product->supply_order->status == 2)
-                        <span class="me-2 text-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
+                        @if($product->price == 0)
+                          <span class="me-2 text-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
+                        @endif
                         <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
                       @endif
                     </td>
@@ -283,6 +285,28 @@
         </div>
       </div>
     @endforeach
+
+    
+    @foreach($supplyOrder->supply_order_products  as $product)
+      <div class="modal fade" id="scrollingLong-{{ $product->id }}" tabindex="-1" aria-labelledby="scrollingLongModalLabel2" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="scrollingLongModalLabel2">Grand format de l'image</h5><button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><svg class="svg-inline--fa fa-xmark fs-9" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path></svg><!-- <span class="fas fa-times fs-9"></span> Font Awesome fontawesome.com --></button>
+            </div>
+            <div class="modal-body">
+              <p class="text-body-tertiary lh-lg mb-0">
+                <img src="{{Storage::url($product->image)}}" alt="" style="width: 100%;height:auto;" />
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Fermer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    @endforeach
+                    
 
 
 

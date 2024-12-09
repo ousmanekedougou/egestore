@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('supply_orders', function (Blueprint $table) {
           $table->id();
           $table->integer('order')->nullable();
-          $table->string('slug');
+          $table->string('slug')->nullable();
           $table->string('bon_commande')->nullable();
           $table->string('payment_intent_id')->unique()->nullable();
           $table->dateTime('payment_created_at')->nullable();
@@ -31,10 +31,10 @@ return new class extends Migration
             ->cascadeOnDelete()->nullable();
           $table->string('amount')->nullable();
           $table->enum('payment', ['Success', 'Pending','Cancelled'])->nullable();
-          $table->enum('delivery', ['Success', 'Pending','Cancelled'])->nullable();
+          $table->integer('delivery')->nullable();
           $table->integer('status')->nullable();
-          $table->boolean('recept')->default(0);
-          $table->boolean('request')->default(0);
+          // $table->boolean('recept')->default(0);
+          // $table->boolean('request')->default(0);
           $table->integer('type')->nullable();
           $table->date('date');
           $table->integer('methode')->nullable();
