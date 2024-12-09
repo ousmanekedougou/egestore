@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Magasin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\SupplyOrder;
+use App\Models\Magasin\SupplyOrderProduct;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 class SupplyOrderProductController extends Controller
 {
     /**
@@ -29,7 +32,47 @@ class SupplyOrderProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'inputs' => 'required',
+        ]);
+        // dd($request->inputs);
+        foreach ($request->inputs as $input) 
+        {
+            $imageName = '';
+            if($input['image'])
+            {
+                $imageName = $input['image']->store('public/Supplies/Products');
+            }
+            $colors = null;
+            $sizes = null;
+    
+            if ($input['colors'] != '') {
+                $colors = explode(",",$input['colors']);
+            }else {
+                $colors = null;
+            }
+    
+            if ($input['sizes'] != '') {
+                $sizes = explode(",",$input['sizes']);
+            }else {
+                $sizes = null;
+            }
+
+            SupplyOrderProduct::create([
+                'name' => $input['name'],
+                'slug' => str_replace('/','',Hash::make(Str::random(2).$input['name'])),
+                'reference' => $input['reference'],
+                'quantity' => $input['qty'],
+                'image' => $imageName,
+                'colors' => serialize($colors),
+                'sizes' => serialize($sizes),
+                'magasin_id' => AuthMagasinAgent(),
+                'supply_order_id' => $request->supply_order_id
+            ]);
+
+        }
+        Toastr::success('Votre produit a bien été ajouté', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
+        return back();
     }
 
     /**
@@ -56,7 +99,38 @@ class SupplyOrderProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $product = SupplyOrderProduct::where('id',$id)->where('supply_order_id',$request->supply_order_id)->where('magasin_id',AuthMagasinAgent())->first();
+        if ($product->supply_order->status == 2) {
+
+            $colors = null;
+            $sizes = null;
+
+            if ($request->colors != '') {
+                $colors = serialize(explode(",",$request->colors));
+            }else {
+                $colors = $product->colors;
+            }
+
+            if ($request->sizes != '') {
+                $sizes = serialize(explode(",",$request->sizes));
+            }else {
+                $sizes = $product->sizes;
+            }
+
+            $product->update([
+                'name' => $request->name,
+                'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
+                'reference' => $request->reference,
+                'quantity' => $request->quantity,
+                'colors' => $colors,
+                'sizes' => $sizes,
+                'magasin_id' => AuthMagasinAgent(),
+                'supply_order_id' => $request->supply_order_id
+            ]);
+        }else {
+            Toastr::warning('Vous ne pouvez plus modifier ce produit', 'Modification non accepter', ["positionClass" => "toast-top-right"]);
+            return back();
+        }
     }
 
     /**
@@ -64,6 +138,14 @@ class SupplyOrderProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = SupplyOrderProduct::where('id',$id)->where('supply_order_id',request()->supply_order_id)->where('magasin_id',AuthMagasinAgent())->first();
+        if ($product->supply_order->status == 2) {
+            $product->delete();
+            Toastr::success('Votre produit a bien été supprimé', 'Suppression de bagages', ["positionClass" => "toast-top-right"]);
+            return back();
+        }else {
+            Toastr::warning('Vous ne pouvez plus supprimer ce produit', 'Suppression non accepter', ["positionClass" => "toast-top-right"]);
+            return back();
+        }
     }
 }

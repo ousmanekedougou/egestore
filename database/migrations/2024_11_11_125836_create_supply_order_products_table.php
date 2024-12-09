@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('supply_order_products', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('slug')->unique();
+            $table->string('name')->unique()->nullable();
+            $table->string('slug')->unique()->nullable();
             $table->string('image');
             $table->text('images')->nullable();
-            $table->integer('price');
+            $table->integer('price')->nullable();
             $table->integer('quantity');
             $table->text('colors')->nullable();
             $table->text('sizes')->nullable();
@@ -29,7 +29,7 @@ return new class extends Migration
                 ->foreignId("sub_category_id")
                 ->references("id")
                 ->on("sub_categories")
-                ->cascadeOnDelete();
+                ->cascadeOnDelete()->nullable();
             $table
                 ->foreignId("supply_order_id")
                 ->references("id")
