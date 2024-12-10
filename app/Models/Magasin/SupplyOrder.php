@@ -28,6 +28,11 @@ class SupplyOrder extends Model
         'methode'
     ];
 
+    public function getAmount(){
+        return number_format($this->amount,2, ',','.'). ' CFA';
+    }
+
+
     public function supply()
     {
         return $this->belongsTo(Supply::class);

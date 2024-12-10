@@ -40,9 +40,8 @@ class SupplyOrderProduct extends Model
         return number_format($amount,2, ',','.'). ' CFA';
     }
 
-    public function getTotalAmount($getAmount){
-        $amount = str_replace(',', '', $getAmount);
-        return number_format($amount,2, ',','.'). ' CFA';
+    public function getTotalAmount(){
+        return number_format($this->amount,2, ',','.'). ' CFA';
     }
 
     public function supply_order()

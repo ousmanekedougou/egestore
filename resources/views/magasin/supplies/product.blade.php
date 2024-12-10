@@ -27,11 +27,7 @@
             </div>
             @if($supplyOrder->request_id != AuthMagasinAgent())
               <div class="ms-xxl-auto">
-                @if($supplyOrder->status == 1)
-                  <a href="{{ route('magasin.reserve.delete',$supplyOrder->id) }}" class="btn btn-warning">
-                    <span data-feather="trash-2" data-fa-transform="shrink-3" class="me-2"></span>Vider ce stock
-                  </a>
-                @elseif($supplyOrder->status == 2)
+                @if($supplyOrder->status == 2)
                   <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
                     <span class="fas fa-plus me-2"></span>Ajouter des produits
                   </button>
@@ -196,7 +192,7 @@
               <h5 id="offcanvasRightLabel">Modification de produit</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-              <form method="POST" action="{{ route('magasin.devis-produits.update',$product->id) }}">
+              <form method="POST" action="{{ route('magasin.devis-produits.update',$product->id) }}" enctype="multipart/form-data" >
                 @csrf
                 {{ method_field('PUT') }}
                 <input type="hidden" name="supply_order_id" value="{{ $supplyOrder->id }}">

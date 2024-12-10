@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Laralink">
   <!-- Site Title -->
-  <title>{{ $order->supply->name }} - PRO-FORMAT</title>
+  <title>{{ Auth::guard('magasin')->user()->name }} - FACTURE</title>
   <link rel="stylesheet" href="{{ asset('assets/css/invoice.css') }}">
 </head>
 
@@ -20,10 +20,10 @@
         <div class="tm_invoice_in">
           <div class="tm_invoice_head tm_top_head tm_mb15 tm_align_center">
             <div class="tm_invoice_left">
-              <div class="tm_logo"><img style="border-radius: 100%;" class="rounded-circle" src="@if ($order->logo != '') {{(Storage::url($order->magasin->logo))}} @else https://ui-avatars.com/api/?name={{$order->magasin->name}} @endif" alt="Logo"></div>
+              <div class="tm_logo"><img style="border-radius: 100%;" class="rounded-circle" src="@if ($order->supply->magasin->logo != '') {{(Storage::url($order->supply->magasin->logo))}} @else https://ui-avatars.com/api/?name={{$order->supply->magasin->name}} @endif" alt="{{$order->supply->magasin->name}}"></div>
             </div>
             <div class="tm_invoice_right tm_text_right tm_mobile_hide">
-              <div class="tm_f50 tm_text_uppercase tm_white_color">PRO-FORMAT</div>
+              <div class="tm_f50 tm_text_uppercase tm_white_color">FACTURE</div>
             </div>
             <div class="tm_shape_bg tm_accent_bg tm_mobile_hide"></div>
           </div>
@@ -49,20 +49,19 @@
             <div class="tm_invoice_left">
               <p class="tm_mb2"><b class="tm_primary_color">Facture à:</b></p>
               <p>
-                @if($supplie->magasin_id != ''){{ $supplie->magasin->name }}@else {{ $supplie->name }} @endif
-                @if($order->client_id != '') {{ $order->client->name }} @elseif ($order->user_id != '') {{ $order->user->name }} @else {{ $order->name }}@endif <br>
-                @if($order->client_id != '') {{ $order->client->adresse }} @elseif ($order->user_id != '') {{ $order->user->adresse }} @else {{ $order->adresse }}@endif <br>
-                @if($order->client_id != '') {{ $order->client->email }} @elseif ($order->user_id != '') {{ $order->user->email }} @else {{ $order->email }}@endif <br>
-                @if($order->client_id != '') {{ $order->client->phone }} @elseif ($order->user_id != '') {{ $order->user->phone }} @else {{ $order->phone }}@endif
+                {{ $order->magasin->name }}, <br>
+                {{ $order->magasin->email }}, <br>
+                {{ $order->magasin->phone }}, <br>
+                {{ $order->magasin->adresse }} 
               </p>
             </div>
             <div class="tm_invoice_right tm_text_right">
               <p class="tm_mb2"><b class="tm_primary_color">Payer à:</b></p>
               <p>
-                {{$order->magasin->name}} <br>
-                {{$order->magasin->phone}}<br>
-                {{$order->magasin->email}} <br>
-                {{$order->magasin->adresse}}
+                {{$order->supply->magasin->name}} <br>
+                {{$order->supply->magasin->phone}}<br>
+                {{$order->supply->magasin->email}} <br>
+                {{$order->supply->magasin->adresse}}
               </p>
             </div>
           </div>
@@ -80,13 +79,13 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($order->bagages as $product)
+                    @foreach($order->supply_order_products as $product)
                       <tr>
                         <td class="tm_width_4">{{$product->name}}</td>
                         <td class="tm_width_2">@if($product->reference != ''){{$product->reference}} @else Null @endif</td>
                         <td class="tm_width_2">{{ $product->getPrice() }}</td>
                         <td class="tm_width_1">{{$product->quantity}}</td>
-                        <td class="tm_width_3 tm_text_right">{{ $product->getTotalPrice() }}</td>
+                        <td class="tm_width_3 tm_text_right">{{ $product->getTotalAmount() }}</td>
                       </tr>
                     @endforeach
                   </tbody>
@@ -95,8 +94,8 @@
             </div>
             <div class="tm_invoice_footer tm_border_top tm_mb15 tm_m0_md">
               <div class="tm_left_footer">
-                <p class="tm_mb2"><b class="tm_primary_color">RCCM:</b> <span class="tm_m0">{{ $order->magasin->registre_com }}</span></p>
-                <p class="tm_mb2"><b class="tm_primary_color">NINEA:</b> <span class="tm_m0">{{ $order->magasin->ninea }}</span></p>
+                <p class="tm_mb2"><b class="tm_primary_color">RCCM:</b> <span class="tm_m0">{{ $order->supply->magasin->registre_com }}</span></p>
+                <p class="tm_mb2"><b class="tm_primary_color">NINEA:</b> <span class="tm_m0">{{ $order->supply->magasin->ninea }}</span></p>
               </div>
               <div class="tm_right_footer">
                 <table class="tm_mb15">
@@ -124,8 +123,8 @@
               <div class="tm_left_footer"></div>
               <div class="tm_right_footer">
                 <div class="tm_sign tm_text_center">
-                  <img src="assets/img/sign.svg" alt="Signature">
-                  <p class="tm_m0 tm_ternary_color">{{ $order->magasin->admin_name }}</p>
+                  <img src="{{ asset('assets/img/sign.svg') }}" alt="Signature">
+                  <p class="tm_m0 tm_ternary_color">{{ $order->supply->magasin->admin_name }}</p>
                   <p class="tm_m0 tm_f16 tm_primary_color">Gestionnaire des comptes</p>
                 </div>
               </div>
@@ -136,7 +135,6 @@
             <p class="tm_mb2 tm_text_center"><b class="tm_primary_color">Terms & Conditions:</b></p>
             <p class="tm_m0">
             L'acheteur renonce à toute réclamation relative à des erreurs de quantité ou d'expédition si elle n'est pas adressée par écrit au vendeur dans les trente (30) jours suivant la livraison des marchandises à l'adresse indiquée. 
-            <br> Vendeur dans les trente (30) jours suivant la livraison des marchandises à l'adresse indiquée.
             </p>
           </div><!-- .tm_note -->
         </div>

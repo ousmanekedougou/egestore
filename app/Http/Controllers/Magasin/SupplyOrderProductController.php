@@ -152,10 +152,11 @@ class SupplyOrderProductController extends Controller
 
             $product->update([
                 'price' => $request->price,
-                'amount' => $product->price * $product->quantity
+                'amount' => $request->price * $product->quantity
             ]);
-
-            // $product->supply_order->update(['amount' => $product->price * $product->quantity]);
+            $orderAmount = SupplyOrderProduct::where('magasin_id',$product->supply_order->magasin->id)->sum('amount');
+            // dd($orderAmount);
+            $product->supply_order->update(['amount' => $orderAmount]);
 
             Toastr::success('Le prix du produit a bien ete modifier', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
             return back();

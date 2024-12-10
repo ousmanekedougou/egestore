@@ -63,13 +63,13 @@ class SupplyOrderController extends Controller
              SupplyOrder::create([
                 'order' => $newOrder,
                 'bon_commande' => $request->bon_commande,
-                'slug' => str_replace('/','',Hash::make(Str::random(2).$newOrder)),
+                'slug' => str_replace('/','',Hash::make(Str::random(2).$supply_magasin->name)),
                 'date' => $request->delivery_date,
                 'supply_id' => $request->supply_id,
                 'magasin_id' => AuthMagasinAgent(),
                 'status' => 2,
                 'delivery' => 2,
-                'request_id' => $supply_magasin->magasin->id 
+                'request_id' => $supply_magasin->magasin->id ?? null
             ]);
             Toastr::success('Votre commande de devis a bien été ajouté', 'Ajout de commande devis', ["positionClass" => "toast-top-right"]);
             return back();
@@ -97,7 +97,7 @@ class SupplyOrderController extends Controller
     {
         return view('magasin.supplies.invoice',
         [
-            'order' => SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('id',$slug)->where('delivery',1)->first()
+            'order' => SupplyOrder::where("magasin_id", AuthMagasinAgent())->orWhere('request_id',AuthMagasinAgent())->where('slug',$slug)->where('delivery',1)->where('status',1)->first()
         ]);
     }
 
@@ -174,4 +174,5 @@ class SupplyOrderController extends Controller
         Toastr::success('Votre commande de devis a bien été supprimé', 'Suppression de commandes', ["positionClass" => "toast-top-right"]);
         return back();
     }
+
 }
