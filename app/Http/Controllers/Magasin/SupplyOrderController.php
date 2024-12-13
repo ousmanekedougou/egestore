@@ -46,7 +46,7 @@ class SupplyOrderController extends Controller
             'deivery_date' => 'require|date',
         ]);
 
-        $verify = SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('supply_id',$request->supply_id)->latest()->first();
+        $verify = SupplyOrder::where("magasin_id", AuthMagasinAgent())->latest()->first();
         if ($verify) {
             $newOrder = $verify->order + 1;
         }else {
@@ -63,13 +63,13 @@ class SupplyOrderController extends Controller
              SupplyOrder::create([
                 'order' => $newOrder,
                 'bon_commande' => $request->bon_commande,
-                'slug' => str_replace('/','',Hash::make(Str::random(2).$supply_magasin->name)),
+                'slug' => str_replace('/','',Hash::make(Str::random(2).$request->supply_id)),
                 'date' => $request->delivery_date,
                 'supply_id' => $request->supply_id,
                 'magasin_id' => AuthMagasinAgent(),
                 'status' => 2,
                 'delivery' => 2,
-                'request_id' => $supply_magasin->magasin->id ?? null
+                'request_id' => $supply_magasin->magasin->id
             ]);
             Toastr::success('Votre commande de devis a bien été ajouté', 'Ajout de commande devis', ["positionClass" => "toast-top-right"]);
             return back();
@@ -83,7 +83,6 @@ class SupplyOrderController extends Controller
      */
     public function show(string $slug)
     {
-        
         return view('magasin.supplies.buyer_order',
         [
             'supplie' => Supply::where('owner_id',AuthMagasinAgent())->where('slug',$slug)->first()

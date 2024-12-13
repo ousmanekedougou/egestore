@@ -10,9 +10,9 @@
           <h2 class="mb-3">Produits de la commande de devis </h2>
           <div class="d-sm-flex flex-between-center mb-3">
             <p class="text-body-secondary lh-sm mb-0 mt-2 mt-sm-0">
-              Magasin : <a class="fw-bold" href="#!" style="margin-right: 15px;"> @if($supplyOrder->request_id != AuthMagasinAgent()) @if($supplyOrder->supply_id != ''){{ $supplyOrder->supply->magasin->name }}@else {{ $supplyOrder->supply->name }} @endif @else {{ $supplyOrder->magasin->name }} @endif</a>
-              Email : <a class="fw-bold" href="#!" style="margin-right: 15px;"> @if($supplyOrder->request_id != AuthMagasinAgent()) @if($supplyOrder->supply_id != ''){{ $supplyOrder->supply->magasin->email }}@else {{ $supplyOrder->supply->email }} @endif @else {{ $supplyOrder->magasin->email }} @endif</a>
-              Téléphone : <a class="fw-bold" href="#!">@if($supplyOrder->request_id != AuthMagasinAgent()) @if($supplyOrder->supply_id != ''){{ $supplyOrder->supply->magasin->phone }}@else {{ $supplyOrder->supply->phone }} @endif  @else {{ $supplyOrder->magasin->phone }} @endif</a>
+              Magasin : <a class="fw-bold" href="#!" style="margin-right: 15px;"> {{ $supplyOrder->supply->magasin->name }}</a>
+              Email : <a class="fw-bold" href="#!" style="margin-right: 15px;">{{ $supplyOrder->supply->magasin->email }}</a>
+              Téléphone : <a class="fw-bold" href="#!">{{ $supplyOrder->supply->magasin->phone }}</a>
             </p>
           </div>
         </div>
@@ -25,7 +25,6 @@
                 <span class="fas fa-search search-box-icon"></span>
               </form>
             </div>
-            @if($supplyOrder->request_id != AuthMagasinAgent())
               <div class="ms-xxl-auto">
                 @if($supplyOrder->status == 2)
                   <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
@@ -33,7 +32,6 @@
                   </button>
                 @endif
               </div>
-            @endif
           </div>
         </div>
         <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis border-top border-bottom border-translucent position-relative top-1">
@@ -57,7 +55,7 @@
                   <tr class="position-static">
                     
                     <td class="align-middle white-space-nowrap py-0"><a href="#!" class="d-block border border-translucent rounded-2"  data-bs-toggle="modal" data-bs-target="#scrollingLong-{{ $product->id }} "><img src="{{Storage::url($product->image)}}" alt="" width="53" /></a></td>
-                    <td class="product align-middle ps-4"><a href="#!" class="fw-semibold line-clamp-3 mb-0 @if( $product->quantity < 10 ) text-white @endif"  data-bs-toggle="modal" data-bs-target="#scrollingLong-{{ $product->id }}">{{ $product->name }}</a></td>
+                    <td class="product align-middle ps-4"><a href="#!" class="fw-semibold line-clamp-3 mb-0"  data-bs-toggle="modal" data-bs-target="#scrollingLong-{{ $product->id }}">{{ $product->name }}</a></td>
                     <td class="price align-middle white-space-nowrap text-start fw-bold text-body-tertiary ps-4">@if ($product->reference != '') {{ $product->reference }} @else null @endif</td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ $product->quantity }}</td>
                     <td class="tags align-middle review pb-2 ps-3" style="min-width:225px;">
@@ -80,12 +78,8 @@
                       @if($product->supply_order->status == 1)
                         <span class="badge badge-phoenix badge-phoenix-success fs-10"> Valider </span>
                       @elseif($product->supply_order->status == 2)
-                        @if($supplyOrder->request_id != AuthMagasinAgent())
-                          @if ($product->price == 0)
-                            <span class="me-2 text-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
-                          @endif
-                        @else
-                          <span class="me-2 text-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRightB-{{ $product->id }}" aria-controls="offcanvasRightB-{{ $product->id }}" data-feather="edit" data-fa-transform="shrink-3"></span>
+                        @if ($product->price == 0)
+                          <span class="me-2 text-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
                         @endif
                         <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
                       @endif
@@ -97,7 +91,7 @@
           </div>
           <div class="row align-items-center justify-content-between py-2 pe-0 fs-9">
             <div class="col-auto d-flex">
-              <p class="mb-0 d-none d-sm-block me-3 fw-semibold text-body" data-list-info="data-list-info"></p><a class="fw-semibold" href="#!" data-list-view="*">View all<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a><a class="fw-semibold d-none" href="#!" data-list-view="less">View Less<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
+              <p class="mb-0 d-none d-sm-block me-3 fw-semibold text-body" data-list-info="data-list-info"></p><a class="fw-semibold" href="#!" data-list-view="*">Voir tous<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a><a class="fw-semibold d-none" href="#!" data-list-view="less">View Less<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
             </div>
             <div class="col-auto d-flex"><button class="page-link" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
               <ul class="mb-0 pagination"></ul><button class="page-link pe-0" data-list-pagination="next"><span class="fas fa-chevron-right"></span></button>
@@ -268,38 +262,6 @@
                 </div>
 
                 <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce produit</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    @endforeach
-
-    @foreach($supplyOrder->supply_order_products as $product)
-      <div class="card-body p-0">
-        <div class="p-4 code-to-copy">
-          <!-- Right Offcanvas-->
-          <div class="offcanvas offcanvas-end" id="offcanvasRightB-{{ $product->id }}" tabindex="-1" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-              <h5 id="offcanvasRightLabel">Modification de produit</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-              <form method="POST" action="{{ route('magasin.devis-produits.updatePrice',$product->id) }}">
-                @csrf
-                {{ method_field('PUT') }}
-                <input type="hidden" name="supply_order_id" value="{{ $supplyOrder->id }}">
-                <div class="mb-3 text-start">
-                    <label class="form-label" for="price">Le prix du produit</label>
-                    <input id="price" type="text" placeholder="Le prix du produit" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') ?? $product->price }}" required autocomplete="price" autofocus>
-
-                    @error('price')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-
-                <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer les modifications</button>
               </form>
             </div>
           </div>

@@ -18,11 +18,6 @@
               </form>
             </div>
           </div>
-          <div class="col-6 col-sm-4 col-md-3 col-lg-3">
-              <button type="button" style="float: right;" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                <span class="fas fa-plus me-2"></span>Ajouter un fornisseur
-              </button>
-          </div>
         </div>
       </div>
       <div class="container-small">
@@ -33,14 +28,13 @@
               <div class="border border-translucent d-flex flex-center rounded-3 mb-3 p-4" style="height:180px;">
                 <img class="mw-100 rounded-4" src="@if($supplie->logo == '') https://ui-avatars.com/api/?name=@if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif @else {{(Storage::url($supplie->logo))}} @endif" alt="@if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif" /></div>
               <h5 class="mb-2"> @if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</h5>
+              <p class="text-body-quaternary fs-9 mb-2 fw-semibold"> <span data-feather="shopping-bag" class="text-priamry"></span> {{ $supplie->supply_orders->count() }} Commandes </p>
               <a class="btn btn-link p-0" href="#!">A propos<span class="fas fa-chevron-right ms-1 fs-10"></span></a>
               <div class="hover-actions top-0 end-0 mt-2 me-3">
                 <div class="btn-reveal-trigger"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal p-2 lh-1 bg-body-highlight rounded-1" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-9"></span></button>
                   <div class="dropdown-menu dropdown-menu-end py-0">
                     <a class="dropdown-item" href="{{ route('magasin.devis.show',$supplie->slug) }}">Voire les commandes</a>
-                    @if ($supplie->magasin_id == '')
-                    <a class="dropdown-item text-primary" href="" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $supplie->id }}" aria-controls="offcanvasRight">Modifier ce fournisseur</a>
-                    @endif
+                   
                     <a class="dropdown-item text-danger" href="{{ route('magasin.fournisseurs.destroy',$supplie->id) }}">Retirer comme fournisseur</a>
                   </div>
                 </div>
@@ -51,162 +45,6 @@
       </div>
     </div>
 
-
-    <div class="card-body p-0">
-      <div class="p-4 code-to-copy">
-        <!-- Right Offcanvas-->
-        <div class="offcanvas offcanvas-end" id="offcanvasRight" tabindex="-1" aria-labelledby="offcanvasRightLabel">
-          <div class="offcanvas-header">
-            <h5 id="offcanvasRightLabel">Ajouter un nouveau fournisseur</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body">
-            <form method="POST" action="{{ route('magasin.autres-magasins.store') }}" enctype="multipart/form-data">
-              @csrf
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="name">Nom du fournisseur </label>
-                  <input id="name" type="text" placeholder="Nom du fournisseur" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                  @error('name')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="email">Email du fournisseur</label>
-                  <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Email du fournisseur" required autocomplete="email">
-
-                  @error('email')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="phone">Numero de telephone du fournisseur</label>
-                  <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" placeholder="Numero de telephone du fournisseur" required autocomplete="phone">
-
-                  @error('phone')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="registre_com">Registre de commerce </label>
-                  <input id="registre_com" type="text" placeholder="Registre de commerce" class="form-control @error('registre_com') is-invalid @enderror" name="registre_com" value="{{ old('registre_com') }}" required autocomplete="registre_com" autofocus>
-
-                  @error('registre_com')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="ninea">Ninea </label>
-                  <input id="ninea" type="text" placeholder="Ninea" class="form-control @error('ninea') is-invalid @enderror" name="ninea" value="{{ old('ninea') }}" required autocomplete="ninea" autofocus>
-
-                  @error('ninea')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-              <div class="mb-3 text-start">
-                <label class="form-label" for="logo">Logo du fournisseur</label>
-                <input class="form-control @error('logo') is-invalid @enderror" id="logo" name="logo" type="file" value="{{ old('logo') }}" required autocomplete="logo"/>
-                @error('logo')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-              </div>
-              <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce fournisseur</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    @foreach($supplies as $supplie)
-    <div class="card-body p-0">
-      <div class="p-4 code-to-copy">
-        <!-- Right Offcanvas-->
-        <div class="offcanvas offcanvas-end" id="offcanvasRight-{{ $supplie->id }}" tabindex="-1" aria-labelledby="offcanvasRightLabel">
-          <div class="offcanvas-header">
-            <h5 id="offcanvasRightLabel">Modifier {{ $supplie->name }}</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body">
-            <form method="POST" action="{{ route('magasin.autres-magasins.update',$supplie->id) }}" enctype="multipart/form-data">
-              @csrf
-              @method('PUT')
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="name">Nom du fournisseur </label>
-                  <input id="name" type="text" placeholder="Nom du fournisseur" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $supplie->name }}" required autocomplete="name" autofocus>
-
-                  @error('name')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="email">Email du fournisseur</label>
-                  <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') ?? $supplie->email }}" placeholder="Email du fournisseur" required autocomplete="email">
-
-                  @error('email')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="phone">Numero de telephone du fournisseur</label>
-                  <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') ?? $supplie->phone }}" placeholder="Numero de telephone du fournisseur" required autocomplete="phone">
-
-                  @error('phone')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="registre_com">Registre de commerce </label>
-                  <input id="registre_com" type="text" placeholder="Registre de commerce" class="form-control @error('registre_com') is-invalid @enderror" name="registre_com" value="{{ old('registre_com') ?? $supplie->registre_com }}" required autocomplete="registre_com" autofocus>
-
-                  @error('registre_com')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="ninea">Ninea </label>
-                  <input id="ninea" type="text" placeholder="Ninea" class="form-control @error('ninea') is-invalid @enderror" name="ninea" value="{{ old('ninea') ?? $supplie->ninea }}" required autocomplete="ninea" autofocus>
-
-                  @error('ninea')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-              <div class="mb-3 text-start">
-                <label class="form-label"  for="logo">Logo du fournisseur</label>
-                <img class="rounded-circle" src="{{Storage::url($supplie->logo)}}" alt="" width="38" style="float: right;"/>
-                <input class="form-control @error('logo') is-invalid @enderror" id="logo" name="logo" type="file" value="{{ old('logo') ?? $supplie->logo }}" autocomplete="logo"/>
-                @error('logo')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-              </div>
-              <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce fournisseur</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    @endforeach
 
     @foreach($supplies as $agent)
       <div class="modal fade" id="DeleteCompte-{{ $agent->id }}" tabindex="-1" style="display: none;" aria-hidden="true">

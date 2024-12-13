@@ -56,35 +56,7 @@ class SupplyController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'name' => 'required|string',
-            'email' => 'required|string|email|unique:supplies',
-            'phone' => 'required|numeric|unique:supplies',
-            'registre_com' => 'required|string|unique:supplies',
-            'ninea' => 'required|string|unique:supplies',
-            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
-        ]);
-
-        $logoName = '';
-        if(request()->hasFile('logo'))
-        {
-            $logoName = $request->logo->store('public/Magasin/Logo');
-        }
-
-        Supply::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
-            'logo' =>  $logoName,
-            'owner_id' => AuthMagasinAgent(),
-            'magasin_id' => null,
-            'registre_com' => $request->registre_com,
-            'ninea' => $request->ninea
-        ]);
-
-        Toastr::success('Votre fournisseur a ete ajouter', 'Ajout fournisseur', ["positionClass" => "toast-top-right"]);
-        return back();
+       
     }
 
     /**
@@ -113,35 +85,7 @@ class SupplyController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this->validate($request,[
-            'name' => 'required|string',
-            'email' => 'required|string|email',
-            'phone' => 'required|numeric',
-            'registre_com' => 'required|string',
-            'ninea' => 'required|string',
-            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
-        ]);
-
-        $logoName = '';
-        if(request()->hasFile('logo'))
-        {
-            $logoName = $request->logo->store('public/Magasin/Logo');
-        }
-
-        Supply::where('id',$id)->where('owner_id',AuthMagasinAgent())->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
-            'logo' =>  $logoName,
-            'owner_id' => AuthMagasinAgent(),
-            'magasin_id' => null,
-            'registre_com' => $request->registre_com,
-            'ninea' => $request->ninea
-        ]);
-
-        Toastr::success('Votre fournisseur a ete modifier', 'Modification fournisseur', ["positionClass" => "toast-top-right"]);
-        return back();
+        //
     }
 
     /**

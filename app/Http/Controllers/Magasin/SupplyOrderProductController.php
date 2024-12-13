@@ -22,9 +22,13 @@ class SupplyOrderProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(string $slug)
     {
-        //
+        // Lescommande recue dnas le vando_order
+        return view('magasin.supplies.product',
+        [
+            'supplyOrder' => SupplyOrder::where('request_id',AuthMagasinAgent())->where('slug',$slug)->first()
+        ]);
     }
 
     /**
@@ -82,8 +86,19 @@ class SupplyOrderProductController extends Controller
     {
         return view('magasin.supplies.product',
         [
-            'supplyOrder' => SupplyOrder::where("magasin_id", AuthMagasinAgent())->orWhere('request_id',AuthMagasinAgent())->where('slug',$slug)->first()
+            'supplyOrder' => SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('slug',$slug)->first()
         ]);
+    }
+
+
+    /**
+     * Display the specified resource.
+     */
+    public function notify(string $slug)
+    {
+        $supplyOrderNotify = SupplyOrder::where("request_id", AuthMagasinAgent())->where('slug',$slug)->first();
+        $supplyOrderNotify->update(['notify' => 1]);
+        return view('magasin.supplies.product',['supplyOrder' => $supplyOrderNotify]);
     }
 
     /**

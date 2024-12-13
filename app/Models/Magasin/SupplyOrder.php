@@ -25,7 +25,8 @@ class SupplyOrder extends Model
         'status',
         'request_id',
         'type',
-        'methode'
+        'methode',
+        'notify'
     ];
 
     public function getAmount(){

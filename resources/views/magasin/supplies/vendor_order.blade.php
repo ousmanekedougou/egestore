@@ -51,10 +51,10 @@
                   <td class="fs-9 align-middle px-0 py-3">
                     <div class="form-check mb-0 fs-8"><input class="form-check-input" type="checkbox" data-bulk-select-row='{"order":2453,"total":87,"customer":{"avatar":"/team/32.webp","name":"Carry Anna"},"payment_status":{"label":"Complete","type":"badge-phoenix-success","icon":"check"},"fulfilment_status":{"label":"Cancelled","type":"badge-phoenix-secondary","icon":"x"},"delivery_type":"Cash on delivery","date":"Dec 12, 12:56 PM"}' /></div>
                   </td>
-                  <td class="order align-middle white-space-nowrap py-0"><a class="fw-semibold" href="{{ route('magasin.devis-produits.show',$order->slug) }}">Nº-{{ str_pad($order->order, 5, '0', STR_PAD_LEFT) }}</a></td>
+                  <td class="order align-middle white-space-nowrap py-0"><a class="fw-semibold" href="{{ route('magasin.devis-produits.create',$order->slug) }}">Nº-{{ str_pad($order->order, 5, '0', STR_PAD_LEFT) }}</a></td>
                   <td class="total align-middle text-center fw-semibold text-body-highlight"><b>{{ number_format($order->amount,2, ',','.') }}</b></td>
                   <td class="customer align-middle white-space-nowrap ps-8">
-                    <a class="d-flex align-items-center text-body" href="{{ route('magasin.devis-produits.show',$order->slug) }}">
+                    <a class="d-flex align-items-center text-body" href="{{ route('magasin.devis-produits.create',$order->slug) }}">
                       <div class="avatar avatar-m"><img class="rounded-circle" src="@if($order->magasin->image != '') {{Storage::url($order->magasin->image)}} @else https://ui-avatars.com/api/?name={{ $order->magasin->name }} @endif" alt="" /></div>
                       <h6 class="mb-0 ms-3 text-body">{{ $order->magasin->name }}</h6>
                     </a>

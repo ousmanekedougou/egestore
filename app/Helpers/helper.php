@@ -3,6 +3,7 @@
 use App\Models\Magasin\Category;
 use App\Models\Magasin\Color;
 use App\Models\Magasin\Product;
+use App\Models\Magasin\SupplyOrder;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -145,5 +146,13 @@ if (!function_exists('ProductStockVide')) {
        if ($ProductStockVide->count() > 0) {
             return Toastr::error('Vous avez ' .$ProductStockVide->count(). ' produits dont le stock est épuisé', 'Produit epuise', ["positionClass" => "toast-top-right"]);
        }
+    }
+}
+
+if (!function_exists('OrderNotification')) {
+    function OrderNotification()
+    {
+        $supplyOrder = SupplyOrder::where('request_id',AuthMagasinAgent())->where('notify',0)->where('status',2)->get();
+        return $supplyOrder;
     }
 }

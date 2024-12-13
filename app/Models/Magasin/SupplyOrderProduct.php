@@ -46,6 +46,6 @@ class SupplyOrderProduct extends Model
 
     public function supply_order()
     {
-        return $this->belongsTo(supplyOrder::class);
+        return $this->belongsTo(SupplyOrder::class);
     }
 }
