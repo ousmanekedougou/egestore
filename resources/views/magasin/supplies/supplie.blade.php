@@ -26,8 +26,8 @@
           @foreach ($supplies as $supplie)
             <div class="col-6 col-sm-4 col-md-3 col-lg-2 hover-actions-trigger btn-reveal-trigger">
               <div class="border border-translucent d-flex flex-center rounded-3 mb-3 p-4" style="height:180px;">
-                <img class="mw-100 rounded-4" src="@if($supplie->logo == '') https://ui-avatars.com/api/?name=@if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif @else {{(Storage::url($supplie->logo))}} @endif" alt="@if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif" /></div>
-              <h5 class="mb-2"> @if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</h5>
+                <img class="mw-100 rounded-4" src="@if($supplie->logo == '') https://ui-avatars.com/api/?name={{ $supplie->magasin->name }} @else {{(Storage::url($supplie->logo))}} @endif" alt="{{ $supplie->magasin->name }}" /></div>
+              <h5 class="mb-2"> {{ $supplie->magasin->name }}</h5>
               <p class="text-body-quaternary fs-9 mb-2 fw-semibold"> <span data-feather="shopping-bag" class="text-priamry"></span> {{ $supplie->supply_orders->count() }} Commandes </p>
               <a class="btn btn-link p-0" href="#!">A propos<span class="fas fa-chevron-right ms-1 fs-10"></span></a>
               <div class="hover-actions top-0 end-0 mt-2 me-3">
