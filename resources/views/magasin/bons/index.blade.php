@@ -107,13 +107,13 @@
                   <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{date('d-m-Y', strtotime( $bon->date ))}}</td>
                   <td class=" align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">
                     @if($bon->status == 1)
-                      <a target="_blank" href="{{ route('magasin.bon.edit',$bon->slug) }}" class="me-2 text-success" data-fa-transform="shrink-3"><span data-feather="file-text" ></span></a>
+                      <a target="_blank" href="{{ route('magasin.bon.edit',$bon->slug) }}" class="me-2 text-success fa fa-file-alt fs-7" data-fa-transform="shrink-3"><span></span></a>
                     @elseif ($bon->status != 1)
                       @if ($bon->bagages->count() > 0)
-                        <span class="me-2 text-info" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $bon->id }}" data-feather="shopping-bag" data-fa-transform="shrink-3"></span>
+                        <span class="me-2 text-info fa fa-shopping-bag fs-7" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $bon->id }}" data-fa-transform="shrink-3"></span>
                       @endif
                     @endif
-                    <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $bon->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
+                    <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $bon->id }}" data-fa-transform="shrink-3"></span>
                   </td>
                 </tr>
               @endforeach

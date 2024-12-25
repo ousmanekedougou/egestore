@@ -43,7 +43,7 @@
                             </td>
                             <td class="total align-middle fw-bold text-body-highlight text-end fs-9"> {{$product->model->getProductSubtotal($product->subtotal())}}</td>
                             <td class="align-middle white-space-nowrap text-end pe-0 ps-3">
-                              <a href="{{ route('magasin.panier.destroy',$product->rowId) }}" onclick="event.preventDefault(); document.getElementById('SupprimerAuPanier-{{ $product->id }}').submit();" class="btn btn-sm text-body-tertiary text-opacity-85 text-body-tertiary-hover me-2"><span class="text-warning" data-feather="trash-2"></span></a>
+                              <a href="{{ route('magasin.panier.destroy',$product->rowId) }}" onclick="event.preventDefault(); document.getElementById('SupprimerAuPanier-{{ $product->id }}').submit();" class="btn btn-sm text-body-tertiary text-opacity-85 text-body-tertiary-hover me-2"><span class="text-warning fa fa-trash fs-7"></span></a>
                               <form id="SupprimerAuPanier-{{ $product->id }}" action="{{ route('magasin.panier.destroy',$product->rowId) }}" method="POST" class="d-none">
                                 @csrf
                                 @method('DELETE')

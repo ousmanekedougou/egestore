@@ -93,13 +93,13 @@
                     
                       <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
                         @if($product->quantity > 0)
-                          <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-2 @if( $product->quantity < 10 ) text-white @else text-warning  @endif" data-feather="shopping-cart" data-fa-transform="shrink-3"></span></a>
+                          <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-2 @if( $product->quantity < 10 ) text-white @else text-warning @endif fa fa-shopping-cart fs-7" data-fa-transform="shrink-3"></span></a>
                         @else
                           <span class="text-white" style="margin-right: 4px;">Indisponible</span>
                         @endif
                         
-                        <span class="me-2 @if( $product->quantity < $product->qty_alert ) text-white @else text-success  @endif" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
-                        <span class="me-2 @if( $product->quantity < $product->qty_alert ) text-white @else text-danger  @endif" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
+                        <span class="me-2 @if( $product->quantity < $product->qty_alert ) text-white @else text-success  @endif fa fa-edit fs-7" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                        <span class="me-2 @if( $product->quantity < $product->qty_alert ) text-white @else text-danger  @endif fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                       </td>
                     </form>
                   </tr>

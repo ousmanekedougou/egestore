@@ -20,7 +20,7 @@
                   <div class="row gx-7 gy-5 mb-5">
                     @foreach(allCategorieCommercial() as $category)
                       <div class="col-12 col-sm-6 col-md-4">
-                        <div class="d-flex align-items-center mb-3"><span class="text-primary me-2" data-feather="{{ $category->icon }}" style="stroke-width:3;"></span>
+                        <div class="d-flex align-items-center mb-3"><span class="text-primary me-2 {{ $category->icon }} fs-9" style="stroke-width:3;"></span>
                           <h6 class="text-body-highlight mb-0 text-nowrap">{{$category->name}}</h6>
                         </div>
                         <div class="ms-n2">
@@ -53,12 +53,20 @@
         
       </li>
       <li class="nav-item">
-        <div class="theme-control-toggle fa-icon-wait px-2"><input class="form-check-input ms-0 theme-control-toggle-input" type="checkbox" data-theme-control="phoenixTheme" value="dark" id="themeControlToggle" /><label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Changement de thème"><span class="icon" data-feather="moon"></span></label><label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Changement de thème"><span class="icon" data-feather="sun"></span></label></div>
+        <div class="theme-control-toggle fa-icon-wait px-2">
+          <input class="form-check-input ms-0 theme-control-toggle-input" type="checkbox" data-theme-control="phoenixTheme" value="dark" id="themeControlToggle" />
+          <label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Changement de thème">
+            <span class="far fa-sun"></span>
+          </label>
+          <label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Changement de thème">
+            <span class="far fa-moon"></span>
+          </label>
+        </div>
       </li>
 
       <li class="nav-item">
         <a class="nav-link px-2 icon-indicator icon-indicator-primary" href="{{ route('magasin.panier.index') }}" role="button">
-          <span class="text-body-tertiary" data-feather="shopping-cart" style="height:20px;width:20px;"></span>
+          <span class="text-body-tertiary fa fa-shopping-cart text-primary" style="height:20px;width:20px;"></span>
           <span class="icon-indicator-number">{{ Cart::content()->count() }}</span>
         </a>
       </li>
@@ -66,7 +74,7 @@
       
       <li class="nav-item dropdown">
         <a class="nav-link px-2 icon-indicator icon-indicator-success" href="#" style="min-width: 2.25rem" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-auto-close="outside">
-          <span data-feather="bell" style="height:20px;width:20px;"></span>
+          <span class="far fa-bell" style="height:20px;width:20px;"></span>
           <span class="icon-indicator-number">{{ OrderNotification()->count() }}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-end notification-dropdown-menu py-0 shadow border navbar-dropdown-caret" id="navbarDropdownNotfication" aria-labelledby="navbarDropdownNotfication">
@@ -86,8 +94,7 @@
                           <div class="avatar avatar-m status-online me-3"><img class="rounded-circle" src="@if($orderNotify->magasin->image != '') {{Storage::url($orderNotify->magasin->image)}} @else https://ui-avatars.com/api/?name={{ $orderNotify->magasin->name }} @endif" alt="" /></div>
                           <div class="flex-1 me-sm-3">
                             <h4 class="fs-9 text-body-emphasis">{{ $orderNotify->magasin->name }}</h4>
-                            <p class="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal"><span class='me-1 fs-10'>💬</span>Mentioned you in a comment.<span class="ms-2 text-body-quaternary text-opacity-75 fw-bold fs-10">10m</span></p>
-                            <p class="text-body-secondary fs-9 mb-0"><span class="me-1 fas fa-clock"></span><span class="fw-bold">10:41 AM </span>August 7,2021</p>
+                            <p class="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal"><span class='me-1 fs-10'>💬</span>BC : {{ $orderNotify->bon_commande }}<span class="ms-2 text-body-quaternary text-opacity-75 fw-bold fs-10">{{date('d-m-Y', strtotime( $orderNotify->date ))}}</span></p>
                           </div>
                         </div>
                       </div>

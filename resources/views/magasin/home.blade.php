@@ -22,7 +22,7 @@
               <div class="d-flex align-items-center"><span class="fa-stack" style="min-height: 46px;min-width: 46px;"><span class="fa-solid fa-square fa-stack-2x dark__text-opacity-50 text-primary-light" data-fa-transform="down-4 rotate--10 left-4"></span><span class="fa-solid fa-circle fa-stack-2x stack-circle text-stats-circle-primary" data-fa-transform="up-4 right-3 grow-2"></span><span class="fa-stack-1x fa-solid fa-user-circle text-primary " data-fa-transform="shrink-2 up-8 right-6"></span></span>
                 <div class="ms-3">
                   <h4 class="mb-0">{{ $clients }} Client(s)</h4>
-                  <p class="text-body-secondary fs-9 mb-0">Awating processing</p>
+                  <p class="text-body-secondary fs-9 mb-0">Transformation de l'awating</p>
                 </div>
               </div>
             </div>
@@ -30,7 +30,7 @@
               <div class="d-flex align-items-center"><span class="fa-stack" style="min-height: 46px;min-width: 46px;"><span class="fa-solid fa-square fa-stack-2x dark__text-opacity-50 text-success-light" data-fa-transform="down-4 rotate--10 left-4"></span><span class="fa-solid fa-circle fa-stack-2x stack-circle text-stats-circle-success" data-fa-transform="up-4 right-3 grow-2"></span><span class="fa-stack-1x fa-solid fa-shopping-bag text-success " data-fa-transform="shrink-2 up-8 right-6"></span></span>
                 <div class="ms-3">
                   <h4 class="mb-0">{{ $commandes }} Commande(s)</h4>
-                  <p class="text-body-secondary fs-9 mb-0">Awating processing</p>
+                  <p class="text-body-secondary fs-9 mb-0">Transformation de l'awating</p>
                 </div>
               </div>
             </div>
@@ -38,7 +38,7 @@
               <div class="d-flex align-items-center"><span class="fa-stack" style="min-height: 46px;min-width: 46px;"><span class="fa-solid fa-square fa-stack-2x dark__text-opacity-50 text-warning-light" data-fa-transform="down-4 rotate--10 left-4"></span><span class="fa-solid fa-circle fa-stack-2x stack-circle text-stats-circle-warning" data-fa-transform="up-4 right-3 grow-2"></span><span class="fa-stack-1x fa-solid fa-pause text-warning " data-fa-transform="shrink-2 up-8 right-6"></span></span>
                 <div class="ms-3">
                   <h4 class="mb-0">{{ $bons }} Bon de commande(s)</h4>
-                  <p class="text-body-secondary fs-9 mb-0">On hold</p>
+                  <p class="text-body-secondary fs-9 mb-0">En attente</p>
                 </div>
               </div>
             </div>
@@ -46,7 +46,7 @@
               <div class="d-flex align-items-center"><span class="fa-stack" style="min-height: 46px;min-width: 46px;"><span class="fa-solid fa-square fa-stack-2x dark__text-opacity-50 text-danger-light" data-fa-transform="down-4 rotate--10 left-4"></span><span class="fa-solid fa-circle fa-stack-2x stack-circle text-stats-circle-danger" data-fa-transform="up-4 right-3 grow-2"></span><span class="fa-stack-1x fa-solid fa-xmark text-danger " data-fa-transform="shrink-2 up-8 right-6"></span></span>
                 <div class="ms-3">
                   <h4 class="mb-0">{{ $pro_format }} Pro-format</h4>
-                  <p class="text-body-secondary fs-9 mb-0">Out of stock</p>
+                  <p class="text-body-secondary fs-9 mb-0">En rupture de stock</p>
                 </div>
               </div>
             </div>
@@ -125,7 +125,7 @@
                       </td>
                       <td class="align-middle white-space-nowrap text-end pe-3 ps-4 btn-reveal-trigger">
                         @if($product->quantity > 0)
-                          <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-2 @if( $product->quantity < 10 ) text-white @else text-warning  @endif" data-feather="shopping-cart" data-fa-transform="shrink-3"></span></a>
+                          <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-2 @if( $product->quantity < 10 ) text-white @else text-warning  @endif fa fa-shopping-cart fs-7" data-fa-transform="shrink-3"></span></a>
                         @else
                           <span class="text-white" style="margin-right: 4px;">Indisponible</span>
                         @endif

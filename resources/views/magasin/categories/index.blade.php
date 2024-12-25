@@ -50,8 +50,8 @@
                     @if($category->visible == 1) <span class="badge badge-phoenix badge-phoenix-success">Visible</span> @else <span class="badge badge-phoenix badge-phoenix-warning">Cacher</span> @endif
                   </td>
                   <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">
-                    <span class="me-2 text-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $category->id }}" aria-controls="offcanvasRight-{{ $category->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
-                    <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $category->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
+                    <span class="me-2 text-success fa fa-edit fs-7" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $category->id }}" aria-controls="offcanvasRight-{{ $category->id }}" data-fa-transform="shrink-3"></span>
+                    <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $category->id }}" data-fa-transform="shrink-3"></span>
                   </td>
                 </tr>
                 @endforeach
@@ -69,7 +69,6 @@
         </div>
       </div>
     </div>
-
 
     <div class="card-body p-0">
       <div class="p-4 code-to-copy">

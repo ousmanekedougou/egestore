@@ -119,10 +119,10 @@
                   <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-start">{{date('d-m-Y', strtotime( $order->date ))}}</td>
                   <td class=" align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">
                     @if($order->status == 1)
-                      <a href="{{ route('magasin.devis.edit',$order->slug) }}" class="me-2 text-success" data-fa-transform="shrink-3"><span data-feather="file-text" ></span></a>
+                      <a href="{{ route('magasin.devis.edit',$order->slug) }}" class="me-2 text-success" data-fa-transform="shrink-3"><span class="fa fa-file-alt fs-7" ></span></a>
                     @elseif($order->status != 1)
                       @if ($order->supply_order_products->count() > 0)
-                        <span class="me-2 text-info" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $order->id }}" data-feather="shopping-bag" data-fa-transform="shrink-3"></span>
+                        <span class="me-2 text-info fa fa-shopping-bag fs-7" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $order->id }}" data-fa-transform="shrink-3"></span>
                       @endif
                     @endif
                   </td>

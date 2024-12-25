@@ -72,9 +72,9 @@
                   <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">{{$client->getDepot()}}</td>
                   <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">{{$client->getCredit()}}</td>
                   <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
-                    <span class="me-2 text-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $client->id }}" aria-controls="offcanvasRight-{{ $client->id }}" data-feather="edit-3" data-fa-transform="shrink-3"></span>
+                    <span class="me-2 text-success fa fa-edit fs-7" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $client->id }}" aria-controls="offcanvasRight-{{ $client->id }}" data-fa-transform="shrink-3"></span>
                     @if($client->account == 3)
-                      <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $client->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
+                      <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $client->id }}" data-fa-transform="shrink-3"></span>
                     @endif
                   </td>
                 </tr>

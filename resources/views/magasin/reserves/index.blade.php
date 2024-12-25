@@ -96,13 +96,13 @@
                   <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{date('d-m-Y', strtotime( $reserve->date ))}}</td>
                   <td class=" align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">
                     @if($reserve->status == 1)
-                      <a href="{{ route('magasin.reserve.edit',$reserve->slug) }}" class="me-2 text-success" data-fa-transform="shrink-3"><span data-feather="file-text" ></span></a>
+                      <a href="{{ route('magasin.reserve.edit',$reserve->slug) }}" class="me-2 text-success" data-fa-transform="shrink-3"><span class="fa fa-file-alt fs-7" ></span></a>
                     @elseif($reserve->status != 1)
                       @if ($reserve->bagages->count() > 0)
-                        <span class="me-2 text-info" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $reserve->id }}" data-feather="shopping-bag" data-fa-transform="shrink-3"></span>
+                        <span class="me-2 text-info" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $reserve->id }}" class="fa fa-shopping-bag fs-7" data-fa-transform="shrink-3"></span>
                       @endif
                     @endif
-                    <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $reserve->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
+                    <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $reserve->id }}" class="fa fa-trash fs-7" data-fa-transform="shrink-3"></span>
                   </td>
                 </tr>
               @endforeach
