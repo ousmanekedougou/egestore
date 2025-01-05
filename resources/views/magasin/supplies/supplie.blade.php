@@ -21,7 +21,6 @@
         </div>
       </div>
       <div class="container-small">
-        
         <div class="row gx-3 gy-5">
           @foreach ($supplies as $supplie)
             <div class="col-6 col-sm-4 col-md-3 col-lg-2 hover-actions-trigger btn-reveal-trigger">
@@ -34,7 +33,6 @@
                 <div class="btn-reveal-trigger"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal p-2 lh-1 bg-body-highlight rounded-1" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-9"></span></button>
                   <div class="dropdown-menu dropdown-menu-end py-0">
                     <a class="dropdown-item" href="{{ route('magasin.devis.show',$supplie->slug) }}">Voire les commandes</a>
-                   
                     <a class="dropdown-item text-danger" href="{{ route('magasin.fournisseurs.destroy',$supplie->id) }}">Retirer comme fournisseur</a>
                   </div>
                 </div>
