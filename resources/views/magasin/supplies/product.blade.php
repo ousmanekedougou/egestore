@@ -26,10 +26,12 @@
               </form>
             </div>
               <div class="ms-xxl-auto">
-                @if($supplyOrder->status == 2)
-                  <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                    <span class="fas fa-plus me-2"></span>Ajouter des produits
-                  </button>
+                @if($is_vendor_order == 0)
+                  @if($supplyOrder->status == 2)
+                    <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                      <span class="fas fa-plus me-2"></span>Ajouter des produits
+                    </button>
+                  @endif
                 @endif
               </div>
           </div>

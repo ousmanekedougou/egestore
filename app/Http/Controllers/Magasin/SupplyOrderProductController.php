@@ -27,7 +27,8 @@ class SupplyOrderProductController extends Controller
         // Lescommande recue dnas le vando_order
         return view('magasin.supplies.product',
         [
-            'supplyOrder' => SupplyOrder::where('request_id',AuthMagasinAgent())->where('slug',$slug)->first()
+            'supplyOrder' => SupplyOrder::where('request_id',AuthMagasinAgent())->where('slug',$slug)->first(),
+            'is_vendor_order' => 1
         ]);
     }
 
@@ -86,7 +87,8 @@ class SupplyOrderProductController extends Controller
     {
         return view('magasin.supplies.product',
         [
-            'supplyOrder' => SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('slug',$slug)->first()
+            'supplyOrder' => SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('slug',$slug)->first(),
+            'is_vendor_order' => 0
         ]);
     }
 

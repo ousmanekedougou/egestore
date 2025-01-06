@@ -11,6 +11,9 @@
   <!-- Site Title -->
   <title>{{ Auth::guard('magasin')->user()->name }} - FACTURE</title>
   <link rel="stylesheet" href="{{ asset('assets/css/invoice.css') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{asset('assets/img/favicons/favicon-32x32.png')}}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/img/favicons/favicon-16x16.png')}}">
+  <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/img/favicons/favicon.ico')}}">
 </head>
 
 <body>

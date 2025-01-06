@@ -96,7 +96,7 @@ class SupplyOrderController extends Controller
     {
         return view('magasin.supplies.invoice',
         [
-            'order' => SupplyOrder::where("magasin_id", AuthMagasinAgent())->orWhere('request_id',AuthMagasinAgent())->where('slug',$slug)->where('delivery',1)->where('status',1)->first()
+            'order' => SupplyOrder::where("magasin_id", AuthMagasinAgent())->orWhere('request_id',AuthMagasinAgent())->where('slug',$slug)->where('status',1)->first()
         ]);
     }
 

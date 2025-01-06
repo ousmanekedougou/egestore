@@ -60,7 +60,7 @@
                     </a>
                   </td>
                   <td class="bon_commande align-middle white-space-nowrap ps-8">
-                    <a class="d-flex align-items-center text-body" href="{{ route('magasin.devis-produits.show',$order->slug) }}">
+                    <a class="d-flex align-items-center text-body" href="{{ route('magasin.devis-produits.create',$order->slug) }}">
                       <h6 class="mb-0 ms-3 text-body">{{ $order->bon_commande }}</h6>
                     </a>
                   </td>
