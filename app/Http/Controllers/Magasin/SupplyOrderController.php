@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Magasin;
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Supply;
 use App\Models\Magasin\SupplyOrder;
+use App\Models\Magasin\SupplyOrderProduct;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -125,38 +126,45 @@ class SupplyOrderController extends Controller
         $commande = SupplyOrder::where('id',$id)->where('request_id',AuthMagasinAgent())->first();
         if ($commande->supply_order_products->count() > 0) 
         {
-            $this->validate($request,[
-                'status' => 'required|numeric',
-            ]);
-            
-            $dateUpdate = null;
-            $incvoiceNum = null;
-            $methode = null;
-            if($request->status == 1){
+            $poductValidateCount = SupplyOrderProduct::where('supply_order_id',$commande->id)->where('status',1)->get();
+            // dd($poductValidateCount->count());
+            if ($commande->supply_order_products->count() == $poductValidateCount->count()) {
                 $this->validate($request,[
-                    'methode' => 'required|numeric',
+                    'status' => 'required|numeric',
                 ]);
-                $dateUpdate = now();
                 
-                $num = SupplyOrder::where("request_id", AuthMagasinAgent())->latest()->first();
-                if ($num) {
-                    $incvoiceNum = $num->num_invoice + 1;
-                }else {
-                    $incvoiceNum = 1;
+                $dateUpdate = null;
+                $incvoiceNum = null;
+                $methode = null;
+                if($request->status == 1){
+                    $this->validate($request,[
+                        'methode' => 'required|numeric',
+                    ]);
+                    $dateUpdate = now();
+                    
+                    $num = SupplyOrder::where("request_id", AuthMagasinAgent())->latest()->first();
+                    if ($num) {
+                        $incvoiceNum = $num->num_invoice + 1;
+                    }else {
+                        $incvoiceNum = 1;
+                    }
+                    
+                    $methode = $request->methode;
                 }
-                
-                $methode = $request->methode;
+        
+                $commande->update(
+                [   'status' => $request->status,
+                    'payment_created_at' => $dateUpdate,
+                    'num_invoice' => $incvoiceNum,
+                    'methode' => $methode
+                ]);
+        
+                Toastr::success('Le status de cette commande a bien été modifié', 'Modification de reservations', ["positionClass" => "toast-top-right"]);
+                return back();
+            }else {
+                Toastr::error('Vous devez supprimer les produits non valider', 'Validation des produits requis', ["positionClass" => "toast-top-right"]);
+                return back();
             }
-    
-            $commande->update(
-            [   'status' => $request->status,
-                'payment_created_at' => $dateUpdate,
-                'num_invoice' => $incvoiceNum,
-                'methode' => $methode
-            ]);
-    
-            Toastr::success('Le status de cette commande a bien été modifié', 'Modification de reservations', ["positionClass" => "toast-top-right"]);
-            return back();
         }else {
             Toastr::error('Vous n\'aviez pas de produit pour cette commande', 'Pas de produit', ["positionClass" => "toast-top-right"]);
             return back();

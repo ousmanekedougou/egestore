@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('sizes')->nullable();
             $table->string('reference');
             $table->boolean('visible')->default(false);
+            $table->boolean('status')->default(false);
             $table->text('desc')->nullable();
             $table->string('amount')->nullable();
             $table

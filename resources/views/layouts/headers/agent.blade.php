@@ -114,7 +114,7 @@
             </div>
             <div class="card-footer p-0 border-top border-translucent">
               <div class="px-3 pb-3"> 
-                <a class="btn btn-phoenix-secondary d-flex flex-center w-100" href="{{ route('agent.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> 
+                <a class="btn btn-phoenix-secondary d-flex flex-center w-100 mt-3" href="{{ route('agent.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> 
                   <span class="me-2" data-feather="log-out"> </span>Se deconecter
                 </a>
                 <form id="logout-form" action="{{ route('agent.logout') }}

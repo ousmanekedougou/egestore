@@ -14,6 +14,7 @@ class SupplyOrderProduct extends Model
         'slug',
         'magasin_id',
         'visible',
+        'status',
         'quantity',
         'reference',
         'image',

@@ -112,6 +112,7 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
     Route::get('devis-produits/create/{slug}',[App\Http\Controllers\Magasin\SupplyOrderProductController::class,'create'])->name('devis-produits.create');
     Route::put('devis-produits/updatePrice/{id}',[App\Http\Controllers\Magasin\SupplyOrderProductController::class,'updatePrice'])->name('devis-produits.updatePrice');
     Route::get('devis-produits/notify/{id}',[App\Http\Controllers\Magasin\SupplyOrderProductController::class,'notify'])->name('devis-produits.notify');
+    Route::put('devis-produits/status/{id}',[App\Http\Controllers\Magasin\SupplyOrderProductController::class,'status'])->name('devis-produits.status');
 
 
     // login des admin

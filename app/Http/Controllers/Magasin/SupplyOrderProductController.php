@@ -163,6 +163,7 @@ class SupplyOrderProductController extends Controller
 
     public function updatePrice(Request $request, string $id)
     {
+        // dd('djndjd');
         $product = SupplyOrderProduct::where('id',$id)->where('supply_order_id',$request->supply_order_id)->first();
         
         if ($product->supply_order->status == 2) {
@@ -176,6 +177,26 @@ class SupplyOrderProductController extends Controller
             $product->supply_order->update(['amount' => $orderAmount]);
 
             Toastr::success('Le prix du produit a bien ete modifier', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
+            return back();
+
+        }else {
+            Toastr::warning('Vous ne pouvez plus modifier ce produit', 'Modification non accepter', ["positionClass" => "toast-top-right"]);
+            return back();
+        }
+    }
+
+
+    public function status(Request $request, string $id)
+    {
+        // dd('djndjd');
+        $product = SupplyOrderProduct::where('id',$id)->where('supply_order_id',$request->supply_order_id)->first();
+        
+        if ($product->supply_order->status == 2) {
+
+            $product->update([
+                'status' => 1,
+            ]);
+            Toastr::success('La validation a ete effectuer avec success', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
             return back();
 
         }else {

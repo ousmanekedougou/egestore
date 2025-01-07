@@ -7,7 +7,7 @@
     <div class="mb-9">
       <div class="row g-3 mb-4">
         <div class="col-auto">
-          <h2 class="mb-3">Produits de la commande de devis </h2>
+          <h2 class="mb-3">Produits de la commande de devis Nº-{{ str_pad($supplyOrder->order, 5, '0', STR_PAD_LEFT) }}</h2>
           <div class="d-sm-flex flex-between-center mb-3">
             <p class="text-body-secondary lh-sm mb-0 mt-2 mt-sm-0">
               Magasin : <a class="fw-bold" href="#!" style="margin-right: 15px;"> {{ $supplyOrder->supply->magasin->name }}</a>
@@ -47,6 +47,7 @@
                   <th class="sort align-middle text-center ps-4" scope="col" data-sort="price" style="width:50px;">QTS</th>
                   <th class="sort align-middle ps-3" scope="col" data-sort="tags" style="width:250px;">COULEURS</th>
                   <th class="sort align-middle ps-3" scope="col" data-sort="tags" style="width:250px;">TAILLES</th>
+                  <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">VALIDATION</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">PRIX UNITAIRE</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">PRIX TOTAL</th>
                   <th class="sort text-end align-middle pe-0 ps-4" scope="col">ACTIONS</th>
@@ -74,16 +75,27 @@
                         @endforeach
                       @endif
                     </td>
+                    <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">@if ($product->status == 1) <span class="badge badge-tag me-2 mb-2 text-success">Valider</span> @else <span class="badge badge-tag me-2 mb-2 text-primary">En cours</span> @endif</td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ $product->getPrice() }}</td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ number_format($product->amount,2, ',','.') }} CFA</td>
                     <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
                       @if($product->supply_order->status == 1)
-                        <span class="badge badge-phoenix badge-phoenix-success fs-10"> Valider </span>
+                        <span class="badge badge-phoenix badge-phoenix-success fs-10"> Payée </span>
                       @elseif($product->supply_order->status == 2)
-                        @if ($product->price == 0)
-                          <span class="me-2 text-success fa fa-edit fs-7" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                        @if($is_vendor_order == 1)
+                          @if ($product->status == 0)
+                            <span class="me-2 text-success fa fa-edit fs-7" data-bs-toggle="offcanvas" data-bs-target="#offcanvasUpdatePrice-{{ $product->id }}" aria-controls="offcanvasUpdatePrice-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                          @endif
+                        @else
+                          @if ($product->price == 0)
+                            <span class="me-2 text-success fa fa-edit fs-7" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                          @else
+                            @if ($product->status == 0)
+                              <span class="me-2 text-info fa fa-check-circle fs-7" data-bs-toggle="modal" data-bs-target="#ValidationProduct-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                            @endif
+                          @endif
+                          <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                         @endif
-                        <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                       @endif
                     </td>
                   </tr>
@@ -271,6 +283,38 @@
       </div>
     @endforeach
 
+    @foreach($supplyOrder->supply_order_products as $product)
+      <div class="card-body p-0">
+        <div class="p-4 code-to-copy">
+          <!-- Right Offcanvas-->
+          <div class="offcanvas offcanvas-end" id="offcanvasUpdatePrice-{{ $product->id }}" tabindex="-1" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+              <h5 id="offcanvasRightLabel">Modification du prix du produit</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <form method="POST" action="{{ route('magasin.devis-produits.updatePrice',$product->id) }}" enctype="multipart/form-data" >
+                @csrf
+                {{ method_field('PUT') }}
+                <input type="hidden" name="supply_order_id" value="{{ $supplyOrder->id }}">
+
+                <div class="mb-3 text-start">
+                    <label class="form-label" for="price">Prix du produit</label>
+                    <input id="price" type="number" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') ?? $product->price }}" placeholder="Prix du produit" required autocomplete="price">
+                    @error('price')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
+                </div>
+
+                <button class="btn btn-primary w-100 mb-3" type="submit">Modifier le prix du produit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    @endforeach
+
 
     @foreach($supplyOrder->supply_order_products  as $product)
       <div class="modal fade" id="DeleteCompte-{{ $product->id }}" tabindex="-1" style="display: none;" aria-hidden="true">
@@ -288,6 +332,30 @@
               </div>
               <div class="modal-footer">
                 <button class="btn btn-danger" type="submit">Oui je veux bien</button>
+                <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Anuller</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    @endforeach
+
+    @foreach($supplyOrder->supply_order_products  as $product)
+      <div class="modal fade" id="ValidationProduct-{{ $product->id }}" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Valider le produit</h5><button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><svg class="svg-inline--fa fa-xmark fs-9" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path></svg><!-- <span class="fas fa-times fs-9"></span> Font Awesome fontawesome.com --></button>
+            </div>
+            <form action="{{ route('magasin.devis-produits.status',$product->id) }}" method="post">
+              @csrf
+              {{ method_field('PUT') }}
+              <input type="hidden" name="supply_order_id" value="{{ $supplyOrder->id }}">
+              <div class="modal-body">
+                <p class="text-body-tertiary lh-lg mb-3"> Etes vous sure de bien vouloire valider le produit {{$product->name}} </p>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-success" type="submit">Oui je veux bien</button>
                 <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Anuller</button>
               </div>
             </form>

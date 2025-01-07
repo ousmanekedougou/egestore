@@ -5,7 +5,7 @@
   <div class="mb-9">
     <div class="row g-3 mb-4">
       <div class="col-auto">
-        <h2 class="mb-0">Bons clientel mensuelle</h2>
+        <h2 class="mb-0">Les bons de commandes de vos clients</h2>
       </div>
     </div>
     <div id="orderTable" data-list='{"valueNames":["order","total","customer","payment_status","fulfilment_status","delivery_type","date"],"page":10,"pagination":true}'>

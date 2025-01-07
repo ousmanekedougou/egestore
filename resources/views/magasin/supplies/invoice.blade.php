@@ -77,7 +77,7 @@
                       <th class="tm_width_4 tm_semi_bold tm_white_color">Désignation</th>
                       <th class="tm_width_2 tm_semi_bold tm_white_color">Reference</th>
                       <th class="tm_width_2 tm_semi_bold tm_white_color">Prix</th>
-                      <th class="tm_width_1 tm_semi_bold tm_white_color">Qty</th>
+                      <th class="tm_width_1 tm_semi_bold tm_white_color">Qts</th>
                       <th class="tm_width_3 tm_semi_bold tm_white_color tm_text_right">Total</th>
                     </tr>
                   </thead>

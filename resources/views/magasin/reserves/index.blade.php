@@ -1,11 +1,11 @@
-@extends('layouts.app',['title' => 'commandes sous reserve'])
+@extends('layouts.app',['title' => 'commandes sous réservation'])
 
 @section('main-content')
 <div class="content">
   <div class="mb-9">
     <div class="row g-3 mb-4">
       <div class="col-auto">
-        <h2 class="mb-0">Reservations sous pro-format</h2>
+        <h2 class="mb-0">Les commandes sous réservation </h2>
       </div>
     </div>
     <div id="orderTable" data-list='{"valueNames":["order","total","customer","payment_status","fulfilment_status","delivery_type","date"],"page":10,"pagination":true}'>
@@ -20,7 +20,7 @@
           </div>
           <div class="col-auto">
             <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-              <span class="fas fa-plus me-2"></span>Ajouter une pro-format
+              <span class="fas fa-plus me-2"></span>Ajouter une réservation 
             </button>
           </div>
         </div>
@@ -99,10 +99,10 @@
                       <a href="{{ route('magasin.reserve.edit',$reserve->slug) }}" class="me-2 text-success" data-fa-transform="shrink-3"><span class="fa fa-file-alt fs-7" ></span></a>
                     @elseif($reserve->status != 1)
                       @if ($reserve->bagages->count() > 0)
-                        <span class="me-2 text-info" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $reserve->id }}" class="fa fa-shopping-bag fs-7" data-fa-transform="shrink-3"></span>
+                        <span class="me-2 text-info fa fa-shopping-bag fs-7" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $reserve->id }}" data-fa-transform="shrink-3"></span>
                       @endif
                     @endif
-                    <span class="me-2 text-danger" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $reserve->id }}" class="fa fa-trash fs-7" data-fa-transform="shrink-3"></span>
+                    <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $reserve->id }}" data-fa-transform="shrink-3"></span>
                   </td>
                 </tr>
               @endforeach

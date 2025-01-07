@@ -30,6 +30,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+
         $commandes = Order::where('magasin_id',AuthMagasinAgent())->where('status','!=',1)->count();
         $bons = Commande::where('magasin_id',AuthMagasinAgent())->where('type',0)->where('status','!=',1)->count();
         $pro_format = Commande::where('magasin_id',AuthMagasinAgent())->where('type',1)->where('status','!=',1)->count();
@@ -49,7 +50,7 @@ class HomeController extends Controller
         // if ($today == Auth::guard('magasin')->user()->inv_at) {
         //     $isPaymentDay = true;
         // }
-        
+        // Toastr()->success('Votre commande de devis a bien été ajouté', 'Ajout de commande', ["positionClass" => "toast-top-right"]);
         return view('magasin.home',[
             'products' => Product::where('magasin_id',AuthMagasinAgent())->where('visible',1)->get(),
             'paimentNotification' => $paimentNotification,
