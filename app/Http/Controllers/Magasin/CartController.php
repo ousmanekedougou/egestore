@@ -30,7 +30,7 @@ class CartController extends Controller
             return view('magasin.cart.index',['clients' => $clients,'users' => $users]);
         }
 
-        Toastr::warning('Votre panier est vide', 'Acces au panier refuse', ["positionClass" => "toast-top-right"]);
+        Toastr()->warning('Votre panier est vide', 'Acces au panier refuse', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -43,7 +43,7 @@ class CartController extends Controller
             Cart::destroy();
         }
         
-        Toastr::success('Votre panier a bien été vidé', 'Vider le panier', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre panier a bien été vidé', 'Vider le panier', ["positionClass" => "toast-top-right"]);
         return redirect()->route('magasin.home');
     }
 
@@ -85,7 +85,7 @@ class CartController extends Controller
 
 
         if ($duplicata->isNotEmpty()) {
-            Toastr::warning('Ce produit est déjà dans votre panier', 'Votre panier', ["positionClass" => "toast-top-right"]);
+            Toastr()->warning('Ce produit est déjà dans votre panier', 'Votre panier', ["positionClass" => "toast-top-right"]);
             return back();
         }
 
@@ -95,7 +95,7 @@ class CartController extends Controller
             ->associate('App\Models\Magasin\Product');
             // array('size' => $request->size,'color' => $request->color)
 
-        Toastr::success('Votre produit a bien été ajouté au panier', 'Ajout au panier', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre produit a bien été ajouté au panier', 'Ajout au panier', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -111,7 +111,7 @@ class CartController extends Controller
             return back();
         }
 
-        Toastr::warning('Il n\' y a pas cette quantite pour ce produit', 'Qunatite inferierur', ["positionClass" => "toast-top-right"]);
+        Toastr()->warning('Il n\' y a pas cette quantite pour ce produit', 'Qunatite inferierur', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -126,7 +126,7 @@ class CartController extends Controller
             Cart::update($rowId,$qty);
             return back();
         }
-        Toastr::warning('La quantite minimum du produit est a 1', 'Quantite minimum', ["positionClass" => "toast-top-right"]);
+        Toastr()->warning('La quantite minimum du produit est a 1', 'Quantite minimum', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -144,7 +144,7 @@ class CartController extends Controller
     public function destroy($rowId)
     {
         Cart::remove($rowId);
-        Toastr::success('Votre produit a bien été supprimé dans le panier', 'Suppresion de produit', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre produit a bien été supprimé dans le panier', 'Suppresion de produit', ["positionClass" => "toast-top-right"]);
         if (Auth::guard('magasin')->user()) {
             return redirect()->route(('magasin.home'));
         }else {

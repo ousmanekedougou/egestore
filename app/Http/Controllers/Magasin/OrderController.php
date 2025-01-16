@@ -63,7 +63,7 @@ class OrderController extends Controller
     // public function post(Request $request)
     // {
     //     if ($this->checkNotAvailable()) {
-    //         Toastr::warning('Un produit n\'est plus disponible dans votre panier', 'Indisponibilite de produits', ["positionClass" => "toast-top-right"]);
+    //         Toastr()->warning('Un produit n\'est plus disponible dans votre panier', 'Indisponibilite de produits', ["positionClass" => "toast-top-right"]);
     //         return back();
     //     }
 
@@ -146,7 +146,7 @@ class OrderController extends Controller
 
     //     Cart::destroy();
 
-    //     Toastr::success('Votre commande a bien été ajouté', 'Ajout de commandes', ["positionClass" => "toast-top-right"]);
+    //     Toastr()->success('Votre commande a bien été ajouté', 'Ajout de commandes', ["positionClass" => "toast-top-right"]);
     //     return redirect()->route('magasin.commande.index');
     // }
 
@@ -156,7 +156,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         if ($this->checkNotAvailable()) {
-            Toastr::warning('Un produit n\'est plus disponible dans votre panier', 'Indisponibilite de produits', ["positionClass" => "toast-top-right"]);
+            Toastr()->warning('Un produit n\'est plus disponible dans votre panier', 'Indisponibilite de produits', ["positionClass" => "toast-top-right"]);
             return back();
         }
 
@@ -200,14 +200,14 @@ class OrderController extends Controller
                         }
                         
                     }else {
-                        Toastr::warning('Le montant est insuffisant', 'Montant insuffisant', ["positionClass" => "toast-top-right"]);
+                        Toastr()->warning('Le montant est insuffisant', 'Montant insuffisant', ["positionClass" => "toast-top-right"]);
                         return back();
                     }
 
                     
 
                 }elseif ($userClient->account == 2) {
-                    Toastr::error('Ce clients a des passif en cours', 'Passifs en cours', ["positionClass" => "toast-top-right"]);
+                    Toastr()->error('Ce clients a des passif en cours', 'Passifs en cours', ["positionClass" => "toast-top-right"]);
                     return back();
                 }elseif($userClient->account == 3){
                     if ($userClient->credit == 0 && $userClient->amount == 0) {
@@ -227,7 +227,7 @@ class OrderController extends Controller
                         $status = 2;
                     }
                 }else {
-                    Toastr::error('Ce clients a des Actifs / Passifs en cours', 'Passifs en cours', ["positionClass" => "toast-top-right"]);
+                    Toastr()->error('Ce clients a des Actifs / Passifs en cours', 'Passifs en cours', ["positionClass" => "toast-top-right"]);
                     return back();
                 }
 
@@ -301,7 +301,7 @@ class OrderController extends Controller
 
         Cart::destroy();
 
-        Toastr::success('Votre commande a bien été ajouté', 'Ajout de commandes', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre commande a bien été ajouté', 'Ajout de commandes', ["positionClass" => "toast-top-right"]);
         return redirect()->route('magasin.commande.index');
     }
 
@@ -360,7 +360,7 @@ class OrderController extends Controller
             'type' => $type
         ]);
 
-        Toastr::success('Le status de cette commande a bien été modifé', 'Modification de commandes', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Le status de cette commande a bien été modifé', 'Modification de commandes', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -370,7 +370,7 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         Order::where('id',$id)->where('magasin_id',AuthMagasinAgent())->delete();
-        Toastr::success('Votre commande a bien été supprimé', 'Suppression de commandes', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre commande a bien été supprimé', 'Suppression de commandes', ["positionClass" => "toast-top-right"]);
         return back();
     }
 

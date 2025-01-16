@@ -29,10 +29,10 @@ class HomeController extends Controller
         $agent = Agent::where('email',$email)->where('confirmation_token',$token)->first();
         if ($agent) {
             $agent->update(['confirmation_token' => null , 'is_active' => ACTIVE]);
-            Toastr::success('Votre compte agent a bien été confirmé', 'Confirmation de compte agents', ["positionClass" => "toast-top-right"]);
+            Toastr()->success('Votre compte agent a bien été confirmé', 'Confirmation de compte agents', ["positionClass" => "toast-top-right"]);
             return redirect()->route('agent.login');
         }else {
-            Toastr::error('Ce lien n\'est plus valide', 'Lien invalide', ["positionClass" => "toast-top-right"]);
+            Toastr()->error('Ce lien n\'est plus valide', 'Lien invalide', ["positionClass" => "toast-top-right"]);
             return redirect()->route('agent.login');
         }
     }

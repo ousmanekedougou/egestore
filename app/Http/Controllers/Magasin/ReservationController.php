@@ -94,7 +94,7 @@ class ReservationController extends Controller
             'status' => 2
         ]);
 
-        Toastr::success('Votre reservation a bien été ajouté', 'Ajout de reservations', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre reservation a bien été ajouté', 'Ajout de reservations', ["positionClass" => "toast-top-right"]);
         return back();
 
     }
@@ -163,10 +163,10 @@ class ReservationController extends Controller
                 'methode' => $methode
             ]);
     
-            Toastr::success('Le status de catte reservation a bien été modifié', 'Modification de reservations', ["positionClass" => "toast-top-right"]);
+            Toastr()->success('Le status de catte reservation a bien été modifié', 'Modification de reservations', ["positionClass" => "toast-top-right"]);
             return back();
         }else {
-            Toastr::error('Vous n\'aviez pas de produit pour cette reservation', 'Pas de produit', ["positionClass" => "toast-top-right"]);
+            Toastr()->error('Vous n\'aviez pas de produit pour cette reservation', 'Pas de produit', ["positionClass" => "toast-top-right"]);
             return back();
         }
         
@@ -178,7 +178,7 @@ class ReservationController extends Controller
     public function destroy(string $id)
     {
         Commande::where('id',$id)->where('magasin_id',AuthMagasinAgent())->where('type',1)->delete();
-        Toastr::success('Votre reservation a bien été supprimé', 'Suppression de reservations', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre reservation a bien été supprimé', 'Suppression de reservations', ["positionClass" => "toast-top-right"]);
         return back();
     }
 

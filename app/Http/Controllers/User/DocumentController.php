@@ -11,7 +11,11 @@ class DocumentController extends Controller
         return view('user.document');
     }
 
-    public function terme(){
-        return view('user.terme');
+    public function conditions(){
+        return view('user.conditions');
+    }
+
+    public function privacy(){
+        return view('user.privacy');
     }
 }

@@ -36,10 +36,10 @@ class ForgotPasswordController extends Controller
 
         if ($admin_email) {
             $admin_email->notify(new ForgotAgentPassword());
-            Toastr::success('Un email vous a ete envoye marci de verifier', 'Envoi d\'email', ["positionClass" => "toast-top-right"]);
+            Toastr()->success('Un email vous a ete envoye marci de verifier', 'Envoi d\'email', ["positionClass" => "toast-top-right"]);
             return redirect()->route('utilisateur.index');
         }else {
-            Toastr::error('Cette adrese email n\'existe pas', 'Adresse email inexistant', ["positionClass" => "toast-top-right"]);
+            Toastr()->error('Cette adrese email n\'existe pas', 'Adresse email inexistant', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }
@@ -62,14 +62,14 @@ class ForgotPasswordController extends Controller
             
             if ($update_admin_email) {
                 $update_admin_email->update(['password' => Hash::make($request->password)]);
-                Toastr::success('Votre mot de passe a bien été reinitialisé', 'Reinitialisation de mot de passe', ["positionClass" => "toast-top-right"]);
+                Toastr()->success('Votre mot de passe a bien été reinitialisé', 'Reinitialisation de mot de passe', ["positionClass" => "toast-top-right"]);
                 return redirect()->route('agent.login');
             }else {
-                Toastr::error('Cette adresse email n\'existe pas', 'Adresse email inexistant', ["positionClass" => "toast-top-right"]);
+                Toastr()->error('Cette adresse email n\'existe pas', 'Adresse email inexistant', ["positionClass" => "toast-top-right"]);
                 return back();
             }
         }
-        Toastr::error('Ce lien n\'est plus valide', 'Lien invalide', ["positionClass" => "toast-top-right"]);
+        Toastr()->error('Ce lien n\'est plus valide', 'Lien invalide', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

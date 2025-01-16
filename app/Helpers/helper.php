@@ -132,7 +132,7 @@ if (!function_exists('ProductStockAlert')) {
         $ProductStockAlert = null;
         $ProductStockAlert = Product::where('magasin_id',AuthMagasinAgent())->where('quantity','>',0)->where('quantity','<',10)->get();
         if ($ProductStockAlert->count() > 0) {
-            return Toastr::warning('Vous avez ' .$ProductStockAlert->count(). ' produits dont le stock est en phase d\'epuisement', 'Alerte d\'epuisement', ["positionClass" => "toast-top-right"]);
+            return Toastr()->warning('Vous avez ' .$ProductStockAlert->count(). ' produits dont le stock est en phase d\'epuisement', 'Alerte d\'epuisement', ["positionClass" => "toast-top-right"]);
         }
     }
 }
@@ -144,7 +144,7 @@ if (!function_exists('ProductStockVide')) {
         $ProductStockVide = null;
         $ProductStockVide = Product::where('magasin_id',AuthMagasinAgent())->where('quantity',0)->get();
        if ($ProductStockVide->count() > 0) {
-            return Toastr::error('Vous avez ' .$ProductStockVide->count(). ' produits dont le stock est épuisé', 'Produit epuise', ["positionClass" => "toast-top-right"]);
+            return Toastr()->error('Vous avez ' .$ProductStockVide->count(). ' produits dont le stock est épuisé', 'Produit epuise', ["positionClass" => "toast-top-right"]);
        }
     }
 }

@@ -76,7 +76,7 @@ class SupplyOrderProductController extends Controller
             ]);
 
         }
-        Toastr::success('Votre produit a bien été ajouté', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre produit a bien été ajouté', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -153,10 +153,10 @@ class SupplyOrderProductController extends Controller
                 'image' => $imageName,
                 'supply_order_id' => $request->supply_order_id
             ]);
-            Toastr::success('Votre produit a bien ete modifier', 'Modification du produit', ["positionClass" => "toast-top-right"]);
+            Toastr()->success('Votre produit a bien ete modifier', 'Modification du produit', ["positionClass" => "toast-top-right"]);
             return back();
         }else {
-            Toastr::warning('Vous ne pouvez plus modifier ce produit', 'Modification non accepter', ["positionClass" => "toast-top-right"]);
+            Toastr()->warning('Vous ne pouvez plus modifier ce produit', 'Modification non accepter', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }
@@ -176,11 +176,11 @@ class SupplyOrderProductController extends Controller
             // dd($orderAmount);
             $product->supply_order->update(['amount' => $orderAmount]);
 
-            Toastr::success('Le prix du produit a bien ete modifier', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
+            Toastr()->success('Le prix du produit a bien ete modifier', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
             return back();
 
         }else {
-            Toastr::warning('Vous ne pouvez plus modifier ce produit', 'Modification non accepter', ["positionClass" => "toast-top-right"]);
+            Toastr()->warning('Vous ne pouvez plus modifier ce produit', 'Modification non accepter', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }
@@ -196,11 +196,11 @@ class SupplyOrderProductController extends Controller
             $product->update([
                 'status' => 1,
             ]);
-            Toastr::success('La validation a ete effectuer avec success', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
+            Toastr()->success('La validation a ete effectuer avec success', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
             return back();
 
         }else {
-            Toastr::warning('Vous ne pouvez plus modifier ce produit', 'Modification non accepter', ["positionClass" => "toast-top-right"]);
+            Toastr()->warning('Vous ne pouvez plus modifier ce produit', 'Modification non accepter', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }
@@ -213,10 +213,10 @@ class SupplyOrderProductController extends Controller
         $product = SupplyOrderProduct::where('id',$id)->where('supply_order_id',request()->supply_order_id)->where('magasin_id',AuthMagasinAgent())->first();
         if ($product->supply_order->status == 2) {
             $product->delete();
-            Toastr::success('Votre produit a bien été supprimé', 'Suppression de bagages', ["positionClass" => "toast-top-right"]);
+            Toastr()->success('Votre produit a bien été supprimé', 'Suppression de bagages', ["positionClass" => "toast-top-right"]);
             return back();
         }else {
-            Toastr::warning('Vous ne pouvez plus supprimer ce produit', 'Suppression non accepter', ["positionClass" => "toast-top-right"]);
+            Toastr()->warning('Vous ne pouvez plus supprimer ce produit', 'Suppression non accepter', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }

@@ -20,7 +20,7 @@ class IsClient
         if (Auth::guard('web')->user()) {
             return $next($request);
         }else {
-            Toastr::error('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
+            Toastr()->error('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }

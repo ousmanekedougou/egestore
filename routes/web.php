@@ -22,7 +22,8 @@ Route::prefix('/')->name('utilisateur.')->group(function()
 {
     Route::get('/',[App\Http\Controllers\User\HomeController::class,'index'])->name('index');
     Route::get('/document',[App\Http\Controllers\User\DocumentController::class,'document'])->name('document');
-    Route::get('/terme',[App\Http\Controllers\User\DocumentController::class,'terme'])->name('terme');
+    Route::get('/conditions',[App\Http\Controllers\User\DocumentController::class,'conditions'])->name('conditions');
+    Route::get('/confidentialités',[App\Http\Controllers\User\DocumentController::class,'privacy'])->name('privacy');
 });
 
 Auth::routes();

@@ -53,7 +53,7 @@ class CategoryController extends Controller
             'visible' => $request->visible,
             'magasin_id' => AuthMagasinAgent()]);
 
-        Toastr::success('Votre categorie a bien été ajouté', 'Ajout de categories', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre categorie a bien été ajouté', 'Ajout de categories', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -87,7 +87,7 @@ class CategoryController extends Controller
                 'visible' => $request->visible,
                 'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name))
             ]);
-        Toastr::success('le status de votre categorie a bien été modifié', 'Modification de categories', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('le status de votre categorie a bien été modifié', 'Modification de categories', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -97,7 +97,7 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         Category::where('id',$id)->where('magasin_id',AuthMagasinAgent())->delete();
-        Toastr::success('Votre categorie a bien été supprimé', 'Suppression de categories', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre categorie a bien été supprimé', 'Suppression de categories', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

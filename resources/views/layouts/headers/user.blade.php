@@ -10,7 +10,8 @@
      <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3 {{ set_active_roote('utilisateur.document') }}" aria-current="page" href="{{route('utilisateur.document')}}">Comment ça marche</a></li>
-          <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3 {{ set_active_roote('utilisateur.terme') }}" href="{{route('utilisateur.terme')}}">Termes & Politiques</a></li>
+          <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3 {{ set_active_roote('utilisateur.conditions') }}" href="{{route('utilisateur.conditions')}}">Conditions</a></li>
+          <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3 {{ set_active_roote('utilisateur.privacy') }}" href="{{route('utilisateur.privacy')}}">Confidentialités</a></li>
           {{-- <li class="nav-item"><a class="nav-link fs-9 fw-bold pe-1" href="#">Hire us </a></li> --}}
           <li class="nav-item d-flex align-items-center">
             <div class="theme-control-toggle fa-icon-wait px-3">

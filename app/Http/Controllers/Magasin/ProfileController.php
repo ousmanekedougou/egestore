@@ -119,7 +119,7 @@ class ProfileController extends Controller
             'password' => $password,
         ]);
 
-        Toastr::success('Votre profile a bien été modifié', 'Modification de profiles', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre profile a bien été modifié', 'Modification de profiles', ["positionClass" => "toast-top-right"]);
         return back();
     }
 

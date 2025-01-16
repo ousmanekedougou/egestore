@@ -36,10 +36,10 @@ class ForgotPasswordController extends Controller
 
         if ($admin_email) {
             $admin_email->notify(new ForgotMagasinPassword());
-            Toastr::success('Un email vous ete envoyer merci de verifier', 'Envoi d\'email', ["positionClass" => "toast-top-right"]);
+            Toastr()->success('Un email vous ete envoyer merci de verifier', 'Envoi d\'email', ["positionClass" => "toast-top-right"]);
             return redirect()->route('utilisateur.index');
         }else {
-            Toastr::error('Cette adresse email n\'existe pas', 'Email inexistant', ["positionClass" => "toast-top-right"]);
+            Toastr()->error('Cette adresse email n\'existe pas', 'Email inexistant', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }
@@ -63,14 +63,14 @@ class ForgotPasswordController extends Controller
             
             if ($update_admin_email) {
                 $update_admin_email->update(['password' => Hash::make($request->password)]);
-                Toastr::success('Votre mot de passe a bien été modifié, Veillez vous connecter a nouveau', 'Modification de mot de passe', ["positionClass" => "toast-top-right"]);
+                Toastr()->success('Votre mot de passe a bien été modifié, Veillez vous connecter a nouveau', 'Modification de mot de passe', ["positionClass" => "toast-top-right"]);
                 return redirect()->route('magasin.login');
             }else {
-                Toastr::error('Cette adresse email n\'existe pas', 'Email inexistant', ["positionClass" => "toast-top-right"]);
+                Toastr()->error('Cette adresse email n\'existe pas', 'Email inexistant', ["positionClass" => "toast-top-right"]);
                 return back();
             }
         }
-        Toastr::error('Cette requete n\'est plus valide', 'Ajout de commandes', ["positionClass" => "toast-top-right"]);
+        Toastr()->error('Cette requete n\'est plus valide', 'Ajout de commandes', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

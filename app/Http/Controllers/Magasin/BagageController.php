@@ -17,7 +17,7 @@ class BagageController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware(['isMagasin','isAgent']);
+        $this->middleware(['isMagasin','isAgent']);
     }
 
     /**
@@ -65,7 +65,7 @@ class BagageController extends Controller
             ->where('magasin_id',AuthMagasinAgent())
             ->where('type',1)->update(['amount' => $amountBagageTotal ]);
 
-        Toastr::success('Votre bagage a bien été ajouté', 'Ajout de bagages', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre bagage a bien été ajouté', 'Ajout de bagages', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -101,7 +101,7 @@ class BagageController extends Controller
             ->where('magasin_id',AuthMagasinAgent())
             ->where('type',0)->update(['amount' => $amountBagageTotal ]);
 
-        Toastr::success('Votre bagage a bien été ajouté', 'Ajout de bagages', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre bagage a bien été ajouté', 'Ajout de bagages', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -145,7 +145,7 @@ class BagageController extends Controller
 
         $product->commande->update(['amount' => $amountBagageTotal ]);
 
-        Toastr::success('Votre bagages a bien été modifié', 'Modification de bagages', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre bagages a bien été modifié', 'Modification de bagages', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -159,7 +159,7 @@ class BagageController extends Controller
         $bagage->commande->update(['amount' => $bagage->commande->amount - $bagage->amount ]);
         
         $bagage->delete();
-        Toastr::success('Votre bagage a bien été supprimé', 'Suppression de bagages', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre bagage a bien été supprimé', 'Suppression de bagages', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

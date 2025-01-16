@@ -373,7 +373,7 @@
                 <div class="d-flex justify-content-between">
                   <div class="d-flex mb-2">
                     <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">Termes & Politique de confidentialites</h6>
-                    <h6 class="mb-0 fs-9"><span class="fa-solid fa-file-pdf me-1 text-body-tertiary"></span><a href="{{ route('utilisateur.terme') }}">lien referenciel</a></h6>
+                    <h6 class="mb-0 fs-9"><span class="fa-solid fa-file-pdf me-1 text-body-tertiary"></span><a href="{{ route('utilisateur.conditions') }}">lien referenciel</a></h6>
                   </div>
                   <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"><span class="fa-regular fa-clock me-1"></span>10:33pm</p>
                 </div>

@@ -60,7 +60,7 @@ class MagasinController extends Controller
     public function update(Request $request, string $id)
     {
         Magasin::where('id',$id)->update(['is_active' => $request->is_active]);
-        Toastr::success('Le status de ce compte magasin a bien été modifié', 'Modification de magasins', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Le status de ce compte magasin a bien été modifié', 'Modification de magasins', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -72,7 +72,7 @@ class MagasinController extends Controller
         $magasin = Magasin::where('id',$id)->first();
         Storage::delete($magasin->logo);
         $magasin->delete();
-        Toastr::success('Ce compte magasin a bien été supprimé', 'Suppression de magasins', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Ce compte magasin a bien été supprimé', 'Suppression de magasins', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

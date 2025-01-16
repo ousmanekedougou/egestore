@@ -81,7 +81,7 @@ class ClientController extends Controller
             'magasin_id' => AuthMagasinAgent(),
         ]);
 
-        Toastr::success('Votre client a bien été ajouté', 'Ajout de clients', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre client a bien été ajouté', 'Ajout de clients', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -137,7 +137,7 @@ class ClientController extends Controller
                     Payment::create(['client_id' => $id,'magasin_id' => AuthMagasinAgent(),'date' => Carbon::now(),'amount' => $request->amount]);
                 }
             }else {
-                Toastr::error('Ce montant est superieur a la somme acrediter', 'Surplus du montant', ["positionClass" => "toast-top-right"]);
+                Toastr()->error('Ce montant est superieur a la somme acrediter', 'Surplus du montant', ["positionClass" => "toast-top-right"]);
                 return back();
             }
         }elseif ($client->account == 3) {
@@ -184,7 +184,7 @@ class ClientController extends Controller
 
         }
 
-        Toastr::success('Votre client a bien été modifié', 'Modification de clients', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre client a bien été modifié', 'Modification de clients', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -194,7 +194,7 @@ class ClientController extends Controller
     public function destroy(string $id)
     {
         Client::where('id',$id)->delete();
-        Toastr::success('Votre client a bien été supprimé', 'Suppression de clients', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre client a bien été supprimé', 'Suppression de clients', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

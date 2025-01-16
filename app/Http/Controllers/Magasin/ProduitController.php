@@ -89,7 +89,7 @@ class ProduitController extends Controller
             if($request->price_promotion < $request->price){
                 $validatePromotion = $request->price_promotion;
             }else {
-                Toastr::error('Le prix de la promotion doit etre inferieure au prix normale', 'Erreur du prix de la promotion', ["positionClass" => "toast-top-right"]);
+                Toastr()->error('Le prix de la promotion doit etre inferieure au prix normale', 'Erreur du prix de la promotion', ["positionClass" => "toast-top-right"]);
                 return back();
             }
         }
@@ -130,7 +130,7 @@ class ProduitController extends Controller
             'supply_id' => $request->supply_id,
             'sub_category_id' => $request->sub_category_id
         ]);
-        Toastr::success('Votre produit a bien été ajouté', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre produit a bien été ajouté', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -179,7 +179,7 @@ class ProduitController extends Controller
             if($request->price_promotion < $request->price){
                 $validatePromotion = $request->price_promotion;
             }else {
-                Toastr::error('Le prix de la promotion doit etre inferieure au prix normale', 'Erreur du prix de la promotion', ["positionClass" => "toast-top-right"]);
+                Toastr()->error('Le prix de la promotion doit etre inferieure au prix normale', 'Erreur du prix de la promotion', ["positionClass" => "toast-top-right"]);
                 return back();
             }
         }
@@ -258,7 +258,7 @@ class ProduitController extends Controller
             'sub_category_id' => $request->sub_category_id
         ]);
 
-        Toastr::success('Votre produit a bien été modifié', 'Modification de produits', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre produit a bien été modifié', 'Modification de produits', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -268,7 +268,7 @@ class ProduitController extends Controller
     public function destroy(string $id)
     {
         Product::where('id',$id)->where('magasin_id',AuthMagasinAgent())->delete();
-        Toastr::success('Votre produit a bien été supprimé', 'Supression de produits', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre produit a bien été supprimé', 'Supression de produits', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

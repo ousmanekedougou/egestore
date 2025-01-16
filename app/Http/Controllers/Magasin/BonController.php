@@ -91,7 +91,7 @@ class BonController extends Controller
     //         'status' => 2
     //     ]);
 
-    //     Toastr::success('Votre résérvation a bien été ajouté', 'Ajout de résérvation', ["positionClass" => "toast-top-right"]);
+    //     Toastr()->success('Votre résérvation a bien été ajouté', 'Ajout de résérvation', ["positionClass" => "toast-top-right"]);
     //     return back();
     // }
 
@@ -126,7 +126,7 @@ class BonController extends Controller
             if ($clientUser->account == 3) {
                 $client = $clientUser->id;
             }else {
-                Toastr::error('Ce client a des actifs / passifs en cours', 'Bon non valide', ["positionClass" => "toast-top-right"]);
+                Toastr()->error('Ce client a des actifs / passifs en cours', 'Bon non valide', ["positionClass" => "toast-top-right"]);
                 return back();
             }
         }else {
@@ -168,7 +168,7 @@ class BonController extends Controller
             'status' => 2
         ]);
 
-        Toastr::success('Votre commande a bien été ajouté', 'Ajout de commande', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre commande a bien été ajouté', 'Ajout de commande', ["positionClass" => "toast-top-right"]);
         return back();
 
     }
@@ -239,10 +239,10 @@ class BonController extends Controller
                 'methode' => $methode
             ]);
 
-            Toastr::success('Le status de cette résérvation a bien été modifié', 'Modification de résérvation', ["positionClass" => "toast-top-right"]);
+            Toastr()->success('Le status de cette résérvation a bien été modifié', 'Modification de résérvation', ["positionClass" => "toast-top-right"]);
             return back();
         }else {
-            Toastr::error('Vous n\'aviez pas de produit pour ce bon', 'Pas de produit', ["positionClass" => "toast-top-right"]);
+            Toastr()->error('Vous n\'aviez pas de produit pour ce bon', 'Pas de produit', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }
@@ -253,7 +253,7 @@ class BonController extends Controller
     public function destroy(string $id)
     {
         Commande::where('id',$id)->where('magasin_id',AuthMagasinAgent())->where('type',0)->delete();
-        Toastr::success('Votre résérvation a bien été supprimé', 'Suppresion de résérvation', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre résérvation a bien été supprimé', 'Suppresion de résérvation', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
