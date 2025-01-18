@@ -58,10 +58,10 @@ class RegisterController extends Controller
         if ($user) {
             $user->update(['confirmation_token' => null , 'is_active' => ACTIVE,'code_validation',null]);
             $this->guard()->login($user);
-            Toastr::success('Votre compte client a bien été confirmé', 'Confirmation de compte clients', ["positionClass" => "toast-top-right"]);
+            Toastr()->success('Votre compte client a bien été confirmé', 'Confirmation de compte clients', ["positionClass" => "toast-top-right"]);
             return redirect($this->redirectPath());
         }else {
-            Toastr::success('Ce lien n\'est plus valide', 'Lien invalide', ["positionClass" => "toast-top-right"]);
+            Toastr()->success('Ce lien n\'est plus valide', 'Lien invalide', ["positionClass" => "toast-top-right"]);
             return redirect()->route('login');
         }
     }
@@ -79,7 +79,7 @@ class RegisterController extends Controller
         $user = User::where('email',$request->email)->where('phone',$request->phone)->first();
         $user->notify(new NouveauCompteClient());
 
-        Toastr::success('Votre client a bien été ajouté', 'Ajout de clients', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre client a bien été ajouté', 'Ajout de clients', ["positionClass" => "toast-top-right"]);
         return view('client.auth.mfa2',compact('user'));
     }
 

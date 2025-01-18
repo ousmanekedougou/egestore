@@ -14,7 +14,7 @@ class ProduitController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware(['isMagasin','isAgent']);
+        $this->middleware(['isMagasinAgent']);
     }
 
     /**

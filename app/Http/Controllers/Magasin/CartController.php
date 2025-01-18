@@ -17,6 +17,10 @@ use Nette\Utils\Random;
 
 class CartController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['isMagasinAgent']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -30,7 +34,7 @@ class CartController extends Controller
             return view('magasin.cart.index',['clients' => $clients,'users' => $users]);
         }
 
-        Toastr()->warning('Votre panier est vide', 'Acces au panier refuse', ["positionClass" => "toast-top-right"]);
+        Toastr()->warning('Votre panier est vide', 'Panier vide', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -85,7 +89,7 @@ class CartController extends Controller
 
 
         if ($duplicata->isNotEmpty()) {
-            Toastr()->warning('Ce produit est déjà dans votre panier', 'Votre panier', ["positionClass" => "toast-top-right"]);
+            Toastr()->warning('Ce produit est déjà dans votre panier', 'Produit existant', ["positionClass" => "toast-top-right"]);
             return back();
         }
 

@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Magasin\Agent;
 use App\Notifications\NouveauCompte\NouveauCompteAgent;
-use Brian2694\Toastr\Facades\Toastr;
 
 class AgentController extends Controller
 {
@@ -87,7 +86,7 @@ class AgentController extends Controller
     public function update(Request $request, string $id)
     {
         Agent::where('id',$id)->update(['is_active' => $request->is_active]);
-        Toastr()->success('Le status de votre a bien été modifieé', 'Modification de status', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Le status de votre compte a bien été modifieé', 'Modification de status', ["positionClass" => "toast-top-right"]);
         return back();
     }
 

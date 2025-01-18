@@ -1,5 +1,5 @@
 
-@extends('layouts.app',['title' => 'Connexion-boutique'])
+@extends('layouts.app',['title' => 'Connexion commerçant'])
 
 @section('main-content')
   <section class="py-0" style="margin-bottom: -6rem;">
@@ -15,7 +15,7 @@
           </a>
           <div class="text-center mb-7">
             <h3 class="text-body-highlight">Se connecter</h3>
-            <p class="text-body-tertiary">Accéder à votre compte administrateur</p>
+            <p class="text-body-tertiary">Accéder à votre compte commerçant</p>
           </div>
           <form method="POST" action="{{ route('magasin.login') }}">
             @csrf
@@ -49,7 +49,7 @@
             </div>
             <button class="btn btn-primary w-100 mb-3">Se connecter</button>
           </form>
-          <div class="text-center"><a class="fs-9 fw-bold" href="{{ route('magasin.register') }}">Créer un compte boutique</a></div>
+          <div class="text-center"><a class="fs-9 fw-bold" href="{{ route('magasin.register') }}">Créer votre compte commerçant</a></div>
         </div>
       </div>
     </div>

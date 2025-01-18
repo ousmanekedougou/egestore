@@ -1,5 +1,5 @@
 
-@extends('layouts.app')
+@extends('layouts.app',['title' => 'Connexion employé'])
 
 @section('main-content')
   <section class="py-0" style="margin-bottom: -6rem;">
@@ -15,7 +15,7 @@
           </a>
           <div class="text-center mb-7">
             <h3 class="text-body-highlight">Se connecter</h3>
-            <p class="text-body-tertiary">Accéder à votre compte agent commercial</p>
+            <p class="text-body-tertiary">Accéder à votre compte employé</p>
           </div>
           <form method="POST" action="{{ route('agent.login') }}">
             @csrf

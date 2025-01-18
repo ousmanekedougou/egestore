@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Magasin\Magasin;
 use App\Providers\RouteServiceProvider;
 use App\Notifications\NouveauCompte\NouveauCompteMagasin;
-use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -62,7 +61,7 @@ class RegisterController extends Controller
             Toastr()->success('Votre client a bien été confirmé', 'Confirmation de compte clients', ["positionClass" => "toast-top-right"]);
             return redirect($this->redirectPath());
         }else {
-            Toastr()->error('Ce lien n\'est plus valide', 'Validite de lien', ["positionClass" => "toast-top-right"]);
+            Toastr()->error('Ce lien n\'est plus valide', 'Lien invalide', ["positionClass" => "toast-top-right"]);
             return redirect()->route('magasin.login');
         }
     }

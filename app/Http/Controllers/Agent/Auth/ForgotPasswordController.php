@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Agent;
 use App\Notifications\ForgotPassword\ForgotAgentPassword;
-use Brian2694\Toastr\Facades\Toastr;
 
 class ForgotPasswordController extends Controller
 {
@@ -36,10 +35,10 @@ class ForgotPasswordController extends Controller
 
         if ($admin_email) {
             $admin_email->notify(new ForgotAgentPassword());
-            Toastr()->success('Un email vous a ete envoye marci de verifier', 'Envoi d\'email', ["positionClass" => "toast-top-right"]);
+            Toastr()->success('Un email vous a été envoyé marci de verifier', 'Envoi d\'email', ["positionClass" => "toast-top-right"]);
             return redirect()->route('utilisateur.index');
         }else {
-            Toastr()->error('Cette adrese email n\'existe pas', 'Adresse email inexistant', ["positionClass" => "toast-top-right"]);
+            Toastr()->error('Cette adresse email n\'existe pas', 'Adresse email inexistant', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }

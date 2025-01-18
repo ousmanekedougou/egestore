@@ -140,7 +140,7 @@
                   <span class="me-2" data-feather="log-out"> </span>Se deconecter
                 </a>
                 <form id="logout-form" action="{{ route('magasin.logout') }}
-                    " method="POST" class="d-none">
+                    "method="POST" class="d-none">
                     @csrf
                 </form>
               </div>

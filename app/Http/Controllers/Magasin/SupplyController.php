@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Hash;
 
 class SupplyController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['isMagasinAgent']);
+    }
     /**
      * Display a listing of the resource.
      */

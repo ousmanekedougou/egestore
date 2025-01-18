@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Admin;
 use App\Notifications\ForgotPassword\ForgotAdminPassword;
-use Brian2694\Toastr\Facades\Toastr;
 
 class ForgotPasswordController extends Controller
 {
@@ -36,10 +35,10 @@ class ForgotPasswordController extends Controller
 
         if ($admin_email) {
             $admin_email->notify(new ForgotAdminPassword());
-            Toastr()->success('Un email vous a ete envoye merci de verifie', 'Evnoi d\'email', ["positionClass" => "toast-top-right"]);
+            Toastr()->success('Un email vous a été envoye merci de vérifier', 'Evnoi d\'email', ["positionClass" => "toast-top-right"]);
             return redirect()->route('utilisateur.index');
         }else {
-            Toastr()->error('Cette adresse email n\'existe pas', 'Email inexistant', ["positionClass" => "toast-top-right"]);
+            Toastr()->error('Cette adresse email n\'éxiste pas', 'Email inéxistant', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }
@@ -65,7 +64,7 @@ class ForgotPasswordController extends Controller
                 Toastr()->success('Votre mot de passe a bien été reinitialisé', 'Reinitialisation de mot de passe', ["positionClass" => "toast-top-right"]);
                 return redirect()->route('admin.login');
             }else {
-                Toastr()->error('cette adrese email n\'existe pas', 'Email inexistant', ["positionClass" => "toast-top-right"]);
+                Toastr()->error('cette adresse email n\'éxiste pas', 'Email inexistant', ["positionClass" => "toast-top-right"]);
                 return back();
             }
         }

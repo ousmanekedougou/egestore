@@ -54,9 +54,9 @@ class HomeController extends Controller
         if (Auth::guard('agent')->user()->magasin->inv_status == false) {
             $today = date('d');
             if (Carbon::now()->day <= Auth::guard('agent')->user()->magasin->inv_at) {
-                $paimentNotification = "L'inventaire de votre boutique doit ce faire le " .Auth::guard('agent')->user()->magasin->inv_at ." de ce mois";
+                $paimentNotification = "L'inventaire de votre magasin doit ce faire le " .Auth::guard('agent')->user()->magasin->inv_at ." de ce mois";
             }elseif (Carbon::now()->day == Auth::guard('agent')->user()->magasin->inv_at) {
-                $paimentNotification = "L'inventaire de votre boutique doit ce faire aujourd'hui";
+                $paimentNotification = "L'inventaire de votre magasin doit ce faire aujourd'hui";
             }
         }
 

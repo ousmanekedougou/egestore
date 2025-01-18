@@ -4,16 +4,14 @@ namespace App\Http\Controllers\Magasin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Category;
-use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 class CategoryController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware(['isMagasin','isAgent']);
+        $this->middleware('isMagasinAgent');
     }
 
     /**

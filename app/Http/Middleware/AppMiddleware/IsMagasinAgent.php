@@ -2,13 +2,11 @@
 
 namespace App\Http\Middleware\AppMiddleware;
 
-use Brian2694\Toastr\Facades\Toastr;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-
-class IsAdmin
+use Illuminate\Support\Facades\Auth;
+class isMagasinAgent
 {
     /**
      * Handle an incoming request.
@@ -17,7 +15,7 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::guard('admin')->guest())
+        if (Auth::logout())
         {
             if ($request->ajax())
             {
@@ -25,12 +23,12 @@ class IsAdmin
             }
             else
             {
-                Toastr()->error('Désolé, Page expirée', 'Page éxpirée', 'Connexion éxpiré', ["positionClass" => "toast-top-right"]);
+                Toastr()->error('Désolé, Page expirée', 'Page éxpirée', ["positionClass" => "toast-top-right"]);
                 return redirect()->guest('/');
             }
         }
 
-        if (Auth::guard('admin')->user()) {
+        if (Auth::guard('magasin')->user() || Auth::guard('agent')->user() ) {
             return $next($request);
         }else {
             Toastr()->warning('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);

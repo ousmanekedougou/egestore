@@ -17,10 +17,23 @@ class IsClient
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (Auth::guard('web')->guest())
+        {
+            if ($request->ajax())
+            {
+                return response('Unauthorized.', 401);
+            }
+            else
+            {
+                Toastr()->error('Désolé, Page expirée', 'Page éxpirée', 'Connexion éxpiré', ["positionClass" => "toast-top-right"]);
+                return redirect()->guest('/');
+            }
+        }
+
         if (Auth::guard('web')->user()) {
             return $next($request);
         }else {
-            Toastr()->error('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
+            Toastr()->warning('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware\AppMiddleware;
 
-use Brian2694\Toastr\Facades\Toastr;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,16 +16,24 @@ class IsAgent
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (Auth::guard('agent')->guest())
+        {
+            if ($request->ajax())
+            {
+                return response('Unauthorized.', 401);
+            }
+            else
+            {
+                Toastr()->error('Désolé, Page expirée', 'Page éxpirée', 'Connexion éxpiré', ["positionClass" => "toast-top-right"]);
+                return redirect()->guest('/');
+            }
+        }
+
         if (Auth::guard('agent')->user()) {
             return $next($request);
         }else {
-            if (Auth::guard('agent')->logout()) {
-                Toastr()->error('Temps de connexion expire', 'Connexion expire', ["positionClass" => "toast-top-right"]);
-                return redirect()->guest('agent/login');
-            }else {
-                Toastr()->warning('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
-                return back();
-            }
+            Toastr()->warning('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
+            return back();
         }
     }
 }

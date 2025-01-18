@@ -48,7 +48,6 @@
                             </div>
                             <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"></p>
                             </div>
-                            <h6 class="fs-10 fw-normal mb-3">by <a class="fw-semibold" href="#!">Edward Hopper</a></h6>
                             <p class="fs-9 text-body-secondary w-sm-100 mb-5">
                             En créant un compte sur notre plateforme, vous acceptez de vous conformer aux conditions générales suivantes. Ces conditions régissent votre utilisation des services fournis par Kstore et vous engagent dès votre inscription. Vous devez être âgé d'au moins 18 ans ou avoir atteint l'âge légal de la majorité dans votre juridiction pour créer un compte. Si vous créez un compte au nom d'une entreprise ou d'une organisation, vous déclarez et garantissez que vous avez le pouvoir de lier cette entité à ces conditions.
                             </p>
@@ -120,7 +119,6 @@
                             </div>
                             <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"></p>
                             </div>
-                            <h6 class="fs-10 fw-normal mb-3">by <a class="fw-semibold" href="#!">John N. Ward</a></h6>
                             <p class="fs-9 text-body-secondary w-sm-100 mb-5">
                             Kstore se réserve le droit de modifier, de suspendre ou d'interrompre toute partie de la plate-forme à tout moment et sans préavis. Cela inclut les changements de caractéristiques, de fonctionnalités ou de prix. Nous ne sommes pas responsables vis-à-vis de vous ou d'un tiers de ces modifications ou interruptions.
                             </p>
@@ -157,7 +155,6 @@
                             </div>
                             <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"></p>
                             </div>
-                            <h6 class="fs-10 fw-normal mb-3">by <a class="fw-semibold" href="#!">John N. Ward</a></h6>
                             <p class="fs-9 text-body-secondary w-sm-100 mb-5">
                             Vous êtes seul responsable du contenu, des produits et des services figurant dans votre boutique. Vous devez notamment veiller à ce que tout le contenu soit exact, à jour et conforme aux lois et réglementations en vigueur. Vous ne devez pas proposer d'articles interdits ni vous livrer à des activités illégales sur la plateforme.
                             </p>
@@ -188,7 +185,6 @@
                             </div>
                             <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"></p>
                             </div>
-                            <h6 class="fs-10 fw-normal mb-3">by <a class="fw-semibold" href="#!">John N. Ward</a></h6>
                             <p class="fs-9 text-body-secondary w-sm-100 mb-5">
                             Vous acceptez de préserver la sécurité et la confidentialité de toutes les informations confidentielles fournies par Kstore. Cela comprend, sans s'y limiter, les informations techniques, les stratégies commerciales et les données relatives aux clients. Vous ne devez pas divulguer ces informations à des tiers sans autorisation écrite préalable.
                             </p>
@@ -219,7 +215,6 @@
                             </div>
                             <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"></p>
                             </div>
-                            <h6 class="fs-10 fw-normal mb-3">by <a class="fw-semibold" href="#!">John N. Ward</a></h6>
                             <p class="fs-9 text-body-secondary w-sm-100 mb-5">
                             Kstore n'est pas responsable des dommages indirects, accessoires ou consécutifs résultant de votre utilisation de la plate-forme. Cela inclut, sans s'y limiter, la perte de profits, de données ou d'opportunités commerciales.
                             </p>
@@ -297,7 +292,6 @@
                             </div>
                             <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"></p>
                             </div>
-                            <h6 class="fs-10 fw-normal false">by <a class="fw-semibold" href="#!">John N. Ward</a></h6>
                             <p class="fs-9 text-body-secondary w-sm-100 mb-5">
                             Kstore peut offrir des services supplémentaires, tels que des outils marketing, des analyses ou une assistance premium, moyennant des frais supplémentaires. Ces services sont soumis à des conditions générales distinctes, qui vous seront communiquées avant l'activation.
                             </p>

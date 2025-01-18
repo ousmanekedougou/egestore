@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Magasin;
 use App\Notifications\ForgotPassword\ForgotMagasinPassword;
-use Brian2694\Toastr\Facades\Toastr;
 
 class ForgotPasswordController extends Controller
 {
@@ -36,7 +35,7 @@ class ForgotPasswordController extends Controller
 
         if ($admin_email) {
             $admin_email->notify(new ForgotMagasinPassword());
-            Toastr()->success('Un email vous ete envoyer merci de verifier', 'Envoi d\'email', ["positionClass" => "toast-top-right"]);
+            Toastr()->success('Un email vous été envoyer merci de verifier', 'Envoi d\'email', ["positionClass" => "toast-top-right"]);
             return redirect()->route('utilisateur.index');
         }else {
             Toastr()->error('Cette adresse email n\'existe pas', 'Email inexistant', ["positionClass" => "toast-top-right"]);
@@ -70,7 +69,7 @@ class ForgotPasswordController extends Controller
                 return back();
             }
         }
-        Toastr()->error('Cette requete n\'est plus valide', 'Ajout de commandes', ["positionClass" => "toast-top-right"]);
+        Toastr()->error('Cette requete n\'est plus valide', 'Requete invalide', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

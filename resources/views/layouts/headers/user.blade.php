@@ -32,14 +32,14 @@
               <div class="card position-relative border-0">
                 <div class="card-footer p-0 border-top border-translucent">
                   <ul class="nav d-flex flex-column my-3">
-                    <li class="nav-item"><a class="nav-link px-3" href="{{ route('magasin.login') }}"> <span class="me-2 text-body" data-feather="user-plus"></span>Administrateur</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="{{ route('magasin.login') }}"> <span class="me-2 text-body" data-feather="user-plus"></span>Compte commerçant</a></li>
                   </ul>
                   <hr />
                   <ul class="nav d-flex flex-column my-3">
-                    <li class="nav-item"><a class="nav-link px-3" href="{{ route('agent.login') }}"> <span class="me-2 text-body" data-feather="user-plus"></span>Agents commercial </a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="{{ route('agent.login') }}"> <span class="me-2 text-body" data-feather="user-plus"></span>Compte employé </a></li>
                   </ul>
                   <hr>
-                  <div class="my-2 text-center fw-bold fs-10 text-body-quaternary"><a class="text-body-quaternary me-1" href="#!">Privacy policy</a>&bull;<a class="text-body-quaternary mx-1" href="#!">Terms</a>&bull;<a class="text-body-quaternary ms-1" href="#!">Cookies</a></div>
+                  <div class="my-2 text-center fw-bold fs-10 text-body-quaternary"><a class="text-body-quaternary me-1" href="{{route('utilisateur.privacy')}}">Confidentialité</a>&bull;<a class="text-body-quaternary mx-1" href="{{route('utilisateur.conditions')}}">Conditions</a>&bull;<a class="text-body-quaternary ms-1" href="#!">Cookies</a></div>
                 </div>
               </div>
             </div>

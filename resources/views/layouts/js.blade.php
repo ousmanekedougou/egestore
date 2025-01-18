@@ -25,4 +25,4 @@
 
     <script src="{{asset('assets/js/jquery/toastr-jquery.min.js')}}"></script>
     <script src="{{asset('assets/js/toastr.min.js')}}"></script>
-        {!! Toastr::message() !!}
+    {!! Toastr::message() !!}

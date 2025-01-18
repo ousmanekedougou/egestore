@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Hash;
 
 class BonController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['isMagasinAgent']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -126,7 +130,7 @@ class BonController extends Controller
             if ($clientUser->account == 3) {
                 $client = $clientUser->id;
             }else {
-                Toastr()->error('Ce client a des actifs / passifs en cours', 'Bon non valide', ["positionClass" => "toast-top-right"]);
+                Toastr()->error('Ce client à des actifs / passifs en cours', 'Bon non valide', ["positionClass" => "toast-top-right"]);
                 return back();
             }
         }else {

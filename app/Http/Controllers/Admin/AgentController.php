@@ -21,7 +21,7 @@ class AgentController extends Controller
         if(Auth::guard('admin')->user()->status == 1){
             return view('admin.agent.index',['agents' => Admin::where('status','!=',1)->get()]);
         }else {
-            Toastr()->error('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
+            Toastr()->error('Vous n\'aviez pas accés à cette page', 'Accés refuseé', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }

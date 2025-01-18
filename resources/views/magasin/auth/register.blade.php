@@ -12,7 +12,7 @@
                 </a>
                 <div class="text-center mb-7">
                 <h3 class="text-body-highlight">S'inscrire</h3>
-                <p class="text-body-tertiary">Créez votre compte boutique aujourd'hui</p>
+                <p class="text-body-tertiary">Créer votre compte commerçant aujourd'hui</p>
                 </div>
                 <form method="POST" action="{{ route('magasin.register') }}" enctype="multipart/form-data">
                     @csrf
@@ -99,7 +99,7 @@
                     <div class="form-check mb-3">
                         <input class="form-check-input @error('termsService') is-invalid @enderror" id="termsService" name="termsService" value="{{ old('termsService') ?? 1 }}" type="checkbox" required autocomplete="termsService"/>
                         <label class="form-label fs-9 text-transform-none mt-1" for="termsService">
-                            J'accepte les <a href="#!">termes </a> et <a href="#!">politique de confidentialité</a>
+                            J'accepte les <a target="_blank" href="{{route('utilisateur.conditions')}}">conditions d'utilisation </a> et <a target="_blank" href="{{route('utilisateur.privacy')}}">politique de confidentialités</a>
                         </label>
                         @error('termsService')
                             <span class="invalid-feedback" role="alert">
@@ -108,7 +108,7 @@
                         @enderror
                     </div>
                     <button class="btn btn-primary w-100 mb-3" type="submit">S'inscrire</button>
-                    <div class="text-center"><a class="fs-9 fw-bold" href="{{ route('magasin.login') }}">Se connecter à un compte boutique existant</a></div>
+                    <div class="text-center"><a class="fs-9 fw-bold" href="{{ route('magasin.login') }}">Se connecter à un compte commerçant existant</a></div>
                 </form>
             </div>
         </div>

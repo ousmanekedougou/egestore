@@ -8,16 +8,12 @@ use App\Models\Magasin\Commande;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Magasin\Product;
-use App\Models\Magasin\SubCategory;
-use Brian2694\Toastr\Facades\Toastr;
 
 class BagageController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['isMagasin','isAgent']);
+        $this->middleware(['isMagasinAgent']);
     }
 
     /**
