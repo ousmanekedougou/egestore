@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Agent\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Agent;
 use App\Notifications\ForgotPassword\ForgotAgentPassword;
-
+use Illuminate\Validation\Rules\Password;
 class ForgotPasswordController extends Controller
 {
     /*
@@ -53,7 +52,8 @@ class ForgotPasswordController extends Controller
 
     public function update(Request $request,$email){
         $this->validate($request,[
-            'password' => 'required|string|confirmed',
+            'password' => ['required', 'string', 'confirmed',
+            Password::min(8)->letters() ->mixedCase()->numbers()->symbols()->uncompromised()],
         ]);
         $token = $request->token;
         if ($token) {

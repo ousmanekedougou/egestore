@@ -155,7 +155,7 @@ class BagageController extends Controller
         $bagage->commande->update(['amount' => $bagage->commande->amount - $bagage->amount ]);
         
         $bagage->delete();
-        Toastr()->success('Votre bagage a bien été supprimé', 'Suppression de bagages', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre bagage a bien été supprimé', 'Suppréssion de bagages', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

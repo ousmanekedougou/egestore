@@ -17,21 +17,15 @@ class isMagasinAgent
     {
         if (Auth::logout())
         {
-            if ($request->ajax())
-            {
-                return response('Unauthorized.', 401);
-            }
-            else
-            {
-                Toastr()->error('Désolé, Page expirée', 'Page éxpirée', ["positionClass" => "toast-top-right"]);
-                return redirect()->guest('/');
-            }
+            Toastr()->error('Désolé, la page a éxpirée', 'Page éxpirée', ["positionClass" => "toast-top-right"]);
+            return redirect()->guest('/');
+            
         }
 
         if (Auth::guard('magasin')->user() || Auth::guard('agent')->user() ) {
             return $next($request);
         }else {
-            Toastr()->warning('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
+            Toastr()->warning('Désolé, accés refusé', 'Accés refusé', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }

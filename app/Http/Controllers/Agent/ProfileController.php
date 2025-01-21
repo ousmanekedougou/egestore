@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Agent;
 
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Agent;
-use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Validation\Rules\Password;
 class ProfileController extends Controller
 {
     public function __construct()
@@ -64,7 +63,9 @@ class ProfileController extends Controller
             'name' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'phone' => ['required', 'numeric'],
-            'password' => ['required', 'string', 'confirmed'],
+            'password' => ['required', 'string', 'confirmed',
+                Password::min(8)->letters() ->mixedCase()->numbers()->symbols()->uncompromised()
+                ],
         ]);
         Agent::find(Auth::guard('agent')->user()->id)
         ->update(

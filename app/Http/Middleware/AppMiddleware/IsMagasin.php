@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware\AppMiddleware;
 
-use Brian2694\Toastr\Facades\Toastr;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,23 +16,15 @@ class IsMagasin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::guard('magasin')->guest())
-        {
-            if ($request->ajax())
-            {
-                return response('Unauthorized.', 401);
-            }
-            else
-            {
-                Toastr()->error('Désolé, Page expirée', 'Page éxpirée', ["positionClass" => "toast-top-right"]);
-                return redirect()->guest('/');
-            }
+        if (Auth::guard('magasin')->guest()) {
+            Toastr()->error('Désolé, la page a expirée', 'Page expirée', ["positionClass" => "toast-top-right"]);
+            return redirect()->guest('magasin/login');
         }
-
+        
         if (Auth::guard('magasin')->user()) {
             return $next($request);
         }else {
-            Toastr()->warning('Vous n\'aviez pas acces a cette page', 'Acces refuse', ["positionClass" => "toast-top-right"]);
+            Toastr()->warning('Désolé, acces refusé', 'Acces refusé', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }

@@ -39,7 +39,7 @@
 
     </main>
      
-        @include('layouts.js')
+    @include('layouts.js')
 
     @section('footerSection')
     @show

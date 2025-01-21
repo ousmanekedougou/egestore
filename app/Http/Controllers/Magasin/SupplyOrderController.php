@@ -37,7 +37,7 @@ class SupplyOrderController extends Controller
             ->update([
                 'delivery' => 1
             ]);
-        Toastr()->success('Votre livraison a bien été valideé', 'Suppression de commandes', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre livraison a bien été validée', 'Validation de la livraison', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -62,7 +62,7 @@ class SupplyOrderController extends Controller
         $supply_magasin = Supply::where('id',$request->supply_id)->first();
         // dd($supply_magasin);
         if ($verifyBonCommande) {
-            Toastr()->error('Ce bon de commande existe pour ce magasin', 'Error du bon de commande', ["positionClass" => "toast-top-right"]);
+            Toastr()->error('Ce bon de commande éxiste pour ce magasin', 'Bon éxistant', ["positionClass" => "toast-top-right"]);
             return back();
         }else {
              SupplyOrder::create([
@@ -120,7 +120,7 @@ class SupplyOrderController extends Controller
             'date' => $request->delivery_date,
         ]);
 
-        Toastr()->success('Votre commande de devis a bien été modifier', 'Ajout de commande devis', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre commande de devis a bien été modifié', 'Modification de commande devis', ["positionClass" => "toast-top-right"]);
         return back();
     }
     
@@ -163,7 +163,7 @@ class SupplyOrderController extends Controller
                     'methode' => $methode
                 ]);
         
-                Toastr()->success('Le status de cette commande a bien été modifié', 'Modification de reservations', ["positionClass" => "toast-top-right"]);
+                Toastr()->success('Le status de cette commande a bien été modifié', 'Modification de commandes', ["positionClass" => "toast-top-right"]);
                 return back();
             }else {
                 Toastr()->error('Vous devez supprimer les produits non valider', 'Validation des produits requis', ["positionClass" => "toast-top-right"]);
@@ -182,7 +182,7 @@ class SupplyOrderController extends Controller
     public function destroy(string $id)
     {
         SupplyOrder::where('id',$id)->where('supply_id',request()->supply_id)->where('magasin_id',AuthMagasinAgent())->delete();
-        Toastr()->success('Votre commande de devis a bien été supprimé', 'Suppression de commandes', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre commande de devis a bien été supprimé', 'Suppréssion de commandes', ["positionClass" => "toast-top-right"]);
         return back();
     }
 

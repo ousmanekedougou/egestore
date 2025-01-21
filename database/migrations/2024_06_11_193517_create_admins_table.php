@@ -18,13 +18,13 @@ return new class extends Migration
             $table->integer('phone')->unique();
             $table->boolean('status')->default(false);
             $table->string('slug')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_active')->default(false);
             $table->string('confirmation_token')->nullable();
             $table->integer('code_validation')->length(6)->nullable();
             $table->dateTime("expired_at")->nullable();
             $table->string('image')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

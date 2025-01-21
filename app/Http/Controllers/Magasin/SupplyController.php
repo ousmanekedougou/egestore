@@ -31,7 +31,7 @@ class SupplyController extends Controller
         $magasin = Magasin::where('is_active',1)->where('confirmation_token',null)->where('id',$id)->first();
         $supplyExist = Supply::where('owner_id',AuthMagasinAgent())->where('magasin_id',$magasin->id)->first();
         if ($supplyExist) {
-            Toastr()->error('Ce magasin est deja ajoute comme fournisseur', 'Ce magasin existe', ["positionClass" => "toast-top-right"]);
+            Toastr()->error('Ce magasin est déjà ajouté comme fournisseur', 'Ce magasin éxiste', ["positionClass" => "toast-top-right"]);
             return back();
         }else {
             Supply::create([
@@ -40,7 +40,7 @@ class SupplyController extends Controller
                 'slug' => str_replace('/','',Hash::make(Str::random(2).$magasin->name)),
                 'logo' => $magasin->logo
             ]);
-            Toastr()->success('Ce magasin a ete ajouter comme fourniseur', 'Ajout fournisseur', ["positionClass" => "toast-top-right"]);
+            Toastr()->success('Ce magasin a été ajouté comme fourniseur', 'Ajout fournisseur', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }
@@ -100,7 +100,7 @@ class SupplyController extends Controller
         $supplyGet = Supply::where('id',$id)->where('owner_id',AuthMagasinAgent())->first();
         Product::where('supply_id',$supplyGet->id)->where('magasin_id',AuthMagasinAgent())->update(['supply_id' => null,'supply_name' => $supplyGet->name]);
         $supplyGet->delete();
-        Toastr()->success('Fournisseur retirer avec success', 'Suppression fournisseur', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Fournisseur a été supprimé avec success', 'Suppréssion fournisseur', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

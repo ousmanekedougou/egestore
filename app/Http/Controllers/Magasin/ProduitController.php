@@ -89,7 +89,7 @@ class ProduitController extends Controller
             if($request->price_promotion < $request->price){
                 $validatePromotion = $request->price_promotion;
             }else {
-                Toastr()->error('Le prix de la promotion doit etre inferieure au prix normale', 'Erreur du prix de la promotion', ["positionClass" => "toast-top-right"]);
+                Toastr()->error('Le prix de la promotion doit etre inférieure au prix normale', 'Prix de la promotion', ["positionClass" => "toast-top-right"]);
                 return back();
             }
         }
@@ -179,7 +179,7 @@ class ProduitController extends Controller
             if($request->price_promotion < $request->price){
                 $validatePromotion = $request->price_promotion;
             }else {
-                Toastr()->error('Le prix de la promotion doit etre inferieure au prix normale', 'Erreur du prix de la promotion', ["positionClass" => "toast-top-right"]);
+                Toastr()->error('Le prix de la promotion doit etre inférieure au prix normale', 'Pprix de la promotion', ["positionClass" => "toast-top-right"]);
                 return back();
             }
         }
@@ -268,7 +268,7 @@ class ProduitController extends Controller
     public function destroy(string $id)
     {
         Product::where('id',$id)->where('magasin_id',AuthMagasinAgent())->delete();
-        Toastr()->success('Votre produit a bien été supprimé', 'Supression de produits', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre produit a bien été supprimé', 'Suppréssion de produits', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

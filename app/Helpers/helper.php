@@ -1,10 +1,8 @@
 <?php
 
 use App\Models\Magasin\Category;
-use App\Models\Magasin\Color;
 use App\Models\Magasin\Product;
 use App\Models\Magasin\SupplyOrder;
-use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -156,3 +154,4 @@ if (!function_exists('OrderNotification')) {
         return $supplyOrder;
     }
 }
+

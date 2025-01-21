@@ -6,18 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User\User;
 use App\Notifications\NouveauCompte\NouveauCompteClient;
-use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Notification;
 use Nette\Utils\Random;
-
+use Illuminate\Validation\Rules\Password;
 class RegisterController extends Controller
 {
     /*
@@ -97,7 +93,8 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['required', 'numeric', 'unique:users'],
             'adresse' => ['required', 'string'],
-            'password' => ['required', 'string', 'confirmed'],
+            'password' => ['required', 'string', 'confirmed',
+                Password::min(8)->letters() ->mixedCase()->numbers()->symbols()->uncompromised()],
             'termsService' => ['required', 'boolean'],
         ]);
     }

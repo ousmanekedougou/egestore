@@ -86,7 +86,7 @@ class AgentController extends Controller
     public function update(Request $request, string $id)
     {
         Agent::where('id',$id)->update(['is_active' => $request->is_active]);
-        Toastr()->success('Le status de votre compte a bien été modifieé', 'Modification de status', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Le status de votre compte a bien été modifié', 'Modification de status', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -96,7 +96,7 @@ class AgentController extends Controller
     public function destroy(string $id)
     {
         Agent::where('id',$id)->delete();
-        Toastr()->success('Votre agent a bien été supprimé', 'Suppresion agents', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre agent a bien été supprimé', 'Supprésion agents', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

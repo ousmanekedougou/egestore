@@ -51,7 +51,7 @@ class SubCategoryController extends Controller
             'visible' => $request->visible,
             'category_id' => $request->category_id]);
 
-        Toastr()->success('Votre sous-categorie a bien été ajouté', 'Ajout de sous-categories', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre sous-catégorie a bien été ajoutéé', 'Ajout de sous-catégories', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -81,7 +81,7 @@ class SubCategoryController extends Controller
             // 'type' => $request->type,
             'visible' => $request->visible,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name))]);
-        Toastr()->success('Le status de catte sous-categorie a bien été modifié', 'Modification de sous-categories', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Le status de cette sous-catégorie a bien été modifiéé', 'Modification de sous-catégories', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -91,7 +91,7 @@ class SubCategoryController extends Controller
     public function destroy(string $id)
     {
         SubCategory::where('id',$id)->delete();
-        Toastr()->success('Votre sous-categorie a bien été supprimé', 'Suppression de sous-categories', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre sous-catégorie a bien été suppriméé', 'Suppréssion de sous-catégories', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

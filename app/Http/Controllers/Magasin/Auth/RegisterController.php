@@ -13,7 +13,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Nette\Utils\Random;
-
+use Illuminate\Validation\Rules\Password;
 class RegisterController extends Controller
 {
     /*
@@ -100,7 +100,8 @@ class RegisterController extends Controller
             'phone' => ['required', 'numeric', 'unique:magasins'],
             'adresse' => ['required', 'string'],
             'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
-            'password' => ['required', 'string', 'confirmed'],
+            'password' => ['required', 'string', 'confirmed',
+                Password::min(8)->letters() ->mixedCase()->numbers()->symbols()->uncompromised()],
             'termsService' => ['required', 'boolean'],
         ]);
     }

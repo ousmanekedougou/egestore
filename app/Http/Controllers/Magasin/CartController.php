@@ -89,7 +89,7 @@ class CartController extends Controller
 
 
         if ($duplicata->isNotEmpty()) {
-            Toastr()->warning('Ce produit est déjà dans votre panier', 'Produit existant', ["positionClass" => "toast-top-right"]);
+            Toastr()->warning('Ce produit est déjà dans votre panier', 'Produit éxistant', ["positionClass" => "toast-top-right"]);
             return back();
         }
 
@@ -115,7 +115,7 @@ class CartController extends Controller
             return back();
         }
 
-        Toastr()->warning('Il n\' y a pas cette quantite pour ce produit', 'Qunatite inferierur', ["positionClass" => "toast-top-right"]);
+        Toastr()->warning('Il n\' y a pas cette quantité pour ce produit', 'Qunatité insuffisante', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -130,7 +130,7 @@ class CartController extends Controller
             Cart::update($rowId,$qty);
             return back();
         }
-        Toastr()->warning('La quantite minimum du produit est a 1', 'Quantite minimum', ["positionClass" => "toast-top-right"]);
+        Toastr()->warning('La quantité minimum du produit est requise a 1', 'Quantité minimum', ["positionClass" => "toast-top-right"]);
         return back();
     }
 
@@ -148,7 +148,7 @@ class CartController extends Controller
     public function destroy($rowId)
     {
         Cart::remove($rowId);
-        Toastr()->success('Votre produit a bien été supprimé dans le panier', 'Suppresion de produit', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Votre produit a bien été supprimé dans le panier', 'Supprésion de produit', ["positionClass" => "toast-top-right"]);
         if (Auth::guard('magasin')->user()) {
             return redirect()->route(('magasin.home'));
         }else {

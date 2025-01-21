@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Magasin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Magasin;
-use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Validation\Rules\Password;
 class ProfileController extends Controller
 {
     public function __construct()
@@ -67,7 +66,7 @@ class ProfileController extends Controller
             'phone' => ['required', 'numeric'],
             'adresse' => ['required', 'string'],
             'visible' => ['required', 'boolean'],
-            'password' => ['confirmed'],
+            'password' => ['confirmed',Password::min(8)->letters() ->mixedCase()->numbers()->symbols()->uncompromised()],
         ]);
 
         // dd($request->shop_name);

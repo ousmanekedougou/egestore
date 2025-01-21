@@ -2,7 +2,6 @@
 @extends('errors.app')
 
 @section('main-content')
-
     <div class="px-3">
         <div class="row min-vh-100 flex-center p-5">
           <div class="col-12 col-xl-10 col-xxl-8">
