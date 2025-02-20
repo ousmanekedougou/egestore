@@ -26,9 +26,13 @@
             <button data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" class="btn btn-sm btn-outline-primary rounded-pill w-100 me-3 px-2 px-sm-4 fs-9 fs-sm-8">
               <span data-feather="edit-3" class="me-2"></span>Modifier ce produit
             </button>
-            <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();" class="btn btn-sm btn-warning rounded-pill w-100 fs-9 fs-sm-8">
-              <span data-feather="shopping-cart" class=" me-2"></span>Ajouter au panier
-            </a>
+            @if($product->quantity > 0)
+              <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();" class="btn btn-sm btn-warning rounded-pill w-100 fs-9 fs-sm-8">
+                <span data-feather="shopping-cart" class=" me-2"></span>Ajouter au panier
+              </a>
+            @else
+              <span>Indisponible</span>
+            @endif
           </div>
         </div>
         <div class="col-12 col-lg-5">

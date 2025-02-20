@@ -68,10 +68,12 @@ class SupplyController extends Controller
      */
     public function show(string $slug)
     {
-        // dd(request()->slug);
         return view('magasin.supplies.show',
             [
-                'magasin' => Magasin::where('slug',request()->slug)->where('is_active',1)->where('confirmation_token',null)->where('id','!=',AuthMagasinAgent())->first()
+                'magasin' => Magasin::where('slug',$slug)
+                ->where('is_active',1)->where('confirmation_token',null)
+                ->where('id','!=',AuthMagasinAgent())
+                ->first()
             ]
         );
     }
@@ -80,6 +82,14 @@ class SupplyController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
+    {
+        //
+    }
+
+     /**
+     * Show the form for editing the specified resource.
+     */
+    public function about(string $slug)
     {
         //
     }

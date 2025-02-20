@@ -28,7 +28,7 @@
                 <img class="mw-100 rounded-4" src="@if($supplie->logo == '') https://ui-avatars.com/api/?name={{ $supplie->magasin->name }} @else {{(Storage::url($supplie->logo))}} @endif" alt="{{ $supplie->magasin->name }}" /></div>
               <h5 class="mb-2"> {{ $supplie->magasin->name }}</h5>
               <p class="text-body-quaternary fs-9 mb-2 fw-semibold"> <span data-feather="shopping-bag" class="text-priamry"></span> {{ $supplie->supply_orders->count() }} Commandes </p>
-              <a class="btn btn-link p-0" href="#!">A propos<span class="fas fa-chevron-right ms-1 fs-10"></span></a>
+              <a class="btn btn-link p-0" href="{{ route('magasin.autres-magasins.show',$supplie->slug) }}">A propos<span class="fas fa-chevron-right ms-1 fs-10"></span></a>
               <div class="hover-actions top-0 end-0 mt-2 me-3">
                 <div class="btn-reveal-trigger"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal p-2 lh-1 bg-body-highlight rounded-1" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-9"></span></button>
                   <div class="dropdown-menu dropdown-menu-end py-0">

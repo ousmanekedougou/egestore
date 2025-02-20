@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('admin_name');
             $table->string('email')->unique();
             $table->integer('phone')->unique();
+            $table->integer('shop_phone')->unique()->nullable();
             $table->string('slug')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

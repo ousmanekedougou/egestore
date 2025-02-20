@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Magasin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Magasin\About;
 use App\Models\Magasin\Magasin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,7 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        return view('magasin.profile.index');
+        return view('magasin.profile.index',['auth_about' => About::where('magasin_id',Auth::guard('magasin')->user()->id)->first()]);
     }
 
     /**
@@ -60,19 +61,15 @@ class ProfileController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request,[
-            'shop_name' => ['required', 'string'],
             'admin_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'phone' => ['required', 'numeric'],
             'adresse' => ['required', 'string'],
-            'visible' => ['required', 'boolean'],
-            'password' => ['confirmed',Password::min(8)->letters() ->mixedCase()->numbers()->symbols()->uncompromised()],
         ]);
 
         // dd($request->shop_name);
 
         $password = null;
-        $inv_at = null;
         $imageName = null;
         $logoName = null;
 
@@ -80,49 +77,105 @@ class ProfileController extends Controller
         if($request->password == null){
             $password = Auth::guard('magasin')->user()->password;
         }else {
+            $this->validate($request,[ 'password' => ['confirmed',Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised()],
+            ]);
             $password = Hash::make($request->password);
         }
 
+        // if($request->hasFile('logo'))
+        // {
+        //     $logoName = $request->logo->store('public/Profiles/Logos');
+        // }else{
+        //     $logoName = Auth::guard('magasin')->user()->logo;
+        // }
 
+        
+        // if($request->hasFile('image'))
+        // {
+        //     $imageName = $request->image->store('public/Profiles/Images');
+        // }else{
+        //     $imageName = Auth::guard('magasin')->user()->image;
+        // }
+
+        Magasin::find(Auth::guard('magasin')->user()->id)
+        ->update(
+        [
+            'admin_name' => $request->admin_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'adresse' => $request->adresse,
+            'password' => $password,
+        ]);
+
+        Toastr()->success('Votre profile a bien été modifié', 'Modification de profiles', ["positionClass" => "toast-top-right"]);
+        return back();
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update_coordoonne(Request $request, string $id)
+    {
+        $this->validate($request,[
+            'shop_name' => ['required', 'string'],
+            'shop_phone' => ['required', 'numeric'],
+            'visible' => ['required', 'boolean'],
+        ]);
+
+        $inv_at = null;
         if ($request->inv_at == null) {
             $inv_at = Auth::guard('magasin')->user()->inv_at;
         }else {
             $inv_at = $request->inv_at;
         }
         
-        if($request->hasFile('logo'))
-        {
-            $logoName = $request->logo->store('public/Profiles/Logos');
-        }else{
-            $logoName = Auth::guard('magasin')->user()->logo;
-        }
-
-        
-        if($request->hasFile('image'))
-        {
-            $imageName = $request->image->store('public/Profiles/Images');
-        }else{
-            $imageName = Auth::guard('magasin')->user()->image;
-        }
 
         Magasin::find(Auth::guard('magasin')->user()->id)
         ->update(
         [
-            'logo' => $logoName,
-            'image' => $imageName,
             'name' => $request->shop_name,
-            'admin_name' => $request->admin_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'adresse' => $request->adresse,
+            'shop_phone' => $request->shop_phone,
             'visible' => $request->visible,
             'inv_at' => $inv_at,
             'registre_com' => $request->rccm,
             'ninea' => $request->ninea,
-            'password' => $password,
         ]);
 
-        Toastr()->success('Votre profile a bien été modifié', 'Modification de profiles', ["positionClass" => "toast-top-right"]);
+        Toastr()->success('Vos coordonnées ont bien été modifié', 'Modification de coordonnées', ["positionClass" => "toast-top-right"]);
+        return back();
+    }
+
+     /**
+     * Update the specified resource in storage.
+     */
+    public function update_critere(Request $request, string $id)
+    {
+        // dd($request->all());
+        $auth_about = About::where('magasin_id',Auth::guard('magasin')->user()->id)->first();
+
+        if ( $auth_about) {
+            $auth_about->update(
+            [
+                'our_history' => $request->our_history,
+                'our_vision' => $request->our_vision,
+                'our_mission' => $request->our_mission,
+                'our_values' => $request->our_values,
+                'magasin_id' => Auth::guard('magasin')->user()->id
+            ]);
+        }else {
+            About::create(
+            [
+                'our_history' => $request->our_history,
+                'our_vision' => $request->our_vision,
+                'our_mission' => $request->our_mission,
+                'our_values' => $request->our_values,
+                'magasin_id' => Auth::guard('magasin')->user()->id
+            ]);
+        }
+
+        
+
+        Toastr()->success('Vos critères ont bien été modifié', 'Modification de profiles', ["positionClass" => "toast-top-right"]);
         return back();
     }
 

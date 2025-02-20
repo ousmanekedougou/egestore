@@ -87,8 +87,9 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
     Route::resource('/panier', App\Http\Controllers\Magasin\CartController::class);
     
     Route::resource('/profile', App\Http\Controllers\Magasin\ProfileController::class);
-    Route::resource('/profile', App\Http\Controllers\Magasin\ProfileController::class);
-
+    Route::put('/profile/coordonne/{id}',[App\Http\Controllers\Magasin\ProfileController::class,'update_coordoonne'])->name('profile.update_coordoonne');
+    Route::put('/profile/critere/{id}',[App\Http\Controllers\Magasin\ProfileController::class,'update_critere'])->name('profile.update_critere');
+    
     Route::resource('/reserve', App\Http\Controllers\Magasin\ReservationController::class);
     Route::resource('/bagage', App\Http\Controllers\Magasin\BagageController::class);
     Route::post('bagage/post',[App\Http\Controllers\Magasin\BagageController::class,'post'])->name('bagage.post');

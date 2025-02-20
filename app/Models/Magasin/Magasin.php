@@ -20,6 +20,7 @@ class Magasin extends Authenticatable
         'slug',
         'email',
         'phone',
+        'shop_phone',
         'password',
         'admin_name',
         'logo',
@@ -51,6 +52,11 @@ class Magasin extends Authenticatable
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function abouts()
+    {
+        return $this->hasMany(About::class);
     }
 
     public function agents()
