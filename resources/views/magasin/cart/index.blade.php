@@ -179,8 +179,6 @@
 
 <script>
    function enableBrand(answer){
-        
-        // declarartion de naissance
         if (answer.value == -1) {
             document.getElementById('clientNone').classList.remove('d-none')
         }else{

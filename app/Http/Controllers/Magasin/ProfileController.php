@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Magasin;
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\About;
 use App\Models\Magasin\Magasin;
+use App\Models\Magasin\Social;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,15 +21,29 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        return view('magasin.profile.index',['auth_about' => About::where('magasin_id',Auth::guard('magasin')->user()->id)->first()]);
+        return view('magasin.profile.index',
+        [
+            'auth_about' => About::where('magasin_id',Auth::guard('magasin')->user()->id)->first(),
+            'auth_reseau' => Social::where('magasin_id',Auth::guard('magasin')->user()->id)->first(),
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        //update de l'image profile du magasinier
+        $imageName = '';
+        if($request()->hasFile('picture'))
+        {
+            $imageName = $request()->picture->store('public/Profiles/Images');
+        }else{
+            $imageName = Auth::guard('magasin')->user()->image;
+        }
+
+        Magasin::find(Auth::guard('magasin')->user()->id)->update(['image' => $imageName]);
+
     }
 
     /**
@@ -52,7 +67,35 @@ class ProfileController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $auth_about = Social::where('magasin_id',Auth::guard('magasin')->user()->id)->first();
+        if ( $auth_about) {
+            $auth_about->update(
+            [
+                'facebook' => request()->facebook,
+                'whatsapp' => request()->whatsapp,
+                'instagram' => request()->instagram,
+                'tiktok' => request()->tiktok,
+                'twitter' => request()->twitter,
+                'linkedin' => request()->linkedin,
+                'youtube' => request()->youtube,
+                'magasin_id' => Auth::guard('magasin')->user()->id
+            ]);
+        }else {
+            Social::create(
+            [
+                'facebook' => request()->facebook,
+                'whatsapp' => request()->whatsapp,
+                'instagram' => request()->instagram,
+                'tiktok' => request()->tiktok,
+                'twitter' => request()->twitter,
+                'linkedin' => request()->linkedin,
+                'youtube' => request()->youtube,
+                'magasin_id' => Auth::guard('magasin')->user()->id
+            ]);
+        }
+
+        Toastr()->success('Vos réseaux sociaux ont bien été modifié', 'Modification de profiles', ["positionClass" => "toast-top-right"]);
+        return back();
     }
 
     /**
@@ -87,14 +130,6 @@ class ProfileController extends Controller
         //     $logoName = $request->logo->store('public/Profiles/Logos');
         // }else{
         //     $logoName = Auth::guard('magasin')->user()->logo;
-        // }
-
-        
-        // if($request->hasFile('image'))
-        // {
-        //     $imageName = $request->image->store('public/Profiles/Images');
-        // }else{
-        //     $imageName = Auth::guard('magasin')->user()->image;
         // }
 
         Magasin::find(Auth::guard('magasin')->user()->id)

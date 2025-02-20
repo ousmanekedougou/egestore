@@ -127,7 +127,7 @@
             </div>
             <div class="overflow-auto scrollbar" style="height: 3rem;">
               <ul class="nav d-flex flex-column mb-2 pb-1">
-                <li class="nav-item"><a class="nav-link px-3" href="{{ route('magasin.profile.index') }}"> <span class="me-2 text-body" data-feather="user"></span><span>Profile</span></a></li>
+                <li class="nav-item"><a class="nav-link px-3" href="{{ route('magasin.profile.index') }}"> <span class="me-2 text-body" data-feather="user"></span><span>Votre profile</span></a></li>
               </ul>
             </div>
             <div class="card-footer p-0 border-top border-translucent">
@@ -137,7 +137,7 @@
               <hr />
               <div class="px-3 pb-3"> 
                 <a class="btn btn-phoenix-secondary d-flex flex-center w-100" href="{{ route('magasin.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> 
-                  <span class="me-2" data-feather="log-out"> </span>Se deconecter
+                  <span class="me-2" data-feather="log-out"> </span>Se déconecter
                 </a>
                 <form id="logout-form" action="{{ route('magasin.logout') }}
                     "method="POST" class="d-none">

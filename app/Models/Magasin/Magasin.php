@@ -32,7 +32,9 @@ class Magasin extends Authenticatable
         'code_validation',
         'confirmation_token',
         'registre_com',
-        'ninea'
+        'ninea',
+        'image',
+        'logo'
     ];
 
     public function categories(){

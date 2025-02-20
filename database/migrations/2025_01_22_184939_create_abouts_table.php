@@ -18,13 +18,13 @@ return new class extends Migration
               ->references("id")
               ->on("magasins")
               ->cascadeOnDelete();
-              $table->text('our_history')->nullable();
-              $table->text('our_vision')->nullable();
-              $table->text('our_mission')->nullable();
-              $table->text('our_values')->nullable();
-              $table->text('our_sieges')->nullable();
-              $table->text('sales_figures')->nullable();
-              $table->text('areas_interest')->nullable();
+            $table->text('our_history')->nullable();
+            $table->text('our_vision')->nullable();
+            $table->text('our_mission')->nullable();
+            $table->text('our_values')->nullable();
+            $table->text('our_sieges')->nullable();
+            $table->text('sales_figures')->nullable();
+            $table->text('areas_interest')->nullable();
             $table->timestamps();
         });
     }

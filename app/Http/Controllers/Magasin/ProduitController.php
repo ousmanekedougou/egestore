@@ -10,6 +10,8 @@ use App\Models\Magasin\Product;
 use App\Models\Magasin\SubCategory;
 use App\Models\Magasin\Supply;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Storage;
+
 class ProduitController extends Controller
 {
     public function __construct()
@@ -197,6 +199,7 @@ class ProduitController extends Controller
         $imageName = '';
         if($request->hasFile('image'))
         {
+            Storage::delete($product->image);
             $imageName = $request->image->store('public/Products');
         }else{
             $imageName = $product->image;
@@ -235,7 +238,6 @@ class ProduitController extends Controller
         }
 
 
-
         $product->update([
             'name' => $request->name,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
@@ -267,7 +269,9 @@ class ProduitController extends Controller
      */
     public function destroy(string $id)
     {
-        Product::where('id',$id)->where('magasin_id',AuthMagasinAgent())->delete();
+        $delete_product = Product::where('id',$id)->where('magasin_id',AuthMagasinAgent())->first();
+        Storage::delete($delete_product->image);
+        $delete_product->delete();
         Toastr()->success('Votre produit a bien été supprimé', 'Suppréssion de produits', ["positionClass" => "toast-top-right"]);
         return back();
     }

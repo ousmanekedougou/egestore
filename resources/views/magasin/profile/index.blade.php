@@ -16,11 +16,11 @@
 
                 <div class="col-12 col-sm-auto">
                   <input id="image" type="file" class="form-control d-none @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}" required autocomplete="image">
-                    @error('image')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
+                  @error('image')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
                   <label class="cursor-pointer avatar avatar-5xl" for="image">
                     <img class="rounded-circle" src="@if(Auth::guard('magasin')->user()->image == '') https://ui-avatars.com/api/?name={{Auth::guard('magasin')->user()->admin_name}} @else {{(Storage::url(Auth::guard('magasin')->user()->image))}} @endif" alt="" />
                   </label>
@@ -101,6 +101,7 @@
            <li class="nav-item"><a class="nav-link text-nowrap active" id="personal-info-tab" data-bs-toggle="tab" href="#tab-personal-info" role="tab" aria-controls="tab-personal-info" aria-selected="true"><span class="fas fa-user me-2"></span>Informations personnelles</a></li>
            <li class="nav-item"><a class="nav-link text-nowrap" id="coordonne-info-tab" data-bs-toggle="tab" href="#tab-coordonne-info" role="tab" aria-controls="tab-coordonne-info" aria-selected="true"><span class="fa fa-shopping-bag me-2"></span>Coordonnées du magasin</a></li>
            <li class="nav-item"><a class="nav-link text-nowrap" id="critere-info-tab" data-bs-toggle="tab" href="#tab-critere-info" role="tab" aria-controls="tab-critere-info" aria-selected="true"><span class="fab fa-readme me-2"></span>Critères du magasin</a></li>
+           <li class="nav-item"><a class="nav-link text-nowrap" id="reseau-info-tab" data-bs-toggle="tab" href="#tab-reseau-info" role="tab" aria-controls="tab-reseau-info" aria-selected="true"><span class="fa fa-globe  me-2"></span>Réseaux sociaux</a></li>
         </ul>
       </div>
       <div class="tab-content" id="profileTabContent">
@@ -305,7 +306,125 @@
                   </span>
                   @enderror
 
-                  <button type="submit" class="btn btn-phoenix-primary w-100 mb-4">Enrégistrer les modofications</button>
+                  <button type="submit" class="btn btn-phoenix-primary w-100 mb-4">Enrégistrer les modifications</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade show mb-5" id="tab-reseau-info" role="tabpanel" aria-labelledby="reseau-info-tab">
+          <div class="col-12">
+            <div class="card h-100">
+              <div class="card-body">
+                <form method="POST" action="{{ route('magasin.profile.edit',0) }}">
+                  @csrf
+                  @method('PUT')
+
+                  <div class="mb-6">
+                    <h4 class="mb-4">Vos réseaux sociaux</h4>
+                    <div class="row g-3">
+                      <div class="col-12 col-sm-12">
+                        <div class="form-icon-container">
+                          <div class="form-floating">
+                            <input class="form-control form-icon-input @error('facebook') is-invalid @enderror" value="{{ old('facebook') ?? $auth_reseau->facebook }}" name="facebook" id="facebook" type="text" placeholder="Facebook">
+                            <label class="text-body-tertiary form-icon-label" for="facebook">Facebook</label>
+                          </div>
+                          <span class="fa-brands fa-facebook text-body fs-9 form-icon"></span>
+                          @error('facebook')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                          @enderror
+                        </div>
+                      </div>
+                      <div class="col-12 col-sm-12">
+                        <div class="form-icon-container">
+                          <div class="form-floating">
+                            <input class="form-control form-icon-input @error('whatsapp') is-invalid @enderror" name="whatsapp" id="whatsapp" value="{{ old('whatsapp') ?? $auth_reseau->whatsapp }}" type="text" placeholder="whatsapp">
+                            <label class="text-body-tertiary form-icon-label" for="whatsapp">whatsapp</label>
+                          </div>
+                          <span class="fa-brands fa-whatsapp text-body fs-9 form-icon"></span>
+                          @error('whatsapp')
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                            </span>
+                          @enderror 
+                        </div>
+                      </div>
+                      <div class="col-12 col-sm-12">
+                        <div class="form-icon-container">
+                          <div class="form-floating">
+                            <input class="form-control form-icon-input @error('instagram') is-invalid @enderror" value="{{ old('instagram') ?? $auth_reseau->instagram }}" name="instagram" id="instagram" type="text" placeholder="instagram">
+                            <label class="text-body-tertiary form-icon-label" for="instagram">instagram</label>
+                          </div>
+                          <span class="fa-brands fa-instagram text-body fs-9 form-icon"></span>
+                          @error('instagram')
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                            </span>
+                          @enderror
+                        </div>
+                      </div>
+                      <div class="col-12 col-sm-12">
+                        <div class="form-icon-container">
+                          <div class="form-floating">
+                            <input class="form-control form-icon-input @error('tiktok') is-invalid @enderror" value="{{ old('tiktok') ?? $auth_reseau->tiktok }}" name="tiktok" id="tiktok" type="text" placeholder="tiktok">
+                            <label class="text-body-tertiary form-icon-label" for="tiktok">tiktok</label>
+                          </div>
+                          <span class="fa-brands fa-tiktok text-body fs-9 form-icon"></span>
+                          @error('tiktok')
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                            </span>
+                          @enderror
+                        </div>
+                      </div>
+                      <div class="col-12 col-sm-12">
+                        <div class="form-icon-container">
+                          <div class="form-floating">
+                            <input class="form-control form-icon-input @error('twitter') is-invalid @enderror" value="{{ old('twitter') ?? $auth_reseau->twitter }}" name="twitter" id="twitter" type="text" placeholder="Twitter">
+                            <label class="text-body-tertiary form-icon-label" for="twitter">Twitter</label>
+                          </div>
+                          <span class="fa-brands fa-twitter text-body fs-9 form-icon"></span>
+                          @error('twitter')
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                            </span>
+                          @enderror
+                        </div>
+                      </div>
+                      <div class="col-12 col-sm-12">
+                        <div class="form-icon-container">
+                          <div class="form-floating">
+                            <input class="form-control form-icon-input @error('linkedin') is-invalid @enderror" value="{{ old('linkedin') ?? $auth_reseau->linkedin }}" name="linkedin" id="linkedin" type="text" placeholder="Linkedin">
+                            <label class="text-body-tertiary form-icon-label" for="linkedin">linkedin</label>
+                          </div>
+                          <span class="fa-brands fa-linkedin-in text-body fs-9 form-icon"></span>
+                          @error('linkedin')
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                            </span>
+                          @enderror
+                        </div>
+                      </div>
+                      <div class="col-12 col-sm-12">
+                        <div class="form-icon-container">
+                          <div class="form-floating">
+                            <input class="form-control form-icon-input @error('youtube') is-invalid @enderror" value="{{ old('youtube') ?? $auth_reseau->youtube }}" name="youtube" id="youtube" type="text" placeholder="youtube">
+                            <label class="text-body-tertiary form-icon-label" for="youtube">youtube</label>
+                          </div>
+                          <span class="fa-brands fa-youtube text-body fs-9 form-icon"></span>
+                          @error('youtube')
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                            </span>
+                          @enderror
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-phoenix-primary w-100 mb-4">Enrégistrer les modifications</button>
                 </form>
               </div>
             </div>

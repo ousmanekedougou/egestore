@@ -559,13 +559,13 @@
 
 
 <script>
-    function enableBrand(answer){
-      if (answer.checked == 1) {
-          document.getElementById('clientNone').classList.remove('d-none')
-      }else{
-          document.getElementById('clientNone').classList.add('d-none')
-      }
+  function enableBrand(answer){
+    if (answer.checked == 1) {
+        document.getElementById('clientNone').classList.remove('d-none')
+    }else{
+        document.getElementById('clientNone').classList.add('d-none')
     }
+  }
 </script>
 
 @endsection

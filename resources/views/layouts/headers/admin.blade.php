@@ -222,7 +222,7 @@
               <hr />
               <div class="px-3"> 
                 <a class="btn btn-phoenix-secondary d-flex flex-center w-100" href="{{ route('admin.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> 
-                  <span class="me-2" data-feather="log-out"> </span>Se deconecter
+                  <span class="me-2" data-feather="log-out"> </span>Se déconecter
                 </a>
                 <form id="logout-form" action="{{ route('admin.logout') }}
                     "method="POST" class="d-none">
