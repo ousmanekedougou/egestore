@@ -14,7 +14,7 @@
                     </div><!-- parent pages-->
                     <div class="nav-item-wrapper">
                         <a class="nav-link label-1 {{ set_active_roote('magasin.fournisseurs.create') }} " href="{{ route('magasin.fournisseurs.create') }}" role="button" data-bs-toggle="" aria-expanded="false">
-                            <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="gift" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Fournisseurs</span></span></div>
+                            <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="gift" class="ms-1 me-1 fa-lg"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Mes fournisseurs</span></span></div>
                         </a>
                     </div><!-- parent pages-->
                     <div class="nav-item-wrapper">

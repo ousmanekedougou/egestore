@@ -274,7 +274,7 @@
                   @method('PUT')
                   <h6 class="mb-4">Notre histoire</h6>
                   <textarea id="our_history" name="our_history" class="form-control @error('our_history') is-invalid @enderror mb-3" rows="4">
-                    {!! $auth_about->our_history !!}
+                    {!! $auth_about ? $auth_about->our_history : '......' !!}
                   </textarea>
                   @error('our_history')
                   <span class="invalid-feedback" role="alert">
@@ -283,7 +283,7 @@
                   @enderror
 
                   <h6 class="mb-4">Notre vision</h6>
-                  <textarea id="our_vision" name="our_vision" class="form-control @error('our_vision') is-invalid @enderror mb-3" rows="4">{!! $auth_about->our_vision !!}</textarea>
+                  <textarea id="our_vision" name="our_vision" class="form-control @error('our_vision') is-invalid @enderror mb-3" rows="4"> {!! $auth_about ? $auth_about->our_vision : '......' !!}</textarea>
                   @error('our_vision')
                   <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -291,7 +291,7 @@
                   @enderror
 
                   <h6 class="mb-4">Notre mission</h6>
-                  <textarea id="our_mission" name="our_mission" class="form-control @error('our_mission') is-invalid @enderror mb-3" rows="4">{!! $auth_about->our_mission !!}</textarea>
+                  <textarea id="our_mission" name="our_mission" class="form-control @error('our_mission') is-invalid @enderror mb-3" rows="4">{!! $auth_about ? $auth_about->our_mission : '......' !!}</textarea>
                   @error('our_mission')
                   <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -299,7 +299,7 @@
                   @enderror
 
                   <h6 class="mb-4">Nos valeurs</h6>
-                  <textarea id="our_values" name="our_values" class="form-control  @error('our_values') is-invalid @enderror mb-3" rows="4">{!! $auth_about->our_values !!}</textarea>
+                  <textarea id="our_values" name="our_values" class="form-control  @error('our_values') is-invalid @enderror mb-3" rows="4">{!! $auth_about ? $auth_about->our_values : '......' !!}</textarea>
                   @error('our_values')
                   <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -327,7 +327,7 @@
                       <div class="col-12 col-sm-12">
                         <div class="form-icon-container">
                           <div class="form-floating">
-                            <input class="form-control form-icon-input @error('facebook') is-invalid @enderror" value="{{ old('facebook') ?? $auth_reseau->facebook }}" name="facebook" id="facebook" type="text" placeholder="Facebook">
+                            <input class="form-control form-icon-input @error('facebook') is-invalid @enderror" value="{{ $auth_reseau ? $auth_reseau->facebook : old('facebook') }}" name="facebook" id="facebook" type="text" placeholder="Facebook">
                             <label class="text-body-tertiary form-icon-label" for="facebook">Facebook</label>
                           </div>
                           <span class="fa-brands fa-facebook text-body fs-9 form-icon"></span>
@@ -341,7 +341,7 @@
                       <div class="col-12 col-sm-12">
                         <div class="form-icon-container">
                           <div class="form-floating">
-                            <input class="form-control form-icon-input @error('whatsapp') is-invalid @enderror" name="whatsapp" id="whatsapp" value="{{ old('whatsapp') ?? $auth_reseau->whatsapp }}" type="text" placeholder="whatsapp">
+                            <input class="form-control form-icon-input @error('whatsapp') is-invalid @enderror" name="whatsapp" id="whatsapp" value="{{ $auth_reseau ? $auth_reseau->whatsapp : old('whatsapp') }}" type="text" placeholder="whatsapp">
                             <label class="text-body-tertiary form-icon-label" for="whatsapp">whatsapp</label>
                           </div>
                           <span class="fa-brands fa-whatsapp text-body fs-9 form-icon"></span>
@@ -355,7 +355,7 @@
                       <div class="col-12 col-sm-12">
                         <div class="form-icon-container">
                           <div class="form-floating">
-                            <input class="form-control form-icon-input @error('instagram') is-invalid @enderror" value="{{ old('instagram') ?? $auth_reseau->instagram }}" name="instagram" id="instagram" type="text" placeholder="instagram">
+                            <input class="form-control form-icon-input @error('instagram') is-invalid @enderror" value="{{ $auth_reseau ? $auth_reseau->instagram : old('instagram') }}" name="instagram" id="instagram" type="text" placeholder="instagram">
                             <label class="text-body-tertiary form-icon-label" for="instagram">instagram</label>
                           </div>
                           <span class="fa-brands fa-instagram text-body fs-9 form-icon"></span>
@@ -369,53 +369,11 @@
                       <div class="col-12 col-sm-12">
                         <div class="form-icon-container">
                           <div class="form-floating">
-                            <input class="form-control form-icon-input @error('tiktok') is-invalid @enderror" value="{{ old('tiktok') ?? $auth_reseau->tiktok }}" name="tiktok" id="tiktok" type="text" placeholder="tiktok">
+                            <input class="form-control form-icon-input @error('tiktok') is-invalid @enderror" value="{{ $auth_reseau ? $auth_reseau->tiktok : old('tiktok') }}" name="tiktok" id="tiktok" type="text" placeholder="tiktok">
                             <label class="text-body-tertiary form-icon-label" for="tiktok">tiktok</label>
                           </div>
                           <span class="fa-brands fa-tiktok text-body fs-9 form-icon"></span>
                           @error('tiktok')
-                            <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                            </span>
-                          @enderror
-                        </div>
-                      </div>
-                      <div class="col-12 col-sm-12">
-                        <div class="form-icon-container">
-                          <div class="form-floating">
-                            <input class="form-control form-icon-input @error('twitter') is-invalid @enderror" value="{{ old('twitter') ?? $auth_reseau->twitter }}" name="twitter" id="twitter" type="text" placeholder="Twitter">
-                            <label class="text-body-tertiary form-icon-label" for="twitter">Twitter</label>
-                          </div>
-                          <span class="fa-brands fa-twitter text-body fs-9 form-icon"></span>
-                          @error('twitter')
-                            <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                            </span>
-                          @enderror
-                        </div>
-                      </div>
-                      <div class="col-12 col-sm-12">
-                        <div class="form-icon-container">
-                          <div class="form-floating">
-                            <input class="form-control form-icon-input @error('linkedin') is-invalid @enderror" value="{{ old('linkedin') ?? $auth_reseau->linkedin }}" name="linkedin" id="linkedin" type="text" placeholder="Linkedin">
-                            <label class="text-body-tertiary form-icon-label" for="linkedin">linkedin</label>
-                          </div>
-                          <span class="fa-brands fa-linkedin-in text-body fs-9 form-icon"></span>
-                          @error('linkedin')
-                            <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                            </span>
-                          @enderror
-                        </div>
-                      </div>
-                      <div class="col-12 col-sm-12">
-                        <div class="form-icon-container">
-                          <div class="form-floating">
-                            <input class="form-control form-icon-input @error('youtube') is-invalid @enderror" value="{{ old('youtube') ?? $auth_reseau->youtube }}" name="youtube" id="youtube" type="text" placeholder="youtube">
-                            <label class="text-body-tertiary form-icon-label" for="youtube">youtube</label>
-                          </div>
-                          <span class="fa-brands fa-youtube text-body fs-9 form-icon"></span>
-                          @error('youtube')
                             <span class="invalid-feedback" role="alert">
                               <strong>{{ $message }}</strong>
                             </span>

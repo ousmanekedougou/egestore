@@ -22,9 +22,9 @@ return new class extends Migration
             $table->string('whatsapp')->nullable();
             $table->string('instagram')->nullable();
             $table->string('tiktok')->nullable();
-            $table->string('twitter')->nullable();
-            $table->string('linkedin')->nullable();
-            $table->string('youtube')->nullable();
+            // $table->string('twitter')->nullable();
+            // $table->string('linkedin')->nullable();
+            // $table->string('youtube')->nullable();
             $table->timestamps();
         });
     }

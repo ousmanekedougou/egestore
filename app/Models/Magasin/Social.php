@@ -19,13 +19,13 @@ class Social extends Model
         'whatsapp',
         'instagram',
         'tiktok',
-        'twitter',
-        'linkedin',
-        'youtube',
+        // 'twitter',
+        // 'linkedin',
+        // 'youtube',
         'magasin_id'
     ];
     public function magasin()
     {
-        return $this->belongsTo(Magasin::class);
+        return $this->belongsTo(Magasin::class, 'magasin_id', 'id');
     }
 }

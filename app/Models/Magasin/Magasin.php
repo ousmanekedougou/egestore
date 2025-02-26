@@ -23,6 +23,7 @@ class Magasin extends Authenticatable
         'shop_phone',
         'password',
         'admin_name',
+        'image',
         'logo',
         'inv_at',
         'inv_status',
@@ -33,8 +34,6 @@ class Magasin extends Authenticatable
         'confirmation_token',
         'registre_com',
         'ninea',
-        'image',
-        'logo'
     ];
 
     public function categories(){
@@ -56,9 +55,14 @@ class Magasin extends Authenticatable
         return $this->hasMany(Product::class);
     }
 
-    public function abouts()
+    public function about()
     {
-        return $this->hasMany(About::class);
+        return $this->hasOne(About::class, 'magasin_id', 'id');
+    }
+
+    public function social()
+    {
+        return $this->hasOne(Social::class, 'magasin_id', 'id');
     }
 
     public function agents()

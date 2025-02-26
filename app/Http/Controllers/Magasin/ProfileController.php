@@ -67,18 +67,14 @@ class ProfileController extends Controller
      */
     public function edit(string $id)
     {
-        $auth_about = Social::where('magasin_id',Auth::guard('magasin')->user()->id)->first();
-        if ( $auth_about) {
-            $auth_about->update(
+        $auth_reseau = Social::where('magasin_id',Auth::guard('magasin')->user()->id)->first();
+        if ( $auth_reseau) {
+            $auth_reseau->update(
             [
                 'facebook' => request()->facebook,
                 'whatsapp' => request()->whatsapp,
                 'instagram' => request()->instagram,
                 'tiktok' => request()->tiktok,
-                'twitter' => request()->twitter,
-                'linkedin' => request()->linkedin,
-                'youtube' => request()->youtube,
-                'magasin_id' => Auth::guard('magasin')->user()->id
             ]);
         }else {
             Social::create(
@@ -87,9 +83,6 @@ class ProfileController extends Controller
                 'whatsapp' => request()->whatsapp,
                 'instagram' => request()->instagram,
                 'tiktok' => request()->tiktok,
-                'twitter' => request()->twitter,
-                'linkedin' => request()->linkedin,
-                'youtube' => request()->youtube,
                 'magasin_id' => Auth::guard('magasin')->user()->id
             ]);
         }

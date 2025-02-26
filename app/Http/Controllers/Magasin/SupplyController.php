@@ -37,8 +37,6 @@ class SupplyController extends Controller
             Supply::create([
                 'owner_id' => AuthMagasinAgent(),
                 'magasin_id' => $magasin->id,
-                'slug' => str_replace('/','',Hash::make(Str::random(2).$magasin->name)),
-                'logo' => $magasin->logo
             ]);
             Toastr()->success('Ce magasin a été ajouté comme fourniseur', 'Ajout fournisseur', ["positionClass" => "toast-top-right"]);
             return back();
@@ -68,12 +66,19 @@ class SupplyController extends Controller
      */
     public function show(string $slug)
     {
+        $magasin = Magasin::where('slug',$slug)
+        ->where('is_active',1)->where('confirmation_token',null)
+        ->where('id','!=',AuthMagasinAgent())
+        ->first();
+        // dd($mag->about->our_history);
         return view('magasin.supplies.show',
             [
-                'magasin' => Magasin::where('slug',$slug)
-                ->where('is_active',1)->where('confirmation_token',null)
-                ->where('id','!=',AuthMagasinAgent())
-                ->first()
+                'magasin' => $magasin,
+                'prducts' => Product::where('magasin_id',$magasin->id)
+                ->inRandomOrder()
+                ->limit(8)
+                ->orderBy('id','DESC')
+                ->get()
             ]
         );
     }

@@ -171,7 +171,7 @@
                         </td>
                         <td class="last-order align-middle white-space-nowrap text-body-tertiary text-center">
                           <button type="button" class="btn btn-primary" id="add">
-                            <span class="fas fa-plus me-2"></span>Ajouter
+                            <span class="fas fa-plus me-2"></span>
                           </button>
                         </td>
                       </tr>
@@ -426,7 +426,7 @@
             </td>
             <td class="last-order align-middle white-space-nowrap text-body-tertiary text-center">
               <button type="button" class="btn btn-danger remove-table-row">
-                <span class="fas fa-trash me-2"></span>Supprimer
+                <span class="fas fa-trash me-2"></span>
               </button>
             </td>
           </tr>

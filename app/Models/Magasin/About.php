@@ -22,6 +22,6 @@ class About extends Model
     ];
     public function magasin()
     {
-        return $this->belongsTo(Magasin::class);
+        return $this->belongsTo(Magasin::class, 'magasin_id', 'id');
     }
 }
