@@ -50,9 +50,9 @@ class ProduitController extends Controller
             'quantity' => 'required|numeric',
             'qty_alert' => 'required|numeric',
             'exp_date' => 'required',
-            'supply_id' => 'required|numeric',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
-            // 'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp', 
+            // 'supply_id' => 'required|numeric',
+            'image' => 'required|image|mimes:PNG,png',
+            // 'images.*' => 'image|mimes:PNG,png', 
             'desc' => 'required|string',
             'visible' => 'required|boolean',
             'promot' => 'boolean',
@@ -129,7 +129,7 @@ class ProduitController extends Controller
             'promo_price' => $validatePromotion,
             'visible' => $request->visible,
             'magasin_id' => AuthMagasinAgent(),
-            'supply_id' => $request->supply_id,
+            // 'supply_id' => $request->supply_id,
             'sub_category_id' => $request->sub_category_id
         ]);
         Toastr()->success('Votre produit a bien été ajouté', 'Ajout de produits', ["positionClass" => "toast-top-right"]);

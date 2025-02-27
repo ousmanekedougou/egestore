@@ -8,6 +8,7 @@ use App\Models\Magasin\Product;
 use App\Models\Magasin\Supply;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
@@ -22,6 +23,8 @@ class SupplyController extends Controller
      */
     public function index()
     {
+        $magasinExist = Supply::select('magasin_id')->get();
+        // dd($magasinExist);
         return view('magasin.supplies.index',[
             'magasins' => Magasin::where('is_active',1)->where('confirmation_token',null)->where('id','!=',AuthMagasinAgent())->get()
         ]);
@@ -70,15 +73,23 @@ class SupplyController extends Controller
         ->where('is_active',1)->where('confirmation_token',null)
         ->where('id','!=',AuthMagasinAgent())
         ->first();
-        // dd($mag->about->our_history);
+        $duration = '';
+        if ($magasin->created_at->diffInDays(now()) < 30) {
+            $duration = $magasin->created_at->diffInDays(now())." jour(s)";
+        }elseif ($magasin->created_at->diffInMonths(now()) < 12) {
+            $duration = $magasin->created_at->diffInMonths(now())." moi(s)";
+        }else{
+            $duration = $magasin->created_at->diffInYearss(now())." an(s)";
+        }
         return view('magasin.supplies.show',
             [
                 'magasin' => $magasin,
-                'prducts' => Product::where('magasin_id',$magasin->id)
-                ->inRandomOrder()
-                ->limit(8)
-                ->orderBy('id','DESC')
-                ->get()
+                'products' => Product::where('magasin_id',$magasin->id)
+                    ->inRandomOrder()
+                    ->limit(12)
+                    ->orderBy('id','DESC')
+                    ->get(),
+                'duration' => $duration
             ]
         );
     }
@@ -117,5 +128,9 @@ class SupplyController extends Controller
         $supplyGet->delete();
         Toastr()->success('Fournisseur a été supprimé avec success', 'Suppréssion fournisseur', ["positionClass" => "toast-top-right"]);
         return back();
+    }
+
+    private function getDuration(){
+        
     }
 }

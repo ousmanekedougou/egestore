@@ -21,10 +21,19 @@ class ProfileController extends Controller
      */
     public function index()
     {
+        $duration = '';
+        if (Auth::guard('magasin')->user()->created_at->diffInDays(now()) < 30) {
+            $duration = Auth::guard('magasin')->user()->created_at->diffInDays(now())." jour(s)";
+        }elseif (Auth::guard('magasin')->user()->created_at->diffInMonths(now()) < 12) {
+            $duration = Auth::guard('magasin')->user()->created_at->diffInMonths(now())." moi(s)";
+        }else{
+            $duration = Auth::guard('magasin')->user()->created_at->diffInYearss(now())." an(s)";
+        }
         return view('magasin.profile.index',
         [
             'auth_about' => About::where('magasin_id',Auth::guard('magasin')->user()->id)->first(),
             'auth_reseau' => Social::where('magasin_id',Auth::guard('magasin')->user()->id)->first(),
+            'duration' => $duration
         ]);
     }
 

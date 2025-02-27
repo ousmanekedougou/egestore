@@ -27,8 +27,27 @@
                 </div>
                 <div class="col-12 col-sm-auto flex-1">
                   <h3>{{Auth::guard('magasin')->user()->admin_name}}</h3>
-                  <p class="text-body-secondary">Joined 3 months ago</p>
-                  <div><a class="me-2" href="#!"><span class="fab fa-linkedin-in text-body-quaternary text-opacity-75 text-primary-hover"></span></a><a class="me-2" href="#!"><span class="fab fa-facebook text-body-quaternary text-opacity-75 text-primary-hover"></span></a><a href="#!"><span class="fab fa-twitter text-body-quaternary text-opacity-75 text-primary-hover"></span></a></div>
+                  <p class="text-body-secondary">Inscrit il y'a {{ $duration }}</p>
+                  <div>
+                    @if (Auth::guard('magasin')->user()->social)
+
+                      <a class="me-2" target="_blank" href="{{ Auth::guard('magasin')->user()->social->facebook }}">
+                        <span class="fab fa-facebook text-body-quaternary text-opacity-75 text-primary-hover"></span>
+                      </a>
+
+                      <a class="me-2" target="_blank" href="{{ Auth::guard('magasin')->user()->social->whatsapp }}">
+                        <span class="fab fa-whatsapp text-body-quaternary text-opacity-75 text-primary-hover"></span>
+                      </a>
+
+                      <a class="me-2" target="_blank" href="{{ Auth::guard('magasin')->user()->social->instagram }}">
+                        <span class="fab fa-instagram text-body-quaternary text-opacity-75 text-primary-hover"></span>
+                      </a>
+
+                      <a target="_blank" href="{{ Auth::guard('magasin')->user()->social->tiktok }}">
+                        <span class="fab fa-tiktok text-body-quaternary text-opacity-75 text-primary-hover"></span>
+                      </a>
+                    @endif
+                  </div>
                 </div>
                 <div class="col-12 col-sm-auto">
                   <input id="logo" type="file" class="form-control d-none @error('logo') is-invalid @enderror" name="logo" value="{{ old('logo') }}" required autocomplete="logo">
@@ -70,7 +89,7 @@
             <div class="pt-4 mb-7 mb-lg-4 mb-xl-7">
               <div class="row justify-content-between">
                 <div class="col-auto">
-                  <h5 class="text-body-highlight">Address</h5>
+                  <h5 class="text-body-highlight">Adresse</h5>
                 </div>
                 <div class="col-auto">
                   <p class="text-body-secondary">{{Auth::guard('magasin')->user()->adresse}}</p>

@@ -94,5 +94,6 @@ class Magasin extends Authenticatable
     {
         return $this->hasMany(SupplyOrder::class);
     }
+
    
 }
