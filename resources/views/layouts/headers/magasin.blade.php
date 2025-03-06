@@ -6,14 +6,14 @@
       <a class="navbar-brand me-1 me-sm-3" href="{{route('magasin.home')}} ">
         <div class="d-flex align-items-center">
           <div class="d-flex align-items-center">
-            <img src="@if(Auth::guard('magasin')->user()->logo == '') https://ui-avatars.com/api/?name={{Auth::guard('magasin')->user()->name}} @else {{(Storage::url(Auth::guard('magasin')->user()->logo))}} @endif" width="27"/>
+            <img class="rounded-circle" src="@if(Auth::guard('magasin')->user()->logo == '') https://ui-avatars.com/api/?name={{Auth::guard('magasin')->user()->name}} @else {{(Storage::url(Auth::guard('magasin')->user()->logo))}} @endif" width="27"/>
             <p class="logo-text ms-2 d-none d-sm-block">{{ Auth::guard('magasin')->user()->name }}</p>
           </div>
         </div>
       </a>
       <nav class="ecommerce-navbar navbar-expand navbar-light bg-body-emphasis justify-content-between">
         <div class="container-small d-flex flex-between-center" data-navbar="data-navbar">
-          <div class="dropdown"><button class="btn text-body ps-0 pe-5 text-nowrap dropdown-toggle dropdown-caret-none" data-category-btn="data-category-btn" data-bs-toggle="dropdown"><span class="fas fa-bars me-2"></span>Toutes vos categories</button>
+          <div class="dropdown"><button class="btn text-body ps-0 pe-5 text-nowrap dropdown-toggle dropdown-caret-none" data-category-btn="data-category-btn" data-bs-toggle="dropdown"><span class="fas fa-bars me-2"></span>Categories</button>
             <div class="dropdown-menu border border-translucent py-0 category-dropdown-menu">
               <div class="card border-0 scrollbar" style="max-height: 657px;">
                 <div class="card-body p-6 pb-3">

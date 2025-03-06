@@ -1,4 +1,10 @@
 <nav class="navbar navbar-vertical navbar-expand-lg">
+    <script>
+        var navbarStyle = window.config.config.phoenixNavbarStyle;
+        if (navbarStyle && navbarStyle !== 'transparent') {
+        document.querySelector('body').classList.add(`navbar-${navbarStyle}`);
+        }
+    </script>
     <div class="collapse navbar-collapse" id="navbarVerticalCollapse">
         <!-- scrollbar removed-->
         <div class="navbar-vertical-content">
@@ -85,7 +91,7 @@
                     --}}
 
                 </li>
-
+                {{--  
                 <li class="nav-item">
                     <!-- label-->
                     <p class="navbar-vertical-label">Produits par catégorie</p>
@@ -116,6 +122,8 @@
                         </div><!-- parent pages-->
                     @endforeach
                 </li>
+                --}}
+
                 {{--
                 <li class="nav-item">
                     <!-- label-->

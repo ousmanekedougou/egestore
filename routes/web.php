@@ -90,6 +90,7 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
     Route::put('/profile/coordonne/{id}',[App\Http\Controllers\Magasin\ProfileController::class,'update_coordoonne'])->name('profile.update_coordoonne');
     Route::put('/profile/critere/{id}',[App\Http\Controllers\Magasin\ProfileController::class,'update_critere'])->name('profile.update_critere');
     Route::put('/profile/edit/{id}',[App\Http\Controllers\Magasin\ProfileController::class,'edit'])->name('profile.edit');
+    Route::put('/profile/updateImageProfile/{id}',[App\Http\Controllers\Magasin\ProfileController::class,'updateImageProfile'])->name('profile.imageUpdate');
     
     Route::resource('/reserve', App\Http\Controllers\Magasin\ReservationController::class);
     Route::resource('/bagage', App\Http\Controllers\Magasin\BagageController::class);
@@ -106,6 +107,7 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
     Route::get('/fournisseurs', [App\Http\Controllers\Magasin\SupplyController::class,'create'])->name('fournisseurs.create');
     Route::get('/fournisseurs/{id}/addSupply', [App\Http\Controllers\Magasin\SupplyController::class,'addSupply'])->name('fournisseurs.addSupply');
     Route::get('/fournisseurs/{id}/deleteSupply', [App\Http\Controllers\Magasin\SupplyController::class,'destroy'])->name('fournisseurs.destroy');
+    Route::get('/fournisseurs/about/{slug}', [App\Http\Controllers\Magasin\SupplyController::class,'about'])->name('fournisseurs.about');
     
     Route::resource('/devis', App\Http\Controllers\Magasin\SupplyOrderController::class);
     Route::put('devis/create/{id}',[App\Http\Controllers\Magasin\SupplyOrderController::class,'create'])->name('devis.create');

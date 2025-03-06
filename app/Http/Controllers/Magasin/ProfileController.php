@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Intervention\Image\Laravel\Facades\Image;
 class ProfileController extends Controller
 {
     public function __construct()
@@ -40,18 +41,54 @@ class ProfileController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function updateImageProfile($id)
     {
+        $this->validate(request(),[
+            'image' => 'image|mimes:PNG,png',
+            'logo' => 'image|mimes:PNG,png', 
+        ]);
         //update de l'image profile du magasinier
+        // dd(request()->image);
         $imageName = '';
-        if($request()->hasFile('picture'))
+        if(request()->hasFile('image'))
         {
-            $imageName = $request()->picture->store('public/Profiles/Images');
+            // $imageName = request()()->file->store('public/Profiles/Images');
+            $file = request()->file('image');
+
+            $Name = request()->name.'-'.Auth::guard('magasin')->user()->name.'.'. $file->getClientOriginalExtension();
+            $image = Image::read($file);
+            // Resize image
+            $image->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save(storage_path('app/public/Profiles' . $Name));
+
+            $imageName = 'public/Profiles'. $Name;
         }else{
             $imageName = Auth::guard('magasin')->user()->image;
         }
 
-        Magasin::find(Auth::guard('magasin')->user()->id)->update(['image' => $imageName]);
+        $logoName = '';
+        if(request()->hasFile('logo'))
+        {
+            // $logoName = request()()->file->store('public/Logos');
+            $file = request()->file('logo');
+
+            $NameLogo = request()->name.'-'.Auth::guard('magasin')->user()->name.'.'. $file->getClientOriginalExtension();
+            $imageLogo = Image::read($file);
+            // Resize image
+            $imageLogo->resize(360, 338, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save(storage_path('app/public/Logos' . $NameLogo));
+
+            $logoName = 'public/Logos'. $NameLogo;
+        }else{
+            $logoName = Auth::guard('magasin')->user()->logo;
+        }
+
+        Magasin::find(Auth::guard('magasin')->user()->id)->update(['image' => $imageName,'logo' => $logoName]);
+
+        Toastr()->success('Vos image ont bien été modifié', 'Modification des images', ["positionClass" => "toast-top-right"]);
+        return back();
 
     }
 

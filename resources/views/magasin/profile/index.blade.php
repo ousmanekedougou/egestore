@@ -15,13 +15,7 @@
               <div class="row align-items-center g-3 g-sm-5 text-center text-sm-start">
 
                 <div class="col-12 col-sm-auto">
-                  <input id="image" type="file" class="form-control d-none @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}" required autocomplete="image">
-                  @error('image')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                  <label class="cursor-pointer avatar avatar-5xl" for="image">
+                  <label class="cursor-pointer avatar avatar-5xl"data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" data-fa-transform="shrink-3">
                     <img class="rounded-circle" src="@if(Auth::guard('magasin')->user()->image == '') https://ui-avatars.com/api/?name={{Auth::guard('magasin')->user()->admin_name}} @else {{(Storage::url(Auth::guard('magasin')->user()->image))}} @endif" alt="" />
                   </label>
                 </div>
@@ -50,13 +44,7 @@
                   </div>
                 </div>
                 <div class="col-12 col-sm-auto">
-                  <input id="logo" type="file" class="form-control d-none @error('logo') is-invalid @enderror" name="logo" value="{{ old('logo') }}" required autocomplete="logo">
-                    @error('logo')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                  <label class="cursor-pointer avatar avatar-4xl" for="logo">
+                  <label class="cursor-pointer avatar avatar-4xl" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" data-fa-transform="shrink-3">
                     <img class="rounded-circle" src="@if(Auth::guard('magasin')->user()->logo == '') https://ui-avatars.com/api/?name={{Auth::guard('magasin')->user()->name}} @else {{(Storage::url(Auth::guard('magasin')->user()->logo))}} @endif" alt="" />
                     <h6 class="text-center text-bold mt-2">Votre logo</h6>
                   </label>
@@ -135,7 +123,7 @@
                   <div class="row g-3 mb-5">
                     <div class="col-12 col-lg-6">
                       <label class="form-label text-body-highlight fs-8 ps-0 text-lowercase lh-sm" for="admin_name">Votre Prenom et nom</label>
-                      <input id="admin_name" type="text" placeholder="Votre Prenom et nom" class="form-control @error('admin_name') is-invalid @enderror" name="admin_name" value="{{ old('admin_name') ?? Auth::guard('magasin')->user()->admin_name }}"  autocomplete="admin_name" autofocus>
+                      <input id="admin_name" type="text" placeholder="Votre Prenom et nom" class="form-control @error('admin_name') is-invalid @enderror" name="admin_name" value="{{ old('admin_name') ?? Auth::guard('magasin')->user()->admin_name }}"  autocomplete="admin_name">
                       @error('admin_name')
                           <span class="invalid-feedback" role="alert">
                               <strong>{{ $message }}</strong>
@@ -205,7 +193,7 @@
                   <div class="row g-3 mb-5">
                     <div class="col-12 col-lg-6">
                       <label class="form-label text-body-highlight fs-8 ps-0 text-lowercase  lh-sm" for="shop_name">Le nom de votre magasin</label>
-                      <input id="shop_name" type="text" placeholder="Le nom de votre magasin" class="form-control @error('shop_name') is-invalid @enderror" name="shop_name" value="{{ old('shop_name') ?? Auth::guard('magasin')->user()->name }}"  autocomplete="shop_name" autofocus>
+                      <input id="shop_name" type="text" placeholder="Le nom de votre magasin" class="form-control @error('shop_name') is-invalid @enderror" name="shop_name" value="{{ old('shop_name') ?? Auth::guard('magasin')->user()->name }}"  autocomplete="shop_name">
 
                       @error('shop_name')
                           <span class="invalid-feedback" role="alert">
@@ -409,6 +397,44 @@
         </div>
 
 
+      </div>
+    </div>
+
+
+    <div class="card-body p-0">
+      <div class="p-4 code-to-copy">
+        <!-- Right Offcanvas-->
+        <div class="offcanvas offcanvas-end" id="offcanvasRight" tabindex="-1" aria-labelledby="offcanvasRightLabel">
+          <div class="offcanvas-header">
+            <h5 id="offcanvasRightLabel">Modifier vos image</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <form method="post" action="{{ route('magasin.profile.imageUpdate',1) }}" enctype="multipart/form-data">
+              @csrf
+              @method('PUT')
+              <div class="mb-3 text-start">
+                  <label class="form-label" for="image">Votre image de profile</label>
+                  <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}"  autocomplete="image">
+                  @error('image')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+              </div>
+
+              <div class="mb-3 text-start">
+                  <label class="form-label" for="logo">Votyre logo d'entreprise</label>
+                  <input id="logo" type="file" class="form-control @error('logo') is-invalid @enderror" name="logo" value="{{ old('logo') }}" autocomplete="logo">
+                  @error('logo')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+              </div>
+              <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer les modifications</button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
 

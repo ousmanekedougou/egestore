@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
             'is_active' => 1,
             'code_validation' => null,
             'termsService' => 1,
-            'logo' => "assets/img/brands/dell.png",
+            'logo' => null,
             'visible' => 0
         ]);
 
@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
             'is_active' => 1,
             'code_validation' => null,
             'termsService' => 1,
-            'logo' => "assets/img/brands/intel-2.png",
+            'logo' => null,
             'visible' => 0
         ]);
 
@@ -81,7 +81,7 @@ class DatabaseSeeder extends Seeder
             'is_active' => 1,
             'code_validation' => null,
             'termsService' => 1,
-            'logo' => "assets/img/brands/honda.png",
+            'logo' => null,
             'visible' => 0
         ]);
 
@@ -96,7 +96,7 @@ class DatabaseSeeder extends Seeder
             'is_active' => 1,
             'code_validation' => null,
             'termsService' => 1,
-            'logo' => "assets/img/brands/asus-rog.png",
+            'logo' => null,
             'visible' => 0
         ]);
 
@@ -111,7 +111,7 @@ class DatabaseSeeder extends Seeder
             'is_active' => 1,
             'code_validation' => null,
             'termsService' => 1,
-            'logo' => "assets/img/brands/yamaha.png",
+            'logo' => null,
             'visible' => 0
         ]);
 
@@ -126,7 +126,7 @@ class DatabaseSeeder extends Seeder
             'is_active' => 1,
             'code_validation' => null,
             'termsService' => 1,
-            'logo' => "assets/img/brands/ibm.png",
+            'logo' => null,
             'visible' => 0
         ]);
 
@@ -148,7 +148,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'client@client.com',
             'phone' => '770000000',
             'slug' => str_replace('/','',Hash::make(Str::random(2).'client@client.com')),
-            'image' => "assets/img/team/1.webp",
+            'image' => null,
             'password' => Hash::make('password'),
             'confirmation_token' => null,
             'is_active' => 1,
@@ -161,7 +161,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'geodril@geodril.com',
             'phone' => '770000001',
             'slug' => str_replace('/','',Hash::make(Str::random(2).'geodril@geodril.com')),
-            'image' => "assets/img/team/2.webp",
+            'image' => null,
             'password' => Hash::make('password'),
             'confirmation_token' => null,
             'is_active' => 1,
@@ -174,7 +174,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'fte@fte.com',
             'phone' => '770000002',
             'slug' => str_replace('/','',Hash::make(Str::random(2).'fte@fte.com')),
-            'image' => "assets/img/team/3.webp",
+            'image' => null,
             'password' => Hash::make('password'),
             'confirmation_token' => null,
             'is_active' => 1,
@@ -187,7 +187,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'idc@idc.com',
             'phone' => '770000003',
             'slug' => str_replace('/','',Hash::make(Str::random(2).'idc@idc.com')),
-            'image' => "assets/img/team/4.webp",
+            'image' => null,
             'password' => Hash::make('password'),
             'confirmation_token' => null,
             'is_active' => 1,

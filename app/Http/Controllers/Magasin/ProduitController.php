@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Magasin\Product;
 use App\Models\Magasin\SubCategory;
 use App\Models\Magasin\Supply;
-use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
 
 class ProduitController extends Controller
 {
@@ -44,7 +45,7 @@ class ProduitController extends Controller
         // dd($colors);
         
         $this->validate($request,[
-            'name' => 'required|string|unique:products',
+            'name' => 'required|string',
             'reference' => 'required|string',
             'price' => 'required|numeric',
             'quantity' => 'required|numeric',
@@ -65,7 +66,17 @@ class ProduitController extends Controller
         $imageName = '';
         if($request->hasFile('image'))
         {
-            $imageName = $request->image->store('public/Products');
+            $file = $request->file('image');
+
+            $Name = $request->name.'-'.Auth::guard('magasin')->user()->name.'.'. $file->getClientOriginalExtension();
+            $image = Image::read($file);
+            // Resize image
+            $image->resize(530, 530, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save(storage_path('app/public/Products/' . $Name));
+
+            $imageName = 'public/Products/'. $Name;
+            
         }
 
         // $data = [];
@@ -200,7 +211,17 @@ class ProduitController extends Controller
         if($request->hasFile('image'))
         {
             Storage::delete($product->image);
-            $imageName = $request->image->store('public/Products');
+            // $imageName = $request->image->store('public/Products');
+            $file = $request->file('image');
+
+            $Name = $request->name.'-'.Auth::guard('magasin')->user()->name.'.'. $file->getClientOriginalExtension();
+            $image = Image::read($file);
+            // Resize image
+            $image->resize(530, 530, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save(storage_path('app/public/Products/' . $Name));
+
+            $imageName = 'public/Products/'. $Name;
         }else{
             $imageName = $product->image;
         }
