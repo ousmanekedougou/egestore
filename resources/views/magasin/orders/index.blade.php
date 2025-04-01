@@ -97,7 +97,7 @@
                     @if($order->status == 1)
                     <a href="{{ route('magasin.commande.edit',$order->slug) }}" target="_blank" class="me-2 text-success"  data-fa-transform="shrink-3"><span class="fa fa-file-alt fs-7" ></span></span></a>
                     @elseif($order->status != 1)
-                      @if (unserialize($order->products)->count() > 0)
+                      @if (count(unserialize($order->products)) > 0)
                         <span class="me-2 text-info fa fa-shopping-bag fs-7" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $order->id }}" data-fa-transform="shrink-3"></span>
                       @endif
                     @endif
@@ -179,7 +179,7 @@
                   </div>
                   <div class="form-check form-check-inline">
                     <input class="form-check-input text-warning @error('methode') is-invalid @enderror" @if($order->methode == 2) checked="" @endif id="inlineRadioB-{{ $order->id }}" type="radio" name="methode" value=" 2 ">
-                    <label class="form-check-label text-warning" for="inlineRadioB-{{ $order->id }}" style="margin-top: 2px;">Orange Money</label>
+                    <label class="form-check-label text-warning" for="inlineRadioB-{{ $order->id }}" style="margin-top: 2px;">Orange M</label>
                   </div>
                   <div class="form-check form-check-inline">
                     <input class="form-check-input text-success @error('methode') is-invalid @enderror" @if($order->methode == 3) checked="" @endif id="inlineRadioC-{{ $order->id }}" type="radio" name="methode" value=" 3 ">

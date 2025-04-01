@@ -30,8 +30,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-        $commandes = Order::where('magasin_id',AuthMagasinAgent())->where('status','!=',1)->count();
+         $commandes = Order::where('magasin_id',AuthMagasinAgent())->where('status','!=',1)->count();
         $bons = Commande::where('magasin_id',AuthMagasinAgent())->where('type',0)->where('status','!=',1)->count();
         $pro_format = Commande::where('magasin_id',AuthMagasinAgent())->where('type',1)->where('status','!=',1)->count();
         $clients = Client::where('magasin_id',AuthMagasinAgent())->count();

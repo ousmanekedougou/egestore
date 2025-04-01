@@ -9,14 +9,10 @@
           Client : <a class="fw-bold" href="#!" style="margin-right: 15px;">  @if($order->user_id == '' && $order->client_id == '') {{ $order->name }} @elseif($order->user_id != '') {{ $order->user->name }} @elseif($order->client_id != '') {{ $order->client->name }} @endif</a>
           Telepone : <a class="fw-bold" href="#!"> @if($order->user_id == '' && $order->client_id == '') {{ $order->phone }} @elseif($order->user_id != '') {{ $order->user->phone }} @elseif($order->client_id != '') {{ $order->client->phone }} @endif</a>
         </p>
-        <div class="d-flex"><button class="btn btn-link pe-3 ps-0 text-body"><span class="fas fa-print me-2"></span>Print</button><button class="btn btn-link px-3 text-body"><span class="fas fa-undo me-2"></span>Refund</button>
-          <div class="dropdown"><button class="btn text-body dropdown-toggle dropdown-caret-none ps-3 pe-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">More action<span class="fas fa-chevron-down ms-2"></span></button>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </div>
+        <div class="d-flex">
+          <button class="btn btn-link pe-3 ps-0 text-body">
+            <span class="fas fa-print me-2"></span>Print
+          </button>
         </div>
       </div>
       <div class="row g-5 gy-7">
@@ -57,7 +53,7 @@
           </div>
           <div class="d-flex flex-between-center py-3 border-bottom border-translucent mb-6">
             <p class="text-body-emphasis fw-semibold lh-sm mb-0">Montant total :</p>
-            <p class="text-body-emphasis fw-bold lh-sm mb-0">{{ $order->amount }}</p>
+            <p class="text-body-emphasis fw-bold lh-sm mb-0">{{ $order->amount }} CFA</p>
           </div>
         </div>
         <div class="col-12 col-xl-4 col-xxl-3">
@@ -100,7 +96,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-body">
-                  <h3 class="card-title mb-4">Statut de la commande</h3>
+                  <h4 class="card-title mb-4">Statut de la commande</h4>
                   <form action="{{ route('magasin.commande.update',$order->id) }}" method="post">
                     @csrf
                     {{ method_field('PUT') }}
@@ -128,7 +124,7 @@
                         </div>
                         <div class="form-check form-check-inline">
                           <input class="form-check-input text-warning @error('methode') is-invalid @enderror" @if($order->methode == 2) checked="" @endif id="inlineRadioB-{{ $order->id }}" type="radio" name="methode" value=" 2 ">
-                          <label class="form-check-label text-warning" for="inlineRadioB-{{ $order->id }}" style="margin-top: 2px;">Orange Money</label>
+                          <label class="form-check-label text-warning" for="inlineRadioB-{{ $order->id }}" style="margin-top: 2px;">Orange M</label>
                         </div>
                         <div class="form-check form-check-inline">
                           <input class="form-check-input text-success @error('methode') is-invalid @enderror" @if($order->methode == 3) checked="" @endif id="inlineRadioC-{{ $order->id }}" type="radio" name="methode" value=" 3 ">

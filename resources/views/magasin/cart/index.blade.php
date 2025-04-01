@@ -54,13 +54,13 @@
                       @else
                         <h3 class="card-title mb-4">Votre panier est vide</h3>
                       @endif
-                      <tr class="cart-table-row btn-reveal-trigger">
-                        <td class="text-body-emphasis fw-semibold ps-0 fs-8" colspan="5">Montant total des articles :</td>
-                        <td class="text-body-emphasis fw-bold text-center fs-9">{{ number_format( str_replace(',', '', Cart::subtotal()),2, ',','.'). ' CFA'; }}</td>
-                      </tr>
                     </tbody>
                   </table>
                 </div>
+              </div>
+              <div class="d-flex flex-between-center py-3 border-bottom border-translucent mb-6">
+                <p class="text-body-emphasis fw-semibold lh-sm mb-0">Montant total des articles :</p>
+                <p class="text-body-emphasis fw-bold lh-sm mb-0">{{ number_format( str_replace(',', '', Cart::subtotal()),2, ',','.'). ' CFA'; }}</p>
               </div>
             </div>
             <div class="col-12 col-lg-4">
