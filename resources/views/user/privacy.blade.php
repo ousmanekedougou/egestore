@@ -22,7 +22,7 @@
                             <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"></p>
                             </div>
                             <p class="fs-9 text-body-secondary w-sm-100 mb-5">
-                                Bienvenue sur Kstore ! Nous nous engageons à protéger votre vie privée et à garantir la sécurité de vos informations personnelles. La présente politique de confidentialité décrit la manière dont nous recueillons, utilisons, traitons et protégeons vos données lorsque vous utilisez notre plateforme, nos services et nos sites web. En accédant à nos services ou en les utilisant, vous acceptez les conditions énoncées dans la présente politique. Si vous avez des questions ou des préoccupations, veuillez nous contacter en utilisant les informations fournies dans la section 14.
+                                Bienvenue sur E-Gstore ! Nous nous engageons à protéger votre vie privée et à garantir la sécurité de vos informations personnelles. La présente politique de confidentialité décrit la manière dont nous recueillons, utilisons, traitons et protégeons vos données lorsque vous utilisez notre plateforme, nos services et nos sites web. En accédant à nos services ou en les utilisant, vous acceptez les conditions énoncées dans la présente politique. Si vous avez des questions ou des préoccupations, veuillez nous contacter en utilisant les informations fournies dans la section 14.
                             </p>
                         </div>
                         </div>
@@ -42,7 +42,7 @@
                             <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"></p>
                             </div>
                             <p class="fs-9 text-body-secondary w-sm-100 mb-5">
-                            Chez Kstore, nous privilégions la transparence, la confiance et le respect de votre vie privée. Nous pensons que vos informations personnelles vous appartiennent et nous nous engageons à les traiter de manière responsable. Nos pratiques sont conçues pour se conformer aux lois et réglementations applicables en matière de confidentialité, notamment le règlement général sur la protection des données (RGPD). Nous nous efforçons d'offrir une expérience d'achat sécurisée et transparente tout en protégeant vos données.
+                            Chez E-Gstore, nous privilégions la transparence, la confiance et le respect de votre vie privée. Nous pensons que vos informations personnelles vous appartiennent et nous nous engageons à les traiter de manière responsable. Nos pratiques sont conçues pour se conformer aux lois et réglementations applicables en matière de confidentialité, notamment le règlement général sur la protection des données (RGPD). Nous nous efforçons d'offrir une expérience d'achat sécurisée et transparente tout en protégeant vos données.
                             </p>
                         </div>
                         </div>

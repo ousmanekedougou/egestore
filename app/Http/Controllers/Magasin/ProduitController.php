@@ -154,9 +154,13 @@ class ProduitController extends Controller
      */
     public function show(string $slug)
     {
+        $subcategory = SubCategory::where('slug',$slug)->first();
+
+        $products = $subcategory->products()->paginate(50);
         return view('magasin.produits.index',
             [
-                'subcategory' => SubCategory::where('slug',$slug)->first(),
+                'products' => $products,
+                'subcategory' => $subcategory,
                 'supplies'    => Supply::where('owner_id',AuthMagasinAgent())->get()     
             ]);
     }

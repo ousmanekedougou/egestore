@@ -28,7 +28,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return view('magasin.orders.index',['orders' => Order::where('magasin_id',AuthMagasinAgent())->orderBy('id','DESC')->get()]);
+        return view('magasin.orders.index',['orders' => Order::where('magasin_id',AuthMagasinAgent())->orderBy('id','DESC')->paginate(10)]);
     }
 
     /**

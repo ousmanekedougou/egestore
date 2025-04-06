@@ -56,7 +56,7 @@
     </div>
 
 
-    <div id="products" data-list='{"valueNames":["product","price","category","tags","vendor","time"],"page":10,"pagination":true}'>
+    <div id="products" data-list='{"valueNames":["product","price","category","tags","vendor","time"]}'>
       <div class="mb-4">
         <div class="search-box">
           <form class="position-relative">
@@ -89,61 +89,54 @@
                   
                   <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->getPrice() }}</td>
                   
-                    <form id="ajouterAuPanier-{{ $product->id }}" action="{{ route('magasin.panier.store') }}" method="POST" class="d-none">
-                      @csrf
-                      <input type="hidden" name="product_id" value="{{ $product->id }}">  
-                      <td class="price align-middle white-space-nowrap text-left fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">
-                       <div class="input-group w-auto">
-                         <span class="input-group-text text-center p-1">{{ $product->quantity }}</span>
-                         <input class="form-control p-1" type="quantity" name="qty" aria-label="qty"/>
-                       </div>
-                      </td>
-                      <td class="align-middle review ps-3">
-                       @if($product->colors != '')
-                       <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label="Default select example .form-select-sm" name="color">
-                       <option value="">Choisir</option>
-                         @foreach(unserialize($product->colors) as $colorGet)
-                           <option value="{{ $colorGet }}"> {{$colorGet}} </option>
-                         @endforeach
-                       </select>
-                       @else 
-                         Null
-                       @endif
-                      </td>
+                  <form id="ajouterAuPanier-{{ $product->id }}" action="{{ route('magasin.panier.store') }}" method="POST" class="d-none">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">  
+                    <td class="price align-middle white-space-nowrap text-left fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">
+                      <div class="input-group w-auto">
+                        <span class="input-group-text text-center p-1">{{ $product->quantity }}</span>
+                        <input class="form-control p-1" type="quantity" name="qty" aria-label="qty"/>
+                      </div>
+                    </td>
+                    <td class="align-middle review ps-3">
+                      @if($product->colors != '')
+                      <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label="Default select example .form-select-sm" name="color">
+                      <option value="">Choisir</option>
+                        @foreach(unserialize($product->colors) as $colorGet)
+                          <option value="{{ $colorGet }}"> {{$colorGet}} </option>
+                        @endforeach
+                      </select>
+                      @else 
+                        Null
+                      @endif
+                    </td>
 
-                      <td class="align-middle review ps-3" >
-                       @if($product->sizes != '')
-                       <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label=".form-select-sm example" name="size">
-                       <option value="">Choisir</option>
-                         @foreach(unserialize($product->sizes) as $sizeGet)
-                           <option value="{{ $sizeGet }}"> {{$sizeGet}} </option>
-                         @endforeach
-                       </select>
-                       @else 
-                         Null
-                       @endif
-                      </td>
-                      <td class="align-middle white-space-nowrap text-end pe-3 ps-4 btn-reveal-trigger">
-                        @if($product->quantity > 0)
-                          <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-2 @if( $product->quantity < 10 ) text-white @else text-warning  @endif fa fa-shopping-cart fs-7" data-fa-transform="shrink-3"></span></a>
-                        @else
-                          <span class="text-white" style="margin-right: 4px;">Indisponible</span>
-                        @endif
-                      </td>
-                    </form>
+                    <td class="align-middle review ps-3" >
+                      @if($product->sizes != '')
+                      <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label=".form-select-sm example" name="size">
+                      <option value="">Choisir</option>
+                        @foreach(unserialize($product->sizes) as $sizeGet)
+                          <option value="{{ $sizeGet }}"> {{$sizeGet}} </option>
+                        @endforeach
+                      </select>
+                      @else 
+                        Null
+                      @endif
+                    </td>
+                    <td class="align-middle white-space-nowrap text-end pe-3 ps-4 btn-reveal-trigger">
+                      @if($product->quantity > 0)
+                        <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-2 @if( $product->quantity < 10 ) text-white @else text-warning  @endif fa fa-shopping-cart fs-7" data-fa-transform="shrink-3"></span></a>
+                      @else
+                        <span class="text-white" style="margin-right: 4px;">Indisponible</span>
+                      @endif
+                    </td>
+                  </form>
                 </tr>
               @endforeach
             </tbody>
           </table>
         </div>
-        <div class="row align-items-center justify-content-between py-2 pe-0 fs-9">
-          <div class="col-auto d-flex">
-            <p class="mb-0 d-none d-sm-block me-3 fw-semibold text-body" data-list-info="data-list-info"></p><a class="fw-semibold" href="#!" data-list-view="*">Voir tous<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a><a class="fw-semibold d-none" href="#!" data-list-view="less">Voir moins<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
-          </div>
-          <div class="col-auto d-flex"><button class="page-link" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
-            <ul class="mb-0 pagination"></ul><button class="page-link pe-0" data-list-pagination="next"><span class="fas fa-chevron-right"></span></button>
-          </div>
-        </div>
+          {{ $products->links('vendor.pagination.bootstrap-5') }}
       </div>
     </div>
 

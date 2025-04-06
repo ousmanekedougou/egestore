@@ -26,7 +26,7 @@ class ReservationController extends Controller
     {
         return view('magasin.reserves.index',
         [
-            'reserves' => Commande::where('magasin_id',AuthMagasinAgent())->where('type',1)->orderBy('id','DESC')->get()
+            'reserves' => Commande::where('magasin_id',AuthMagasinAgent())->where('type',1)->orderBy('id','DESC')->paginate(10)
         ]);
     }
 

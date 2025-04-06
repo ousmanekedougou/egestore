@@ -4,7 +4,7 @@
        <div class="d-flex align-items-center">
        {{--<img src="{{asset('assets/img/icons/logo.png')}}" alt="phoenix" width="27" />--}}
         <span class="logo-text" data-feather="shopping-bag" style="height: 25px; width: 25px;"></span>
-         <p class="logo-text ms-2">KStore</p>
+         <p class="logo-text ms-2">E-Gstore</p>
        </div>
      </a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
      <div class="collapse navbar-collapse" id="navbarSupportedContent">

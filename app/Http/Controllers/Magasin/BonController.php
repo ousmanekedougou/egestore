@@ -32,7 +32,7 @@ class BonController extends Controller
         }
         return view('magasin.bons.index',
         [
-            'bons' => Commande::where('magasin_id',AuthMagasinAgent())->where('type',0)->orderBy('id','DESC')->get(),
+            'bons' => Commande::where('magasin_id',AuthMagasinAgent())->where('type',0)->orderBy('id','DESC')->paginate(10),
             'clients' => $clients
         ]);
     }

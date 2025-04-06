@@ -19,7 +19,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::where('magasin_id',AuthMagasinAgent())->get();
+        $categories = Category::where('magasin_id',AuthMagasinAgent())->paginate(10);
         return view('magasin.categories.index',compact('categories'));
     }
 

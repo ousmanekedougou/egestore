@@ -17,7 +17,7 @@
           </div>
         </div>
       </div>
-      <div id="products" data-list='{"valueNames":["product","price","category","tags","vendor","time"],"page":10,"pagination":true}'>
+      <div id="products" data-list='{"valueNames":["product","price","category","tags","vendor","time"]}'>
         <div class="mb-4">
           <div class="d-flex flex-wrap gap-3">
             <div class="search-box">
@@ -103,14 +103,6 @@
               </tbody>
             </table>
           </div>
-          <div class="row align-items-center justify-content-between py-2 pe-0 fs-9">
-            <div class="col-auto d-flex">
-              <p class="mb-0 d-none d-sm-block me-3 fw-semibold text-body" data-list-info="data-list-info"></p><a class="fw-semibold" href="#!" data-list-view="*">Voir tous<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a><a class="fw-semibold d-none" href="#!" data-list-view="less">View Less<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
-            </div>
-            <div class="col-auto d-flex"><button class="page-link" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
-              <ul class="mb-0 pagination"></ul><button class="page-link pe-0" data-list-pagination="next"><span class="fas fa-chevron-right"></span></button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -129,7 +121,7 @@
               <h2 class="mb-0">Ajouter des produits</h2>
             </div>
           </div>
-          <div id="products" data-list='{"valueNames":["customer","email","total-orders","total-spent","city","last-seen","last-order"],"page":10,"pagination":true}'>
+          <div id="products" data-list='{"valueNames":["customer","email","total-orders","total-spent","city","last-seen","last-order"]}'>
             <form action="{{ route('magasin.devis-produits.store') }}" method="post" enctype="multipart/form-data"> 
               @csrf
               <input type="hidden" name="supply_order_id" value="{{ $supplyOrder->id }}">

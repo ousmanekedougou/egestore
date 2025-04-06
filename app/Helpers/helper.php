@@ -20,11 +20,11 @@ if (!function_exists('page_title')) {
         if (Auth::guard('magasin')->user() || Auth::guard('agent')->user()) {
             $base_title = $magasinName;
         }else {
-            $base_title = 'KStore';
+            $base_title = 'E-Gstore';
         }
         return $base_title . ' - ' . $title ;
         
-        // $base_title = 'KStore';
+        // $base_title = 'E-Gstore';
         // if ($title === '') {
         //     return  $base_title;
         // } else {

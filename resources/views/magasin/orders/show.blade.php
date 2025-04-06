@@ -17,7 +17,7 @@
       </div>
       <div class="row g-5 gy-7">
         <div class="col-12 col-xl-8 col-xxl-9">
-          <div id="orderTable" data-list='{"valueNames":["products","color","size","price","quantity","total"],"page":10}'>
+          <div id="orderTable" data-list='{"valueNames":["products","color","size","price","quantity","total"]}'>
             <div class="table-responsive scrollbar">
               <table class="table fs-9 mb-0 border-top border-translucent">
                 <thead>

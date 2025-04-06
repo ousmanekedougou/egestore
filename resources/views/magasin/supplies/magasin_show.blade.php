@@ -165,7 +165,7 @@
                         <div class="ms-n2">
                             @foreach($category->sub_categories as $subcategory)
                               @if($subcategory->visible == 1)
-                                <a class="text-body-emphasis fs-9 d-block mb-1 text-decoration-none bg-body-highlight-hover px-2 py-1 rounded-2 {{ set_active_roote('magasin.produit.show') }}" href="{{ route('magasin.produit.show',$subcategory->slug) }}">{{$subcategory->name}}</a>
+                                <a class="text-body-emphasis fs-9 d-block mb-1 text-decoration-none bg-body-highlight-hover px-2 py-1 rounded-2" href="#">{{$subcategory->name}}</a>
                               @endif
                             @endforeach
                         </div>

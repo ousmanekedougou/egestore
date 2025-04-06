@@ -247,13 +247,13 @@
               <div class="col">
                 <div class="d-flex justify-content-between">
                   <div class="d-flex mb-2">
-                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">La particularité de KStore</h6>
+                    <h6 class="lh-sm mb-0 me-2 text-body-secondary timeline-item-title">La particularité de E-Gstore</h6>
                   </div>
                   <p class="text-body-quaternary fs-9 mb-0 text-nowrap timeline-time"></p>
                 </div>
                 <h6 class="fs-10 fw-normal mb-3">Sérvices</h6>
                 <p class="fs-9 text-body-secondary w-sm-100 mb-5">
-                  KStore est une application de gestion d'entreprise commercial, ce qui fait que vous aurez une multitude
+                  E-Gstore est une application de gestion d'entreprise commercial, ce qui fait que vous aurez une multitude
                   de sérvices commercial dans votre profile avéc une diversité des produits.
                   Ainsi pour chaque entreprise vous pouvez accéder ses produits et faire vos achats. 
                 </p>
@@ -299,7 +299,7 @@
                 </div>
                 <h6 class="fs-10 fw-normal mb-3">Sérvice</h6>
                 <p class="fs-9 text-body-secondary w-sm-100 mb-1">
-                  Un client à plusieurs options pour faire des achats avéc une entreprise dans l'application KStore.
+                  Un client à plusieurs options pour faire des achats avéc une entreprise dans l'application E-Gstore.
 
                   <li class="fs-9 fw-normal mb-2">
                     Vous avez l'option des commande à crédit, avéc un accord entre vous et le fournisseur vous pouvez faire une

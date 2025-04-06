@@ -200,7 +200,7 @@ class DatabaseSeeder extends Seeder
                         $imageName = 'public/Products'. $NameLogo;
                     }
                     
-                    for ($i=0; $i < 10; $i++) { 
+                    for ($i=0; $i < 5; $i++) { 
                         Product::create([
                             'name' => $faker->name,
                             'slug' => str_replace('/','',Hash::make(Str::random(2).$faker->name)),

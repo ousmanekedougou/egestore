@@ -6,7 +6,7 @@
       <a class="navbar-brand me-1 me-sm-3" href="{{route('admin.home')}}">
         <div class="d-flex align-items-center">
           <div class="d-flex align-items-center"><img src="../../../assets/img/icons/logo.png" alt="phoenix" width="27" />
-            <p class="logo-text ms-2 d-none d-sm-block">KStore</p>
+            <p class="logo-text ms-2 d-none d-sm-block">E-Gstore</p>
           </div>
         </div>
       </a>
@@ -199,7 +199,7 @@
             <div class="card-body p-0">
               <div class="text-center pt-4 pb-3">
                 <div class="avatar avatar-xl ">
-                  <img class="rounded-circle " src="@if(Auth::guard('admin')->user()->image == '') https://ui-avatars.com/api/?name={{Auth::guard('admin')->user()->name}} @else {{(Storage::url(Auth::guard('admin')->user()->image))}} @endif" alt="" />
+                  <img class="rounded-circle" src="@if(Auth::guard('admin')->user()->image == '') https://ui-avatars.com/api/?name={{Auth::guard('admin')->user()->name}} @else {{(Storage::url(Auth::guard('admin')->user()->image))}} @endif" alt="" />
                 </div>
                 <h6 class="mt-2 text-body-emphasis">{{ Auth::guard('admin')->user()->name }}</h6>
               </div>

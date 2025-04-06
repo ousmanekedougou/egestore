@@ -18,7 +18,7 @@ class MagasinController extends Controller
      */
     public function index()
     {
-        return view('admin.magasin.index',['magasins' => Magasin::all()]);
+        return view('admin.magasin.index',['magasins' => Magasin::paginate(20)]);
     }
 
     /**
