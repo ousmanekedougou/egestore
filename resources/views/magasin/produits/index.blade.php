@@ -207,7 +207,7 @@
 
               <div class="mb-3 text-start">
                 <label class="form-label" for="colors">Entrer les couleurs du produits</label>
-                <input id="colors" type="text" placeholder="Entrer les couleurs du produits" class="form-control text-body-quaternary text-monospace @error('colors') is-invalid @enderror" name="colors" value="{{ old('colors') }}" required autocomplete="colors" autofocus>
+                <input id="colors" type="text" placeholder="Couleurs du produits" class="form-control text-body-quaternary text-monospace @error('colors') is-invalid @enderror" name="colors" value="{{ old('colors') }}" required autocomplete="colors" autofocus>
 
                 @error('colors')
                     <span class="invalid-feedback" role="alert">
@@ -218,7 +218,7 @@
 
               <div class="mb-3 text-start">
                 <label class="form-label" for="sizes">Entrer les tailles du produit</label>
-                <input id="sizes" type="text" placeholder="Entrer les tailles du produits" class="form-control text-body-quaternary text-monospace @error('sizes') is-invalid @enderror" name="sizes" value="{{ old('sizes') }}" required autocomplete="sizes" autofocus>
+                <input id="sizes" type="text" placeholder="Tailles du produits" class="form-control text-body-quaternary text-monospace @error('sizes') is-invalid @enderror" name="sizes" value="{{ old('sizes') }}" required autocomplete="sizes" autofocus>
 
                 @error('sizes')
                     <span class="invalid-feedback" role="alert">
@@ -228,11 +228,27 @@
               </div>
 
               <div class="mb-3 text-start">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input text-success @error('supply') is-invalid @enderror"  id="Mysupply" type="radio" name="supply" value="0" onclick="text(0)">
+                  <label class="form-check-label text-succes mt-1" for="Mysupply">Mes fournisseurs existants</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input text-warning @error('supply') is-invalid @enderror"  id="OurSupply" type="radio" name="supply" value="1" onclick="text(1)">
+                  <label class="form-check-label text-warning mt-1" for="OurSupply">Un autre fournisseur</label>
+                </div>
+                @error('supply')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
+              </div>
+
+              <div class="mb-3 text-start d-none" id="MysupplyId">
                 <label for="organizerSingle">Sélectionner un fournisseur</label>
                 <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
                   <option value="">Sélectionner un...</option>
                   @foreach ($supplies as $supplie)
-                    <option value="{{ old('supply_id') ?? $supplie->id }}">@if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
+                    <option value="{{ $supplie->id }}">@if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
                   @endforeach
                 </select>
                 @error('supply_id')
@@ -240,6 +256,18 @@
                     <strong>{{ $message }}</strong>
                   </span>
                 @enderror
+              </div>
+              <div class="mb-3 text-start d-none" id="OursupplyId">
+                <div class="col-lg-12 mb-3">
+                  <label class="form-label" for="supply_name">Nom de votre fournisseur</label>
+                  <input id="supply_name" type="numeric" class="form-control @error('supply_name') is-invalid @enderror" name="supply_name" value="{{ old('supply_name') }}" placeholder="Nom de votre fournisseur" autocomplete="supply_name">
+
+                  @error('supply_name')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
               </div>
              
 
@@ -284,7 +312,7 @@
                     @enderror
                   </div>
 
-                  <div class="col-lg-12 mb-3 d-none" id="clientNone">
+                  <div class="col-lg-12 mb-3 d-none" id="EnPromotion">
                     <label class="form-label" for="price_promotion">Prix du produit en promotion</label>
                     <input id="price_promotion" type="numeric" class="form-control @error('price_promotion') is-invalid @enderror" name="price_promotion" value="{{ old('price_promotion') }}" placeholder="Prix du produit" autocomplete="price_promotion">
 
@@ -458,6 +486,7 @@
                   <label class="form-label" for="email">Status du produit</label> <br>
                   
                   <div class="row">
+                    {{--  
                     <div class="col-lg-6">
                       <div class="form-check form-switch">
                         <input class="form-check-input @error('promot') is-invalid @enderror" id="flexSwitchCheckDefault-{{ $product->id }}" name="promot" type="checkbox" @if($product->promot == 1) checked @endif value="1" />
@@ -469,8 +498,9 @@
                         </span>
                       @enderror
                     </div>
+                    --}}
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                       <div class="form-check form-check-inline">
                         <input class="form-check-input text-success @error('visible') is-invalid @enderror" @if($product->visible == 1) checked="" @endif id="inlineRadioA-{{ $product->id }}" type="radio" name="visible" value=" 1 ">
                         <label class="form-check-label text-success" for="inlineRadioA-{{ $product->id }}">Visible</label>
@@ -501,7 +531,7 @@
                   </div>
                 @endif
 
-                <button class="btn btn-primary w-100 mb-3" type="submit">Modifier ce produit</button>
+                <button class="btn btn-primary w-100 mb-3" type="submit">Enregistrer les modifications</button>
               </form>
             </div>
           </div>
@@ -554,9 +584,19 @@
 <script>
   function enableBrand(answer){
     if (answer.checked == 1) {
-        document.getElementById('clientNone').classList.remove('d-none')
+        document.getElementById('EnPromotion').classList.remove('d-none')
     }else{
-        document.getElementById('clientNone').classList.add('d-none')
+        document.getElementById('EnPromotion').classList.add('d-none')
+    }
+  }
+
+  function text(x){
+    if (x == 0) {
+      document.getElementById('MysupplyId').classList.remove('d-none')
+      document.getElementById('OursupplyId').classList.add('d-none')
+    }else{
+      document.getElementById('MysupplyId').classList.add('d-none')
+      document.getElementById('OursupplyId').classList.remove('d-none')
     }
   }
 </script>

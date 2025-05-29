@@ -43,6 +43,9 @@ class ProduitController extends Controller
     {
         // $colors = explode(",",$request->colors);
         // dd($colors);
+
+        $supply_id = null;
+        $supply_name = null;
         
         $this->validate($request,[
             'name' => 'required|string',
@@ -51,7 +54,6 @@ class ProduitController extends Controller
             'quantity' => 'required|numeric',
             'qty_alert' => 'required|numeric',
             'exp_date' => 'required',
-            // 'supply_id' => 'required|numeric',
             'image' => 'required|image|mimes:PNG,png',
             // 'images.*' => 'image|mimes:PNG,png', 
             'desc' => 'required|string',
@@ -59,9 +61,20 @@ class ProduitController extends Controller
             'promot' => 'boolean',
         ]);
 
-        
-        
+        if ($request->supply == 0) {
+            $this->validate($request,[
+                'supply_id' => 'required|numeric',
+            ]);
 
+            $supply_id = $request->supply_id;
+
+        }elseif ($request->supply == 1) {
+            $this->validate($request,[
+                'supply_name' => 'required|string',
+            ]);
+
+            $supply_name = $request->supply_name;
+        }
 
         $imageName = '';
         if($request->hasFile('image'))
@@ -140,7 +153,8 @@ class ProduitController extends Controller
             'promo_price' => $validatePromotion,
             'visible' => $request->visible,
             'magasin_id' => AuthMagasinAgent(),
-            // 'supply_id' => $request->supply_id,
+            'supply_id' => $supply_id,
+            'supply_name' => $supply_name,
             'sub_category_id' => $request->sub_category_id
         ]);
         Toastr()->success('Votre produit a bien été ajouté', 'Ajout de produits', ["positionClass" => "toast-top-right"]);

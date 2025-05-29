@@ -32,4 +32,9 @@ class Supply extends Model
     {
         return $this->hasMany(SupplyOrder::class);
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

@@ -64,7 +64,15 @@
               <p class="mb-2 text-body-secondary">
                 {{$product->desc}}
               </p>
-              <p class="text-danger-dark fw-bold mb-5 mb-lg-0">Special offer ends in {{$product->created_at}}</p>
+              <p class="fw-bold mb-5 mb-lg-0 mb-1">Fournisseur : 
+                @if ($product->supply_name =! null)
+                  {{$product->supply_name}}
+                @endif
+
+                @if ($product->supply_id =! null)
+                  {{$product->supply->name}}
+                @endif
+              </p>
             </div>
             <div>
               <div class="mb-3">
@@ -582,7 +590,7 @@
               </div>
             @endif
 
-            <button class="btn btn-primary w-100 mb-3" type="submit">Modifier ce produit</button>
+            <button class="btn btn-primary w-100 mb-3" type="submit">Enregistrer les modifications</button>
           </form>
         </div>
       </div>
