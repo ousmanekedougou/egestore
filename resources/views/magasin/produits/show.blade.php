@@ -65,13 +65,13 @@
                 {{$product->desc}}
               </p>
               <p class="fw-bold mb-5 mb-lg-0 mb-1">Fournisseur : 
-                @if ($product->supply_name =! null)
+                
+                @if ($product->supply_id == null)
                   {{$product->supply_name}}
-                @endif
-
-                @if ($product->supply_id =! null)
+                @else
                   {{$product->supply->name}}
                 @endif
+                
               </p>
             </div>
             <div>

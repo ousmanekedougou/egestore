@@ -138,92 +138,92 @@ class DatabaseSeeder extends Seeder
             'visible' => 0
         ]);
 
-        $categorys = [
-            'Collectibles &amp; Art' => 'fa fa-pocket', 
-            'Home &amp; Gardan' => 'fa fa-home',
-            'Sporting Goods' => 'fa fa-globe',
-            'Electronics' => 'fa fa-monitor',
-            'Auto Parts &amp; Accessories' => 'fa fa-truck',
-            'Toys &amp; Hobbies' => 'fa fa-codesandbox',
-            'Fashion' => 'watch',
-            'Musical Instruments &amp; Gear' => 'fa fa-music',
-            'Other Categories' => 'fa fa-grid',
-        ];
+        // $categorys = [
+        //     'Collectibles &amp; Art' => 'fa fa-pocket', 
+        //     'Home &amp; Gardan' => 'fa fa-home',
+        //     'Sporting Goods' => 'fa fa-globe',
+        //     'Electronics' => 'fa fa-monitor',
+        //     'Auto Parts &amp; Accessories' => 'fa fa-truck',
+        //     'Toys &amp; Hobbies' => 'fa fa-codesandbox',
+        //     'Fashion' => 'watch',
+        //     'Musical Instruments &amp; Gear' => 'fa fa-music',
+        //     'Other Categories' => 'fa fa-grid',
+        // ];
 
-        $subcategorys = [
-            'Collectibles','Antiques','Sports','Art',
-        ];
+        // $subcategorys = [
+        //     'Collectibles','Antiques','Sports','Art',
+        // ];
 
-        $colors = [
-            'Bleu','Vert','Rouge','Maron',
-        ];
+        // $colors = [
+        //     'Bleu','Vert','Rouge','Maron',
+        // ];
 
-        $sizes = [
-            'XXL','Xl','M','L','S','12','13','12,5'
-        ];
+        // $sizes = [
+        //     'XXL','Xl','M','L','S','12','13','12,5'
+        // ];
         
-        $magasins = Magasin::all();
-        foreach ($magasins as $magasin) {
+        // $magasins = Magasin::all();
+        // foreach ($magasins as $magasin) {
 
-            foreach ($categorys as $name => $icon) {
-                $category = Category::create([
-                    'name' => $name,
-                    'icon' => $icon,
-                    'slug' => str_replace('/','',Hash::make(Str::random(2).$name)),
-                    'visible' => 1,
-                    'magasin_id' => $magasin->id
-                ]);
+        //     foreach ($categorys as $name => $icon) {
+        //         $category = Category::create([
+        //             'name' => $name,
+        //             'icon' => $icon,
+        //             'slug' => str_replace('/','',Hash::make(Str::random(2).$name)),
+        //             'visible' => 1,
+        //             'magasin_id' => $magasin->id
+        //         ]);
 
-                foreach ($subcategorys  as $key => $val) {
+        //         foreach ($subcategorys  as $key => $val) {
                     
-                    $getsubcategory = SubCategory::create([
-                        'name' => $val,
-                        'slug' => str_replace('/','',Hash::make(Str::random(2).$val)),
-                        'category_id' => $category->id,
-                        'visible' => 1
-                    ]);
+        //             $getsubcategory = SubCategory::create([
+        //                 'name' => $val,
+        //                 'slug' => str_replace('/','',Hash::make(Str::random(2).$val)),
+        //                 'category_id' => $category->id,
+        //                 'visible' => 1
+        //             ]);
 
                     
-                    $imageName = '';
-                    if(request()->hasFile($faker->imageUrl))
-                    {
-                        // $imageName = request()()->file->store('public/Logos');
-                        $file = request()->file($faker->imageUrl);
+        //             $imageName = '';
+        //             if(request()->hasFile($faker->imageUrl))
+        //             {
+        //                 // $imageName = request()()->file->store('public/Logos');
+        //                 $file = request()->file($faker->imageUrl);
 
-                        $NameLogo = $faker->name.'-'.$category->magasin->name.'.'. $file->getClientOriginalExtension();
-                        $imageLogo = Image::read($file);
-                        // Resize image
-                        $imageLogo->resize(360, 338, function ($constraint) {
-                            $constraint->aspectRatio();
-                        })->save(storage_path('app/public/Products/' . $NameLogo));
+        //                 $NameLogo = $faker->name.'-'.$category->magasin->name.'.'. $file->getClientOriginalExtension();
+        //                 $imageLogo = Image::read($file);
+        //                 // Resize image
+        //                 $imageLogo->resize(360, 338, function ($constraint) {
+        //                     $constraint->aspectRatio();
+        //                 })->save(storage_path('app/public/Products/' . $NameLogo));
 
-                        $imageName = 'public/Products'. $NameLogo;
-                    }
+        //                 $imageName = 'public/Products'. $NameLogo;
+        //             }
                     
-                    for ($i=0; $i < 5; $i++) { 
-                        Product::create([
-                            'name' => $faker->name,
-                            'slug' => str_replace('/','',Hash::make(Str::random(2).$faker->name)),
-                            'reference' => 'W239JKI',
-                            'price' => $faker->randomNumber(2),
-                            'quantity' => 50,
-                            'qty_alert' => 10,
-                            'stock' => 50,
-                            'image' => $imageName,
-                            'exp_date' => null,
-                            'colors' => serialize($colors),
-                            'sizes' => serialize($sizes),
-                            'desc' => $faker->paragraph,
-                            'promot' => null,
-                            'promo_price' => null,
-                            'visible' => 1,
-                            'magasin_id' => $getsubcategory->category->magasin->id,
-                            'sub_category_id' => $getsubcategory->id
-                        ]);
-                    }
-                }
-            }
-        }
+        //             for ($i=0; $i < 5; $i++) { 
+        //                 Product::create([
+        //                     'name' => $faker->name,
+        //                     'slug' => str_replace('/','',Hash::make(Str::random(2).$faker->name)),
+        //                     'reference' => 'W239JKI',
+        //                     'price' => $faker->randomNumber(2),
+        //                     'quantity' => 50,
+        //                     'qty_alert' => 10,
+        //                     'stock' => 50,
+        //                     'image' => $imageName,
+        //                     'exp_date' => null,
+        //                     'colors' => serialize($colors),
+        //                     'sizes' => serialize($sizes),
+        //                     'desc' => $faker->paragraph,
+        //                     'promot' => null,
+        //                     'promo_price' => null,
+        //                     'visible' => 1,
+        //                     'magasin_id' => $getsubcategory->category->magasin->id,
+        //                     'sub_category_id' => $getsubcategory->id
+        //                 ]);
+        //             }
+        //         }
+        //     }
+        // }
 
         Agent::create([
             'name' => 'Moussa Ba',
