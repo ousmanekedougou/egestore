@@ -8,7 +8,6 @@ use App\Models\Magasin\Magasin;
 use App\Models\Magasin\Order;
 use App\Models\Magasin\Payment;
 use App\Models\User\User;
-use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -45,6 +44,7 @@ class ClientController extends Controller
     {
         $this->validate($request,[
             'name' => 'required|string',
+            'adress' => 'required|string',
             'email' => 'string|email|unique:clients',
             'phone' => 'required|numeric|unique:clients',
             'account' => 'numeric',
@@ -55,17 +55,33 @@ class ClientController extends Controller
         $depot = null;
         $credit = null;
         $account = null;
+        $rccm = null;
+        $ninea = null;
+        $contact = null;
 
         if($request->account == 1){
-            $depot = $request->amount;
+            $this->validate($request,[
+                'depot' => 'required|numeric',
+            ]);
+
+            $depot = $request->depot;
             $account = 1;
-        }elseif($request->account == 2){
-            $credit = $request->amount;
-            $account = 2;
         }elseif ($request->account == 3 || $request->account == null) {
             $credit = null;
             $depot = null;
             $account = 3;
+        }
+
+        if ($request->type != 1) {
+            $this->validate($request,[
+                'rccm' => 'required|string|unique:clients',
+                'ninea' => 'required|string|unique:clients',
+                'contact' => 'required|string|unique:clients',
+            ]);
+
+            $rccm = $request->rccm;
+            $ninea = $request->ninea;
+            $contact = $request->contact;
         }
         
 
@@ -73,11 +89,15 @@ class ClientController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'adress' => $request->adress,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->email)),
             'amount' => null,
             'depot' => $depot,
             'credit' => $credit,
             'account' => $account,
+            'rccm' => $rccm,
+            'ninea' => $ninea,
+            'contact' => $contact,
             'magasin_id' => AuthMagasinAgent(),
         ]);
 
@@ -130,37 +150,29 @@ class ClientController extends Controller
         
         if($client->account == 2){
             if ($request->amount <= $client->credit) {
-                if ($client->credit > $client->amount) {
-                    $amount = $client->amount + $request->amount;
-                    $account = 2;
-                    $credit = $client->credit;
-                    Payment::create(['client_id' => $id,'magasin_id' => AuthMagasinAgent(),'date' => Carbon::now(),'amount' => $request->amount]);
+                if ($request->amount <= $client->restant) {
+                    if ($client->credit > $client->amount) {
+                        $amount = $client->amount + $request->amount;
+                        $account = 2;
+                        $credit = $client->credit;
+                        Payment::create(['client_id' => $id,'magasin_id' => AuthMagasinAgent(),'date' => Carbon::now(),'amount' => $request->amount]);
+                    }
+                }else {
+                    Toastr()->error('Ce montant est superieur a la somme restante', 'Surplus du montant restant', ["positionClass" => "toast-top-right"]);
+                    return back();
                 }
             }else {
                 Toastr()->error('Ce montant est superieur a la somme acréditée', 'Surplus du montant', ["positionClass" => "toast-top-right"]);
                 return back();
             }
         }elseif ($client->account == 3) {
-            if ($request->account == 1) {
-                // dd($request->account);
-                $depot = $request->amount;
-                $account = 1;
-                $credit = null;
-            }elseif($request->account == 2) {
-                $credit = $request->amount;
-                $account = 2;
-                $depot = null;
-            }else{
-                $account = 3;
-                $depot = null;
-                $credit = null;
-                $amount = null;
-            }
+            $depot = $request->depot;
+            $account = 3;
+            $credit = null;
+            $amount = null;
         }
 
         // dd($account);
-
-
         $client->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -171,6 +183,8 @@ class ClientController extends Controller
             'account' => $account,
         ]);
 
+        $client->update(['restant' => $client->credit - $client->amount,]);
+
 
         if ($client->account == 2 && $client->credit == $client->amount) {
             Order::where('client_id',$client->id)
@@ -178,7 +192,8 @@ class ClientController extends Controller
                 ->where('status',2)
                 ->where('type',2)->update(['status' => 1 , 'type' => 1]);
 
-            $client->update(['account' => 3,'amount' => null,'credit' => null]);
+            $client->update(['account' => 3,'amount' => null,'credit' => null, 'restant' => null]);
+
             Payment::where('client_id',$client->id)
                 ->where('magasin_id',AuthMagasinAgent())->delete();
 

@@ -218,6 +218,8 @@ class ProduitController extends Controller
         $colors = null;
         $sizes = null;
         $promot = null;
+        $supplyName = null;
+        $supplyId = null;
         $spaceColor = str_replace(' ', '', $request->colors);
         $spaceSize = str_replace(' ', '', $request->sizes);
         $getcolors = explode(",",$spaceColor);
@@ -276,6 +278,13 @@ class ProduitController extends Controller
             $promot = 0;
         }
 
+        if ($request->supply_name != null) {
+            $supplyName = $request->supply_name;
+        }
+        if ($request->supply_id != null) {
+            $supplyId = $request->supply_id;
+        }
+
 
         $product->update([
             'name' => $request->name,
@@ -294,7 +303,8 @@ class ProduitController extends Controller
             'exp_date' => $request->exp_date,
             'colors' => $colors,
             'sizes' => $sizes,
-            'supply_id' => $request->supply_id,
+            'supply_name' => $supplyName,
+            'supply_id' => $supplyId,
             'magasin_id' => AuthMagasinAgent(),
             'sub_category_id' => $request->sub_category_id
         ]);

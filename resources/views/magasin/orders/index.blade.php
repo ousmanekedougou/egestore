@@ -82,26 +82,34 @@
                     </span>
                   </td>
                   <td class="delivery_type align-middle white-space-nowrap text-body fs-9 text-start">
-                    @if ($order->methode == 1)
-                      <span class="text-info">Wave</span>
-                    @elseif ($order->methode == 2)
-                      <span class="text-warning">Orange money</span>
-                    @elseif ($order->methode == 3)
-                      <span class="text-success">En cache</span>
+                    @if ($order->type == 2)
+                      <span class="text-warning">A crédit </span>
                     @else
-                      Non paye
+                     @if ($order->methode == 1)
+                        <span class="text-info">Wave</span>
+                      @elseif ($order->methode == 2)
+                        <span class="text-warning">Orange money</span>
+                      @elseif ($order->methode == 3)
+                        <span class="text-success">En cache</span>
+                      @else
+                        Non paye
+                      @endif
                     @endif
                   </td>
                   <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{date('d-m-Y', strtotime( $order->date ))}}</td>
                   <td class=" align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">
-                    @if($order->status == 1)
-                    <a href="{{ route('magasin.commande.edit',$order->slug) }}" target="_blank" class="me-2 text-success"  data-fa-transform="shrink-3"><span class="fa fa-file-alt fs-7" ></span></span></a>
-                    @elseif($order->status != 1)
-                      @if (count(unserialize($order->products)) > 0)
-                        <span class="me-2 text-info fa fa-shopping-bag fs-7" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $order->id }}" data-fa-transform="shrink-3"></span>
+                    @if($order->type != 2)
+                      @if($order->status == 1)
+                      <a href="{{ route('magasin.commande.edit',$order->slug) }}" target="_blank" class="me-2 text-success"  data-fa-transform="shrink-3"><span class="fa fa-file-alt fs-7" ></span></span></a>
+                      @elseif($order->status != 1)
+                        @if (count(unserialize($order->products)) > 0)
+                          <span class="me-2 text-info fa fa-shopping-bag fs-7" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $order->id }}" data-fa-transform="shrink-3"></span>
+                        @endif
                       @endif
+                      <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $order->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
+                    @else
+                      <span class="text-warning">A crédit </span>
                     @endif
-                    <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $order->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
                   </td>
                 </tr>
               @endforeach

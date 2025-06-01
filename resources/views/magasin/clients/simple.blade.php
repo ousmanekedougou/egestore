@@ -104,6 +104,28 @@
           <div class="offcanvas-body">
             <form method="POST" action="{{ route('magasin.client.store') }}">
               @csrf
+
+              <div class="mb-1 text-start">
+                <label class="form-label mt-2" for="">Le type de client</label> <br>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input text-success @error('type') is-invalid @enderror" id="Indivivuel" type="radio" name="type" value="1" onclick="typeClient(1)">
+                  <label class="form-check-label mt-1 text-success" for="Indivivuel">Individuel</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input text-warning @error('type') is-invalid @enderror"  id="Entreprise" type="radio" name="type" value="2" onclick="typeClient(2)">
+                  <label class="form-check-label text-warning mt-1" for="Entreprise">Entreprise</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input text-primary @error('type') is-invalid @enderror"  id="ONG" type="radio" name="type" value="3" onclick="typeClient(3)">
+                  <label class="form-check-label text-primary mt-1" for="ONG">ONG</label>
+                </div>
+                @error('type')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
+              </div>
+
               <div class="mb-3 text-start">
                   <label class="form-label" for="name">Prenom et nom du client</label>
                   <input id="name" type="text" placeholder="Prenom et nom du client" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -117,7 +139,7 @@
 
 
               <div class="mb-3 text-start">
-                  <label class="form-label" for="email">Adresse email du client</label>
+                  <label class="form-label" for="email">Email du client</label>
                   <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="email@gmail.com" required autocomplete="email">
 
                   @error('email')
@@ -129,8 +151,8 @@
 
 
               <div class="mb-3 text-start">
-                  <label class="form-label" for="phone">Numero de telephone du client</label>
-                  <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" placeholder="Numero de telephone du client" required autocomplete="phone">
+                  <label class="form-label" for="phone">Telephone du client</label>
+                  <input id="phone" type="numeric" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" placeholder="Numero de telephone du client" required autocomplete="phone">
 
                   @error('phone')
                       <span class="invalid-feedback" role="alert">
@@ -140,18 +162,58 @@
               </div>
 
               <div class="mb-3 text-start">
-                <label class="form-label" for="email">Status du montant du compte</label> <br>
+                  <label class="form-label" for="adress">Adresse</label>
+                  <input id="adress" type="adress" class="form-control @error('adress') is-invalid @enderror" name="adress" value="{{ old('adress') }}" placeholder="Numero de teleadress du client" required autocomplete="adress">
+
+                  @error('adress')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+              </div>
+
+              <div class="mb-3 text-start d-none" id="RCCM">
+                  <label class="form-label" for="rccm">RCCM</label>
+                  <input id="rccm" type="rccm" class="form-control @error('rccm') is-invalid @enderror" name="rccm" value="{{ old('rccm') }}" placeholder="Numero de telerccm du client" autocomplete="rccm">
+
+                  @error('rccm')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+              </div>
+
+              <div class="mb-3 text-start d-none" id="NINEA">
+                  <label class="form-label" for="ninea">NINEA</label>
+                  <input id="ninea" type="ninea" class="form-control @error('ninea') is-invalid @enderror" name="ninea" value="{{ old('ninea') }}" placeholder="Numero de teleninea du client" autocomplete="ninea">
+
+                  @error('ninea')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+              </div>
+
+              <div class="mb-3 text-start d-none" id="Contact">
+                  <label class="form-label" for="contact">Contact supplementaire</label>
+                  <input id="contact" type="text" class="form-control @error('contact') is-invalid @enderror" name="contact" value="{{ old('contact') }}" placeholder="Email ou telephone de l'entreprise / ONG" autocomplete="contact">
+
+                  @error('contact')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+              </div>
+
+              <div class="mb-3 text-start">
+                <label class="form-label mb-1" for="email">Deposer de l'argent dans ce compte</label> <br>
                 <div class="form-check form-check-inline">
                   <input class="form-check-input text-success @error('account') is-invalid @enderror" onchange="enableBrand(this)"  id="inlineRadio1" type="radio" name="account" value=" 1 ">
-                  <label class="form-check-label text-success mt-1" for="inlineRadio1">Actif</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input text-warning @error('account') is-invalid @enderror" onchange="enableBrand(this)"  id="inlineRadio2" type="radio" name="account" value=" 2 ">
-                  <label class="form-check-label text-warning mt-1" for="inlineRadio2">Passif</label>
+                  <label class="form-check-label text-success mt-1" for="inlineRadio1">Deposer des actifs</label>
                 </div>
                 <div class="form-check form-check-inline">
                   <input class="form-check-input text-primary @error('account') is-invalid @enderror" onchange="enableBrand(this)"  id="inlineRadio3" type="radio" name="account" value=" 3 ">
-                  <label class="form-check-label text-primary mt-1" for="inlineRadio3">Neutre</label>
+                  <label class="form-check-label text-primary mt-1" for="inlineRadio3">Compte neutre</label>
                 </div>
                 @error('account')
                   <span class="invalid-feedback" role="alert">
@@ -161,15 +223,16 @@
               </div>
 
               <div class="mb-3 text-start d-none" id="clientNone">
-                <label class="form-label" for="amount">Montant Actif/passif a deposer</label>
-                <input id="amount" type="numeric" class="form-control @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount') }}" placeholder="Montant actif/passif a deposer" autocomplete="amount">
+                <label class="form-label" for="depot">Montant actif a deposer</label>
+                <input id="depot" type="numeric" class="form-control @error('depot') is-invalid @enderror" name="depot" value="{{ old('depot') }}" placeholder="Montant actif a deposer" autocomplete="depot">
 
-                @error('amount')
+                @error('depot')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
               </div>
+
               <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce client</button>
             </form>
           </div>
@@ -225,7 +288,7 @@
                             <p class="mb-0"> Il vous reste a paye </p>
                             <div>
                               <span class="d-inline-block lh-sm me-1" data-feather="money" style="height:16px;width:16px;"></span>
-                              <span class="d-inline-block lh-sm"> {{ $client->credit - $client->amount }}</span>
+                              <span class="d-inline-block lh-sm"> {{ $client->restant }}</span>
                             </div>
                           </div>
                           @endif
@@ -296,28 +359,11 @@
                     <label class="form-label mb-1" for="amount">Entrer la tranche de reglage</label>
                     <input id="amount" type="number" class="form-control  @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount')  }}" placeholder="Entrer la tranche de reglage" required autocomplete="amount">
                   @elseif($client->account == 3)
-                    <div class="mb-2">
-                      <label class="form-label" for="email">Status du montant du compte</label> <br>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input text-success @error('account') is-invalid @enderror" id="inlineRadioEditA-{{ $client->id }}" type="radio" name="account" value=" 1 ">
-                        <label class="form-check-label text-success mt-1" for="inlineRadioEditA-{{ $client->id }}">Actif</label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input text-warning @error('account') is-invalid @enderror" id="inlineRadioEditB-{{ $client->id }}" type="radio" name="account" value=" 2 ">
-                        <label class="form-check-label text-warning mt-1" for="inlineRadioEditB-{{ $client->id }}">Passif</label>
-                      </div>
-                      @error('account')
-                        <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                        </span>
-                      @enderror
-                    </div>
-                    
                     <div class="mb-3 text-start">
-                      <label class="form-label" for="amount">Montant Actif/passif a deposer</label>
-                      <input id="amount" type="numeric" class="form-control @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount') }}" placeholder="Montant actif/passif a deposer" autocomplete="amount">
+                      <label class="form-label" for="depot">Deposer des actifs dans ce compte</label>
+                      <input id="depot" type="numeric" class="form-control @error('depot') is-invalid @enderror" name="depot" value="{{ old('depot') }}" placeholder="Deposer des actifs dans ce compte" autocomplete="depot">
                       
-                      @error('amount')
+                      @error('depot')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                       </span>
@@ -365,10 +411,22 @@
 
 <script>
    function enableBrand(answer){
-        if (answer.value == 1 || answer.value == 2) {
-            document.getElementById('clientNone').classList.remove('d-none')
-        }else{
-            document.getElementById('clientNone').classList.add('d-none')
-        }
+      if (answer.value == 1 || answer.value == 2) {
+          document.getElementById('clientNone').classList.remove('d-none')
+      }else{
+          document.getElementById('clientNone').classList.add('d-none')
       }
+    }
+
+  function typeClient(x){
+    if (x == 1) {
+      document.getElementById('RCCM').classList.add('d-none')
+      document.getElementById('NINEA').classList.add('d-none')
+      document.getElementById('Contact').classList.add('d-none')
+    }else {
+      document.getElementById('RCCM').classList.remove('d-none')
+      document.getElementById('NINEA').classList.remove('d-none')
+      document.getElementById('Contact').classList.remove('d-none')
+    }
+  }
 </script>

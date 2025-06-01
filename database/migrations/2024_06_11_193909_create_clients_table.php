@@ -16,11 +16,17 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->integer('phone')->unique();
+            $table->string('adress')->nullable();
             $table->string('slug')->unique();
             $table->integer('account')->nullable();
             $table->integer('amount')->nullable();
             $table->integer('depot')->nullable();
             $table->integer('credit')->nullable();
+            $table->integer('restant')->nullable();
+            $table->integer('type')->nullable();
+            $table->string('rccm')->unique()->nullable();
+            $table->string('ninea')->unique()->nullable();
+            $table->string('contact')->unique()->nullable();
             $table
               ->foreignId("magasin_id")
               ->references("id")

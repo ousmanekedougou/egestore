@@ -16,6 +16,7 @@ class Client extends Model
         'slug',
         'amount',
         'credit',
+        'restant',
         'payments',
         'depot',
         'account',

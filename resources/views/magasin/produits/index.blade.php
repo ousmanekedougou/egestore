@@ -260,7 +260,7 @@
               <div class="mb-3 text-start d-none" id="OursupplyId">
                 <div class="col-lg-12 mb-3">
                   <label class="form-label" for="supply_name">Nom de votre fournisseur</label>
-                  <input id="supply_name" type="numeric" class="form-control @error('supply_name') is-invalid @enderror" name="supply_name" value="{{ old('supply_name') }}" placeholder="Nom de votre fournisseur" autocomplete="supply_name">
+                  <input id="supply_name" type="text" class="form-control @error('supply_name') is-invalid @enderror" name="supply_name" value="{{ old('supply_name') }}" placeholder="Nom de votre fournisseur" autocomplete="supply_name">
 
                   @error('supply_name')
                     <span class="invalid-feedback" role="alert">

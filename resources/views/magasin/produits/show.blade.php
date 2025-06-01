@@ -506,20 +506,37 @@
             </div>
             @endif
 
-            <div class="mb-3 text-start">
-                  <label for="organizerSingle">Sélectionner un fournisseur</label>
-                  <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
-                    <option value="">Sélectionner un...</option>
-                    @foreach ($supplies as $supplie)
-                      <option value="{{ old('supply_id') ?? $supplie->id }}" @if($supplie->id == $product->supply_id) selected="" @endif > @if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
-                    @endforeach
-                  </select>
-                  @error('supply_id')
+            @if ($product->supply_id == null)
+              <div class="mb-3 text-start">
+                <div class="col-lg-12 mb-3">
+                  <label class="form-label" for="supply_name">Nom de votre fournisseur</label>
+                  <input id="supply_name" type="text" class="form-control @error('supply_name') is-invalid @enderror" name="supply_name" value="{{ old('supply_name') ?? $product->supply_name }}" placeholder="Nom de votre fournisseur" autocomplete="supply_name">
+
+                  @error('supply_name')
                     <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
+                        <strong>{{ $message }}</strong>
                     </span>
                   @enderror
                 </div>
+              </div>
+            @else
+              <div class="mb-3 text-start">
+                <label class="form-label" for="organizerSingle">Sélectionner un fournisseur</label>
+                <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
+                  <option value="">Sélectionner un...</option>
+                  @foreach ($supplies as $supplie)
+                    <option value="{{ old('supply_id') ?? $supplie->id }}" @if($supplie->id == $product->supply_id) selected="" @endif > @if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
+                  @endforeach
+                </select>
+                @error('supply_id')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
+              </div>
+            @endif
+
+            
 
             <div class="mb-3 text-start">
               <label class="form-label" for="desc">Description du produit </label>
