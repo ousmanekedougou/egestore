@@ -48,7 +48,27 @@
                   <td class="total align-middle text-center fw-semibold text-body-highlight"><b>{{ $order->amount }} CFA</b></td>
                   <td class="customer align-middle white-space-nowrap ps-8">
                     <a class="d-flex align-items-center text-body" href="{{ route('magasin.commande.show',$order->id) }}">
-                      <div class="avatar avatar-m"><img class="rounded-circle" src="@if($order->user_id != '' ) {{Storage::url($order->user->image)}} @else {{asset('assets/img/team/avatar.webp')}} @endif" alt="" /></div>
+                      <div class="avatar avatar-m">
+                        <img class="rounded-circle" src="
+                          @if($order->user_id == '' && $order->client_id == '')
+                            https://ui-avatars.com/api/?name={{$order->name}}
+                          @else 
+                            @if($order->user_id != '')
+                              @if($order->user->image != '' ) 
+                                {{Storage::url($order->user->image)}} 
+                              @else
+                                https://ui-avatars.com/api/?name={{$order->user->name}} 
+                              @endif
+                            @elseif($order->client_id != '')
+                              @if($order->client->image != '' ) 
+                              {{Storage::url($order->client->image)}} 
+                              @else
+                                https://ui-avatars.com/api/?name={{$order->client->name}} 
+                              @endif
+                            @endif
+                          @endif" 
+                        alt="" />
+                      </div>
                       <h6 class="mb-0 ms-3 text-body">@if($order->user_id == '' && $order->client_id == '') {{ $order->name }} @elseif($order->user_id != '') {{ $order->user->name }} @elseif($order->client_id != '') {{ $order->client->name }} @endif</h6>
                     </a>
                   </td>

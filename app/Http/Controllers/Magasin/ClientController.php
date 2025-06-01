@@ -43,6 +43,7 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
+            'type' => 'required|numeric',
             'name' => 'required|string',
             'adress' => 'required|string',
             'email' => 'string|email|unique:clients',
@@ -86,6 +87,7 @@ class ClientController extends Controller
         
 
         Client::create([
+            'type' => $request->type,
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
@@ -177,6 +179,7 @@ class ClientController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'adress' => $request->adress,
             'amount' => $amount,
             'depot' => $depot,
             'credit' => $credit,

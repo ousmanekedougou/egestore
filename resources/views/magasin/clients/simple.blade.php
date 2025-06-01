@@ -34,7 +34,8 @@
                   <th class="sort align-middle pe-5" scope="col" data-sort="email" style="width:20%;">EMAIL</th>
                   <th class="sort align-middle text-end" scope="col" data-sort="total-orders" style="width:10%">TELEPHONES</th>
                   <th class="sort align-middle text-end" scope="col" data-sort="total-spent" style="width:15%">COMMANDES</th>
-                  <th class="sort align-middle ps-7" scope="col" data-sort="city" style="width:25%;">VILLES</th>
+                  <th class="sort align-middle ps-7" scope="col" data-sort="city" style="width:25%;">TYPE</th>
+                  <th class="sort align-middle ps-7" scope="col" data-sort="city" style="width:25%;">ADRESSE</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">STATUS</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">MONTANT</th>
                   <th class="sort align-middle text-end pe-0" scope="col" data-sort="last-order" style="width:10%;min-width: 150px;">MT-ACTIFS</th>
@@ -52,7 +53,8 @@
                   <td class="email align-middle white-space-nowrap pe-5"><a class="fw-semibold" href="mailto:{{$client->email}}">{{$client->email}}</a></td>
                   <td class="total-orders align-middle white-space-nowrap fw-semibold text-center text-body-highlight">{{ $client->phone }}</td>
                   <td class="total-orders align-middle white-space-nowrap fw-semibold text-center text-body-highlight">{{ $client->getOrderCount($client->id) }}</td>
-                  <td class="city align-middle white-space-nowrap text-body-highlight ps-7">Ville</td>
+                  <td class="city align-middle white-space-nowrap text-body-highlight ps-7">@if($client->type == 1) Individuel @elseif($client->type == 2) Entreprise @else ONG @endif</td>
+                  <td class="city align-middle white-space-nowrap text-body-highlight ps-7">{{ $client->adress }}</td>
                   <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">
                     <span class="badge badge-phoenix fs-10 @if($client->account == 1) badge-phoenix-info @elseif($client->account == 2) badge-phoenix-warning @else badge-phoenix-success @endif"> 
                       @if($client->account == 1) Actif @elseif($client->account == 2) Passif @else Neutre @endif
@@ -271,6 +273,35 @@
                                 </div>
                               </div>
                             </div>
+                            <div class="d-flex align-items-center mb-4">
+                              <h5 class="mb-0 me-4">
+                                <span class="d-inline-block lh-sm me-1" data-feather="grid" style="height:16px;width:16px;"></span>
+                                @if ($client->type == 1)
+                                  Client individeul
+                                @elseif ($client->type == 2)
+                                  Entreprise
+                                @elseif ($client->type == 3)
+                                  ONG
+                                @endif
+                              </h5>
+                            </div>
+                             @if ($client->type != 1)
+
+                              <div>
+                                <div class="d-flex justify-content-between">
+                                  <p class="text-body fw-semibold">RCCM :</p>
+                                  <p class="text-body-emphasis fw-semibold">{{ $client->rccm }}</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                  <p class="text-body fw-semibold">NINEA :</p>
+                                  <p class="text-danger fw-semibold">{{ $client->ninea }}</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                  <p class="text-body fw-semibold">CONTACT :</p>
+                                  <p class="text-body-emphasis fw-semibold">{{ $client->contact }}</p>
+                                </div>
+                              </div>
+                              @endif
                           </div>
                           @if ($client->account == 2)
                           <div class="progress mb-2" style="height:5px">
@@ -288,7 +319,7 @@
                             <p class="mb-0"> Il vous reste a paye </p>
                             <div>
                               <span class="d-inline-block lh-sm me-1" data-feather="money" style="height:16px;width:16px;"></span>
-                              <span class="d-inline-block lh-sm"> {{ $client->restant }}</span>
+                              <span class="d-inline-block lh-sm"> {{ $client->restant }} CFA</span>
                             </div>
                           </div>
                           @endif
@@ -348,6 +379,17 @@
                     <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') ?? $client->phone }}" placeholder="Numero de telephone du client" required autocomplete="phone">
 
                     @error('phone')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <div class="mb-3 text-start">
+                    <label class="form-label" for="adress">Adresse du client</label>
+                    <input id="adress" type="text" class="form-control @error('adress') is-invalid @enderror" name="adress" value="{{ old('adress') ?? $client->adress }}" placeholder="Adresse du client" required autocomplete="adress">
+
+                    @error('adress')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

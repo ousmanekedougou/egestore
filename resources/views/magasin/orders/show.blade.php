@@ -97,11 +97,12 @@
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title mb-4">Statut de la commande</h4>
+                  @if($order->type != 2)
                   <form action="{{ route('magasin.commande.update',$order->id) }}" method="post">
                     @csrf
                     {{ method_field('PUT') }}
                     <div class="modal-body">
-                      <p class="text-body-tertiary lh-lg mb-3"> Commande Nº {{ $order->order }} de  {{$order->name}} </p>
+                      <p class="text-body-tertiary lh-lg mb-3"> Commande Nº {{ $order->order }} </p>
                       <p class="text-body-tertiary lh-lg mb-3">
                         <h6 class="mb-2">Selectionner un status</h6>
                         <select onchange="enableBrand(this)" class="form-select mb-4 @error('status') is-invalid @enderror" name="status" id="status"aria-label="delivery type">
@@ -141,6 +142,9 @@
                       <button class="btn btn-success" style="width: 100%;" type="submit">Enregistre le status</button>
                     </div>
                   </form>
+                  @else
+                   Cette commande est a crédit
+                  @endif
                 </div>
               </div>
             </div>

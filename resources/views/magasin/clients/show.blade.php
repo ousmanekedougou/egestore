@@ -22,7 +22,7 @@
                 <div class="card-body d-flex flex-column justify-content-between pb-3">
                   <div class="row align-items-center g-5 mb-3 text-center text-sm-start">
                     <div class="col-12 col-sm-auto mb-sm-2">
-                      <div class="avatar avatar-5xl"><img class="rounded-circle" src="{{Storage::url($client->image)}}" alt="" /></div>
+                      <div class="avatar avatar-5xl"><img class="rounded-circle" src="https://ui-avatars.com/api/?name={{$client->name}}" alt="" /></div>
                     </div>
                     <div class="col-12 col-sm-auto flex-1">
                       <h3>{{ $client->name }}</h3>
@@ -65,15 +65,15 @@
         <div class="col-12 col-xxl-8">
           <div class="mb-6">
             <h3 class="mb-4">Commandes <span class="text-body-tertiary fw-normal">({{ $orders->count() }})</span></h3>
-            <div class="border-top border-bottom border-translucent" id="customerOrdersTable" data-list='{"valueNames":["order","total","payment_status","fulfilment_status","delivery_type","date"],"page":6,"pagination":true}'>
+            <div class="border-top border-bottom border-translucent" id="customerOrdersTable" data-list='{"valueNames":["order","total","payment_status","fulfilment_status","delivery_type","date"],"page":10,"pagination":true}'>
               <div class="table-responsive scrollbar">
                 <table class="table table-sm fs-9 mb-0">
                   <thead>
                     <tr>
                       <th class="sort white-space-nowrap align-middle ps-0 pe-3" scope="col" data-sort="order" style="width:10%;">COMMANDES</th>
                       <th class="sort align-middle text-end pe-7" scope="col" data-sort="total" style="width:10%;">TOTAL</th>
-                      <th class="sort align-middle white-space-nowrap pe-3" scope="col" data-sort="payment_status" style="width:15%;">STATUS</th>
-                      <th class="sort align-middle white-space-nowrap text-start" scope="col" data-sort="delivery_type" style="width:30%;">LIVRAISON</th>
+                      <th class="sort align-middle white-space-nowrap pe-3" scope="col" data-sort="payment_status" style="width:15%;">PAIMENT</th>
+                      <th class="sort align-middle white-space-nowrap text-start" scope="col" data-sort="delivery_type" style="width:30%;">TYPE</th>
                       <th class="sort align-middle text-end pe-0" scope="col" data-sort="date">DATE</th>
                       <th class="sort text-end align-middle pe-0 ps-5" scope="col"></th>
                     </tr>
@@ -82,11 +82,11 @@
                   <tbody class="list" id="customer-order-table-body">
                     @foreach($orders as $order)
                     <tr class="hover-actions-trigger btn-reveal-trigger position-static">
-                      <td class="order align-middle white-space-nowrap ps-0"><a class="fw-semibold" href="#!">Nº {{ $order->order }}</a></td>
+                      <td class="order align-middle white-space-nowrap ps-0"><a class="fw-semibold" href="{{ route('magasin.commande.show',$order->id) }}">Nº {{ $order->order }}</a></td>
                       <td class="total align-middle text-end fw-semibold pe-7 text-body-highlight">{{ $order->amount }}</td>
                       <td class="payment_status align-middle white-space-nowrap text-start fw-bold text-body-tertiary">
                         <span class="badge badge-phoenix fs-10  @if($order->status == 1) badge-phoenix-success @elseif($order->status == 2) badge-phoenix-info @else badge-phoenix-warning @endif">
-                          <span class="badge-label">@if($order->status == 1) Terminé @elseif($order->status == 2) Traitement @else Annulé @endif</span>
+                          <span class="badge-label">@if($order->status == 1) Terminé @elseif($order->status == 2) En cours @else Annulé @endif</span>
                           <span class="ms-1" 
                           @if($order->status == 1)
                             data-feather="check" 
@@ -100,14 +100,16 @@
                           
                         </span>
                       </td>
-                      <td class="delivery_type align-middle white-space-nowrap text-body fs-9 text-start">Cash on delivery</td>
-                      <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">Dec 12, 12:56 PM</td>
+                      <td class="delivery_type align-middle white-space-nowrap text-body fs-9 text-start">@if($order->type == 2) A crédit @else  @endif</td>
+                      <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{date('d-m-Y', strtotime( $order->date ))}}</td>
                       <td class="align-middle white-space-nowrap text-end pe-0 ps-5">
+                        {{-- 
                         <div class="btn-reveal-trigger position-static"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10"></span></button>
                           <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>
                             <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="#!">Remove</a>
                           </div>
                         </div>
+                        --}}
                       </td>
                     </tr>
                     @endforeach
@@ -116,7 +118,7 @@
               </div>
               <div class="row align-items-center justify-content-between py-2 pe-0 fs-9">
                 <div class="col-auto d-flex">
-                  <p class="mb-0 d-none d-sm-block me-3 fw-semibold text-body" data-list-info="data-list-info"></p><a class="fw-semibold" href="#!" data-list-view="*">View all<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a><a class="fw-semibold d-none" href="#!" data-list-view="less">View Less<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
+                  <p class="mb-0 d-none d-sm-block me-3 fw-semibold text-body" data-list-info="data-list-info"></p><a class="fw-semibold" href="#!" data-list-view="*">Voire tout<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a><a class="fw-semibold d-none" href="#!" data-list-view="less">View Less<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a>
                 </div>
                 <div class="col-auto d-flex"><button class="page-link" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
                   <ul class="mb-0 pagination"></ul><button class="page-link pe-0" data-list-pagination="next"><span class="fas fa-chevron-right"></span></button>
