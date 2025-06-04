@@ -12,7 +12,7 @@
           <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3 {{ set_active_roote('utilisateur.document') }}" aria-current="page" href="{{route('utilisateur.document')}}">Comment ça marche</a></li>
           <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3 {{ set_active_roote('utilisateur.conditions') }}" href="{{route('utilisateur.conditions')}}">Conditions</a></li>
           <li class="nav-item border-bottom border-translucent border-bottom-lg-0"><a class="nav-link fs-9 fw-bold pe-3 {{ set_active_roote('utilisateur.privacy') }}" href="{{route('utilisateur.privacy')}}">Confidentialités</a></li>
-          {{-- <li class="nav-item"><a class="nav-link fs-9 fw-bold pe-1" href="#">Hire us </a></li> --}}
+          {{-- <li class="nav-item"><a class="nav-link fs-9 fw-bold pe-1" href="#">Hires us </a></li> --}}
           <li class="nav-item d-flex align-items-center">
             <div class="theme-control-toggle fa-icon-wait px-3">
               <input class="form-check-input ms-0 theme-control-toggle-input" type="checkbox" data-theme-control="phoenixTheme" value="dark" id="themeControlToggle" />
