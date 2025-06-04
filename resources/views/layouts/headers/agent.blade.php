@@ -12,7 +12,7 @@
       </a>
       <nav class="ecommerce-navbar navbar-expand navbar-light bg-body-emphasis justify-content-between">
         <div class="container-small d-flex flex-between-center" data-navbar="data-navbar">
-          <div class="dropdown"><button class="btn text-body ps-0 pe-5 text-nowrap dropdown-toggle dropdown-caret-none" data-category-btn="data-category-btn" data-bs-toggle="dropdown"><span data-feather="layers" class=""></span><span class="showCategory" style="margin-top: 2px;">Vos Categories</span></button>
+          <div class="dropdown"><button class="btn text-body ps-0 pe-5 text-nowrap dropdown-toggle dropdown-caret-none" data-category-btn="data-category-btn" data-bs-toggle="dropdown"><span data-feather="layers" class=""></span><span class="showCategory" style="margin-top: 2px;">Vos Catégories</span></button>
             <div class="dropdown-menu border border-translucent py-0 category-dropdown-menu">
               <div class="card border-0 scrollbar" style="max-height: 657px;">
                 <div class="card-body p-6 pb-3">
