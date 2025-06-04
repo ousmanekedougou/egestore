@@ -1,0 +1,11 @@
+@media (max-width: 412px) {
+    /* Responsive de la navbar de toutes les pages login  */
+    .loginPageNaveBar{
+        display: none;
+    }
+
+ /* Responsive pour cacher le categorie en mode mobile et aussi le changement de l'icone  */
+    .showCategory{
+        display: none;
+    }
+}

@@ -1,5 +1,5 @@
 
-<nav class="navbar navbar-expand-lg sticky-top py-3" data-navbar-soft-on-scroll="data-navbar-soft-on-scroll">
+<nav class="navbar navbar-expand-lg sticky-top py-3 loginPageNaveBar" data-navbar-soft-on-scroll="data-navbar-soft-on-scroll">
    <div class="container-small px-0 px-sm-3"><a class="navbar-brand" href="/">
        <div class="d-flex align-items-center">
        {{--<img src="{{asset('assets/img/icons/logo.png')}}" alt="phoenix" width="27" />--}}
