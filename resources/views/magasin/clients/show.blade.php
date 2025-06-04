@@ -5,13 +5,7 @@
     <div class="mb-9">
       <div class="row align-items-center justify-content-between g-3 mb-4">
         <div class="col-auto">
-          <h2 class="mb-0">Details</h2>
-        </div>
-        <div class="col-auto">
-          <div class="row g-3">
-            <div class="col-auto"><button class="btn btn-phoenix-danger"><span class="fa-solid fa-trash-can me-2"></span>Delete customer</button></div>
-            <div class="col-auto"><button class="btn btn-phoenix-secondary"><span class="fas fa-key me-2"></span>Reset password</button></div>
-          </div>
+          <h2 class="mb-0">Details de votre client</h2>
         </div>
       </div>
       <div class="row g-5">
@@ -25,23 +19,21 @@
                       <div class="avatar avatar-5xl"><img class="rounded-circle" src="https://ui-avatars.com/api/?name={{$client->name}}" alt="" /></div>
                     </div>
                     <div class="col-12 col-sm-auto flex-1">
-                      <h3>{{ $client->name }}</h3>
-                      <p class="text-body-secondary">Joined 3 months ago</p>
-                      <div><a class="me-2" href="#!"><span class="fab fa-linkedin-in text-body-quaternary text-opacity-75 text-primary-hover"></span></a><a class="me-2" href="#!"><span class="fab fa-facebook text-body-quaternary text-opacity-75 text-primary-hover"></span></a><a href="#!"><span class="fab fa-twitter text-body-quaternary text-opacity-75 text-primary-hover"></span></a></div>
+                      <h3>@if($client->type == 1){{ $client->name }}@else{{ $client->name_type }}@endif</h3>
                     </div>
                   </div>
                   <div class="d-flex flex-between-center border-top border-dashed pt-4">
                     <div>
-                      <h6>Following</h6>
-                      <p class="fs-7 text-body-secondary mb-0">297</p>
+                      <h6>Nom @if($client->type == 1) du client @else du representant @endif</h6>
+                      <p class="fs-9 text-body-secondary mb-0">{{ $client->name }}</p>
                     </div>
                     <div>
-                      <h6>Projects</h6>
-                      <p class="fs-7 text-body-secondary mb-0">56</p>
+                      <h6>Email @if($client->type == 1) du client @else de l'organisation @endif</h6>
+                      <p class="fs-9 text-body-secondary mb-0">@if($client->type == 1){{ $client->email }}@else {{ $client->email_type }}@endif</p>
                     </div>
                     <div>
-                      <h6>Completion</h6>
-                      <p class="fs-7 text-body-secondary mb-0">97</p>
+                      <h6>Telephone @if($client->type == 1) du client @else du representant @endif</h6>
+                      <p class="fs-9 text-body-secondary mb-0">{{ $client->phone }}</p>
                     </div>
                   </div>
                 </div>
@@ -51,12 +43,25 @@
               <div class="card h-100">
                 <div class="card-body pb-3">
                   <div class="d-flex align-items-center mb-3">
-                    <h3 class="me-1">Default Address</h3><button class="btn btn-link p-0"><span class="fas fa-pen fs-8 ms-3 text-body-quaternary"></span></button>
+                    <h3 class="me-1">
+                      {{ $client->status_type }}
+                    </h3>
                   </div>
+                  
                   <div class="mb-3">
-                    <h5 class="text-body-secondary">Email</h5><a href="mailto:{{$client->email}}">{{$client->email}}</a>
+                    <h5 class="text-body-secondary">Telephone</h5><span class="text-body-secondary">{{$client->phone_type}}</span>
                   </div>
-                  <h5 class="text-body-secondary">Phone</h5><a class="text-body-secondary" href="tel:{{$client->phone}}">{{$client->phone}}</a>
+                   @if ($client->type != 1)
+                    <div class="mb-3">
+                      <h5 class="text-body-secondary">Registre de commerce</h5><span class="text-body-secondary">{{$client->rccm}}</span>
+                    </div>
+                    <div class="mb-3">
+                      <h5 class="text-body-secondary">Ninea</h5><span class="text-body-secondary">{{$client->ninea}}</span>
+                    </div>
+                  @endif
+                  <div class="mb-3">
+                    <h5 class="text-body-secondary">Address</h5><span class="text-body-secondary">{{$client->adress}}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -73,7 +78,7 @@
                       <th class="sort white-space-nowrap align-middle ps-0 pe-3" scope="col" data-sort="order" style="width:10%;">COMMANDES</th>
                       <th class="sort align-middle text-end pe-7" scope="col" data-sort="total" style="width:10%;">TOTAL</th>
                       <th class="sort align-middle white-space-nowrap pe-3" scope="col" data-sort="payment_status" style="width:15%;">PAIMENT</th>
-                      <th class="sort align-middle white-space-nowrap text-start" scope="col" data-sort="delivery_type" style="width:30%;">TYPE</th>
+                      <th class="sort align-middle white-space-nowrap text-start" scope="col" data-sort="delivery_type" style="width:30%;">STATUS</th>
                       <th class="sort align-middle text-end pe-0" scope="col" data-sort="date">DATE</th>
                       <th class="sort text-end align-middle pe-0 ps-5" scope="col"></th>
                     </tr>
@@ -100,9 +105,26 @@
                           
                         </span>
                       </td>
-                      <td class="delivery_type align-middle white-space-nowrap text-body fs-9 text-start">@if($order->type == 2) A crédit @else  @endif</td>
+                      <td class="delivery_type align-middle white-space-nowrap text-body fs-9 text-start">
+                        <span class="badge badge-phoenix fs-10  @if($order->type == 1) badge-phoenix-success @elseif($order->type == 2) badge-phoenix-info @else badge-phoenix-warning @endif">
+                          <span class="badge-label">  
+                            @if($order->type == 1) Retrait @elseif($order->type == 2) A crédit @else Normale  @endif
+                          </span>
+                          <span class="ms-1" 
+                            @if($order->type == 1)
+                              data-feather="check" 
+                            @elseif($order->type == 2)
+                              data-feather="chevrons-right"
+                            @else 
+                            data-feather="x"
+                            @endif
+                            style="height:12.8px;width:12.8px;">
+                          </span>
+                        </span>
+                      </td>
                       <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{date('d-m-Y', strtotime( $order->date ))}}</td>
                       <td class="align-middle white-space-nowrap text-end pe-0 ps-5">
+                        <a href="{{ route('magasin.commande.edit',$order->slug) }}" target="_blank" class="me-2 text-success"  data-fa-transform="shrink-3"><span class="fa fa-file-alt fs-7" ></span></span></a>
                         {{-- 
                         <div class="btn-reveal-trigger position-static"><button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10"></span></button>
                           <div class="dropdown-menu dropdown-menu-end py-2"><a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Export</a>

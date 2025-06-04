@@ -188,7 +188,7 @@ class OrderController extends Controller
                         $userClient->update(
                         [
                             'amount' => $userClient->amount + $amount,
-                            'depot'  => $userClient->depot - $amount
+                            'restant'  => $userClient->depot - $amount
                         ]);
                         $client = $userClient->id;
                         $type = 1;
@@ -211,7 +211,7 @@ class OrderController extends Controller
                     return back();
                 }elseif($userClient->account == 3){
                     if ($userClient->credit == 0 && $userClient->amount == 0) {
-                        $userClient->update(['credit' => $userClient->credit,'amount' => $userClient->amount,'account' => $userClient->account]);
+                        $userClient->update(['credit' => $userClient->credit,'amount' => $userClient->amount,'account' => $userClient->account,'restant' => $userClient->restant]);
                         $client = $userClient->id;
                         $status = 2;
                     }
@@ -219,7 +219,7 @@ class OrderController extends Controller
 
             }elseif ($request->passif == 1) {
 
-                if($userClient->account == 3){
+                if($userClient->account == 3 || $userClient->account == null){
                     if ($userClient->credit == 0 && $userClient->amount == 0) {
                         $userClient->update(['credit' => $amount,'account' => 2]);
                         $client = $userClient->id;

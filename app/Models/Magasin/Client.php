@@ -15,6 +15,12 @@ class Client extends Model
         'email',
         'phone',
         'adress',
+        'name_type',
+        'status_type',
+        'email_type',
+        'phone_type',
+        'rccm',
+        'ninea',
         'slug',
         'amount',
         'credit',
@@ -35,6 +41,10 @@ class Client extends Model
 
     public function getDepot(){
         return number_format($this->depot,2, ',','.'). ' CFA';
+    }
+
+    public function getRestant(){
+        return number_format($this->restant,2, ',','.'). ' CFA';
     }
 
     public function magasin()

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->integer('phone')->unique();
             $table->string('adress')->nullable();
             $table->string('slug')->unique();
@@ -24,9 +24,12 @@ return new class extends Migration
             $table->integer('credit')->nullable();
             $table->integer('restant')->nullable();
             $table->integer('type')->nullable();
+            $table->string('name_type')->unique()->nullable();
+            $table->string('status_type')->nullable();
+            $table->string('email_type')->unique()->nullable();
+            $table->string('phone_type')->unique()->nullable();
             $table->string('rccm')->unique()->nullable();
             $table->string('ninea')->unique()->nullable();
-            $table->string('contact')->unique()->nullable();
             $table
               ->foreignId("magasin_id")
               ->references("id")

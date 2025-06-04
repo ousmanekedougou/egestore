@@ -48,12 +48,12 @@
                 <tr class="hover-actions-trigger btn-reveal-trigger position-static">
                   <td class="customer align-middle white-space-nowrap pe-5"><a class="d-flex align-items-center text-body-emphasis" href="{{ route('magasin.client.edit',$client->id) }}">
                       <div class="avatar avatar-m"><img class="rounded-circle" src="https://ui-avatars.com/api/?name={{$client->name}}" alt="" /></div>
-                      <p class="mb-0 ms-3 text-body-emphasis fw-bold">{{ $client->name }}</p>
+                      <p class="mb-0 ms-3 text-body-emphasis fw-bold">@if($client->type == 1){{ $client->name }}@else{{ $client->name_type }}@endif</p>
                     </a></td>
-                  <td class="email align-middle white-space-nowrap pe-5"><a class="fw-semibold" href="mailto:{{$client->email}}">{{$client->email}}</a></td>
-                  <td class="total-orders align-middle white-space-nowrap fw-semibold text-center text-body-highlight">{{ $client->phone }}</td>
+                  <td class="email align-middle white-space-nowrap pe-5"><a class="fw-semibold" href="mailto:{{$client->email}}">@if($client->type == 1){{ $client->email }}@else{{ $client->email_type }}@endif</a></td>
+                  <td class="total-orders align-middle white-space-nowrap fw-semibold text-center text-body-highlight">@if($client->type == 1){{ $client->phone }}@else{{ $client->phone_type }}@endif</td>
                   <td class="total-orders align-middle white-space-nowrap fw-semibold text-center text-body-highlight">{{ $client->getOrderCount($client->id) }}</td>
-                  <td class="city align-middle white-space-nowrap text-body-highlight ps-7">@if($client->type == 1) Individuel @elseif($client->type == 2) Entreprise @else ONG @endif</td>
+                  <td class="city align-middle white-space-nowrap text-body-highlight ps-7">{{ $client->status_type }}</td>
                   <td class="city align-middle white-space-nowrap text-body-highlight ps-7">{{ $client->adress }}</td>
                   <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">
                     <span class="badge badge-phoenix fs-10 @if($client->account == 1) badge-phoenix-info @elseif($client->account == 2) badge-phoenix-warning @else badge-phoenix-success @endif"> 
@@ -111,15 +111,11 @@
                 <label class="form-label mt-2" for="">Le type de client</label> <br>
                 <div class="form-check form-check-inline">
                   <input class="form-check-input text-success @error('type') is-invalid @enderror" id="Indivivuel" type="radio" name="type" value="1" onclick="typeClient(1)">
-                  <label class="form-check-label mt-1 text-success" for="Indivivuel">Individuel</label>
+                  <label class="form-check-label mt-1 text-success" for="Indivivuel">INDIVIDUEL</label>
                 </div>
                 <div class="form-check form-check-inline">
                   <input class="form-check-input text-warning @error('type') is-invalid @enderror"  id="Entreprise" type="radio" name="type" value="2" onclick="typeClient(2)">
-                  <label class="form-check-label text-warning mt-1" for="Entreprise">Entreprise</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input text-primary @error('type') is-invalid @enderror"  id="ONG" type="radio" name="type" value="3" onclick="typeClient(3)">
-                  <label class="form-check-label text-primary mt-1" for="ONG">ONG</label>
+                  <label class="form-check-label text-warning mt-1" for="Entreprise">ENTREPRISE / ONG / GIE / AUTRE</label>
                 </div>
                 @error('type')
                   <span class="invalid-feedback" role="alert">
@@ -140,7 +136,7 @@
               </div>
 
 
-              <div class="mb-3 text-start">
+              <div class="mb-3 text-start" id="EMAILCLIENT">
                   <label class="form-label" for="email">Email du client</label>
                   <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="email@gmail.com" required autocomplete="email">
 
@@ -164,8 +160,8 @@
               </div>
 
               <div class="mb-3 text-start">
-                  <label class="form-label" for="adress">Adresse</label>
-                  <input id="adress" type="adress" class="form-control @error('adress') is-invalid @enderror" name="adress" value="{{ old('adress') }}" placeholder="Numero de teleadress du client" required autocomplete="adress">
+                  <label class="form-label" for="adress">Adresse <span class="d-none" id="showAdresseType">de votre organisation</span></label>
+                  <input id="adress" type="adress" class="form-control @error('adress') is-invalid @enderror" name="adress" value="{{ old('adress') }}" placeholder="Adresse" required autocomplete="adress">
 
                   @error('adress')
                       <span class="invalid-feedback" role="alert">
@@ -174,9 +170,53 @@
                   @enderror
               </div>
 
+               <div class="mb-3 text-start d-none" id="STATUSTYPE">
+                <label class="form-label" for="status_type">Status de votre organisation</label>
+                <input id="status_type" type="status_type" class="form-control @error('status_type') is-invalid @enderror" name="status_type" value="{{ old('status_type') }}" placeholder="Status de votre organisation" autocomplete="status_type">
+
+                @error('status_type')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+              </div>
+
+              <div class="mb-3 text-start d-none" id="NAMETYPE">
+                <label class="form-label" for="name_type">Nom de votre organisation</label>
+                <input id="name_type" type="name_type" class="form-control @error('name_type') is-invalid @enderror" name="name_type" value="{{ old('name_type') }}" placeholder="Nom de votre organisation" autocomplete="name_type">
+
+                @error('name_type')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+              </div>
+
+              <div class="mb-3 text-start d-none" id="EMAILTYPE">
+                <label class="form-label" for="email_type">Email de votre organisation</label>
+                <input id="email_type" type="text" class="form-control @error('email_type') is-invalid @enderror" name="email_type" value="{{ old('email_type') }}" placeholder="Email de votre organisation" autocomplete="email_type">
+
+                @error('email_type')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+              </div>
+
+               <div class="mb-3 text-start d-none" id="PHONETYPE">
+                  <label class="form-label" for="phone_type">Telephone de votre organisation</label>
+                  <input id="phone_type" type="text" class="form-control @error('phone_type') is-invalid @enderror" name="phone_type" value="{{ old('phone_type') }}" placeholder="Telephone de votre organisation" autocomplete="phone_type">
+
+                  @error('phone_type')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+              </div>
+
               <div class="mb-3 text-start d-none" id="RCCM">
                   <label class="form-label" for="rccm">RCCM</label>
-                  <input id="rccm" type="rccm" class="form-control @error('rccm') is-invalid @enderror" name="rccm" value="{{ old('rccm') }}" placeholder="Numero de telerccm du client" autocomplete="rccm">
+                  <input id="rccm" type="rccm" class="form-control @error('rccm') is-invalid @enderror" name="rccm" value="{{ old('rccm') }}" placeholder="Numero du registre de commerce de votre organisation" autocomplete="rccm">
 
                   @error('rccm')
                       <span class="invalid-feedback" role="alert">
@@ -187,20 +227,9 @@
 
               <div class="mb-3 text-start d-none" id="NINEA">
                   <label class="form-label" for="ninea">NINEA</label>
-                  <input id="ninea" type="ninea" class="form-control @error('ninea') is-invalid @enderror" name="ninea" value="{{ old('ninea') }}" placeholder="Numero de teleninea du client" autocomplete="ninea">
+                  <input id="ninea" type="ninea" class="form-control @error('ninea') is-invalid @enderror" name="ninea" value="{{ old('ninea') }}" placeholder="Numero ninea de votre organisation" autocomplete="ninea">
 
                   @error('ninea')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-
-              <div class="mb-3 text-start d-none" id="Contact">
-                  <label class="form-label" for="contact">Contact supplementaire</label>
-                  <input id="contact" type="text" class="form-control @error('contact') is-invalid @enderror" name="contact" value="{{ old('contact') }}" placeholder="Email ou telephone de l'entreprise / ONG" autocomplete="contact">
-
-                  @error('contact')
                       <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
                       </span>
@@ -276,29 +305,30 @@
                             <div class="d-flex align-items-center mb-4">
                               <h5 class="mb-0 me-4">
                                 <span class="d-inline-block lh-sm me-1" data-feather="grid" style="height:16px;width:16px;"></span>
-                                @if ($client->type == 1)
-                                  Client individeul
-                                @elseif ($client->type == 2)
-                                  Entreprise
-                                @elseif ($client->type == 3)
-                                  ONG
-                                @endif
+                                {{$client->status_type}}
                               </h5>
                             </div>
                              @if ($client->type != 1)
-
                               <div>
+                                <div class="d-flex justify-content-between">
+                                  <p class="text-body fw-semibold">@if ($client->type == 2) Entreprise @elseif ($client->type == 3) ONG @endif :</p>
+                                  <p class="text-body-emphasis fw-semibold">{{ $client->name_type }}</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                  <p class="text-body fw-semibold">EMAIL :</p>
+                                  <p class="text-body-emphasis fw-semibold">{{ $client->email_type }}</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                  <p class="text-body fw-semibold">TELEPHONE :</p>
+                                  <p class="text-body-emphasis fw-semibold">{{ $client->phone_type }}</p>
+                                </div>
                                 <div class="d-flex justify-content-between">
                                   <p class="text-body fw-semibold">RCCM :</p>
                                   <p class="text-body-emphasis fw-semibold">{{ $client->rccm }}</p>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                   <p class="text-body fw-semibold">NINEA :</p>
-                                  <p class="text-danger fw-semibold">{{ $client->ninea }}</p>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                  <p class="text-body fw-semibold">CONTACT :</p>
-                                  <p class="text-body-emphasis fw-semibold">{{ $client->contact }}</p>
+                                  <p class="text-body fw-semibold">{{ $client->ninea }}</p>
                                 </div>
                               </div>
                               @endif
@@ -308,7 +338,7 @@
                             <div class="progress-bar bg-primary-lighter" data-bs-theme="light" role="progressbar" style="width: 40%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                           <div class="d-flex align-items-center justify-content-between">
-                            <p class="mb-0"> Montant @if($client->account == 1) actif depenser @elseif($client->account == 2) des reglages @endif</p>
+                            <p class="mb-0"> Montant @if($client->account == 1) actif depenser @elseif($client->account == 2) des versements @endif</p>
                             <div>
                               <span class="d-inline-block lh-sm me-1" data-feather="money" style="height:16px;width:16px;"></span>
                               <span class="d-inline-block lh-sm"> {{ $client->getAmount() }}</span>
@@ -319,7 +349,7 @@
                             <p class="mb-0"> Il vous reste a paye </p>
                             <div>
                               <span class="d-inline-block lh-sm me-1" data-feather="money" style="height:16px;width:16px;"></span>
-                              <span class="d-inline-block lh-sm"> {{ $client->restant }} CFA</span>
+                              <span class="d-inline-block lh-sm"> {{ $client->getRestant() }} CFA</span>
                             </div>
                           </div>
                           @endif
@@ -330,8 +360,8 @@
                         <table class="reports-details-chart-table table table-sm fs-9 mb-0">
                           <thead>
                             <tr>
-                              <th class="align-middle pe- text-body-tertiary fw-bold fs-10 text-uppercase text-nowrap" scope="col" style="width:35%;">Date de paiement</th>
-                              <th class="align-middle text-end ps-4 text-body-tertiary fw-bold fs-10 text-uppercase" scope="col" style="width:30%;">Montant payer</th>
+                              <th class="align-middle pe- text-body-tertiary fw-bold fs-10 text-uppercase text-nowrap" scope="col" style="width:35%;">Date de versement</th>
+                              <th class="align-middle text-end ps-4 text-body-tertiary fw-bold fs-10 text-uppercase" scope="col" style="width:30%;">Montant verse</th>
                             </tr>
                           </thead>
                           <tbody class="list" id="report-data-body">
@@ -349,58 +379,127 @@
                   </div>
                 </div>
               </div>
+              <div class="mb-1 text-start">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input text-success @error('showOrhieInput') is-invalid @enderror" id="ShowInput" type="radio" name="showOrhieInput" value="1" onclick="showOrHideInput(1)">
+                  <label class="form-check-label mt-1 text-success" for="ShowInput">Afficher tous les champs</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input text-warning @error('showOrhieInput') is-invalid @enderror"  id="HideInput" type="radio" name="showOrhieInput" value="2" onclick="showOrHideInput(2)">
+                  <label class="form-check-label text-warning mt-1" for="HideInput">Cacher les champs</label>
+                </div>
+              </div>
               <form method="POST" action="{{ route('magasin.client.update',$client->id) }}">
                 @csrf
                 @method('PUT')
-                <div class="mb-3 text-start">
-                    <label class="form-label" for="name">Prenom et nom du client</label>
-                    <input id="name" type="text" placeholder="Prenom et nom du client" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $client->name }}" required autocomplete="name" autofocus>
 
-                    @error('name')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+                <div class="mb-3 text-start" id="FirstInput">
+                  <label class="form-label" for="name">Prenom et nom du client</label>
+                  <input id="name" type="text" placeholder="Prenom et nom du client" class="form-control mb-3 @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $client->name }}" required autocomplete="name" autofocus>
 
-                <div class="mb-3 text-start">
+                  @error('name')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+
+                  @if ($client->type == 1)
                     <label class="form-label" for="email">Adresse email du client</label>
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') ?? $client->email }}" placeholder="email@gmail.com" required autocomplete="email">
+                    <input id="email" type="email" class="form-control mb-3 @error('email') is-invalid @enderror" name="email" value="{{ old('email') ?? $client->email }}" placeholder="email@gmail.com" required autocomplete="email">
+                  @endif
+                  
+                  @error('email')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
 
-                    @error('email')
+                  <label class="form-label" for="phone">Numero de telephone du client</label>
+                  <input id="phone" type="phone" class="form-control mb-3 @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') ?? $client->phone }}" placeholder="Numero de telephone du client" required autocomplete="phone">
+
+                  @error('phone')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+
+                  <label class="form-label" for="adress">Adresse @if ($client->type == 1) du client @else de votre organisation @endif</label>
+                  <input id="adress" type="text" class="form-control mb-3 @error('adress') is-invalid @enderror" name="adress" value="{{ old('adress') ?? $client->adress }}" placeholder="Adresse du client" required autocomplete="adress">
+
+                  @error('adress')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+
+                @if ($client->type != 1)
+
+                  <div class="mb-3 text-start d-none" id="ShowOtherInput">
+
+                    <label class="form-label" for="status_type">Status de votre organisation</label>
+                    <input id="status_type" type="status_type" class="form-control mb-3 @error('status_type') is-invalid @enderror" name="status_type" value="{{ old('status_type') ?? $client->status_type }}" placeholder="Numero du registre de commerce client" autocomplete="status_type">
+
+                    @error('status_type')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
-                </div>
 
-                <div class="mb-3 text-start">
-                    <label class="form-label" for="phone">Numero de telephone du client</label>
-                    <input id="phone" type="phone" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') ?? $client->phone }}" placeholder="Numero de telephone du client" required autocomplete="phone">
+                    <label class="form-label" for="name_type">Nom de votre organisation</label>
+                    <input id="name_type" type="name_type" class="form-control mb-3 @error('name_type') is-invalid @enderror" name="name_type" value="{{ old('name_type') ?? $client->name_type }}" placeholder="Numero du registre de commerce client" autocomplete="name_type">
 
-                    @error('phone')
+                    @error('name_type')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
-                </div>
 
-                <div class="mb-3 text-start">
-                    <label class="form-label" for="adress">Adresse du client</label>
-                    <input id="adress" type="text" class="form-control @error('adress') is-invalid @enderror" name="adress" value="{{ old('adress') ?? $client->adress }}" placeholder="Adresse du client" required autocomplete="adress">
+                    <label class="form-label" for="email_type">Email de l'organisation</label>
+                    <input id="email_type" type="text" class="form-control @error('email_type') is-invalid @enderror mb-3" name="email_type" value="{{ old('email_type') ?? $client->email_type }}"  autocomplete="email_type">
 
-                    @error('adress')
+                    @error('email_type')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
-                </div>
 
-                <div class="mb-3 text-start">
+                    <label class="form-label" for="phone_type">Telephone de votre organisation</label>
+                    <input id="phone_type" type="text" class="form-control @error('phone_type') is-invalid @enderror mb-3" name="phone_type" value="{{ old('phone_type') ?? $client->phone_type }}"  autocomplete="phone_type">
+
+                    @error('phone_type')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+
+                    <label class="form-label" for="rccm">RCCM</label>
+                    <input id="rccm" type="rccm" class="form-control @error('rccm') is-invalid @enderror mb-3" name="rccm" value="{{ old('rccm') ?? $client->rccm }}" autocomplete="rccm">
+
+                    @error('rccm')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+
+                    <label class="form-label" for="ninea">NINEA</label>
+                    <input id="ninea" type="ninea" class="form-control @error('ninea') is-invalid @enderror mb-3" name="ninea" value="{{ old('ninea') ?? $client->ninea }}"  autocomplete="ninea">
+
+                    @error('ninea')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+
+                  </div>
+                  
+                @endif
+
+                <div class="mb-3 mt-4 text-start">
                   @if($client->account == 2)
                     <label class="form-label mb-1" for="amount">Entrer la tranche de reglage</label>
                     <input id="amount" type="number" class="form-control  @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount')  }}" placeholder="Entrer la tranche de reglage" required autocomplete="amount">
-                  @elseif($client->account == 3)
+                  @elseif($client->account == 3 || $client->account == null)
                     <div class="mb-3 text-start">
                       <label class="form-label" for="depot">Deposer des actifs dans ce compte</label>
                       <input id="depot" type="numeric" class="form-control @error('depot') is-invalid @enderror" name="depot" value="{{ old('depot') }}" placeholder="Deposer des actifs dans ce compte" autocomplete="depot">
@@ -462,13 +561,33 @@
 
   function typeClient(x){
     if (x == 1) {
+      document.getElementById('NAMETYPE').classList.add('d-none')
+      document.getElementById('STATUSTYPE').classList.add('d-none')
       document.getElementById('RCCM').classList.add('d-none')
       document.getElementById('NINEA').classList.add('d-none')
-      document.getElementById('Contact').classList.add('d-none')
+      document.getElementById('EMAILTYPE').classList.add('d-none')
+      document.getElementById('PHONETYPE').classList.add('d-none')
+      document.getElementById('showAdresseType').classList.add('d-none')
+      document.getElementById('EMAILCLIENT').classList.remove('d-none')
     }else {
+      document.getElementById('NAMETYPE').classList.remove('d-none')
+      document.getElementById('STATUSTYPE').classList.remove('d-none')
       document.getElementById('RCCM').classList.remove('d-none')
       document.getElementById('NINEA').classList.remove('d-none')
-      document.getElementById('Contact').classList.remove('d-none')
+      document.getElementById('EMAILTYPE').classList.remove('d-none')
+      document.getElementById('PHONETYPE').classList.remove('d-none')
+      document.getElementById('showAdresseType').classList.remove('d-none')
+      document.getElementById('EMAILCLIENT').classList.add('d-none')
+    }
+  }
+
+  function showOrHideInput(showOrHide){
+     if (showOrHide == 2) {
+      document.getElementById('FirstInput').classList.add('d-none')
+      document.getElementById('ShowOtherInput').classList.add('d-none')
+    }else {
+      document.getElementById('FirstInput').classList.remove('d-none')
+      document.getElementById('ShowOtherInput').classList.remove('d-none')
     }
   }
 </script>

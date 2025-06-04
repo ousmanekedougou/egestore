@@ -10,6 +10,7 @@ use App\Models\Magasin\Payment;
 use App\Models\User\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
@@ -56,9 +57,12 @@ class ClientController extends Controller
         $depot = null;
         $credit = null;
         $account = null;
+        $name_type = null;
+        $status_type = null;
+        $email_type = null;
+        $phone_type = null;
         $rccm = null;
         $ninea = null;
-        $contact = null;
 
         if($request->account == 1){
             $this->validate($request,[
@@ -73,18 +77,28 @@ class ClientController extends Controller
             $account = 3;
         }
 
-        if ($request->type != 1) {
+        if ($request->type == 2) {
             $this->validate($request,[
+                'name_type' => 'required|string|unique:clients',
+                'status_type' => 'required|string',
+                'email_type' => 'string|email|unique:clients',
+                'phone_type' => 'required|string|unique:clients',
                 'rccm' => 'required|string|unique:clients',
                 'ninea' => 'required|string|unique:clients',
-                'contact' => 'required|string|unique:clients',
             ]);
 
+            $name_type = $request->name_type;
+            $status_type = $request->status_type;
             $rccm = $request->rccm;
             $ninea = $request->ninea;
-            $contact = $request->contact;
+            $name_type = $request->name_type;
+            $email_type = $request->email_type;
+            $phone_type = $request->phone_type;
+        }else {
+            $status_type = 'Individuel';
         }
         
+        // dd($name_type);
 
         Client::create([
             'type' => $request->type,
@@ -97,9 +111,12 @@ class ClientController extends Controller
             'depot' => $depot,
             'credit' => $credit,
             'account' => $account,
+            'name_type' => $name_type,
+            'status_type' => $status_type,
             'rccm' => $rccm,
+            'email_type' => $email_type,
+            'phone_type' => $phone_type,
             'ninea' => $ninea,
-            'contact' => $contact,
             'magasin_id' => AuthMagasinAgent(),
         ]);
 
@@ -136,23 +153,29 @@ class ClientController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this->validate($request,[
-            'name' => 'required|string',
-            'email' => 'string|email',
-            'phone' => 'required|numeric',
-        ]);
-
-        
-
         $client = Client::where('id',$id)->where('magasin_id',AuthMagasinAgent())->first();
         $amount = null;
         $credit = null;
         $account = null;
         $depot = null;
+        $rccm = null;
+        $name_type = null;
+        $status_type = null;
+        $email_type = null;
+        $phone_type = null;
+        $ninea = null;
         
         if($client->account == 2){
             if ($request->amount <= $client->credit) {
+                // dd($client->restant);
                 if ($request->amount <= $client->restant) {
+                    if ($client->credit > $client->amount) {
+                        $amount = $client->amount + $request->amount;
+                        $account = 2;
+                        $credit = $client->credit;
+                        Payment::create(['client_id' => $id,'magasin_id' => AuthMagasinAgent(),'date' => Carbon::now(),'amount' => $request->amount]);
+                    }
+                }elseif($client->restant == null){
                     if ($client->credit > $client->amount) {
                         $amount = $client->amount + $request->amount;
                         $account = 2;
@@ -167,11 +190,24 @@ class ClientController extends Controller
                 Toastr()->error('Ce montant est superieur a la somme acréditée', 'Surplus du montant', ["positionClass" => "toast-top-right"]);
                 return back();
             }
-        }elseif ($client->account == 3) {
+        }elseif ($client->account == 3 || $client->account == null) {
+            if ($request->depot != null) {
+                $account = 1;
+            }else{
+                $account = 3;
+            }
             $depot = $request->depot;
-            $account = 3;
             $credit = null;
             $amount = null;
+        }
+
+        if ($request->type != 1) {
+            $name_type = $request->name_type;
+            $status_type = $request->status_type;
+            $email_type = $request->email_type;
+            $phone_type = $request->phone_type;
+            $ninea = $request->ninea;
+            $rccm = $request->rccm;
         }
 
         // dd($account);
@@ -184,6 +220,12 @@ class ClientController extends Controller
             'depot' => $depot,
             'credit' => $credit,
             'account' => $account,
+            'name_type' => $name_type,
+            'status_type' => $status_type,
+            'email_type' => $email_type,
+            'phone_type' => $phone_type,
+            'rccm' => $rccm,
+            'ninea' => $ninea,
         ]);
 
         $client->update(['restant' => $client->credit - $client->amount,]);
@@ -205,6 +247,8 @@ class ClientController extends Controller
         Toastr()->success('Votre client a bien été modifié', 'Modification de clients', ["positionClass" => "toast-top-right"]);
         return back();
     }
+
+  
 
     /**
      * Remove the specified resource from storage.

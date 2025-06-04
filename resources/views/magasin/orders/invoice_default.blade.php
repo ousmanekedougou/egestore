@@ -9,8 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Laralink">
   <!-- Site Title -->
-  <title>{{ $order->magasin->name }} - Facture @if($order->type == 1) de Retrait @elseif($order->type == 2) de remboursement @else normale @endif</title>
-  <link class="rounded-circle" rel="apple-touch-icon" sizes="180x180" href="@if(AuthLogedNow()->logo == '') https://ui-avatars.com/api/?name={{AuthLogedNow()->name}} @else {{(Storage::url(AuthLogedNow()->logo))}} @endif">
+  <title>{{ $order->magasin->name }} - FACTURE</title>
   <link rel="stylesheet" href="{{ asset('assets/css/invoice.css') }}">
 </head>
 
@@ -21,21 +20,21 @@
         <div class="tm_invoice_in">
           <div class="tm_invoice_head tm_top_head tm_mb15 tm_align_center">
             <div class="tm_invoice_left">
-              <div class="tm_logo"><img style="width:100%;" class="rounded-circle" src="@if ($order->logo != '') {{(Storage::url($order->magasin->logo))}} @else https://ui-avatars.com/api/?name={{$order->magasin->name}} @endif" alt="Logo"></div>
+              <div class="tm_logo"><img style="border-radius: 100%;" class="rounded-circle" src="@if ($order->logo != '') {{(Storage::url($order->magasin->logo))}} @else https://ui-avatars.com/api/?name={{$order->magasin->name}} @endif" alt="Logo"></div>
             </div>
             <div class="tm_invoice_right tm_text_right tm_mobile_hide">
-              <div class="tm_f50 tm_text_uppercase tm_white_color">Facture @if($order->type == 1) RT @elseif($order->type == 2) RM @endif</div>
+              <div class="tm_f50 tm_text_uppercase tm_white_color">Facture</div>
             </div>
             <div class="tm_shape_bg tm_accent_bg tm_mobile_hide"></div>
           </div>
           <div class="tm_invoice_info tm_mb25">
-            <div class="tm_card_note tm_mobile_hide"><b class="tm_primary_color">Paiement : </b>
-              @if ($order->status == 1)
-                Total paye
-              @elseif ($order->status == 2)
-                En cours
-              @elseif ($order->status == 3)
-                Annulé
+            <div class="tm_card_note tm_mobile_hide"><b class="tm_primary_color">Mode de paiement: </b>
+              @if ($order->methode == 1)
+                Wave
+              @elseif ($order->methode == 2)
+                Orange Money
+              @elseif ($order->methode == 3)
+                En cache
               @else
                 Non paye
               @endif
@@ -50,26 +49,18 @@
             <div class="tm_invoice_left">
               <p class="tm_mb2"><b class="tm_primary_color">Facture à:</b></p>
               <p>
-                @if ($order->client->type == 1)
-                  @if($order->client_id != '') {{ $order->client->name }} @else {{ $order->name }}@endif <br>
-                  @if($order->client_id != '') {{ $order->client->email }} @else {{ $order->email }}@endif <br>
-                  @if($order->client_id != '') {{ $order->client->phone }}  @else {{ $order->phone }}@endif
-                @else
-                  @if($order->client_id != '') {{ $order->client->name_type }} @else {{ $order->name }}@endif <br>
-                  @if($order->client_id != '') {{ $order->client->contact }}  @else {{ $order->contact }}@endif
-                  @if($order->client_id != '') {{ $order->client->rccm }} @else {{ $order->rccm }}@endif <br>
-                  @if($order->client_id != '') {{ $order->client->ninea }} @else {{ $order->ninea }}@endif <br>
-                  @if($order->client_id != '') {{ $order->client->name }} @else {{ $order->name }}@endif <br>
-                @endif
-                @if($order->client_id != '') {{ $order->client->adresse }} @endif <br>
+                @if($order->client_id != '') {{ $order->client->name }} @elseif ($order->user_id != '') {{ $order->user->name }} @else {{ $order->name }}@endif <br>
+                @if($order->client_id != '') {{ $order->client->adresse }} @elseif ($order->user_id != '') {{ $order->user->adresse }} @else {{ $order->adresse }}@endif <br>
+                @if($order->client_id != '') {{ $order->client->email }} @elseif ($order->user_id != '') {{ $order->user->email }} @else {{ $order->email }}@endif <br>
+                @if($order->client_id != '') {{ $order->client->phone }} @elseif ($order->user_id != '') {{ $order->user->phone }} @else {{ $order->phone }}@endif
               </p>
             </div>
             <div class="tm_invoice_right tm_text_right">
               <p class="tm_mb2"><b class="tm_primary_color">Payer à:</b></p>
               <p>
                 {{$order->magasin->name}} <br>
-                {{$order->magasin->email}} <br>
                 {{$order->magasin->phone}}<br>
+                {{$order->magasin->email}} <br>
                 {{$order->magasin->adresse}}
               </p>
             </div>
@@ -111,18 +102,19 @@
               <div class="tm_right_footer">
                 <table class="tm_mb15">
                   <tbody>
-                     @if($order->type != 3)
-                      <tr class="tm_gray_bg ">
-                        <td class="tm_width_3 tm_primary_color tm_bold">Versement</td>
-                        <td class="tm_width_3 tm_primary_color tm_bold tm_text_right">{{$order->client->getAmount()}}</td>
-                      </tr>
-                      <tr class="tm_gray_bg">
-                        <td class="tm_width_3 tm_primary_color tm_bold">Restant</td>
-                        <td class="tm_width_3 tm_primary_color tm_text_right tm_bold">{{$order->client->getRestant()}}</td>
-                      </tr>
-                    @endif
+                    {{--  
+                    <tr class="tm_gray_bg ">
+                      <td class="tm_width_3 tm_primary_color tm_bold">Subtoal</td>
+                      <td class="tm_width_3 tm_primary_color tm_bold tm_text_right">$1650</td>
+                    </tr>
+                    <tr class="tm_gray_bg">
+                      <td class="tm_width_3 tm_primary_color">Tax <span class="tm_ternary_color">(5%)</span></td>
+                      <td class="tm_width_3 tm_primary_color tm_text_right">+$82</td>
+                    </tr>
+                    --}}
+                    <br>
                     <tr class="tm_accent_bg">
-                      <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_white_color">Total Credit	</td>
+                      <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_white_color">Grand Total	</td>
                       <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_white_color tm_text_right">{{ $order->amount }} CFA</td>
                     </tr>
                   </tbody>
@@ -144,7 +136,8 @@
             <hr class="tm_mb15">
             <p class="tm_mb2 tm_text_center"><b class="tm_primary_color">Terms & Conditions:</b></p>
             <p class="tm_m0">
-              L'acheteur renonce à toute réclamation relative à des erreurs de quantité ou d'expédition si elle n'est pas adressée par écrit au vendeur dans les trente (30) jours suivant la livraison des marchandises à l'adresse indiquée. 
+            L'acheteur renonce à toute réclamation relative à des erreurs de quantité ou d'expédition si elle n'est pas adressée par écrit au vendeur dans les trente (30) jours suivant la livraison des marchandises à l'adresse indiquée. 
+            <br> Vendeur dans les trente (30) jours suivant la livraison des marchandises à l'adresse indiquée.
             </p>
           </div><!-- .tm_note -->
         </div>
