@@ -69,6 +69,6 @@ class Kernel extends HttpKernel
         'isMagasin' => \App\Http\Middleware\AppMiddleware\IsMagasin::class,
         'isAgent' => \App\Http\Middleware\AppMiddleware\IsAgent::class,
         'isClient' => \App\Http\Middleware\AppMiddleware\IsClient::class,
-        'isMagasinAgent' => \App\Http\Middleware\AppMiddleware\isMagasinAgent::class,
+        'isMagasinAgent' => \App\Http\Middleware\AppMiddleware\IsMagasinAgent::class,
     ];
 }
