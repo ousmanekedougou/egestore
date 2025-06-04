@@ -160,7 +160,7 @@
                 <p class="navbar-vertical-label">Vos avis</p>
                 <div class="nav-item-wrapper">
                     <a class="nav-link label-1" href="#" role="button" data-bs-toggle="" aria-expanded="false">
-                        <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="git-merge"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Idees & Suggestions</span></span></div>
+                        <div class="d-flex align-items-center"><span class="nav-link-icon"><span data-feather="git-merge"></span></span><span class="nav-link-text-wrapper"><span class="nav-link-text">Idées & Suggéstions</span></span></div>
                     </a>
                 </div><!-- parent pages-->
             </ul>
@@ -169,7 +169,7 @@
     <div class="navbar-vertical-footer">
         <a href="{{ route('magasin.icons') }}" target="_blank" class="{{ set_active_roote('magasin.autres-magasins.index') }} btn navbar-vertical-toggle border-0 fw-semibold w-100 white-space-nowrap d-flex align-items-center">
             <span data-feather="grid" class="fs-8"></span>
-            <span class="navbar-vertical-footer-text ms-2">Services icons</span>
+            <span class="navbar-vertical-footer-text ms-2">Sérvices icons</span>
         </a>
     </div>
 </nav>

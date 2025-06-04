@@ -313,6 +313,16 @@
                   </span>
                   @enderror
 
+                  <h6 class="mb-4">Terms & conditions de vos factures : </h6>
+                  <textarea id="our_invoice_info" name="our_invoice_info" class="form-control  @error('our_invoice_info') is-invalid @enderror mb-3" rows="4">
+                    {!! $auth_about ? $auth_about->our_invoice_info : '......' !!}
+                  </textarea>
+                  @error('our_invoice_info')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+
                   <button type="submit" class="btn btn-phoenix-primary w-100 mb-4">Enrégistrer les modifications</button>
                 </form>
               </div>

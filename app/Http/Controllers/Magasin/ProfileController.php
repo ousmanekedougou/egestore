@@ -234,6 +234,7 @@ class ProfileController extends Controller
                 'our_vision' => $request->our_vision,
                 'our_mission' => $request->our_mission,
                 'our_values' => $request->our_values,
+                'our_invoice_info' => $request->our_invoice_info,
                 'magasin_id' => Auth::guard('magasin')->user()->id
             ]);
         }else {
@@ -243,6 +244,7 @@ class ProfileController extends Controller
                 'our_vision' => $request->our_vision,
                 'our_mission' => $request->our_mission,
                 'our_values' => $request->our_values,
+                'our_invoice_info' => $request->our_invoice_info,
                 'magasin_id' => Auth::guard('magasin')->user()->id
             ]);
         }

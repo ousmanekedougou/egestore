@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Laralink">
   <!-- Site Title -->
-  <title>{{ $order->magasin->name }} - Facture @if($order->type == 1) de Retrait @elseif($order->type == 2) de remboursement @else normale @endif</title>
+  <title>{{ $order->magasin->name }} - Facture @if($order->type == 1) d'encaissement @elseif($order->type == 2) de décaissement @endif</title>
   <link class="rounded-circle" rel="apple-touch-icon" sizes="180x180" href="@if(AuthLogedNow()->logo == '') https://ui-avatars.com/api/?name={{AuthLogedNow()->name}} @else {{(Storage::url(AuthLogedNow()->logo))}} @endif">
   <link rel="stylesheet" href="{{ asset('assets/css/invoice.css') }}">
 </head>
@@ -24,7 +24,7 @@
               <div class="tm_logo"><img style="width:100%;" class="rounded-circle" src="@if ($order->logo != '') {{(Storage::url($order->magasin->logo))}} @else https://ui-avatars.com/api/?name={{$order->magasin->name}} @endif" alt="Logo"></div>
             </div>
             <div class="tm_invoice_right tm_text_right tm_mobile_hide">
-              <div class="tm_f50 tm_text_uppercase tm_white_color">Facture @if($order->type == 1) RT @elseif($order->type == 2) RM @endif</div>
+              <div class="tm_f50 tm_text_uppercase tm_white_color">Facture @if($order->type == 1) EC @elseif($order->type == 2) DC @endif</div>
             </div>
             <div class="tm_shape_bg tm_accent_bg tm_mobile_hide"></div>
           </div>
@@ -56,9 +56,8 @@
                   @if($order->client_id != '') {{ $order->client->phone }}  @else {{ $order->phone }}@endif
                 @else
                   @if($order->client_id != '') {{ $order->client->name_type }} @else {{ $order->name }}@endif <br>
-                  @if($order->client_id != '') {{ $order->client->contact }}  @else {{ $order->contact }}@endif
+                  @if($order->client_id != '') {{ $order->client->phone_type }}  @else {{ $order->phone }}@endif <br>
                   @if($order->client_id != '') {{ $order->client->rccm }} @else {{ $order->rccm }}@endif <br>
-                  @if($order->client_id != '') {{ $order->client->ninea }} @else {{ $order->ninea }}@endif <br>
                   @if($order->client_id != '') {{ $order->client->name }} @else {{ $order->name }}@endif <br>
                 @endif
                 @if($order->client_id != '') {{ $order->client->adresse }} @endif <br>
@@ -84,7 +83,7 @@
                       <th class="tm_width_3 tm_semi_bold tm_white_color">Couleurs</th>
                       <th class="tm_width_3 tm_semi_bold tm_white_color">Tailles</th>
                       <th class="tm_width_2 tm_semi_bold tm_white_color">Prix</th>
-                      <th class="tm_width_1 tm_semi_bold tm_white_color">Qty</th>
+                      <th class="tm_width_1 tm_semi_bold tm_white_color">Qts</th>
                       <th class="tm_width_2 tm_semi_bold tm_white_color tm_text_right">Total</th>
                     </tr>
                   </thead>
@@ -111,19 +110,28 @@
               <div class="tm_right_footer">
                 <table class="tm_mb15">
                   <tbody>
-                     @if($order->type != 3)
+                     @if($order->type == 1)
                       <tr class="tm_gray_bg ">
-                        <td class="tm_width_3 tm_primary_color tm_bold">Versement</td>
+                        <td class="tm_width_3 tm_primary_color tm_bold">Somme décaissée</td>
                         <td class="tm_width_3 tm_primary_color tm_bold tm_text_right">{{$order->client->getAmount()}}</td>
                       </tr>
                       <tr class="tm_gray_bg">
-                        <td class="tm_width_3 tm_primary_color tm_bold">Restant</td>
+                        <td class="tm_width_3 tm_primary_color tm_bold">Somme restante</td>
+                        <td class="tm_width_3 tm_primary_color tm_text_right tm_bold">{{$order->client->getRestant()}}</td>
+                      </tr>
+                    @elseif ($order->type == 2)
+                      <tr class="tm_gray_bg ">
+                        <td class="tm_width_3 tm_primary_color tm_bold">Somme ecaissée</td>
+                        <td class="tm_width_3 tm_primary_color tm_bold tm_text_right">{{$order->client->getAmount()}}</td>
+                      </tr>
+                      <tr class="tm_gray_bg">
+                        <td class="tm_width_3 tm_primary_color tm_bold">Réstant à payer</td>
                         <td class="tm_width_3 tm_primary_color tm_text_right tm_bold">{{$order->client->getRestant()}}</td>
                       </tr>
                     @endif
                     <tr class="tm_accent_bg">
-                      <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_white_color">Total Credit	</td>
-                      <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_white_color tm_text_right">{{ $order->amount }} CFA</td>
+                      <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_white_color">Grand Total	</td>
+                      <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_white_color tm_text_right">{{ $order->getAmount() }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -142,9 +150,13 @@
           </div>
           <div class="tm_note tm_text_justify tm_font_style_normal">
             <hr class="tm_mb15">
-            <p class="tm_mb2 tm_text_center"><b class="tm_primary_color">Terms & Conditions:</b></p>
+            <p class="tm_mb2 tm_text_center"><b class="tm_primary_color">Terms & Conditions :</b></p>
             <p class="tm_m0">
-              L'acheteur renonce à toute réclamation relative à des erreurs de quantité ou d'expédition si elle n'est pas adressée par écrit au vendeur dans les trente (30) jours suivant la livraison des marchandises à l'adresse indiquée. 
+              @if ($auth_about != null && $auth_about->our_invoice_info != null)
+                {{ $auth_about->our_invoice_info }}
+              @else
+                L'acheteur renonce à toute réclamation relative à des erreurs de quantité ou d'expédition si elle n'est pas adressée par écrit au vendeur dans les trente (30) jours suivant la livraison des marchandises à l'adresse indiquée.
+              @endif
             </p>
           </div><!-- .tm_note -->
         </div>

@@ -18,6 +18,7 @@ class About extends Model
         'our_vision',
         'our_mission',
         'our_values',
+        'our_invoice_info',
         'magasin_id'
     ];
     public function magasin()

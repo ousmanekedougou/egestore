@@ -25,6 +25,7 @@ return new class extends Migration
             $table->text('our_sieges')->nullable();
             $table->text('sales_figures')->nullable();
             $table->text('areas_interest')->nullable();
+            $table->text('our_invoice_info')->nullable();
             $table->timestamps();
         });
     }

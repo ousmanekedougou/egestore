@@ -35,9 +35,7 @@ class Order extends Model
     
 
     public function getAmount(){
-        $getAmount = $this->amount;
-        $amount = str_replace(',', '', $getAmount);
-        return number_format($amount,2, ',','.'). ' CFA';
+        return $this->amount.' CFA';
     }
 
 

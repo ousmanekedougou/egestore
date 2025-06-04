@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Magasin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Magasin\About;
 use App\Models\Magasin\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -328,6 +329,7 @@ class OrderController extends Controller
 
         return view('magasin.orders.invoice',[
             'order' => Order::where('slug',$slug)->where('magasin_id',AuthMagasinAgent())->first(),
+            'auth_about' => About::where('magasin_id',Auth::guard('magasin')->user()->id)->first(),
             'authName' => $authName
         ]);
     }

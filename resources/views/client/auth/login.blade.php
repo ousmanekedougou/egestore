@@ -5,14 +5,14 @@
     <div class="bg-holder" style="background-image:url(assets/img/bg/bg-24.png);background-position:center;background-size:auto;"></div>
     <!--/.bg-holder-->
     <div class="container-lg position-relative">
-      <div class="row flex-center">
+      <div class="row flex-center mt-9">
         <div class="col-sm-10 col-md-8 col-lg-5 col-xl-5 px-xxl-3 text-center">
           <a class="d-flex flex-center text-decoration-none mb-4" href="/">
             <div class="d-flex align-items-center fw-bolder fs-3 d-inline-block">
               <img src="{{asset('assets/img/icons/logo.png')}}" alt="phoenix" width="58" />
             </div>
           </a>
-          <div class="text-center mb-7">
+          <div class="text-center mb-4">
             <h3 class="text-body-highlight">Se connecter</h3>
             <p class="text-body-tertiary">Accéder à votre compte client</p>
           </div>
