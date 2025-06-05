@@ -10,7 +10,7 @@
         </div>
         <div class="col-auto">
           <div class="row g-3">
-            <div class="col-auto"><button class="btn btn-phoenix-danger"><span class="fa-solid fa-trash-can me-2"></span>Retirer</button></div>
+            <div class="col-auto"><button class="btn btn-phoenix-danger"><span data-feather="trash-2" class="me-2"></span>Retirer</button></div>
           </div>
         </div>
       </div>

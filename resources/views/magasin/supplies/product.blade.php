@@ -29,7 +29,7 @@
                 @if($is_vendor_order == 0)
                   @if($supplyOrder->status == 2)
                     <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                      <span class="fas fa-plus me-2"></span>Ajouter des produits
+                      <span data-feather="plus" class="me-2"></span>Ajouter des produits
                     </button>
                   @endif
                 @endif
@@ -84,17 +84,17 @@
                       @elseif($product->supply_order->status == 2)
                         @if($is_vendor_order == 1)
                           @if ($product->status == 0)
-                            <span class="me-2 text-success fa fa-edit fs-7" data-bs-toggle="offcanvas" data-bs-target="#offcanvasUpdatePrice-{{ $product->id }}" aria-controls="offcanvasUpdatePrice-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                            <span class="me-3 text-success" data-feather="edit-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasUpdatePrice-{{ $product->id }}" aria-controls="offcanvasUpdatePrice-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                           @endif
                         @else
                           @if ($product->price == 0)
-                            <span class="me-2 text-success fa fa-edit fs-7" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                            <span class="me-3 text-success" data-feather="edit-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                           @else
                             @if ($product->status == 0)
-                              <span class="me-2 text-info fa fa-check-circle fs-7" data-bs-toggle="modal" data-bs-target="#ValidationProduct-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                              <span class="me-3 text-info" data-feather="check-circle" data-bs-toggle="modal" data-bs-target="#ValidationProduct-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                             @endif
                           @endif
-                          <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                          <span class="me-2 text-danger" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                         @endif
                       @endif
                     </td>

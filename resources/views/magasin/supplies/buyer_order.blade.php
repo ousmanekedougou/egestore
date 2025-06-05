@@ -27,7 +27,7 @@
           </div>
           <div class="col-auto">
             <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-              <span class="fas fa-plus me-2"></span>Ajouter une nouvelle commande
+              <span data-feather="plus" class="me-2"></span>Ajouter une nouvelle commande
             </button>
           </div>
         </div>
@@ -120,14 +120,14 @@
                   <td class=" align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">
                     @if($order->status == 1)
                       @if($order->delivery == 1)
-                        <a target="_blank" href="{{ route('magasin.devis.edit',$order->slug) }}" class="me-2 text-success" data-fa-transform="shrink-3"><span class="fa fa-file-alt fs-8" ></span></a>
+                        <a target="_blank" href="{{ route('magasin.devis.edit',$order->slug) }}" class="me-3 text-success" data-fa-transform="shrink-3"><span data-feather="file-text" ></span></a>
                       @else
-                        <span class="me-2 text-info fa fa-truck-moving fs-7" data-bs-toggle="modal" data-bs-target="#DevisDelivery-{{ $order->id }}" data-fa-transform="shrink-3"></span>
+                        <span class="me-3 text-info" data-feather="truck" data-bs-toggle="modal" data-bs-target="#DevisDelivery-{{ $order->id }}" data-fa-transform="shrink-3"></span>
                       @endif
                     @elseif($order->status == 2)
-                      <span class="me-2 text-success fa fa-edit fs-7" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $order->id }}" data-fa-transform="shrink-3"></span>
+                      <span class="me-3 text-success" data-feather="edit-3" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $order->id }}" data-fa-transform="shrink-3"></span>
                     @endif
-                    <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $order->id }}" data-fa-transform="shrink-3"></span>
+                    <span class="me-2 text-danger" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $order->id }}" data-fa-transform="shrink-3"></span>
                   </td>
                 </tr>
               @endforeach
