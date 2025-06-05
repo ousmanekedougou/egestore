@@ -43,9 +43,9 @@
     </div>
     <ul class="navbar-nav navbar-nav-icons flex-row">
       @if(Cart::count() > 0)
-        <li class="nav-item">
+        <li class="nav-item" id="showTrashedCartInDesktop">
             <a href="{{ route('magasin.panier.create') }}" class="btn btn-warning">
-                <span class="fas fa-cart-arrow-down me-2"></span>Vider votre panier
+                <span data-feather="trash-2" class="me-2"></span>Vider votre panier
             </a>
         </li>
       @endif
