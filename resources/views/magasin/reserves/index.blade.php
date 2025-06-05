@@ -99,7 +99,7 @@
                       <a href="{{ route('magasin.reserve.edit',$reserve->slug) }}" class="me-3 text-success" data-fa-transform="shrink-3"><span class="fs-7" data-feather="file-text"></span></a>
                     @elseif($reserve->status != 1)
                       @if ($reserve->bagages->count() > 0)
-                        <span class="me-3 text-info fs-7" data-feather="shopping-cart" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $reserve->id }}" data-fa-transform="shrink-3"></span>
+                        <span class="me-3 text-info fs-7" data-feather="shopping-bag" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $reserve->id }}" data-fa-transform="shrink-3"></span>
                       @endif
                     @endif
                     <span class="me-2 text-danger fs-7" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $reserve->id }}" data-fa-transform="shrink-3"></span>

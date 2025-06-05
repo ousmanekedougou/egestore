@@ -16,6 +16,7 @@ return new class extends Migration
           $table->string('name');
           $table->string('slug');
           $table->string('image');
+          $table->string('unique_code')->unique()->nullable();
           $table->text('images')->nullable();
           $table->integer('price');
           $table->integer('price_achat')->nullable();

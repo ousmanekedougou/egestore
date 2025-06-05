@@ -251,6 +251,13 @@ class BonController extends Controller
         }
     }
 
+    public function validation($id){
+        Commande::where('id',$id)->where('type',0)->where('magasin_id',AuthMagasinAgent())
+        ->update(['validate' => 1]);
+        Toastr()->success('Votre commande de bon a bien été validéé', 'Validation de bon', ["positionClass" => "toast-top-right"]);
+        return back();
+    }
+
     /**
      * Remove the specified resource from storage.
      */

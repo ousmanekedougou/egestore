@@ -5,7 +5,7 @@
     <div class="mb-9">
       <div class="row g-3 mb-4">
         <div class="col-auto">
-          <h2 class="mb-3">Produits sous bon</h2>
+          <h2 class="mb-3">Produits sous bon mensuelle</h2>
           <div class="d-sm-flex flex-between-center mb-3">
             <p class="text-body-secondary lh-sm mb-0 mt-2 mt-sm-0">
               Client : <a class="fw-bold" href="#!" style="margin-right: 15px;">  @if($bon->user_id == '') {{ $bon->name }} @else {{ $bon->user->name }} @endif</a>
@@ -48,7 +48,7 @@
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">PRIX UNITAIRE</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">PRIX TOTAL</th>
                   <th class="sort align-middle ps-4" scope="col" data-sort="time" style="width:50px;">DATE</th>
-                  <th class="sort text-end align-middle pe-0 ps-4" scope="col">ACTIONS</th>
+                  <th class="sort text-end align-middle pe-0 ps-4" scope="col">@if ($bon->validate == 1) PAIEMENTS @else ACTIONS @endif</th>
                 </tr>
               </thead>
               <tbody class="list" id="products-table-body">
@@ -62,10 +62,14 @@
                     <td class="time align-middle white-space-nowrap text-body-tertiary text-opacity-85 ps-4">{{date('d-m-Y', strtotime( $product->date ))}}</td>
                     <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
                     @if ($product->commande->status != 1)
-                      <span class="me-2 text-success" data-feather="edit-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
-                      <span class="me-2 text-danger" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                      @if ($product->commande->validate == 1)
+                        <span class="me-2 text-center badge badge-phoenix badge badge-phoenix-warning">Non payée</span>
+                      @else
+                        <span class="me-2 text-success" data-feather="edit-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                        <span class="me-2 text-danger" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                      @endif
                     @else
-                          <span class="me-2 text-center text-success">payée</span>
+                          <span class="me-2 text-center badge badge-phoenix badge badge-success">payée</span>
                     @endif
                     </td>
                   </tr>

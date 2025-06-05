@@ -26,6 +26,7 @@ class Commande extends Model
         'amount',
         'payment',
         'date',
+        'validate',
         'type',
         'delivery',
         'status',
