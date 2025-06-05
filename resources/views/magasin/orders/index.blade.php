@@ -120,13 +120,13 @@
                   <td class=" align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">
                     @if($order->type != 2)
                       @if($order->status == 1)
-                      <a href="{{ route('magasin.commande.edit',$order->slug) }}" target="_blank" class="me-2 text-success"  data-fa-transform="shrink-3"><span class="fa fa-file-alt fs-7" ></span></span></a>
+                        <a href="{{ route('magasin.commande.edit',$order->slug) }}" target="_blank" class="me-3 text-success"  data-fa-transform="shrink-3"><span class="fs-7" data-feather="file-text"></span></span></a>
                       @elseif($order->status != 1)
                         @if (count(unserialize($order->products)) > 0)
-                          <span class="me-2 text-info fa fa-shopping-bag fs-7" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $order->id }}" data-fa-transform="shrink-3"></span>
+                          <span class="me-3 text-info fs-7" data-feather="shopping-cart" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $order->id }}" data-fa-transform="shrink-3"></span>
                         @endif
                       @endif
-                      <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $order->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
+                      <span class="me-2 text-danger fs-7" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $order->id }}" data-feather="trash-2" data-fa-transform="shrink-3"></span>
                     @else
                       <span class="text-warning">A crédit </span>
                     @endif

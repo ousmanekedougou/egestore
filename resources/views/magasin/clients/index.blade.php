@@ -14,7 +14,7 @@
             <div class="col-auto">
               <div class="search-box">
                 <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="rechercher un client" aria-label="Search" />
-                  <span class="fas fa-search search-box-icon"></span>
+                  <span data-feather="search" class="search-box-icon"></span>
                 </form>
               </div>
             </div>

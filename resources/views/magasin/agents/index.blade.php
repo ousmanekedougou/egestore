@@ -20,7 +20,7 @@
             </div>
             <div class="col-auto">
                 <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                  <span class="fas fa-plus me-2"></span>Ajouter un agents
+                  <span data-feather="plus" class="me-2"></span>Ajouter un agents
                 </button>
             </div>
           </div>
@@ -52,8 +52,8 @@
                     @if($agent->is_active == 1) <span class="badge badge-phoenix badge-phoenix-success">Actif</span> @else <span class="badge badge-phoenix badge-phoenix-warning">Desactive</span> @endif
                   </td>
                   <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">
-                    <span class="me-2 text-success fa fa-edit fs-8" data-bs-toggle="modal" data-bs-target="#StatusCompte-{{ $agent->id }}" data-fa-transform="shrink-3"></span>
-                    <span class="me-2 text-danger fa fa-trash fs-8" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $agent->id }}" data-fa-transform="shrink-3"></span>
+                    <span class="me-2 text-success fs-8" data-feather="edit-3" data-bs-toggle="modal" data-bs-target="#StatusCompte-{{ $agent->id }}" data-fa-transform="shrink-3"></span>
+                    <span class="me-2 text-danger fs-8" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $agent->id }}" data-fa-transform="shrink-3"></span>
                   </td>
                 </tr>
                 @endforeach

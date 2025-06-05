@@ -23,7 +23,7 @@
             </div>
             <div class="ms-xxl-auto">
               <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                <span class="fas fa-plus me-2"></span>Ajouter un produit
+                <span data-feather="plus" class="me-2"></span>Ajouter un produit
               </button>
             </div>
           </div>
@@ -93,13 +93,13 @@
                     
                       <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
                         @if($product->quantity > 0)
-                          <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-2 @if( $product->quantity < 10 ) text-white @else text-warning @endif fa fa-shopping-cart fs-7" data-fa-transform="shrink-3"></span></a>
+                          <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-3 @if( $product->quantity < 10 ) text-white @else text-warning @endif fs-7" data-feather="shopping-cart" data-fa-transform="shrink-3"></span></a>
                         @else
                           <span class="text-white" style="margin-right: 4px;">Indisponible</span>
                         @endif
                         
-                        <span class="me-2 @if( $product->quantity < $product->qty_alert ) text-white @else text-success  @endif fa fa-edit fs-7" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
-                        <span class="me-2 @if( $product->quantity < $product->qty_alert ) text-white @else text-danger  @endif fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                        <span class="me-3 @if( $product->quantity < $product->qty_alert ) text-white @else text-success  @endif fs-7" data-feather="edit-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                        <span class="me-2 @if( $product->quantity < $product->qty_alert ) text-white @else text-danger  @endif fs-7" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                       </td>
                     </form>
                   </tr>

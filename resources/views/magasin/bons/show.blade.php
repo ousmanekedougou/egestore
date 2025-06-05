@@ -29,7 +29,7 @@
                 </a>
               @elseif($bon->status == 2)
                 <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                  <span class="fas fa-plus me-2"></span>Ajouter des produits
+                  <span class="me-2" data-feather="plus"></span>Ajouter des produits
                 </button>
               @else
                 <h4 class="mb-0">Cette commande de sous reservation a ete anuler</h4>
@@ -62,8 +62,8 @@
                     <td class="time align-middle white-space-nowrap text-body-tertiary text-opacity-85 ps-4">{{date('d-m-Y', strtotime( $product->date ))}}</td>
                     <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
                     @if ($product->commande->status != 1)
-                      <span class="me-2 text-success fa fa-edit fs-7" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
-                      <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                      <span class="me-2 text-success" data-feather="edit-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                      <span class="me-2 text-danger" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                     @else
                           <span class="me-2 text-center text-success">payée</span>
                     @endif

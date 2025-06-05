@@ -21,7 +21,7 @@
             </div>
             <div class="col-auto">
                 <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                  <span class="fas fa-plus me-2"></span>Ajouter une sous-categorie
+                  <span class="me-2" data-feather="plus"></span>Ajouter une sous-categorie
               </button>
             </div>
           </div>
@@ -48,8 +48,8 @@
                     @if($category->visible == 1) <span class="badge badge-phoenix badge-phoenix-success">Visible</span> @else <span class="badge badge-phoenix badge-phoenix-warning">Cacher</span> @endif
                   </td>
                   <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">
-                    <span class="me-2 text-success fa fa-edit fs-7" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $category->id }}" aria-controls="offcanvasRight-{{ $category->id }}" data-fa-transform="shrink-3"></span>
-                    <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $category->id }}" data-fa-transform="shrink-3"></span>
+                    <span class="me-3 text-success fs-7" data-feather="edit-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $category->id }}" aria-controls="offcanvasRight-{{ $category->id }}" data-fa-transform="shrink-3"></span>
+                    <span class="me-2 text-danger fs-7" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $category->id }}" data-fa-transform="shrink-3"></span>
                   </td>
                 </tr>
                 @endforeach

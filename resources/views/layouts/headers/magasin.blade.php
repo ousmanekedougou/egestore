@@ -13,7 +13,11 @@
       </a>
       <nav class="ecommerce-navbar navbar-expand navbar-light bg-body-emphasis justify-content-between">
         <div class="container-small d-flex flex-between-center" data-navbar="data-navbar">
-          <div class="dropdown"><button class="btn text-body ps-0 pe-5 text-nowrap dropdown-toggle dropdown-caret-none" data-category-btn="data-category-btn" data-bs-toggle="dropdown"><span data-feather="layers" class=""></span> <span class="showCategory" style="line-height:normal;">Vos Catégories</span> </button>
+          <div class="dropdown">
+            <button class="btn text-body ps-0 pe-5 text-nowrap dropdown-toggle dropdown-caret-none" data-category-btn="data-category-btn" data-bs-toggle="dropdown">
+              <span data-feather="shopping-bag" class=""></span> 
+              <span class="showCategory" style="line-height:normal;">Vos Produits</span> 
+            </button>
             <div class="dropdown-menu border border-translucent py-0 category-dropdown-menu">
               <div class="card border-0 scrollbar" style="max-height: 657px;">
                 <div class="card-body p-6 pb-3">
@@ -55,18 +59,18 @@
       <li class="nav-item">
         <div class="theme-control-toggle fa-icon-wait px-2">
           <input class="form-check-input ms-0 theme-control-toggle-input" type="checkbox" data-theme-control="phoenixTheme" value="dark" id="themeControlToggle" />
-          <label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Changement de thème">
-            <span class="far fa-moon"></span>
+          <label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left">
+            <span class="icon" data-feather="moon"></span>
           </label>
-          <label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Changement de thème">
-            <span class="far fa-sun"></span>
+          <label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left">
+            <span class="icon" data-feather="sun"></span>
           </label>
         </div>
       </li>
 
       <li class="nav-item">
         <a class="nav-link px-2 icon-indicator icon-indicator-primary" href="{{ route('magasin.panier.index') }}" role="button">
-          <span class="text-body-tertiary fa fa-shopping-cart text-primary" style="height:20px;width:20px;"></span>
+          <span class="text-body-tertiary text-primary" data-feather="shopping-cart"></span>
           <span class="icon-indicator-number">{{ Cart::content()->count() }}</span>
         </a>
       </li>
@@ -74,7 +78,7 @@
       
       <li class="nav-item dropdown">
         <a class="nav-link px-2 icon-indicator icon-indicator-success" href="#" style="min-width: 2.25rem" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-auto-close="outside">
-          <span class="far fa-bell" style="height:20px;width:20px;"></span>
+          <span data-feather="bell"></span>
           <span class="icon-indicator-number">{{ OrderNotification()->count() }}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-end notification-dropdown-menu py-0 shadow border navbar-dropdown-caret" id="navbarDropdownNotfication" aria-labelledby="navbarDropdownNotfication">

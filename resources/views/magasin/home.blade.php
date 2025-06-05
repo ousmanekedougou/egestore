@@ -125,7 +125,7 @@
                     </td>
                     <td class="align-middle white-space-nowrap text-end pe-3 ps-4 btn-reveal-trigger">
                       @if($product->quantity > 0)
-                        <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-2 @if( $product->quantity < 10 ) text-white @else text-warning  @endif fa fa-shopping-cart fs-7" data-fa-transform="shrink-3"></span></a>
+                        <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-2 @if( $product->quantity < 10 ) text-white @else text-warning  @endif fs-7" data-feather="shopping-cart" data-fa-transform="shrink-3"></span></a>
                       @else
                         <span class="text-white" style="margin-right: 4px;">Indisponible</span>
                       @endif

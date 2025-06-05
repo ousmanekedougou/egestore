@@ -15,7 +15,7 @@
           <div class="col-auto">
             <div class="search-box">
               <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Rechercher un commande" aria-label="Search" />
-                <span class="fas fa-search search-box-icon"></span>
+                <span data-feather="search" class="search-box-icon"></span>
               </form>
             </div>
           </div>
@@ -72,10 +72,10 @@
                   <td class="delivery_type align-middle white-space-nowrap text-body fs-9 text-center fw-bold"> <span class="@if($order->type == 1) text-success @elseif($order->type == 2) text-warning @else text-info @endif"> @if($order->type == 1) Payé @elseif($order->type == 2) A crédit @else Non payé @endif </span></td>
                   <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{date('d-m-Y', strtotime( $order->date ))}}</td>
                   <td class=" align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">
-                    <a href="{{ route('magasin.commande.edit',$order->slug) }}" target="_blank" class="me-2 text-success" data-fa-transform="shrink-3"><span class="fa fa-file-alt fs-7" ></span></a>
-                    <span class="me-2 text-info fa fa-shopping-bag fs-7" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $order->id }}" data-fa-transform="shrink-3"></span>
+                    <a href="{{ route('magasin.commande.edit',$order->slug) }}" target="_blank" class="me-2 text-success" data-fa-transform="shrink-3"><span class="me-3 fs-7" data-feather="file-text" ></span></a>
+                    <span class="me-2 text-info fs-7" data-feather="shopping-cart" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $order->id }}" data-fa-transform="shrink-3"></span>
                     @if($order->status != 1)
-                      <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $order->id }}" data-fa-transform="shrink-3"></span>
+                      <span class="me-2 text-danger fs-7" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $order->id }}" data-fa-transform="shrink-3"></span>
                     @endif
                   </td>
                 </tr>

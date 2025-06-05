@@ -105,10 +105,10 @@
     <div>
       <div class="scrollbar">
         <ul class="nav nav-underline fs-9 flex-nowrap mb-3 pb-1" id="myTab" role="tablist">
-           <li class="nav-item"><a class="nav-link text-nowrap active" id="personal-info-tab" data-bs-toggle="tab" href="#tab-personal-info" role="tab" aria-controls="tab-personal-info" aria-selected="true"><span class="fas fa-user me-2"></span>Informations personnelles</a></li>
-           <li class="nav-item"><a class="nav-link text-nowrap" id="coordonne-info-tab" data-bs-toggle="tab" href="#tab-coordonne-info" role="tab" aria-controls="tab-coordonne-info" aria-selected="true"><span class="fa fa-shopping-bag me-2"></span>Coordonnées du magasin</a></li>
-           <li class="nav-item"><a class="nav-link text-nowrap" id="critere-info-tab" data-bs-toggle="tab" href="#tab-critere-info" role="tab" aria-controls="tab-critere-info" aria-selected="true"><span class="fab fa-readme me-2"></span>Critères du magasin</a></li>
-           <li class="nav-item"><a class="nav-link text-nowrap" id="reseau-info-tab" data-bs-toggle="tab" href="#tab-reseau-info" role="tab" aria-controls="tab-reseau-info" aria-selected="true"><span class="fa fa-globe  me-2"></span>Réseaux sociaux</a></li>
+           <li class="nav-item"><a class="nav-link text-nowrap active" id="personal-info-tab" data-bs-toggle="tab" href="#tab-personal-info" role="tab" aria-controls="tab-personal-info" aria-selected="true"><span class="me-2" data-feather="user"></span>Informations personnelles</a></li>
+           <li class="nav-item"><a class="nav-link text-nowrap" id="coordonne-info-tab" data-bs-toggle="tab" href="#tab-coordonne-info" role="tab" aria-controls="tab-coordonne-info" aria-selected="true"><span class="me-2" data-feather="info"></span>Coordonnées du magasin</a></li>
+           <li class="nav-item"><a class="nav-link text-nowrap" id="critere-info-tab" data-bs-toggle="tab" href="#tab-critere-info" role="tab" aria-controls="tab-critere-info" aria-selected="true"><span class="me-2" data-feather="file-text"></span>Critères du magasin</a></li>
+           <li class="nav-item"><a class="nav-link text-nowrap" id="reseau-info-tab" data-bs-toggle="tab" href="#tab-reseau-info" role="tab" aria-controls="tab-reseau-info" aria-selected="true"><span class="me-2" data-feather="globe"></span>Réseaux sociaux</a></li>
         </ul>
       </div>
       <div class="tab-content" id="profileTabContent">

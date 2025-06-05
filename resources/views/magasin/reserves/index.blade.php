@@ -20,7 +20,7 @@
           </div>
           <div class="col-auto">
             <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-              <span class="fas fa-plus me-2"></span>Ajouter une réservation 
+              <span class="me-2" data-feather="plus"></span>Ajouter une réservation 
             </button>
           </div>
         </div>
@@ -96,13 +96,13 @@
                   <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{date('d-m-Y', strtotime( $reserve->date ))}}</td>
                   <td class=" align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">
                     @if($reserve->status == 1)
-                      <a href="{{ route('magasin.reserve.edit',$reserve->slug) }}" class="me-2 text-success" data-fa-transform="shrink-3"><span class="fa fa-file-alt fs-7" ></span></a>
+                      <a href="{{ route('magasin.reserve.edit',$reserve->slug) }}" class="me-3 text-success" data-fa-transform="shrink-3"><span class="fs-7" data-feather="file-text"></span></a>
                     @elseif($reserve->status != 1)
                       @if ($reserve->bagages->count() > 0)
-                        <span class="me-2 text-info fa fa-shopping-bag fs-7" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $reserve->id }}" data-fa-transform="shrink-3"></span>
+                        <span class="me-3 text-info fs-7" data-feather="shopping-cart" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $reserve->id }}" data-fa-transform="shrink-3"></span>
                       @endif
                     @endif
-                    <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $reserve->id }}" data-fa-transform="shrink-3"></span>
+                    <span class="me-2 text-danger fs-7" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $reserve->id }}" data-fa-transform="shrink-3"></span>
                   </td>
                 </tr>
               @endforeach

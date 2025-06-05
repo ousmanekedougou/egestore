@@ -11,7 +11,7 @@
         </p>
         <div class="d-flex">
           <button class="btn btn-link pe-3 ps-0 text-body">
-            <span class="fas fa-print me-2"></span>Print
+            <span data-feather="printer" class="me-2"></span>Print
           </button>
         </div>
       </div>

@@ -14,13 +14,13 @@
             <div class="col-auto">
               <div class="search-box">
                 <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="rechercher un client" aria-label="Search" />
-                  <span class="fas fa-search search-box-icon"></span>
+                  <span data-feather="search" class="search-box-icon"></span>
                 </form>
               </div>
             </div>
             <div class="col-auto">
                 <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                  <span class="fas fa-plus me-2"></span>Ajouter un client
+                  <span data-feather="plus" class="me-2"></span>Ajouter un client
                 </button>
             </div>
           </div>
@@ -74,9 +74,9 @@
                   <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">{{$client->getDepot()}}</td>
                   <td class="last-order align-middle white-space-nowrap text-body-tertiary text-end">{{$client->getCredit()}}</td>
                   <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
-                    <span class="me-2 text-success fa fa-edit fs-7" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $client->id }}" aria-controls="offcanvasRight-{{ $client->id }}" data-fa-transform="shrink-3"></span>
+                    <span class="me-3 text-success fs-7" data-feather="edit-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $client->id }}" aria-controls="offcanvasRight-{{ $client->id }}" data-fa-transform="shrink-3"></span>
                     @if($client->account == 3)
-                      <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $client->id }}" data-fa-transform="shrink-3"></span>
+                      <span class="me-2 text-danger fs-7" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $client->id }}" data-fa-transform="shrink-3"></span>
                     @endif
                   </td>
                 </tr>

@@ -20,7 +20,7 @@
           </div>
           <div class="col-auto">
             <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-              <span class="fas fa-plus me-2"></span>Ajouter un client pour bon
+              <span class="me-2" data-feather="plus"></span>Ajouter un client pour bon
             </button>
           </div>
         </div>
@@ -107,13 +107,13 @@
                   <td class="date align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">{{date('d-m-Y', strtotime( $bon->date ))}}</td>
                   <td class=" align-middle white-space-nowrap text-body-tertiary fs-9 ps-4 text-end">
                     @if($bon->status == 1)
-                      <a target="_blank" href="{{ route('magasin.bon.edit',$bon->slug) }}" class="me-2 text-success fa fa-file-alt fs-7" data-fa-transform="shrink-3"></a>
+                      <a target="_blank" href="{{ route('magasin.bon.edit',$bon->slug) }}" class="me-2 text-success fs-7" data-feather="file-minus" data-fa-transform="shrink-3"></a>
                     @elseif ($bon->status != 1)
                       @if ($bon->bagages->count() > 0)
-                        <span class="me-2 text-info fa fa-shopping-bag fs-7" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $bon->id }}" data-fa-transform="shrink-3"></span>
+                        <span class="me-2 text-info fs-7" data-feather="shopping-cart" data-bs-toggle="modal" data-bs-target="#OrderState-{{ $bon->id }}" data-fa-transform="shrink-3"></span>
                       @endif
                     @endif
-                    <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $bon->id }}" data-fa-transform="shrink-3"></span>
+                    <span class="me-2 text-dangerfs-7" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $bon->id }}" data-fa-transform="shrink-3"></span>
                   </td>
                 </tr>
               @endforeach

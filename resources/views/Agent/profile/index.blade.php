@@ -106,7 +106,7 @@
     <div>
       <div class="scrollbar">
         <ul class="nav nav-underline fs-9 flex-nowrap mb-3 pb-1" id="myTab" role="tablist">
-           <li class="nav-item"><a class="nav-link text-nowrap active" id="personal-info-tab" data-bs-toggle="tab" href="#tab-personal-info" role="tab" aria-controls="tab-personal-info" aria-selected="true"><span class="fas fa-user me-2"></span>Informations Personnelles</a></li>
+           <li class="nav-item"><a class="nav-link text-nowrap active" id="personal-info-tab" data-bs-toggle="tab" href="#tab-personal-info" role="tab" aria-controls="tab-personal-info" aria-selected="true"><span data-father="user" class="me-2"></span>Informations Personnelles</a></li>
         </ul>
       </div>
       <div class="tab-content" id="profileTabContent">

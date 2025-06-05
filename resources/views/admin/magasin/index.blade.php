@@ -59,7 +59,7 @@
                 </button>
                 
                 <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                  <span class="fas fa-plus me-2"></span>Ajouter une boutique
+                  <span data-feather="plus" class="me-2"></span>Ajouter une boutique
               </button>
             </div>
           </div>

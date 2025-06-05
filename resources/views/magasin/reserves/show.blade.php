@@ -29,7 +29,7 @@
                 </a>
               @elseif($reserve->status == 2)
                 <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                  <span class="fas fa-plus me-2"></span>Ajouter des produits
+                  <span class="me-2" data-feather="plus"></span>Ajouter des produits
                 </button>
               @else
                 <h4 class="mb-0">Cette commande de sous résérvation a été anuller</h4>
@@ -62,8 +62,8 @@
                     <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ number_format($product->amount,2, ',','.') }} CFA</td>
                     <td class="time align-middle white-space-nowrap text-body-tertiary text-opacity-85 ps-4">{{date('d-m-Y', strtotime( $product->created_at ))}}</td>
                     <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
-                      <span class="me-2 text-success fa fa-edit fs-7" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
-                      <span class="me-2 text-danger fa fa-trash fs-7" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                      <span class="me-3 text-success fs-7" data-feather="edit-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                      <span class="me-2 text-danger fs-7" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                     </td>
                   </tr>
                 @endforeach
