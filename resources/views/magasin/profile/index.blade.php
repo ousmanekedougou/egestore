@@ -233,25 +233,26 @@
                     </div>
 
                     <div class="col-12 col-lg-6">
+                      <label class="form-label text-body-highlight fs-8 ps-0 text-lowercase lh-sm" for="visible">Visibilité</label> <br>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input text-success @error('visible') is-invalid @enderror" @if(Auth::guard('magasin')->user()->visible == 1) checked="" @endif id="inlineRadioA" type="radio" name="visible" value=" 1 ">
+                        <label class="form-check-label text-success" for="inlineRadioA">Publique</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input text-warning @error('visible') is-invalid @enderror" @if(Auth::guard('magasin')->user()->visible == 0) checked="" @endif id="inlineRadioB" type="radio" name="visible" value=" 0 ">
+                        <label class="form-check-label text-warning" for="inlineRadioB">Privé</label>
+                      </div>
+                      @error('visible')
+                        <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                    </div>
+                      
+                    <div class="col-12 col-lg-6">
                       <div class="row">
-                        <div class="col-lg-9">
-                          <label class="form-label text-body-highlight fs-8 ps-0 text-lowercase lh-sm" for="visible">Visibilité</label> <br>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input text-success @error('visible') is-invalid @enderror" @if(Auth::guard('magasin')->user()->visible == 1) checked="" @endif id="inlineRadioA" type="radio" name="visible" value=" 1 ">
-                            <label class="form-check-label text-success" for="inlineRadioA">Publique</label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input text-warning @error('visible') is-invalid @enderror" @if(Auth::guard('magasin')->user()->visible == 0) checked="" @endif id="inlineRadioB" type="radio" name="visible" value=" 0 ">
-                            <label class="form-check-label text-warning" for="inlineRadioB">Privé</label>
-                          </div>
-                          @error('visible')
-                            <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                            </span>
-                          @enderror
-                        </div>
-                        <div class="col-lg-3">
-                          <label class="form-label text-body-highlight fw-bold fs-8 ps-0 text-lowercase lh-sm" for="inv_at">Inventaire</label>
+                        <div class="col-lg-6">
+                          <label class="form-label text-body-highlight fw-bold fs-8 ps-0 text-lowercase lh-sm" for="inv_at">Inventaire date</label>
                           <input id="inv_at" type="numeric" class="form-control @error('inv_at') is-invalid @enderror" name="inv_at" value="{{ old('inv_at') ?? Auth::guard('magasin')->user()->inv_at }}"  autocomplete="inv_at">
 
                           @error('inv_at')
@@ -260,8 +261,21 @@
                               </span>
                           @enderror
                         </div>
+
+                        <div class="col-lg-6">
+                          <label class="form-label text-body-highlight fw-bold fs-8 ps-0 text-lowercase lh-sm" for="prefix">Prexix (4 lettre maximum)</label>
+                          <input id="prefix" type="text" class="form-control @error('prefix') is-invalid @enderror" name="prefix" value="{{ old('prefix') ?? Auth::guard('magasin')->user()->prefix }}"  autocomplete="prefix">
+
+                          @error('prefix')
+                              <span class="invalid-feedback" role="alert">
+                                  <strong>{{ $message }}</strong>
+                              </span>
+                          @enderror
+                        </div>
+
                       </div>
                     </div>
+
                     <div class="text-end">
                       <button type="submit" class="btn btn-primary px-7">Enrégistrer les modifications</button>
                     </div>

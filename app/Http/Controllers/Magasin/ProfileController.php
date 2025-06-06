@@ -196,6 +196,7 @@ class ProfileController extends Controller
             'visible' => ['required', 'boolean'],
         ]);
 
+
         $inv_at = null;
         if ($request->inv_at == null) {
             $inv_at = Auth::guard('magasin')->user()->inv_at;
@@ -203,20 +204,25 @@ class ProfileController extends Controller
             $inv_at = $request->inv_at;
         }
         
-
-        Magasin::find(Auth::guard('magasin')->user()->id)
-        ->update(
-        [
-            'name' => $request->shop_name,
-            'shop_phone' => $request->shop_phone,
-            'visible' => $request->visible,
-            'inv_at' => $inv_at,
-            'registre_com' => $request->rccm,
-            'ninea' => $request->ninea,
-        ]);
-
-        Toastr()->success('Vos coordonnées ont bien été modifié', 'Modification de coordonnées', ["positionClass" => "toast-top-right"]);
-        return back();
+        if ($request->prefix != null) {
+            Magasin::find(Auth::guard('magasin')->user()->id)
+            ->update(
+                [
+                    'name' => $request->shop_name,
+                    'shop_phone' => $request->shop_phone,
+                    'visible' => $request->visible,
+                    'inv_at' => $inv_at,
+                    'registre_com' => $request->rccm,
+                    'prefix' => $request->prefix,
+                    'ninea' => $request->ninea,
+                ]);
+                
+            Toastr()->success('Vos coordonnées ont bien été modifié', 'Modification de coordonnées', ["positionClass" => "toast-top-right"]);
+            return back();
+        }else{
+            Toastr()->error('Le prefix ne doit pas etre null', 'Modification de coordonnées', ["positionClass" => "toast-top-right"]);
+            return back();
+        }
     }
 
      /**

@@ -34,6 +34,8 @@ class Magasin extends Authenticatable
         'confirmation_token',
         'registre_com',
         'ninea',
+        'prefix',
+        'visible'
     ];
 
     public function categories(){

@@ -35,8 +35,9 @@
                 <tr>
                   <th class="sort white-space-nowrap align-middle fs-10" scope="col" style="width:70px;"></th>
                   <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;" data-sort="product">PRODUITS</th>
-                  <th class="sort align-middle text-end ps-4" scope="col" data-sort="category" style="width:50px;">REFERENCES</th>
+                  <th class="sort align-middle text-start ps-4" scope="col" data-sort="category" style="width:50px;">REFERENCES</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">P-UNITAIRE</th>
+                  <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">CODE-U</th>
                   <th class="sort align-middle ps-4" scope="col" data-sort="time" style="width:50px;">STATUS</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="time" style="width:150px;">QUANTITES</th>
                   <th class="sort align-middle ps-3 w-auto" scope="col" data-sort="tags">COULEURS</th>
@@ -51,6 +52,7 @@
                     <td class="product align-middle ps-4"><a class="fw-semibold line-clamp-3 mb-0 @if( $product->quantity < 10 ) text-white @endif"  href="{{ route('magasin.produit.edit',$product->id) }}">{{ $product->name }}</a></td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->reference }}</td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->getPrice() }}</td>
+                    <td class="price align-middle white-space-nowrap text-center fw-bold @if( $product->quantity < 10 ) text-white @else text-body-tertiary  @endif ps-4">{{ $product->unique_code }}</td>
                     <td class="total-spent align-middle white-space-nowrap fw-bold text-end ps-3 text-body-emphasis">
                       @if($product->visible == 1) <span class="badge badge-phoenix badge-phoenix-success">Visible</span> @else <span class="badge badge-phoenix badge-phoenix-warning">Cacher</span> @endif
                     </td>

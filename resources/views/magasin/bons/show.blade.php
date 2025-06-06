@@ -1,7 +1,7 @@
 @extends('layouts.app',['title' => 'affichage des bon de commande'])
 
 @section('main-content')
-<div class="content">
+  <div class="content">
     <div class="mb-9">
       <div class="row g-3 mb-4">
         <div class="col-auto">

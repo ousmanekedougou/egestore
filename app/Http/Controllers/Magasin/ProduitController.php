@@ -135,7 +135,7 @@ class ProduitController extends Controller
             $sizes = null;
         }
 
-        Product::create([
+        $product = Product::create([
             'name' => $request->name,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
             'reference' => $request->reference,
@@ -157,6 +157,11 @@ class ProduitController extends Controller
             'supply_name' => $supply_name,
             'sub_category_id' => $request->sub_category_id
         ]);
+
+        $product->update(['unique_code' => $product->magasin->prefix.'-'.str_pad($product->id, 6, '0', STR_PAD_LEFT)]);
+
+        // dd($product);
+        
         Toastr()->success('Votre produit a bien été ajouté', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
         return back();
     }
@@ -170,7 +175,7 @@ class ProduitController extends Controller
     {
         $subcategory = SubCategory::where('slug',$slug)->first();
 
-        $products = $subcategory->products()->paginate(50);
+        $products = $subcategory->products()->orderBy('id','desc')->paginate(50);
         return view('magasin.produits.index',
             [
                 'products' => $products,
