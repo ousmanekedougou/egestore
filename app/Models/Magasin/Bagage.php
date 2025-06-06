@@ -22,6 +22,10 @@ class Bagage extends Model
         'magasin_id',
         'image',
         'images',
+        'colors',
+        'sizes',
+        'unique_code',
+        'exp_date',
     ];
 
     public function getPrice(){

@@ -2,6 +2,7 @@
 
 @section('main-content')
   <div class="content">
+
     <div class="mb-9">
       <div class="row g-3 mb-4">
         <div class="col-auto">
@@ -28,7 +29,7 @@
                   <span data-feather="trash-2" data-fa-transform="shrink-3" class="me-2"></span>Vider ce stock
                 </a>
               @elseif($bon->status == 2)
-                <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                   <span class="me-2" data-feather="plus"></span>Ajouter des produits
                 </button>
               @else
@@ -63,9 +64,8 @@
                     <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
                     @if ($product->commande->status != 1)
                       @if ($product->commande->validate == 1)
-                        <span class="me-2 text-center badge badge-phoenix badge badge-phoenix-warning">Non payée</span>
+                        <span class="me-3 text-center badge badge-phoenix badge badge-phoenix-warning">Non payée</span>
                       @else
-                        <span class="me-2 text-success" data-feather="edit-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                         <span class="me-2 text-danger" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                       @endif
                     @else
@@ -103,40 +103,19 @@
               <input type="hidden" name="reserve_id" value="{{ $bon->id }}">
               <input type="hidden" name="type" value="0">
               <div class="mb-3 text-start">
-                  <label class="form-label" for="name">Titre du produit</label>
-                  <input id="name" type="text" placeholder="Titre du produit" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                  <label class="form-label" for="unique_code">Code unique du produit</label>
+                  <input id="unique_code" type="text" placeholder="Code unique du produit" class="form-control @error('unique_code') is-invalid @enderror" name="unique_code" value="{{ old('unique_code') }}" required autocomplete="unique_code" autofocus>
 
-                  @error('name')
+                  @error('unique_code')
                       <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
                       </span>
                   @enderror
               </div>
 
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="reference">Reference du produit</label>
-                  <input id="reference" type="text" placeholder="Reference du produit" class="form-control @error('reference') is-invalid @enderror" name="reference" value="{{ old('reference') }}" required autocomplete="reference" autofocus>
-
-                  @error('reference')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
-
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="price">Prix du produit</label>
-                  <input id="price" type="numeric" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" placeholder="Prix du produit" required autocomplete="price">
-
-                  @error('price')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-              </div>
               <div class="mb-3 text-start">
                   <label class="form-label" for="quantity">Quantite du produit</label>
-                  <input id="quantity" type="quantity" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" placeholder="Quantite du produit" required autocomplete="quantity">
+                  <input id="quantity" type="numeric" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" placeholder="Quantite du produit" required autocomplete="quantity">
 
                   @error('quantity')
                       <span class="invalid-feedback" role="alert">
@@ -167,7 +146,7 @@
             <form action="{{ route('magasin.bagage.store') }}" method="post"> 
               @csrf
               <input type="hidden" name="reserve_id" value="{{ $bon->id }}">
-              <input type="hidden" name="type" value="1">
+              <input type="hidden" name="type" value="0">
               <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis border-top border-bottom border-translucent position-relative top-1">
                
                 <div class="table-responsive scrollbar-overlay mx-n1 px-1">
@@ -217,70 +196,6 @@
       </div>
     </div>
 
-    @foreach($bon->bagages as $product)
-      <div class="card-body p-0">
-        <div class="p-4 code-to-copy">
-          <!-- Right Offcanvas-->
-          <div class="offcanvas offcanvas-end" id="offcanvasRight-{{ $product->id }}" tabindex="-1" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-              <h5 id="offcanvasRightLabel">Modification de produit</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-              <form method="POST" action="{{ route('magasin.bagage.update',$product->id) }}">
-                @csrf
-                {{ method_field('PUT') }}
-                <input type="hidden" name="reserve_id" value="{{ $bon->id }}">
-                <input type="hidden" name="type" value="0">
-                <div class="mb-3 text-start">
-                    <label class="form-label" for="name">Titre du produit</label>
-                    <input id="name" type="text" placeholder="Titre du produit" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $product->name }}" required autocomplete="name" autofocus>
-
-                    @error('name')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-
-                <div class="mb-3 text-start">
-                    <label class="form-label" for="reference">Reference du produit</label>
-                    <input id="reference" type="text" placeholder="Reference du produit" class="form-control @error('reference') is-invalid @enderror" name="reference" value="{{ old('reference') ?? $product->reference }}" required autocomplete="reference" autofocus>
-
-                    @error('reference')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-
-                <div class="mb-3 text-start">
-                    <label class="form-label" for="price">Prix du produit</label>
-                    <input id="price" type="numeric" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') ?? $product->price }}" placeholder="Prix du produit" required autocomplete="price">
-
-                    @error('price')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-                <div class="mb-3 text-start">
-                    <label class="form-label" for="quantity">Quantite du produit</label>
-                    <input id="quantity" type="quantity" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') ?? $product->quantity }}" placeholder="Quantite du produit" required autocomplete="quantity">
-
-                    @error('quantity')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-
-                <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce produit</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    @endforeach
 
 
     @foreach($bon->bagages  as $product)

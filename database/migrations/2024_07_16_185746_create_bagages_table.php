@@ -22,6 +22,10 @@ return new class extends Migration
             $table->string('amount')->nullable();
             $table->string('reference')->nullable();
             $table->boolean('type')->default(false);
+            $table->string('unique_code')->unique()->nullable();
+            $table->text('colors')->nullable();
+            $table->text('sizes')->nullable();
+            $table->date('exp_date')->nullable();
             $table
                 ->foreignId("commande_id")
                 ->references("id")
