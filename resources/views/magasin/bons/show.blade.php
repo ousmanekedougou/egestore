@@ -43,8 +43,11 @@
             <table class="table fs-9 mb-0">
               <thead>
                 <tr>
+                  <th class="sort white-space-nowrap align-middle fs-10" scope="col" style="width:70px;"></th>
                   <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:350px;" data-sort="product">PRODUITS</th>
-                  <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">REFERENCES</th>
+                  <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">CODE-U</th>
+                  <th class="sort align-middle ps-3 w-auto" scope="col" data-sort="tags">COULEURS</th>
+                  <th class="sort align-middle ps-3 w-auto" scope="col" data-sort="vendor">TAILLES</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">QUANTITES</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">PRIX UNITAIRE</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">PRIX TOTAL</th>
@@ -55,8 +58,15 @@
               <tbody class="list" id="products-table-body">
                 @foreach($bon->bagages as $product)
                   <tr class="position-static">
-                    <td class="product align-middle ps-4"><span class="fw-semibold line-clamp-3 mb-0">{{ $product->name }}</span></td>
-                    <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">@if ($product->reference != '') {{ $product->reference }} @else null @endif</td>
+                    <td class="align-middle white-space-nowrap py-0" data-bs-toggle="modal" data-bs-target="#scrollingLong-{{ $product->id }}"><a href="#" class="d-block border border-translucent rounded-2"><img src="{{Storage::url($product->image)}}" alt="" width="53" /></a></td>
+                    <td class="product align-middle ps-4" data-bs-toggle="modal" data-bs-target="#scrollingLong-{{ $product->id }}"><a href="#" class="fw-semibold line-clamp-3 mb-0">{{ $product->name }}</a></td>
+                    <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ $product->unique_code }}</td>
+                    <td class="total-spent align-middle white-space-nowrap fw-bold text-end ps-3 text-body-emphasis">
+                      <span class="badge badge-phoenix badge-phoenix-primary">{{ $product->color }}</span> 
+                    </td>
+                    <td class="total-spent align-middle white-space-nowrap fw-bold text-end ps-3 text-body-emphasis">
+                      <span class="badge badge-phoenix badge-phoenix-success">{{ $product->size }}</span> 
+                    </td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ $product->quantity }}</td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ $product->getPrice() }}</td>
                     <td class="price align-middle white-space-nowrap text-center fw-bold text-body-tertiary ps-4">{{ number_format($product->price * $product->quantity,2, ',','.') }} CFA</td>
@@ -102,26 +112,49 @@
               @csrf
               <input type="hidden" name="reserve_id" value="{{ $bon->id }}">
               <input type="hidden" name="type" value="0">
-              <div class="mb-3 text-start">
-                  <label class="form-label" for="unique_code">Code unique du produit</label>
-                  <input id="unique_code" type="text" placeholder="Code unique du produit" class="form-control @error('unique_code') is-invalid @enderror" name="unique_code" value="{{ old('unique_code') }}" required autocomplete="unique_code" autofocus>
 
-                  @error('unique_code')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
+              <div class="mb-3 text-start">
+                <label class="form-label" for="unique_code">Code unique du produit</label>
+                <input id="unique_code" type="text" placeholder="Code unique du produit" class="form-control @error('unique_code') is-invalid @enderror" name="unique_code" value="{{ old('unique_code') }}" required autocomplete="unique_code" autofocus>
+
+                @error('unique_code')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
               </div>
 
               <div class="mb-3 text-start">
-                  <label class="form-label" for="quantity">Quantite du produit</label>
-                  <input id="quantity" type="numeric" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" placeholder="Quantite du produit" required autocomplete="quantity">
+                <label class="form-label" for="color">Couleur de votre produit</label>
+                <input id="color" type="text" placeholder="Couleur de votre produit" class="form-control @error('color') is-invalid @enderror" name="color" value="{{ old('color') }}" required autocomplete="color" autofocus>
 
-                  @error('quantity')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
+                @error('color')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+              </div>
+
+              <div class="mb-3 text-start">
+                <label class="form-label" for="size">Taille de votre produit</label>
+                <input id="size" type="text" placeholder="TYaille de votre produit" class="form-control @error('size') is-invalid @enderror" name="size" value="{{ old('size') }}" required autocomplete="size" autofocus>
+
+                @error('size')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+              </div>
+
+              <div class="mb-3 text-start">
+                <label class="form-label" for="quantity">Quantite du produit</label>
+                <input id="quantity" type="numeric" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" placeholder="Quantite du produit" required autocomplete="quantity">
+
+                @error('quantity')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
               </div>
 
               <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer ce produit</button>
@@ -216,6 +249,28 @@
                 <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Anuller</button>
               </div>
             </form>
+          </div>
+        </div>
+      </div>
+    @endforeach
+
+
+      
+    @foreach($bon->bagages  as $product)
+      <div class="modal fade" id="scrollingLong-{{ $product->id }}" tabindex="-1" aria-labelledby="scrollingLongModalLabel2" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="scrollingLongModalLabel2">Grand format de l'image</h5><button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><svg class="svg-inline--fa fa-xmark fs-9" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path></svg><!-- <span class="fas fa-times fs-9"></span> Font Awesome fontawesome.com --></button>
+            </div>
+            <div class="modal-body">
+              <p class="text-body-tertiary lh-lg mb-0">
+                <img src="{{Storage::url($product->image)}}" alt="" style="width: 100%;height:auto;" />
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Fermer</button>
+            </div>
           </div>
         </div>
       </div>

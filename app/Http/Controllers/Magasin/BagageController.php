@@ -97,7 +97,8 @@ class BagageController extends Controller
 
         $item_product = Product::where('unique_code',$request->unique_code)->where('magasin_id',AuthMagasinAgent())->first();
         // dd($item_product);
-        $bagage_existe = Bagage::where('unique_code',$request->unique_code)->first();
+        $bagage_existe = Bagage::where('unique_code',$request->unique_code)->where('color',$request->color)->where('size',$request->size)->first();
+        // dd($bagage_existe);
         if(!$bagage_existe){
 
             if($item_product->quantity > 0){
@@ -113,8 +114,8 @@ class BagageController extends Controller
                         'type' => $request->type,
                         'amount' => $item_product->price * $request->quantity,
                         'date' => now(),
-                        'colors' => $item_product->colors,
-                        'sizes' => $item_product->sizes,
+                        'color' => $request->color,
+                        'size' => $request->size,
                         'unique_code' => $item_product->unique_code,
                         'exp_date' => $item_product->exp_date,
                         'magasin_id' => AuthMagasinAgent(),
@@ -150,7 +151,7 @@ class BagageController extends Controller
      */
     public function show(string $slug)
     {
-        // return view('magasin.produits.index',['subcategory' => SubCategory::where('slug',$slug)->first()]);
+        // return view('magasin.bon.product',['product' => Bagage::where('slug',$slug)->where('magasin_id',AuthMagasinAgent())->first()]);
     }
 
     /**

@@ -22,8 +22,8 @@ class Bagage extends Model
         'magasin_id',
         'image',
         'images',
-        'colors',
-        'sizes',
+        'color',
+        'size',
         'unique_code',
         'exp_date',
     ];
