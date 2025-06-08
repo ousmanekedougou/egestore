@@ -95,11 +95,11 @@
                     
                       <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
                         @if($product->quantity > 0)
-                          <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-3 @if( $product->quantity < 10 ) text-white @else text-warning @endif fs-7" data-feather="shopping-cart" data-fa-transform="shrink-3"></span></a>
+                        <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-3 @if( $product->quantity < 10 ) text-white @else text-warning @endif fs-7" data-feather="shopping-cart" data-fa-transform="shrink-3"></span></a>
                         @else
-                          <span class="text-white" style="margin-right: 4px;">Indisponible</span>
+                        <span class="text-white" style="margin-right: 4px;">Indisponible</span>
                         @endif
-                        
+                        <span class="me-3 @if( $product->quantity < $product->qty_alert ) text-white @else text-primary  @endif fs-7" data-feather="plus-square" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRightMethode-{{ $product->id }}" aria-controls="offcanvasRightMethode-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                         <span class="me-3 @if( $product->quantity < $product->qty_alert ) text-white @else text-success  @endif fs-7" data-feather="edit-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                         <span class="me-2 @if( $product->quantity < $product->qty_alert ) text-white @else text-danger  @endif fs-7" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                       </td>
@@ -138,7 +138,7 @@
               </div>
 
               <div class="row mb-3 text-start">
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                   <label class="form-label" for="reference">Reference du produit</label>
                   <input id="reference" type="text" placeholder="Reference du produit" class="form-control @error('reference') is-invalid @enderror" name="reference" value="{{ old('reference') }}" required autocomplete="reference" autofocus>
 
@@ -148,18 +148,6 @@
                       </span>
                   @enderror
                 </div>
-                <div class="col-lg-6">
-                  <label class="form-label" for="price">Prix du produit</label>
-                  <input id="price" type="numeric" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" placeholder="Prix du produit" required autocomplete="price">
-
-                  @error('price')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                </div>
-
-                
               </div>
               
               <div class="row mb-3 text-start">
@@ -534,6 +522,88 @@
                 @endif
 
                 <button class="btn btn-primary w-100 mb-3" type="submit">Enregistrer les modifications</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    @endforeach
+
+
+    @foreach($products as $product)
+      <div class="card-body p-0">
+        <div class="p-4 code-to-copy">
+          <!-- Right Offcanvas-->
+          <div class="offcanvas offcanvas-end" id="offcanvasRightMethode-{{ $product->id }}" tabindex="-1" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+              <h5 id="offcanvasRightLabel">Ajouter une unité de vente</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <form method="POST" action="{{ route('magasin.produit.addVendorSystem') }}">
+                @csrf
+                <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                <div class="mb-3 text-start">
+                  <label for="organizerSingle">Sélectionner une unité</label>
+                  <select class="form-select @error('unite_id') is-invalid @enderror" name="unite_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
+                    <option value="">Sélectionner un...</option>
+                    @foreach ($unites as $unite)
+                      <option value="{{ old('unite_id') ?? $unite->id }}"> {{ $unite->name }}</option>
+                    @endforeach
+                  </select>
+                  @error('unite_id')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
+              
+                <div class="mb-3 text-start">
+                  <label class="form-label" for="price_achat">Prix d'achat de l'unité</label>
+                  <input id="price_achat" type="numeric" class="form-control @error('price_achat') is-invalid @enderror" name="price_achat" value="{{ old('price_achat') }}" placeholder="Prix d'achat de l'unité" required autocomplete="price_achat">
+
+                  @error('price_achat')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+
+                 <div class="mb-3 text-start">
+                  <label class="form-label" for="price_vente">Prix de vente de l'unité</label>
+                  <input id="price_vente" type="numeric" class="form-control @error('price_vente') is-invalid @enderror" name="price_vente" value="{{ old('price_vente') }}" placeholder="Prix de vente de l'unité" required autocomplete="price_vente">
+
+                  @error('price_vente')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+
+                <div class="mb-3 text-start">
+                  <label class="form-label" for="quantity">Quantité de l'unité</label>
+                  <input id="quantity" type="quantity" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" placeholder="Quantité de l'unité" required autocomplete="quantity">
+
+                  @error('quantity')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+
+                <div class="mb-3 text-start">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input @error('status_unite') is-invalid @enderror" id="status_unite" name="status_unite" type="checkbox" value="1" />
+                    <label class="form-check-label mt-1" for="status_unite">Unité de base</label>
+                  </div>
+                  @error('status_unite')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
+
+                <button class="btn btn-primary w-100 mb-3" type="submit">Enregistrer cette unité</button>
               </form>
             </div>
           </div>

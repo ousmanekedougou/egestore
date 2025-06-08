@@ -171,7 +171,7 @@
                     <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="nv-customization">
                       <li class="collapsed-nav-item-title d-none">Configuration</li>
 
-                      <li class="nav-item"><a class="nav-link" href="">
+                      <li class="nav-item"><a class="nav-link {{ set_active_roote('magasin.unite.index') }}" href="{{ route('magasin.unite.index') }}">
                           <div class="d-flex align-items-center"><span class="nav-link-text">Unite de gestion</span></div>
                         </a><!-- more inner pages-->
                       </li>

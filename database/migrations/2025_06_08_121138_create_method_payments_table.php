@@ -11,16 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('unites', function (Blueprint $table) {
+        Schema::create('method_payments', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('code')->nullable();
-            $table->boolean('visible')->nullable();
-            $table
-            ->foreignId("magasin_id")
-            ->references("id")
-            ->on("magasins")
-            ->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -30,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('unites');
+        Schema::dropIfExists('method_payments');
     }
 };

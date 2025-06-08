@@ -9,12 +9,14 @@ class VendorSystem extends Model
 {
     use HasFactory;
 
-      protected $fillables = [
+      protected $fillable = [
         'quantity',
         'price_achat',
         'price_vente',
         'price_revenu',
+        'status',
         'magasin_id',
+        'unite_id',
         'product_id'
     ];
 
@@ -26,5 +28,10 @@ class VendorSystem extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function unite()
+    {
+        return $this->belongsTo(Unite::class);
     }
 }

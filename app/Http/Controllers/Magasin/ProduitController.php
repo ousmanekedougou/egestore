@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Magasin\Product;
 use App\Models\Magasin\SubCategory;
 use App\Models\Magasin\Supply;
+use App\Models\Magasin\Unite;
+use App\Models\Magasin\VendorSystem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
@@ -50,7 +52,6 @@ class ProduitController extends Controller
         $this->validate($request,[
             'name' => 'required|string',
             'reference' => 'required|string',
-            'price' => 'required|numeric',
             'quantity' => 'required|numeric',
             'qty_alert' => 'required|numeric',
             'exp_date' => 'required',
@@ -139,7 +140,6 @@ class ProduitController extends Controller
             'name' => $request->name,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
             'reference' => $request->reference,
-            'price' => $request->price,
             'quantity' => $request->quantity,
             'qty_alert' => $request->qty_alert,
             'stock' => $request->quantity,
@@ -180,7 +180,8 @@ class ProduitController extends Controller
             [
                 'products' => $products,
                 'subcategory' => $subcategory,
-                'supplies'    => Supply::where('owner_id',AuthMagasinAgent())->get()     
+                'supplies'    => Supply::where('owner_id',AuthMagasinAgent())->get(),     
+                'unites'    => Unite::where('magasin_id',AuthMagasinAgent())->get()     
             ]);
     }
 
@@ -295,7 +296,6 @@ class ProduitController extends Controller
             'name' => $request->name,
             'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
             'reference' => $request->reference,
-            'price' => $request->price,
             'quantity' => $request->quantity,
             'stock' => $request->quantity,
             'qty_alert' => $request->qty_alert,
@@ -316,6 +316,56 @@ class ProduitController extends Controller
 
         Toastr()->success('Votre produit a bien été modifié', 'Modification de produits', ["positionClass" => "toast-top-right"]);
         return back();
+    }
+
+    public function addVendorSystem(Request $request){
+        $this->validate($request,[
+            'unite_id' => 'required|string',
+            'price_achat' => 'required|numeric',
+            'price_vente' => 'required|numeric',
+            'quantity' => 'required|numeric',
+            'status_unite' => 'boolean',
+        ]);
+
+        // dd($request->all());
+
+        $uniteExist = VendorSystem::where('unite_id',$request->unite_id)->where('product_id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->first();
+        $uniteStatusExist = VendorSystem::where('magasin_id',AuthMagasinAgent())->where('product_id',$request->product_id)->where('status',1)->first();
+        if(!$uniteExist){
+            if($uniteStatusExist && $uniteStatusExist->status == 1 &&  $request->status_unite == 1){
+                Toastr()->error('L\'unité de base a été ajouté pour ce produit', 'Unités de base', ["positionClass" => "toast-top-right"]);
+                return back();
+            }else{
+                if($request->price_vente >= $request->price_achat){
+
+                    VendorSystem::create([
+                        'unite_id' => $request->unite_id,
+                        'price_achat' => $request->price_achat,
+                        'price_vente' => $request->price_vente,
+                        'quantity' => $request->quantity,
+                        'status' => $request->status_unite,
+                        'product_id' => $request->product_id,
+                        'magasin_id' => AuthMagasinAgent(),
+                    ]);
+
+                    if($request->status_unite == 1){
+                        Product::where('id',$request->product_id)->where('magasin_id',AuthMagasinAgent())
+                        ->update(['price' => $request->price_vente]);
+                    }
+
+                    Toastr()->success('Votre methode de vente a bien été ajouté', 'Ajout de methode', ["positionClass" => "toast-top-right"]);
+                    return back();
+                }else{
+                    Toastr()->warning('Le prix de vente doit etre superieur ou egal au prix d\'achat', 'Ajout de methode', ["positionClass" => "toast-top-right"]);
+                    return back();  
+                }
+            }
+        }else{
+            Toastr()->error('Cette unité existe pour ce produit', 'Unités existe', ["positionClass" => "toast-top-right"]);
+            return back();
+        }
+
+        
     }
 
     /**

@@ -76,8 +76,11 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
 
     Route::resource('/agent', App\Http\Controllers\Magasin\AgentController::class);
     Route::resource('/client', App\Http\Controllers\Magasin\ClientController::class);
+
     Route::resource('/produit', App\Http\Controllers\Magasin\ProduitController::class);
     Route::post('produit/{slug}/images',[App\Http\Controllers\Magasin\ProduitController::class,'imageStore'])->name('imageStore');
+    Route::post('produit/addVendorSystem',[App\Http\Controllers\Magasin\ProduitController::class,'addVendorSystem'])->name('produit.addVendorSystem');
+    
     Route::resource('/categorie', App\Http\Controllers\Magasin\CategoryController::class);
     Route::resource('/sous-categorie', App\Http\Controllers\Magasin\SubCategoryController::class);
 
@@ -120,6 +123,8 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
     Route::get('devis-produits/notify/{id}',[App\Http\Controllers\Magasin\SupplyOrderProductController::class,'notify'])->name('devis-produits.notify');
     Route::put('devis-produits/status/{id}',[App\Http\Controllers\Magasin\SupplyOrderProductController::class,'status'])->name('devis-produits.status');
 
+    //Gestion des unite de vente
+    Route::resource('/unite', App\Http\Controllers\Magasin\UniteController::class);
 
     // login des admin
     Route::get('/login',[App\Http\Controllers\Magasin\Auth\LoginController::class,'showLoginForm'])->name('login');

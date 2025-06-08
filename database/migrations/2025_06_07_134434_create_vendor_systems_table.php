@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('quantity')->nullable();
             $table->integer('price_achat')->nullable();
             $table->integer('price_vente')->nullable();
+            $table->boolean('staust')->nullable();
             $table->integer('price_revenu')->nullable();
             
             $table
@@ -29,6 +30,12 @@ return new class extends Migration
             ->foreignId("product_id")
             ->references("id")
             ->on("products")
+            ->cascadeOnDelete();
+
+             $table
+            ->foreignId("unite_id")
+            ->references("id")
+            ->on("unites")
             ->cascadeOnDelete();
             $table->timestamps();
         });
