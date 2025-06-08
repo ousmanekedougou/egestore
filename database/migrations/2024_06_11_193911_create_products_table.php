@@ -19,8 +19,6 @@ return new class extends Migration
           $table->string('unique_code')->unique()->nullable();
           $table->text('images')->nullable();
           $table->integer('price');
-          $table->integer('price_achat')->nullable();
-          $table->integer('price_revenu')->nullable();
           $table->integer('promo_price')->nullable();
           $table->integer('quantity');
           $table->integer('qty_alert');

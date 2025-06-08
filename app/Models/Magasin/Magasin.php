@@ -87,6 +87,11 @@ class Magasin extends Authenticatable
         return $this->hasMany(Vente::class);
     }
 
+    public function unites()
+    {
+        return $this->hasMany(Unite::class);
+    }
+
     public function supplies()
     {
         return $this->hasMany(Supply::class);

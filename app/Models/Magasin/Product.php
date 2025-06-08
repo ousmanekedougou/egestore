@@ -70,6 +70,11 @@ class Product extends Model
         return $this->hasMany(Vente::class);
     }
 
+    public function vendor_systems()
+    {
+        return $this->hasMany(VendorSystem::class);
+    }
+
     public function supply()
     {
         return $this->belongsTo(Supply::class);

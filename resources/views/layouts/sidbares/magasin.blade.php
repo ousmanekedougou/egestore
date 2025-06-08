@@ -157,6 +157,35 @@
                 </li>
                 --}}
 
+                <li class="nav-item">
+                <!-- label-->
+                <p class="navbar-vertical-label">Documentation</p>
+                <hr class="navbar-vertical-line" /><!-- parent pages-->
+                  <div class="nav-item-wrapper">
+                    <a class="nav-link dropdown-indicator label-1" href="#nv-customization" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-customization">
+                    <div class="d-flex align-items-center">
+                      <div class="dropdown-indicator-icon"><span class="fas fa-caret-right"></span></div><span class="nav-link-icon"><span data-feather="settings"></span></span><span class="nav-link-text">Configuration</span>
+                    </div>
+                  </a>
+                  <div class="parent-wrapper label-1">
+                    <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="nv-customization">
+                      <li class="collapsed-nav-item-title d-none">Configuration</li>
+
+                      <li class="nav-item"><a class="nav-link" href="">
+                          <div class="d-flex align-items-center"><span class="nav-link-text">Unite de gestion</span></div>
+                        </a><!-- more inner pages-->
+                      </li>
+
+                      <li class="nav-item"><a class="nav-link" href="">
+                          <div class="d-flex align-items-center"><span class="nav-link-text">Methodes de paiement</span></div>
+                        </a><!-- more inner pages-->
+                      </li>
+                      
+                    </ul>
+                  </div>
+                </div><!-- parent pages-->
+              </li>
+
                 <p class="navbar-vertical-label">Vos avis</p>
                 <div class="nav-item-wrapper">
                     <a class="nav-link label-1" href="#" role="button" data-bs-toggle="" aria-expanded="false">
