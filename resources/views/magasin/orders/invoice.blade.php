@@ -82,8 +82,8 @@
                       <th class="tm_width_4 tm_semi_bold tm_white_color">Désignation</th>
                       <th class="tm_width_3 tm_semi_bold tm_white_color">Couleurs</th>
                       <th class="tm_width_3 tm_semi_bold tm_white_color">Tailles</th>
+                      <th class="tm_width_3 tm_semi_bold tm_white_color">Quantites</th>
                       <th class="tm_width_2 tm_semi_bold tm_white_color">Prix</th>
-                      <th class="tm_width_1 tm_semi_bold tm_white_color">Qts</th>
                       <th class="tm_width_2 tm_semi_bold tm_white_color tm_text_right">Total</th>
                     </tr>
                   </thead>
@@ -93,8 +93,8 @@
                         <td class="tm_width_4">{{$product[1]}}</td>
                         <td class="tm_width_3">@if($product[4] != ''){{$product[4]}} @else Null @endif</td>
                         <td class="tm_width_3">@if($product[5] != ''){{$product[5]}} @else Null @endif</td>
+                        <td class="tm_width_3">{{$product[3]}}  {{$product[6]}}</td>
                         <td class="tm_width_2">{{$product[2]}}</td>
-                        <td class="tm_width_1">{{$product[3]}}</td>
                         <td class="tm_width_2 tm_text_right">{{$product[2] * $product[3]}}</td>
                       </tr>
                     @endforeach

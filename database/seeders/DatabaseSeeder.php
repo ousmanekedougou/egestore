@@ -139,15 +139,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // $categorys = [
-        //     'Collectibles &amp; Art' => 'fa fa-pocket', 
-        //     'Home &amp; Gardan' => 'fa fa-home',
-        //     'Sporting Goods' => 'fa fa-globe',
-        //     'Electronics' => 'fa fa-monitor',
-        //     'Auto Parts &amp; Accessories' => 'fa fa-truck',
-        //     'Toys &amp; Hobbies' => 'fa fa-codesandbox',
+        //     'Collectibles &amp; Art' => 'pocket', 
+        //     'Home &amp; Gardan' => 'home',
+        //     'Sporting Goods' => 'globe',
+        //     'Electronics' => 'monitor',
+        //     'Auto Parts &amp; Accessories' => 'truck',
+        //     'Toys &amp; Hobbies' => 'codesandbox',
         //     'Fashion' => 'watch',
-        //     'Musical Instruments &amp; Gear' => 'fa fa-music',
-        //     'Other Categories' => 'fa fa-grid',
+        //     'Musical Instruments &amp; Gear' => 'music',
+        //     'Other Categories' => 'grid',
         // ];
 
         // $subcategorys = [

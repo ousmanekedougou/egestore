@@ -17,10 +17,11 @@
                       <tr>
                         <th class="sort white-space-nowrap align-middle fs-10" scope="col"></th>
                         <th class="sort white-space-nowrap align-middle" scope="col" style="min-width:200px;">PRODUITS</th>
-                        <th class="sort align-middle" scope="col" style="width:80px;">COULEUR</th>
-                        <th class="sort align-middle" scope="col" style="width:50px;">TAILLE</th>
+                        <th class="sort align-middle" scope="col" style="width:80px;">COULEURS</th>
+                        <th class="sort align-middle" scope="col" style="width:50px;">TAILLES</th>
                         <th class="sort align-middle text-end" scope="col" style="width:100%;">PRIX</th>
-                        <th class="sort align-middle ps-5" scope="col" style="width:200px;">QUANTITE</th>
+                        <th class="sort align-middle ps-5" scope="col" style="width:200px;">QUANTITES</th>
+                        <th class="sort align-middle" scope="col" style="width:80px;">UNITES</th>
                         <th class="sort align-middle text-end" scope="col" style="width:250px;">TOTAL</th>
                         <th class="sort text-end align-middle pe-0" scope="col"></th>
                       </tr>
@@ -41,6 +42,7 @@
                                 <a class="btn btn-sm px-2" href="{{ route('magasin.panier.show',$product->rowId) }}" data-type="plus">+</a>
                               </div>
                             </td>
+                            <td class="color align-middle white-space-nowrap fs-9 text-body text-center">{{ $product->options->unite }}</td>
                             <td class="total align-middle fw-bold text-body-highlight text-end fs-9"> {{$product->model->getProductSubtotal($product->subtotal())}}</td>
                             <td class="align-middle white-space-nowrap text-end pe-0 ps-3">
                               <a href="{{ route('magasin.panier.destroy',$product->rowId) }}" onclick="event.preventDefault(); document.getElementById('SupprimerAuPanier-{{ $product->id }}').submit();" class="btn btn-sm text-body-tertiary text-opacity-85 text-body-tertiary-hover me-2"><span class="text-warning fs-7" data-feather="trash-2"></span></a>

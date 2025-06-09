@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Magasin\Order;
 use App\Models\Magasin\Product;
+use App\Models\Magasin\VendorSystem;
 use App\Models\Magasin\Vente;
 use App\Models\User\User;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -258,6 +259,7 @@ class OrderController extends Controller
         $products = [];
         $i = 0;
 
+        
         foreach (Cart::content() as $product) {
             $products['product_' .$i][] = $product->model->image;
             $products['product_' .$i][] = $product->model->name;
@@ -265,11 +267,18 @@ class OrderController extends Controller
             $products['product_' .$i][] = $product->qty;
             $products['product_' .$i][] = $product->options->color;
             $products['product_' .$i][] = $product->options->size;
+            $products['product_' .$i][] = $product->options->unite;
             $i++;
 
+            
+            $voendor_system_get = VendorSystem::where('id',$product->options->vendor_system_id)->where('magasin_id',AuthMagasinAgent())->first();
+            
             $item = Product::find($product->model->id);
 
-            $item->update(['quantity' => $item->quantity - $product->qty]);
+            $getQty = $voendor_system_get->quantity * $product->qty;
+
+
+            $item->update(['quantity' => $item->quantity - $getQty]);
         }
 
         // $code = $this->generateCode();

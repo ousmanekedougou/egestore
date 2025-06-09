@@ -27,7 +27,7 @@ class ProduitController extends Controller
      */
     public function index()
     {
-        return view('magasin.produits.index',['products' => Product::where('magasin_id',AuthMagasinAgent())->get()]);
+        return view('magasin.produits.all_product',['products' => Product::where('magasin_id',AuthMagasinAgent())->get()]);
     }
 
     /**
@@ -366,6 +366,24 @@ class ProduitController extends Controller
         }
 
         
+    }
+
+    public function showVendorSystem($slug){
+        return view('magasin.produits.product_unite_show',
+        [
+            'product' => Product::where('slug',$slug)->where('magasin_id',AuthMagasinAgent())->first(),
+            'unites'    => Unite::where('magasin_id',AuthMagasinAgent())->get() 
+        ]);
+    }
+
+    public function updateVendorSystem(Request $request, $id){
+
+    }
+
+    public function deleteVendorSystem($id){
+        VendorSystem::where('id',$id)->where('product_id',request()->product_id)->where('magasin_id',AuthMagasinAgent())->delete();
+        Toastr()->success('Cette unité a bien été supprimé pour ce produit', 'Suppréssion de produits', ["positionClass" => "toast-top-right"]);
+        return back();
     }
 
     /**

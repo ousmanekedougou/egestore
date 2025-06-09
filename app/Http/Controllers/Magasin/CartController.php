@@ -7,6 +7,7 @@ use App\Models\Magasin\Client;
 use App\Models\Magasin\Magasin;
 use App\Models\Magasin\Order;
 use App\Models\Magasin\Product;
+use App\Models\Magasin\VendorSystem;
 use Brian2694\Toastr\Facades\Toastr;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
@@ -56,51 +57,64 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        $duplicata = Cart::search(function ($cartItem, $rowId) use ($request){
-            return $cartItem->id == $request->product_id;
-        });
-        // dd($request->all());
+        if ($request->qty != null && $request->vendor_system != null) {
+        
+            $duplicata = Cart::search(function ($cartItem, $rowId) use ($request){
+                return $cartItem->id == $request->product_id;
+            });
+            // dd($request->all());
 
-        $color = null;
-        $size = null;
-        $qty = null;
-
-        if($request->color != null)
-        {
-            $color = $request->color;
-        }else {
             $color = null;
-        }
-
-        if($request->size != null)
-        {
-            $size = $request->size;
-        }else {
             $size = null;
-        }
+            $qty = null;
 
-        if($request->qty != null)
-        {
-            $qty = $request->qty;
-        }else {
-            $qty = 1;
-        }
+            if($request->color != null)
+            {
+                $color = $request->color;
+            }else {
+                $color = null;
+            }
+
+            if($request->size != null)
+            {
+                $size = $request->size;
+            }else {
+                $size = null;
+            }
+
+            if($request->qty != null)
+            {
+                $qty = $request->qty;
+            }else {
+                $qty = 1;
+            }
 
 
 
-        if ($duplicata->isNotEmpty()) {
-            Toastr()->warning('Ce produit est déjà dans votre panier', 'Produit éxistant', ["positionClass" => "toast-top-right"]);
+            if ($duplicata->isNotEmpty()) {
+                Toastr()->warning('Ce produit est déjà dans votre panier', 'Produit éxistant', ["positionClass" => "toast-top-right"]);
+                return back();
+            }
+
+            $voendor_system = VendorSystem::where('id',$request->vendor_system)->where('magasin_id',AuthMagasinAgent())->first();
+
+            // dd($voendor_system->price_vente);
+
+            $product = Product::where('id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->first();
+
+            
+            Cart::add($product->id, $product->name, $qty, $voendor_system->price_vente,array('size' => $size,'color' => $color,'unite' => $voendor_system->unite->code,'vendor_system_id' => $voendor_system->id))
+            ->associate('App\Models\Magasin\Product');
+            
+            // dd(Cart::content());
+                // array('size' => $request->size,'color' => $request->color)
+
+            Toastr()->success('Votre produit a bien été ajouté au panier', 'Ajout au panier', ["positionClass" => "toast-top-right"]);
+            return back();
+        }else{
+            Toastr()->warning('La quantite et l\'unite sont obligatoire', 'Ajout au panier', ["positionClass" => "toast-top-right"]);
             return back();
         }
-
-        $product = Product::where('id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->first();
-
-        Cart::add($product->id, $product->name, $qty, $product->price,array('size' => $size,'color' => $color))
-            ->associate('App\Models\Magasin\Product');
-            // array('size' => $request->size,'color' => $request->color)
-
-        Toastr()->success('Votre produit a bien été ajouté au panier', 'Ajout au panier', ["positionClass" => "toast-top-right"]);
-        return back();
     }
 
     /**

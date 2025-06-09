@@ -40,6 +40,7 @@
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">CODE-U</th>
                   <th class="sort align-middle ps-4" scope="col" data-sort="time" style="width:50px;">STATUS</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="time" style="width:150px;">QUANTITES</th>
+                  <th class="sort align-middle ps-3 w-auto" scope="col" data-sort="tags">UNITES</th>
                   <th class="sort align-middle ps-3 w-auto" scope="col" data-sort="tags">COULEURS</th>
                   <th class="sort align-middle ps-3 w-auto" scope="col" data-sort="vendor">TAILLES</th>
                   <th class="sort text-end align-middle pe-0 ps-4" scope="col">ACTIONS</th>
@@ -64,9 +65,23 @@
                        
                         <div class="input-group w-auto">
                           <span class="input-group-text text-center p-1">{{ $product->quantity }}</span>
-                          <input class="form-control p-1" type="quantity" name="qty" aria-label="qty"/>
+                          <input class="form-control p-1" type="quantity" name="qty" aria-label="qty" required/>
                         </div>
                       </td>
+
+                      <td class="align-middle review ps-3">
+                        @if($product->vendor_systems->count() > 0)
+                          <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label="Default select example .form-select-sm" name="vendor_system" required>
+                          <option>Choisir</option>
+                            @foreach($product->vendor_systems as $vendor_system)
+                              <option value="{{ $vendor_system->id }}"> {{ $vendor_system->unite->code }} </option>
+                            @endforeach
+                          </select>
+                        @else 
+                          Null
+                        @endif
+                      </td>
+
                       <td class="align-middle review ps-3">
                         @if($product->colors != '')
                         <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label="Default select example .form-select-sm" name="color">
@@ -99,6 +114,7 @@
                         @else
                         <span class="text-white" style="margin-right: 4px;">Indisponible</span>
                         @endif
+                        <a href="{{ route('magasin.produit.showVendorSystem',$product->slug) }}" class="me-3 @if( $product->quantity < $product->qty_alert ) text-white @else text-info  @endif fs-7" data-fa-transform="shrink-3"><span data-feather="underline"></span></a>
                         <span class="me-3 @if( $product->quantity < $product->qty_alert ) text-white @else text-primary  @endif fs-7" data-feather="plus-square" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRightMethode-{{ $product->id }}" aria-controls="offcanvasRightMethode-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                         <span class="me-3 @if( $product->quantity < $product->qty_alert ) text-white @else text-success  @endif fs-7" data-feather="edit-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                         <span class="me-2 @if( $product->quantity < $product->qty_alert ) text-white @else text-danger  @endif fs-7" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
@@ -354,21 +370,11 @@
                 </div>
 
                 <div class="row mb-3 text-start">
-                  <div class="col-lg-6">
+                  <div class="col-lg-12">
                     <label class="form-label" for="reference">Reference du produit</label>
                     <input id="reference" type="text" placeholder="Reference du produit" class="form-control @error('reference') is-invalid @enderror" name="reference" value="{{ old('reference') ?? $product->reference }}" required autocomplete="reference" autofocus>
 
                     @error('reference')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                  </div>
-                  <div class="col-lg-6">
-                    <label class="form-label" for="price">Prix du produit</label>
-                    <input id="price" type="numeric" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') ?? $product->price }}" placeholder="Prix du produit" required autocomplete="price">
-
-                    @error('price')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -557,6 +563,17 @@
                     </span>
                   @enderror
                 </div>
+
+                <div class="mb-3 text-start">
+                  <label class="form-label" for="quantity">Quantité de l'unité</label>
+                  <input id="quantity" type="quantity" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" placeholder="Quantité de l'unité" required autocomplete="quantity">
+
+                  @error('quantity')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
               
                 <div class="mb-3 text-start">
                   <label class="form-label" for="price_achat">Prix d'achat de l'unité</label>
@@ -574,17 +591,6 @@
                   <input id="price_vente" type="numeric" class="form-control @error('price_vente') is-invalid @enderror" name="price_vente" value="{{ old('price_vente') }}" placeholder="Prix de vente de l'unité" required autocomplete="price_vente">
 
                   @error('price_vente')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-                </div>
-
-                <div class="mb-3 text-start">
-                  <label class="form-label" for="quantity">Quantité de l'unité</label>
-                  <input id="quantity" type="quantity" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" placeholder="Quantité de l'unité" required autocomplete="quantity">
-
-                  @error('quantity')
                       <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
                       </span>

@@ -7,7 +7,6 @@
     <script src="{{asset('vendors/lodash/lodash.min.js')}}"></script>
     <script src="../../../../../polyfill.io/v3/polyfill.min58be.js?features=window.scroll"></script>
     <script src="{{asset('vendors/list.js/list.min.js')}}"></script>
-    <script src="{{asset('vendors/feather-icons/feather.min.js')}}"></script>
     <script src="{{asset('vendors/dayjs/dayjs.min.js')}}"></script>
     <script src="{{asset('vendors/leaflet/leaflet.js')}}"></script>
     <script src="{{asset('vendors/leaflet.markercluster/leaflet.markercluster.js')}}"></script>
@@ -21,8 +20,10 @@
     <script src="{{asset('vendors/rater-js/index.js')}}"></script>
     <script src="{{asset('vendors/glightbox/glightbox.min.js')}}"> </script>
     <script src="{{asset('assets/js/phoenix.js')}}"></script>
-
-
+    
+    <script src="{{asset('assets/js/feather.js')}}"></script>
+    <script src="{{asset('assets/js/feather.min.js')}}"></script>
+    
     <script src="{{asset('assets/js/jquery/toastr-jquery.min.js')}}"></script>
     <script src="{{asset('assets/js/toastr.min.js')}}"></script>
     {!! Toastr::message() !!}

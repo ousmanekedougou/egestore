@@ -23,11 +23,11 @@
                 <thead>
                   <tr>
                     <th class="sort white-space-nowrap align-middle fs-10" scope="col"></th>
-                    <th class="sort white-space-nowrap align-middle" scope="col" style="min-width:200px;" data-sort="products">PRODUCTS</th>
-                    <th class="sort align-middle" scope="col" style="width:80px;">COULEUR</th>
-                    <th class="sort align-middle" scope="col" style="width:50px;">TAILLE</th>
-                    <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:100px;">PRICE</th>
-                    <th class="sort align-middle text-end ps-4" scope="col" data-sort="quantity" style="width:100px;">QUANTITY</th>
+                    <th class="sort white-space-nowrap align-middle" scope="col" style="min-width:200px;" data-sort="products">PRODUITS</th>
+                    <th class="sort align-middle" scope="col" style="width:80px;">COULEURS</th>
+                    <th class="sort align-middle" scope="col" style="width:50px;">TAILLES</th>
+                    <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:100px;">PRIX</th>
+                    <th class="sort align-middle text-end ps-4" scope="col" data-sort="quantity" style="width:100px;">QUANTITES</th>
                     <th class="sort align-middle text-end ps-4" scope="col" data-sort="total" style="width:100px;">TOTAL</th>
                   </tr>
                 </thead>
@@ -43,7 +43,7 @@
                       <td class="color align-middle white-space-nowrap fs-9 text-body">@if($product[4] != ''){{$product[4]}} @else Null @endif</td>
                       <td class="size align-middle white-space-nowrap text-body-tertiary fs-9 fw-semibold">@if($product[5] != ''){{$product[5]}} @else Null @endif</td>
                       <td class="price align-middle text-body fw-semibold text-end py-0 ps-4">{{$product[2]}}</td>
-                      <td class="quantity align-middle text-end py-0 ps-4 text-body-tertiary">{{$product[3]}}</td>
+                      <td class="quantity align-middle text-center py-0 ps-4 text-body-tertiary">{{$product[3]}} - {{$product[6]}}</td>
                       <td class="total align-middle fw-bold text-body-highlight text-end py-0 ps-4" style="width: 100%;">{{$product[2] * $product[3]}}</td>
                     </tr>
                   @endforeach

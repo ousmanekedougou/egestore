@@ -24,7 +24,7 @@
                   <div class="row gx-7 gy-5 mb-5">
                     @foreach(allCategorieCommercial() as $category)
                       <div class="col-12 col-sm-6 col-md-4">
-                        <div class="d-flex align-items-center mb-3"><span class="text-primary me-2 {{ $category->icon }} fs-9" style="stroke-width:3;"></span>
+                        <div class="d-flex align-items-center mb-3"><span class="text-primary me-2 fs-9" data-feather="{{ $category->icon }}" style="stroke-width:3;"></span>
                           <h6 class="text-body-highlight mb-0 text-nowrap">{{$category->name}}</h6>
                         </div>
                         <div class="ms-n2">
