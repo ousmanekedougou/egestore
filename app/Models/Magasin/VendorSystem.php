@@ -20,6 +20,19 @@ class VendorSystem extends Model
         'product_id'
     ];
 
+    public function getPriceVente(){
+        return number_format($this->price_vente,2, ',','.'). ' CFA';
+    }
+
+    public function getPriceAchat(){
+        return number_format($this->price_achat,2, ',','.'). ' CFA';
+    }
+
+    public function getPriceRevenu(){
+        $price_revenu = $this->price_vente - $this->price_achat;
+        return number_format($price_revenu,2, ',','.'). ' CFA';
+    }
+
     public function magasin()
     {
         return $this->belongsTo(Magasin::class);

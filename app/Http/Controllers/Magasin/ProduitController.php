@@ -318,7 +318,20 @@ class ProduitController extends Controller
         return back();
     }
 
-    public function addVendorSystem(Request $request){
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $delete_product = Product::where('id',$id)->where('magasin_id',AuthMagasinAgent())->first();
+        Storage::delete($delete_product->image);
+        $delete_product->delete();
+        Toastr()->success('Votre produit a bien été supprimé', 'Suppréssion de produits', ["positionClass" => "toast-top-right"]);
+        return back();
+    }
+
+    // Les methodes de la gestion des unites des produits
+     public function addVendorSystem(Request $request){
         $this->validate($request,[
             'unite_id' => 'required|string',
             'price_achat' => 'required|numeric',
@@ -333,10 +346,10 @@ class ProduitController extends Controller
         $uniteStatusExist = VendorSystem::where('magasin_id',AuthMagasinAgent())->where('product_id',$request->product_id)->where('status',1)->first();
         if(!$uniteExist){
             if($uniteStatusExist && $uniteStatusExist->status == 1 &&  $request->status_unite == 1){
-                Toastr()->error('L\'unité de base a été ajouté pour ce produit', 'Unités de base', ["positionClass" => "toast-top-right"]);
+                Toastr()->error('Une unité de base a été ajouté pour ce produit', 'Unités de base', ["positionClass" => "toast-top-right"]);
                 return back();
             }else{
-                if($request->price_vente >= $request->price_achat){
+                if($request->price_vente > $request->price_achat){
 
                     VendorSystem::create([
                         'unite_id' => $request->unite_id,
@@ -356,7 +369,7 @@ class ProduitController extends Controller
                     Toastr()->success('Votre methode de vente a bien été ajouté', 'Ajout de methode', ["positionClass" => "toast-top-right"]);
                     return back();
                 }else{
-                    Toastr()->warning('Le prix de vente doit etre superieur ou egal au prix d\'achat', 'Ajout de methode', ["positionClass" => "toast-top-right"]);
+                    Toastr()->warning('Le prix de vente doit etre superieur au prix d\'achat', 'Ajout de methode', ["positionClass" => "toast-top-right"]);
                     return back();  
                 }
             }
@@ -364,37 +377,70 @@ class ProduitController extends Controller
             Toastr()->error('Cette unité existe pour ce produit', 'Unités existe', ["positionClass" => "toast-top-right"]);
             return back();
         }
-
-        
     }
 
     public function showVendorSystem($slug){
         return view('magasin.produits.product_unite_show',
         [
             'product' => Product::where('slug',$slug)->where('magasin_id',AuthMagasinAgent())->first(),
-            'unites'    => Unite::where('magasin_id',AuthMagasinAgent())->get() 
+            'unites'    => Unite::where('magasin_id',AuthMagasinAgent())->where('visible',1)->get() 
         ]);
     }
 
     public function updateVendorSystem(Request $request, $id){
+        $this->validate($request,[
+            'unite_id' => 'required|string',
+            'price_achat' => 'required|numeric',
+            'price_vente' => 'required|numeric',
+            'quantity' => 'required|numeric',
+            'status_unite' => 'boolean',
+        ]);
 
+        $status_unite = null;
+
+        $get_current_vendor = VendorSystem::where('id',$id)->where('product_id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->first();
+        $uniteStatusExist = VendorSystem::where('id','!=',$id)->where('magasin_id',AuthMagasinAgent())->where('product_id',$request->product_id)->where('status',1)->first();
+        if ($uniteStatusExist && $uniteStatusExist->status == 1 && $request->status_unite == 1) {
+            Toastr()->error('Une unité de base a été ajouté pour ce produit', 'Unités de base', ["positionClass" => "toast-top-right"]);
+            return back();
+        }else{
+            if($request->price_vente > $request->price_achat){
+            
+                VendorSystem::where('id',$id)->where('product_id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->update(
+                    [
+                        'unite_id' => $request->unite_id,
+                        'price_achat' => $request->price_achat,
+                        'price_vente' => $request->price_vente,
+                        'quantity' => $request->quantity,
+                        'status' => $request->status_unite,
+                        'product_id' => $request->product_id,
+                        'magasin_id' => AuthMagasinAgent(),
+                    ]
+                );
+
+                if($request->status_unite == 1){
+                    Product::where('id',$request->product_id)->where('magasin_id',AuthMagasinAgent())
+                    ->update(['price' => $request->price_vente]);
+                }
+
+                Toastr()->success('Votre methode de vente a bien été ajouté', 'Ajout de methode', ["positionClass" => "toast-top-right"]);
+                return back();
+            }else{
+                Toastr()->warning('Le prix de vente doit etre superieur au prix d\'achat', 'Ajout de methode', ["positionClass" => "toast-top-right"]);
+                return back();  
+            }
+        }
     }
 
     public function deleteVendorSystem($id){
-        VendorSystem::where('id',$id)->where('product_id',request()->product_id)->where('magasin_id',AuthMagasinAgent())->delete();
-        Toastr()->success('Cette unité a bien été supprimé pour ce produit', 'Suppréssion de produits', ["positionClass" => "toast-top-right"]);
-        return back();
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $delete_product = Product::where('id',$id)->where('magasin_id',AuthMagasinAgent())->first();
-        Storage::delete($delete_product->image);
-        $delete_product->delete();
-        Toastr()->success('Votre produit a bien été supprimé', 'Suppréssion de produits', ["positionClass" => "toast-top-right"]);
-        return back();
+        $get_unite = VendorSystem::where('id',$id)->where('product_id',request()->product_id)->where('magasin_id',AuthMagasinAgent())->first();
+        if($get_unite->status == 1){
+            Toastr()->error('Vous ne pouvez pas supprimer une unité de base', 'Unités de base', ["positionClass" => "toast-top-right"]);
+            return back();
+        }else{
+            $get_unite->delete();
+            Toastr()->success('Cette unité a bien été supprimé pour ce produit', 'Suppréssion de produits', ["positionClass" => "toast-top-right"]);
+            return back();
+        }
     }
 }

@@ -81,7 +81,7 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
     Route::post('produit/{slug}/images',[App\Http\Controllers\Magasin\ProduitController::class,'imageStore'])->name('imageStore');
     Route::post('produit/addVendorSystem',[App\Http\Controllers\Magasin\ProduitController::class,'addVendorSystem'])->name('produit.addVendorSystem');
     Route::get('produit/afficher-systeme-vente/{slug}',[App\Http\Controllers\Magasin\ProduitController::class,'showVendorSystem'])->name('produit.showVendorSystem');
-    Route::put('produit/updateVendorSystem{id}',[App\Http\Controllers\Magasin\ProduitController::class,'updateVendorSystem'])->name('produit.updateVendorSystem');
+    Route::put('produit/updateVendorSystem/{id}',[App\Http\Controllers\Magasin\ProduitController::class,'updateVendorSystem'])->name('produit.updateVendorSystem');
     Route::delete('produit/deleteVendorSystem/{id}',[App\Http\Controllers\Magasin\ProduitController::class,'deleteVendorSystem'])->name('produit.deleteVendorSystem');
     
     Route::resource('/categorie', App\Http\Controllers\Magasin\CategoryController::class);
