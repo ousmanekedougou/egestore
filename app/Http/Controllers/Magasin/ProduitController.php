@@ -444,3 +444,4 @@ class ProduitController extends Controller
         }
     }
 }
+
