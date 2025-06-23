@@ -128,7 +128,12 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
 
     //Gestion des unite de vente
     Route::resource('/unite', App\Http\Controllers\Magasin\UniteController::class);
-
+    Route::resource('/option', App\Http\Controllers\Magasin\ProductColorSizeController::class);
+    Route::post('/option/create',[App\Http\Controllers\Magasin\ProductColorSizeController::class,'create'])->name('option.create');
+    Route::put('/option/edit/{id}',[App\Http\Controllers\Magasin\ProductColorSizeController::class,'edit'])->name('option.edit');
+    Route::delete('/option/deleteSize/{id}',[App\Http\Controllers\Magasin\ProductColorSizeController::class,'deleteSize'])->name('option.deleteSize');
+    
+    
     // login des admin
     Route::get('/login',[App\Http\Controllers\Magasin\Auth\LoginController::class,'showLoginForm'])->name('login');
     Route::post('/login',[App\Http\Controllers\Magasin\Auth\LoginController::class, 'login'])->name('login');

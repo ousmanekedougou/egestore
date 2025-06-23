@@ -16,12 +16,12 @@
       <div id="products" data-list='{"valueNames":["product","price","category","tags","vendor","time"]}'>
         <div class="mb-4">
           <div class="d-flex flex-wrap gap-3">
-            <div class="search-box">
+            <div class="search-box" style="width: 70%;">
               <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Rechercher un produit" aria-label="Search" />
                 <span class="fas fa-search search-box-icon"></span>
               </form>
             </div>
-            <div class="ms-xxl-auto">
+            <div class="ms-xxl-auto ms-auto">
               <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                 <span data-feather="plus" class="me-2"></span>Ajouter un produit
               </button>
@@ -115,7 +115,7 @@
                         <span class="text-white" style="margin-right: 4px;">Indisponible</span>
                         @endif
                         <a href="{{ route('magasin.produit.showVendorSystem',$product->slug) }}" class="me-3 @if( $product->quantity < $product->qty_alert ) text-white @else text-info  @endif fs-7" data-fa-transform="shrink-3"><span data-feather="underline"></span></a>
-                        <span class="me-3 @if( $product->quantity < $product->qty_alert ) text-white @else text-primary  @endif fs-7" data-feather="plus-square" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRightMethode-{{ $product->id }}" aria-controls="offcanvasRightMethode-{{ $product->id }}" data-fa-transform="shrink-3"></span>
+                        <a href="{{ route('magasin.option.show',$product->slug) }}"> <span class="me-3 @if( $product->quantity < $product->qty_alert ) text-white @else text-primary  @endif fs-7" data-feather="plus-square" data-fa-transform="shrink-3"></span></a>
                         <span class="me-3 @if( $product->quantity < $product->qty_alert ) text-white @else text-success  @endif fs-7" data-feather="edit-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight-{{ $product->id }}" aria-controls="offcanvasRight-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                         <span class="me-2 @if( $product->quantity < $product->qty_alert ) text-white @else text-danger  @endif fs-7" data-feather="trash-2" data-bs-toggle="modal" data-bs-target="#DeleteCompte-{{ $product->id }}" data-fa-transform="shrink-3"></span>
                       </td>

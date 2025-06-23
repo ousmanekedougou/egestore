@@ -18,7 +18,7 @@ return new class extends Migration
           $table->string('image');
           $table->string('unique_code')->unique()->nullable();
           $table->text('images')->nullable();
-          $table->integer('price');
+          $table->integer('price')->nullable();
           $table->integer('promo_price')->nullable();
           $table->integer('quantity');
           $table->integer('qty_alert');
@@ -43,7 +43,7 @@ return new class extends Migration
             ->foreignId("order_id")
             ->references("id")
             ->on("orders")
-            ->cascadeOnDelete()->nullable();
+            ->cascadeOnDelete('set null');
             
           $table
             ->foreignId("sub_category_id")

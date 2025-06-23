@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Magasin\Unite;
 class UniteController extends Controller
 {
+     public function __construct()
+    {
+        $this->middleware(['isMagasinAgent']);
+    }
     /**
      * Display a listing of the resource.
      */

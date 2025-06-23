@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('quantity')->nullable();
             $table->integer('price_achat')->nullable();
             $table->integer('price_vente')->nullable();
-            $table->boolean('staust')->nullable();
+            $table->boolean('status')->nullable();
             $table->integer('price_revenu')->nullable();
             
             $table

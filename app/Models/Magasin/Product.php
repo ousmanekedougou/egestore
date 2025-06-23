@@ -79,5 +79,20 @@ class Product extends Model
     {
         return $this->belongsTo(Supply::class);
     }
+
+    public function colors()
+    {
+        return $this->hasMany(Color::class);
+    }
+
+    public function sizes()
+    {
+        return $this->hasMany(Size::class);
+    }
+
+    public function product_color_sizes()
+    {
+        return $this->hasMany(ProductColorSize::class);
+    }
     
 }
