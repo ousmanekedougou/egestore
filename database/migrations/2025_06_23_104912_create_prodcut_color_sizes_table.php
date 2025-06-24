@@ -40,6 +40,8 @@ return new class extends Migration
               ->on("magasins")
               ->cascadeOnDelete('set null');
 
+              $table->boolean('visible')->nullable();
+
             $table->timestamps();
         });
     }

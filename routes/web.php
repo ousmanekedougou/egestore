@@ -132,6 +132,9 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
     Route::post('/option/create',[App\Http\Controllers\Magasin\ProductColorSizeController::class,'create'])->name('option.create');
     Route::put('/option/edit/{id}',[App\Http\Controllers\Magasin\ProductColorSizeController::class,'edit'])->name('option.edit');
     Route::delete('/option/deleteSize/{id}',[App\Http\Controllers\Magasin\ProductColorSizeController::class,'deleteSize'])->name('option.deleteSize');
+    Route::post('/option/synchro',[App\Http\Controllers\Magasin\ProductColorSizeController::class,'addSynchro'])->name('option.addSynchro');
+    Route::put('/option/synchro/{id}',[App\Http\Controllers\Magasin\ProductColorSizeController::class,'updateSynchro'])->name('option.updateSynchro');
+    Route::delete('/option/synchro/{id}',[App\Http\Controllers\Magasin\ProductColorSizeController::class,'deleteSynchro'])->name('option.deleteSynchro');
     
     
     // login des admin

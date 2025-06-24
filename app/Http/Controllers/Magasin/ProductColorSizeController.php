@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Magasin;
 use App\Http\Controllers\Controller;
 use App\Models\Magasin\Color;
 use App\Models\Magasin\Product;
+use App\Models\Magasin\ProductColorSize;
 use App\Models\Magasin\Size;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,7 @@ class ProductColorSizeController extends Controller
      */
     public function create()
     {
-            $sizes = explode(",",request()->sizes);
+        $sizes = explode(",",request()->sizes);
         if (request()->sizes) {
             foreach ($sizes as  $size) {
                 $sizeExist = Size::where('product_id',request()->product_id)->where('name',$size)->where('magasin_id',AuthMagasinAgent())->first();
@@ -45,6 +46,9 @@ class ProductColorSizeController extends Controller
             }
 
             Toastr()->success('Vos tailles ont bien ete ajouter', 'Ajout de tailles', ["positionClass" => "toast-top-right"]);
+            return back();
+        }else {
+            Toastr()->warning('Veiller remplire les champs', 'Champ vide', ["positionClass" => "toast-top-right"]);
             return back();
         }
     }
@@ -72,6 +76,9 @@ class ProductColorSizeController extends Controller
             }
 
             Toastr()->success('Vos couleurs ont bien ete ajouter', 'Ajout de couleurs', ["positionClass" => "toast-top-right"]);
+            return back();
+        }else {
+            Toastr()->warning('Veiller remplire les champs', 'Champ vide', ["positionClass" => "toast-top-right"]);
             return back();
         }
 
@@ -154,6 +161,78 @@ class ProductColorSizeController extends Controller
     {
         Size::where('id',$id)->where('product_id',request()->product_id)->where('magasin_id',AuthMagasinAgent())->delete();
         Toastr()->success('La taille a ete supprimer avec success', 'Suppression de tailles', ["positionClass" => "toast-top-right"]);
+        return back();
+    }
+
+    // Gestion de la synchronisation et les quantites
+
+    public function addSynchro(Request $request){
+        $this->validate($request,[
+            'color' => 'required|numeric',
+            'size' => 'required|numeric',
+            'visible' => 'required|boolean',
+        ]);
+
+        $getSynchroExist = ProductColorSize::where('color_id',$request->color)->where('size_id',$request->size)->where('product_id',$request->product_id)
+        ->where('magasin_id',AuthMagasinAgent())->first();
+        if(!$getSynchroExist){
+            ProductColorSize::create([
+                'color_id' => $request->color,
+                'size_id' => $request->size,
+                'product_id' => $request->product_id,
+                'quantity' => $request->quantity,
+                'visible' => $request->visible,
+                'magasin_id' => AuthMagasinAgent(),
+            ]);
+
+            $productSum = ProductColorSize::where('product_id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->sum('quantity');
+            
+            Product::where('id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->update(['quantity' => $productSum]);
+
+            Toastr()->success('Cette configuration a bien ete ajouter', 'Ajout de configuration', ["positionClass" => "toast-top-right"]);
+            return back();
+        }else{
+            Toastr()->warning('Cette configuration existe', 'Configuration existe', ["positionClass" => "toast-top-right"]);
+            return back();
+        }
+    }
+
+    public function updateSynchro(Request $request,$id){
+        $this->validate($request,[
+            'color' => 'required|numeric',
+            'size' => 'required|numeric',
+            'visible' => 'required|boolean',
+        ]);
+
+        $getSynchroExist = ProductColorSize::where('color_id',$request->color)->where('size_id',$request->size)->where('product_id',$request->product_id)
+        ->where('magasin_id',AuthMagasinAgent())->first();
+        if(!$getSynchroExist){
+            ProductColorSize::where('id',$id)->where('product_id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->update([
+                'color_id' => $request->color,
+                'size_id' => $request->size,
+                'product_id' => $request->product_id,
+                'quantity' => $request->quantity,
+                'visible' => $request->visible,
+                'magasin_id' => AuthMagasinAgent(),
+            ]);
+
+            $productSum = ProductColorSize::where('product_id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->sum('quantity');
+            
+            Product::where('id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->update(['quantity' => $productSum]);
+
+            Toastr()->success('Cette configuration a bien ete ajouter', 'Ajout de configuration', ["positionClass" => "toast-top-right"]);
+            return back();
+        }else{
+            Toastr()->warning('Cette configuration existe', 'Configuration existe', ["positionClass" => "toast-top-right"]);
+            return back();
+        }
+    }
+
+    public function deleteSynchro(Request $request,$id){
+        ProductColorSize::where('id',$id)->where('product_id',request()->product_id)->where('magasin_id',AuthMagasinAgent())->delete();
+        $productSum = ProductColorSize::where('product_id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->sum('quantity');
+        Product::where('id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->update(['quantity' => $productSum]);
+        Toastr()->success('La configuration a ete supprimer avec success', 'Suppression de configuration', ["positionClass" => "toast-top-right"]);
         return back();
     }
 }

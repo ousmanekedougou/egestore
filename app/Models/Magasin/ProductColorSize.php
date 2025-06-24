@@ -16,6 +16,7 @@ class ProductColorSize extends Model
         'color_id',
         'size_id',
         'magasin_id',
+        'visible'
     ];
 
       public function product()
