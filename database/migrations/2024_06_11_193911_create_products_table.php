@@ -23,8 +23,8 @@ return new class extends Migration
           $table->integer('quantity');
           $table->integer('qty_alert');
           $table->integer('stock')->nullable();
-          $table->text('colors')->nullable();
-          $table->text('sizes')->nullable();
+          // $table->text('colors')->nullable();
+          // $table->text('sizes')->nullable();
           $table->string('reference');
           $table->boolean('visible')->default(false);
           $table->boolean('promot')->default(false)->nullable();

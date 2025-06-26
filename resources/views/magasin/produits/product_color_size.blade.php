@@ -27,7 +27,7 @@
             </div>
           </div>
           <div class="card-body py-0 scrollbar to-do-list-body">
-            @foreach ($getColors as $color)
+            @foreach ($product->colors as $color)
               <div class="d-flex hover-actions-trigger py-3 border-top"><input class="form-check-input form-check-input-todolist flex-shrink-0 my-1 me-2 form-check-input-undefined" type="checkbox" id="checkbox-todo-0" data-event-propagation-prevent="data-event-propagation-prevent" />
                 <div class="row justify-content-between align-items-md-center btn-reveal-trigger border-translucent gx-0 flex-1 cursor-pointer" data-bs-toggle="modal" data-bs-target="#exampleModal">
                   <div class="col-12 col-md-auto col-xl-12 col-xxl-auto">
@@ -69,7 +69,7 @@
             </div>
           </div>
           <div class="card-body py-0 scrollbar to-do-list-body">
-            @foreach ($getSizes as $size)
+            @foreach ($product->sizes as $size)
             <div class="d-flex hover-actions-trigger py-3 border-top"><input class="form-check-input form-check-input-todolist flex-shrink-0 my-1 me-2 form-check-input-undefined" type="checkbox" id="checkbox-todo-0" data-event-propagation-prevent="data-event-propagation-prevent" />
               <div class="row justify-content-between align-items-md-center btn-reveal-trigger border-translucent gx-0 flex-1 cursor-pointer" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <div class="col-12 col-md-auto col-xl-12 col-xxl-auto">
@@ -192,7 +192,7 @@
       </div>
     </div>
 
-    @foreach($getColors as $color)
+    @foreach($product->colors as $color)
       <div class="card-body p-0">
         <div class="p-4 code-to-copy">
           <!-- Right Offcanvas-->
@@ -239,7 +239,7 @@
       </div>
     @endforeach
 
-    @foreach($getColors as $color)
+    @foreach($product->colors as $color)
       <div class="modal fade" id="DeleteColor-{{ $color->id }}" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -298,7 +298,7 @@
       </div>
     </div>
 
-    @foreach($getSizes as $size)
+    @foreach($product->sizes as $size)
       <div class="card-body p-0">
         <div class="p-4 code-to-copy">
           <!-- Right Offcanvas-->
@@ -345,7 +345,7 @@
       </div>
     @endforeach
 
-    @foreach($getSizes as $size)
+    @foreach($product->sizes as $size)
       <div class="modal fade" id="DeleteSize-{{ $size->id }}" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -383,7 +383,7 @@
               <input type="hidden" name="product_id" value="{{ $product->id }}">
               <select class="form-select form-select-sm mb-3 @error('color') is-invalid @enderror" name="color" aria-label=".form-select-sm example">
                 <option selected="">Selectionner la couleur</option>
-                @foreach($getColors as $color)
+                @foreach($product->colors as $color)
                   <option value="{{ $color->id }}">{{ $color->name }}</option>
                 @endforeach
               </select>
@@ -395,7 +395,7 @@
 
               <select class="form-select form-select-sm mb-3 @error('size') is-invalid @enderror" name="size" aria-label=".form-select-sm example">
                 <option selected="">Selectionner la taille</option>
-                @foreach($getSizes as $size)
+                @foreach($product->sizes as $size)
                   <option value="{{ $size->id }}">{{ $size->name }}</option>
                 @endforeach
               </select>
@@ -454,7 +454,7 @@
               <input type="hidden" name="product_id" value="{{ $product->id }}">
               <select class="form-select form-select-sm mb-3 @error('color') is-invalid @enderror" name="color" aria-label=".form-select-sm example">
                 <option selected="">Selectionner la couleur</option>
-                @foreach($getColors as $color)
+                @foreach($product->colors as $color)
                   <option value="{{ $color->id }}" @if( $color->id == $color_size->color->id )selected="" @endif>{{ $color->name }}</option>
                 @endforeach
               </select>
@@ -466,7 +466,7 @@
 
               <select class="form-select form-select-sm mb-3 @error('size') is-invalid @enderror" name="size" aria-label=".form-select-sm example">
                 <option selected="">Selectionner la taille</option>
-                @foreach($getSizes as $size)
+                @foreach($product->sizes as $size)
                   <option value="{{ $size->id }}"  @if( $size->id == $color_size->size->id )selected="" @endif >{{ $size->name }}</option>
                 @endforeach
               </select>

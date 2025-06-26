@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('method_payments', function (Blueprint $table) {
+        Schema::create('ides', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique()->nullable();
-            $table->string('clientId')->unique();
-            $table->string('clientSecret')->unique();
-            $table->boolean('status')->default(false);
-            $table->boolean('visible')->nullable();
+            $table->string('sujet')->nullable();
+            $table->longText('msg')->nullable();
+            $table->boolean('type')->default(0);
             $table->foreignId("magasin_id")
                 ->references("id")
                 ->on("magasins")
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('method_payments');
+        Schema::dropIfExists('ides');
     }
 };

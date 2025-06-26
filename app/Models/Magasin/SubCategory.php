@@ -14,6 +14,7 @@ class SubCategory extends Model
         'slug',
         'type',
         'category_id',
+        'magasin_id',
         'visible',
     ];
 

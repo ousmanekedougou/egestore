@@ -121,20 +121,20 @@ class ProduitController extends Controller
             }
         }
 
-        $colors = null;
-        $sizes = null;
+        // $colors = null;
+        // $sizes = null;
 
-        if ($request->colors != '') {
-            $colors = explode(",",$request->colors);
-        }else {
-            $colors = null;
-        }
+        // if ($request->colors != '') {
+        //     $colors = explode(",",$request->colors);
+        // }else {
+        //     $colors = null;
+        // }
 
-        if ($request->sizes != '') {
-            $sizes = explode(",",$request->sizes);
-        }else {
-            $sizes = null;
-        }
+        // if ($request->sizes != '') {
+        //     $sizes = explode(",",$request->sizes);
+        // }else {
+        //     $sizes = null;
+        // }
 
         $product = Product::create([
             'name' => $request->name,
@@ -145,8 +145,8 @@ class ProduitController extends Controller
             'stock' => $request->quantity,
             'image' => $imageName,
             'exp_date' => $request->exp_date,
-            'colors' => serialize($colors),
-            'sizes' => serialize($sizes),
+            // 'colors' => serialize($colors),
+            // 'sizes' => serialize($sizes),
             'desc' => $request->desc,
             // 'images' => json_encode($data),
             'promot' => $request->promot,
@@ -158,9 +158,8 @@ class ProduitController extends Controller
             'sub_category_id' => $request->sub_category_id
         ]);
 
-        $product->update(['unique_code' => $product->magasin->prefix.'-'.str_pad($product->id, 6, '0', STR_PAD_LEFT)]);
+        $product->update(['unique_code' => $product->magasin->prefix.''.str_pad($product->id, 6, '0', STR_PAD_LEFT)]);
 
-        // dd($product);
         
         Toastr()->success('Votre produit a bien été ajouté', 'Ajout de produits', ["positionClass" => "toast-top-right"]);
         return back();
@@ -173,7 +172,7 @@ class ProduitController extends Controller
      */
     public function show(string $slug)
     {
-        $subcategory = SubCategory::where('slug',$slug)->first();
+        $subcategory = SubCategory::where('slug',$slug)->where('magasin_id',AuthMagasinAgent())->first();
 
         $products = $subcategory->products()->orderBy('id','desc')->paginate(50);
         return view('magasin.produits.index',
@@ -266,23 +265,23 @@ class ProduitController extends Controller
 
         
 
-        if ($request->colors != '') {
-            $colors = serialize($getcolors);
-        }else {
-            $colors = $product->colors;
-        }
+        // if ($request->colors != '') {
+        //     $colors = serialize($getcolors);
+        // }else {
+        //     $colors = $product->colors;
+        // }
 
-        if ($request->sizes != '') {
-            $sizes = serialize($getsizes);
-        }else {
-            $sizes = $product->sizes;
-        }
+        // if ($request->sizes != '') {
+        //     $sizes = serialize($getsizes);
+        // }else {
+        //     $sizes = $product->sizes;
+        // }
 
-        if ($request->promot != null) {
-            $promot = 1;
-        }else {
-            $promot = 0;
-        }
+        // if ($request->promot != null) {
+        //     $promot = 1;
+        // }else {
+        //     $promot = 0;
+        // }
 
         if ($request->supply_name != null) {
             $supplyName = $request->supply_name;
@@ -306,8 +305,8 @@ class ProduitController extends Controller
             'promot' => $promot,
             'promo_price' => $validatePromotion,
             'exp_date' => $request->exp_date,
-            'colors' => $colors,
-            'sizes' => $sizes,
+            // 'colors' => $colors,
+            // 'sizes' => $sizes,
             'supply_name' => $supplyName,
             'supply_id' => $supplyId,
             'magasin_id' => AuthMagasinAgent(),

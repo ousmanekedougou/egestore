@@ -83,11 +83,11 @@
                       </td>
 
                       <td class="align-middle review ps-3">
-                        @if($product->colors != '')
+                        @if($product->colors->count() > 0)
                         <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label="Default select example .form-select-sm" name="color">
                         <option>Choisir</option>
-                          @foreach(unserialize($product->colors) as $colorGet)
-                            <option value="{{ $colorGet }}"> {{$colorGet}} </option>
+                          @foreach($product->colors as $colorGet)
+                            <option value="{{ $colorGet->id }}"> {{$colorGet->name}} </option>
                           @endforeach
                         </select>
                         @else 
@@ -96,11 +96,11 @@
                       </td>
 
                       <td class="align-middle review ps-3" >
-                        @if($product->sizes != '')
+                        @if($product->sizes->count() > 0)
                         <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label=".form-select-sm example" name="size">
                         <option>Choisir</option>
-                          @foreach(unserialize($product->sizes) as $sizeGet)
-                            <option value="{{ $sizeGet }}"> {{$sizeGet}} </option>
+                          @foreach($product->sizes as $sizeGet)
+                            <option value="{{ $sizeGet->id }}"> {{$sizeGet->name}} </option>
                           @endforeach
                         </select>
                         @else 
@@ -210,29 +210,29 @@
                     @enderror
                  </div>
               </div>
+              {{-- 
+                <div class="mb-3 text-start">
+                  <label class="form-label" for="colors">Entrer les couleurs du produits</label>
+                  <input id="colors" type="text" placeholder="Couleurs du produits" class="form-control text-body-quaternary text-monospace @error('colors') is-invalid @enderror" name="colors" value="{{ old('colors') }}" required autocomplete="colors" autofocus>
 
-              <div class="mb-3 text-start">
-                <label class="form-label" for="colors">Entrer les couleurs du produits</label>
-                <input id="colors" type="text" placeholder="Couleurs du produits" class="form-control text-body-quaternary text-monospace @error('colors') is-invalid @enderror" name="colors" value="{{ old('colors') }}" required autocomplete="colors" autofocus>
+                  @error('colors')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
 
-                @error('colors')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-              </div>
+                <div class="mb-3 text-start">
+                  <label class="form-label" for="sizes">Entrer les tailles du produit</label>
+                  <input id="sizes" type="text" placeholder="Tailles du produits" class="form-control text-body-quaternary text-monospace @error('sizes') is-invalid @enderror" name="sizes" value="{{ old('sizes') }}" required autocomplete="sizes" autofocus>
 
-              <div class="mb-3 text-start">
-                <label class="form-label" for="sizes">Entrer les tailles du produit</label>
-                <input id="sizes" type="text" placeholder="Tailles du produits" class="form-control text-body-quaternary text-monospace @error('sizes') is-invalid @enderror" name="sizes" value="{{ old('sizes') }}" required autocomplete="sizes" autofocus>
-
-                @error('sizes')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-              </div>
-
+                  @error('sizes')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+               --}}
               <div class="mb-3 text-start">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input text-success @error('supply') is-invalid @enderror"  id="Mysupply" type="radio" name="supply" value="0" onclick="text(0)">
@@ -426,10 +426,11 @@
                     @enderror
                  </div>
                 </div>
-                @if($product->colors != '')
+                {{-- 
+                @if($product->colors->count() > 0 )
                 <div class="mb-3 text-start">
                   <label class="form-label" for="colors">Modifier les couleurs</label>
-                  <input id="colorsUpdate" type="text"  class="form-control colorsUpdate @error('colors') is-invalid @enderror" name="colors" value="@foreach(unserialize($product->colors) as $colorGet) {{ old('colors') ?? $colorGet }},  @endforeach" required autocomplete="colors" autofocus>
+                  <input id="colorsUpdate" type="text"  class="form-control colorsUpdate @error('colors') is-invalid @enderror" name="colors" value="@foreach($product->colors as $colorGet) {{ old('colors') ?? $colorGet->name }},  @endforeach" required autocomplete="colors" autofocus>
 
                   @error('colors')
                       <span class="invalid-feedback" role="alert">
@@ -438,12 +439,10 @@
                   @enderror
                 </div>
                 @endif
-
-
-                @if($product->sizes != '')
+                @if($product->sizes->count() > 0)
                 <div class="mb-3 text-start">
                   <label class="form-label" for="sizes">Modifier les tailles</label>
-                  <input id="sizesUpdate" type="text"  class="form-control sizesUpdate @error('sizes') is-invalid @enderror" name="sizes" value="@foreach(unserialize($product->sizes) as $sizeGet) {{ old('sizes') ?? $sizeGet }},  @endforeach" required autocomplete="sizes" autofocus>
+                  <input id="sizesUpdate" type="text"  class="form-control sizesUpdate @error('sizes') is-invalid @enderror" name="sizes" value="@foreach($product->sizes as $sizeGet) {{ old('sizes') ?? $sizeGet->name }},  @endforeach" required autocomplete="sizes" autofocus>
 
                   @error('sizes')
                       <span class="invalid-feedback" role="alert">
@@ -452,7 +451,7 @@
                   @enderror
                 </div>
                 @endif
-
+                --}}
                 <div class="mb-3 text-start">
                   <label for="organizerSingle">Sélectionner un fournisseur</label>
                   <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>

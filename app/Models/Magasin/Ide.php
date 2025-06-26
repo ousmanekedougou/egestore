@@ -5,17 +5,15 @@ namespace App\Models\Magasin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MethodPayment extends Model
+class Ide extends Model
 {
     use HasFactory;
 
-     protected $fillable = 
+    protected $fillable = 
     [
-        'name',
-        'clientId',
-        'clientSecret',
-        'status',
-        'visible',
+        'sujet',
+        'msg',
+        'type',
         'magasin_id'
     ];
 }

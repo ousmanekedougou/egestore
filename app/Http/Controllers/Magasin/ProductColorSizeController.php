@@ -89,14 +89,9 @@ class ProductColorSizeController extends Controller
      */
     public function show(string $slug)
     {
-        $product = Product::where('slug',$slug)->where('magasin_id',AuthMagasinAgent())->first();
-        $getColors = Color::where('product_id',$product->id)->where('magasin_id',AuthMagasinAgent())->get();
-        $getSizes = Size::where('product_id',$product->id)->where('magasin_id',AuthMagasinAgent())->get();
         return view('magasin.produits.product_color_size',
         [
             'product' => Product::where('slug',$slug)->where('magasin_id',AuthMagasinAgent())->first(),
-            'getColors' => $getColors,
-            'getSizes' => $getSizes,
         ]);
     }
 

@@ -21,6 +21,11 @@ return new class extends Migration
               ->references("id")
               ->on("categories")
               ->cascadeOnDelete();
+            $table
+              ->foreignId("magasin_id")
+              ->references("id")
+              ->on("categories")
+              ->cascadeOnDelete();
             $table->boolean('visible');
             $table->rememberToken();
             $table->timestamps();
