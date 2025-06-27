@@ -86,13 +86,13 @@ class ProduitController extends Controller
             $image = Image::read($file);
             // Resize image
             if (!is_dir(storage_path("app/public/Products"))) {
-                mkdir(storage_path("app/public/Products"), 0775, true);
+                mkdir(storage_path("app/public/Products/"), 0775, true);
             }
             $image->resize(530, 530, function ($constraint) {
                 $constraint->aspectRatio();
-            })->save(storage_path('app/public/Products'. $Name));
+            })->save(storage_path('app/public/Products/'. $Name));
 
-            $imageName = 'public/Products'. $Name;
+            $imageName = 'public/Products/'. $Name;
             
         }
 
