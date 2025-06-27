@@ -138,21 +138,46 @@ class DatabaseSeeder extends Seeder
             'visible' => 0
         ]);
 
-        // $categorys = [
-        //     'Collectibles &amp; Art' => 'pocket', 
-        //     'Home &amp; Gardan' => 'home',
-        //     'Sporting Goods' => 'globe',
-        //     'Electronics' => 'monitor',
-        //     'Auto Parts &amp; Accessories' => 'truck',
-        //     'Toys &amp; Hobbies' => 'codesandbox',
-        //     'Fashion' => 'watch',
-        //     'Musical Instruments &amp; Gear' => 'music',
-        //     'Other Categories' => 'grid',
-        // ];
+        $categorys = [
+            'Collectibles &amp; Art' => 'pocket', 
+            'Home &amp; Gardan' => 'home',
+            'Sporting Goods' => 'globe',
+            'Electronics' => 'monitor',
+            'Auto Parts &amp; Accessories' => 'truck',
+            'Toys &amp; Hobbies' => 'codesandbox',
+            'Fashion' => 'watch',
+            'Musical Instruments &amp; Gear' => 'music',
+            'Other Categories' => 'grid',
+        ];
 
-        // $subcategorys = [
-        //     'Collectibles','Antiques','Sports','Art',
-        // ];
+        $subcategorys = [
+            'Collectibles','Antiques','Sports','Art',
+        ];
+
+        $magasins = Magasin::all();
+        foreach ($magasins as $magasin) {
+
+            foreach ($categorys as $name => $icon) {
+                $category = Category::create([
+                    'name' => $name,
+                    'icon' => $icon,
+                    'slug' => str_replace('/','',Hash::make(Str::random(2).$name)),
+                    'visible' => 1,
+                    'magasin_id' => $magasin->id
+                ]);
+
+                foreach ($subcategorys  as $key => $val) {
+                    
+                    SubCategory::create([
+                        'name' => $val,
+                        'slug' => str_replace('/','',Hash::make(Str::random(2).$val)),
+                        'category_id' => $category->id,
+                        'visible' => 1,
+                        'magasin_id' => $category->magasin->id
+                    ]);
+                }
+            }
+        }   
 
         // $colors = [
         //     'Bleu','Vert','Rouge','Maron',

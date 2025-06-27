@@ -27,17 +27,17 @@ return new class extends Migration
               ->foreignId("user_id")
               ->references("id")
               ->on("users")
-              ->cascadeOnDelete('set null');
+              ->cascadeOnDelete()->default(0);
             $table
               ->foreignId("magasin_id")
               ->references("id")
               ->on("magasins")
-              ->cascadeOnDelete('set null');
+              ->cascadeOnDelete()->default(0);
             $table
               ->foreignId("client_id")
               ->references("id")
               ->on("clients")
-              ->cascadeOnDelete('set null');
+              ->cascadeOnDelete()->default(0);
             $table->string('amount')->nullable();
             $table->enum('payment', ['Success', 'Pending','Cancelled'])->nullable();
             $table->enum('delivery', ['Success', 'Pending','Cancelled'])->nullable();

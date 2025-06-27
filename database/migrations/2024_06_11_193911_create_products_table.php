@@ -37,19 +37,19 @@ return new class extends Migration
             ->foreignId("magasin_id")
             ->references("id")
             ->on("magasins")
-            ->cascadeOnDelete();
+            ->cascadeOnDelete()->default(0);
 
           $table
             ->foreignId("order_id")
             ->references("id")
             ->on("orders")
-            ->cascadeOnDelete('set null');
+            ->cascadeOnDelete()->default(0);
             
           $table
             ->foreignId("sub_category_id")
             ->references("id")
             ->on("sub_categories")
-            ->cascadeOnDelete();
+            ->cascadeOnDelete()->default(0);
           $table->rememberToken();
           $table->timestamps();
         });

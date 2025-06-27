@@ -15,7 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('sujet')->nullable();
             $table->longText('msg')->nullable();
+            $table->longText('reply')->nullable();
+            $table->string('reply_by')->nullable();
+            $table->string('image')->nullable();
             $table->boolean('type')->default(0);
+            $table->boolean('status')->default(0);
             $table->foreignId("magasin_id")
                 ->references("id")
                 ->on("magasins")

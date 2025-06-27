@@ -18,7 +18,9 @@
             </div>
             <div class="col-12 col-md-10 col-lg-12 col-xl-10">
               <div class="d-flex align-items-center border border-translucent rounded-3 text-center p-5 h-100">
-                <div class="swiper swiper theme-slider" data-thumb-target="swiper-products-thumb" data-products-swiper='{"slidesPerView":1,"spaceBetween":16,"thumbsEl":".swiper-products-thumb"}'></div>
+                <div>
+                  <img src="{{Storage::url($product->image)}}" alt="" style="width: 100%;height:100%;" />
+                </div>
               </div>
             </div>
           </div>
@@ -84,9 +86,9 @@
                   </div>
                   @if(AuthMagasinAgentVisible() == 1)
                     @if($product->images != '')
-                      @foreach(json_decode($product->images, true) as $image)
-                        <div class="rounded-1 border border-translucent me-2" data-variant="images" data-products-images='["{{Storage::url($image)}}"]'>
-                          <img src="{{Storage::url($image)}}" alt="" width="38" />
+                      @foreach(json_decode($product->images, true) as $imageSim)
+                        <div class="rounded-1 border border-translucent me-2" data-variant="images" data-products-images='["{{Storage::url($imageSim)}}"]'>
+                          <img src="{{Storage::url($imageSim)}}" alt="" width="38" />
                         </div>
                       @endforeach
                     @endif
@@ -97,13 +99,13 @@
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <div class="row g-3 g-sm-5 align-items-end">
-                  @if($product->colors != '')
+                  @if($product->colors->count())
                     <div class="col-12 col-sm-auto">
                       <p class="fw-semibold mb-2 text-body">Couleurs : </p>
                       <div class="d-flex align-items-center">
                         <select class="form-select w-auto @error('colors') is-invalid @enderror" name="color">
-                          @foreach(unserialize($product->colors) as $color)
-                            <option value="{{ $color }}">{{$color}}</option>
+                          @foreach($product->colors as $color)
+                            <option value="{{ $color->id }}">{{$color->name}}</option>
                           @endforeach
                         </select>
                         @error('color')
@@ -114,13 +116,13 @@
                       </div>
                     </div>
                   @endif
-                  @if($product->sizes != '')
+                  @if($product->sizes->count())
                     <div class="col-12 col-sm-auto">
                       <p class="fw-semibold mb-2 text-body">Tailles : </p>
                       <div class="d-flex align-items-center">
                         <select class="form-select w-auto @error('size') is-invalid @enderror" name="size">
-                          @foreach(unserialize($product->sizes) as $size)
-                            <option value="{{ $size }}">{{$size}}</option>
+                          @foreach($product->sizes as $size)
+                            <option value="{{ $size->id }}">{{$size->name}}</option>
                           @endforeach
                         </select>
                         @error('size')
@@ -177,9 +179,9 @@
                       <h6 class="mb-0 text-body text-uppercase fw-bolder px-4 fs-9 lh-sm">Couleurs</h6>
                     </td>
                     <td class="px-5 mb-0">
-                      @if($product->colors != '')
-                        @foreach(unserialize($product->colors) as $color)
-                          {{$color}}, 
+                      @if($product->colors->count() > 0)
+                        @foreach($product->colors as $color)
+                          {{$color->name}}, 
                         @endforeach
                       @else
                         NULL
@@ -191,9 +193,9 @@
                       <h6 class="mb-0 text-body text-uppercase fw-bolder px-4 fs-9 lh-sm">Tailles</h6>
                     </td>
                     <td class="px-5 mb-0">
-                      @if($product->sizes != '')
-                        @foreach(unserialize($product->sizes) as $size)
-                          {{$size}}, 
+                      @if($product->sizes->count() > 0)
+                        @foreach($product->sizes as $size)
+                          {{$size->name}}, 
                         @endforeach
                       @else
                         NULL
@@ -412,27 +414,15 @@
                 @enderror
             </div>
 
-            <div class="row mb-3 text-start">
-              <div class="col-lg-6">
-                <label class="form-label" for="reference">Reference du produit</label>
-                <input id="reference" type="text" placeholder="Reference du produit" class="form-control @error('reference') is-invalid @enderror" name="reference" value="{{ old('reference') ?? $product->reference }}" required autocomplete="reference" autofocus>
+            <div class="mb-3 text-start">
+              <label class="form-label" for="reference">Reference du produit</label>
+              <input id="reference" type="text" placeholder="Reference du produit" class="form-control @error('reference') is-invalid @enderror" name="reference" value="{{ old('reference') ?? $product->reference }}" required autocomplete="reference" autofocus>
 
-                @error('reference')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-              </div>
-              <div class="col-lg-6">
-                <label class="form-label" for="price">Prix du produit</label>
-                <input id="price" type="numeric" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') ?? $product->price }}" placeholder="Prix du produit" required autocomplete="price">
-
-                @error('price')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-              </div>
+              @error('reference')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+              @enderror
             </div>
             <div class="row mb-3 text-start">
                 <div class="col-lg-6">
@@ -479,24 +469,24 @@
                 @enderror
               </div>
             </div>
-            @if($product->colors != '')
-            <div class="mb-3 text-start">
-              <label class="form-label" for="colors">Modifier les couleurs</label>
-              <input id="colorsUpdate" type="text"  class="form-control colorsUpdate @error('colors') is-invalid @enderror" name="colors" value="@foreach(unserialize($product->colors) as $colorGet) {{ old('colors') ?? $colorGet }},  @endforeach" required autocomplete="colors" autofocus>
+            @if($product->colors->count() > 0)
+              <div class="mb-3 text-start">
+                <label class="form-label" for="colors">Modifier les couleurs</label>
+                <input id="colorsUpdate" type="text"  class="form-control colorsUpdate @error('colors') is-invalid @enderror" name="colors" value="@foreach($product->colors as $colorGet) {{ old('colors') ?? $colorGet->name }},  @endforeach" required autocomplete="colors" autofocus>
 
-              @error('colors')
-                  <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                  </span>
-              @enderror
-            </div>
+                @error('colors')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+              </div>
             @endif
 
 
-            @if($product->sizes != '')
+            @if($product->sizes->count())
             <div class="mb-3 text-start">
               <label class="form-label" for="sizes">Modifier les tailles</label>
-              <input id="sizesUpdate" type="text"  class="form-control sizesUpdate @error('sizes') is-invalid @enderror" name="sizes" value="@foreach(unserialize($product->sizes) as $sizeGet) {{ old('sizes') ?? $sizeGet }},  @endforeach" required autocomplete="sizes" autofocus>
+              <input id="sizesUpdate" type="text"  class="form-control sizesUpdate @error('sizes') is-invalid @enderror" name="sizes" value="@foreach($product->sizes as $sizeGet) {{ old('sizes') ?? $sizeGet->name }},  @endforeach" required autocomplete="sizes" autofocus>
 
               @error('sizes')
                   <span class="invalid-feedback" role="alert">

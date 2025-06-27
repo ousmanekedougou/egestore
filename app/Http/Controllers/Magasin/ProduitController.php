@@ -85,11 +85,14 @@ class ProduitController extends Controller
             $Name = $request->name.'-'.Auth::guard('magasin')->user()->name.'.'. $file->getClientOriginalExtension();
             $image = Image::read($file);
             // Resize image
+            if (!is_dir(storage_path("app/public/Products"))) {
+                mkdir(storage_path("app/public/Products"), 0775, true);
+            }
             $image->resize(530, 530, function ($constraint) {
                 $constraint->aspectRatio();
-            })->save(storage_path('app/public/Products/' . $Name));
+            })->save(storage_path('app/public/Products'. $Name));
 
-            $imageName = 'public/Products/'. $Name;
+            $imageName = 'public/Products'. $Name;
             
         }
 
@@ -251,17 +254,17 @@ class ProduitController extends Controller
             $imageName = $product->image;
         }
 
-        $data = [];
-        $imagesUpdate = '';
-        if ($request->hasFile('images')) {
-            foreach ($request->images as $image) {
-                $imageStore = $image->store('Products/ImageSimilaires');
-                $data[] = $imageStore;
-            }
-            $imagesUpdate = json_encode($data);
-        }else {
-            $imagesUpdate = $product->images;
-        }
+        // $data = [];
+        // $imagesUpdate = '';
+        // if ($request->hasFile('images')) {
+        //     foreach ($request->images as $image) {
+        //         $imageStore = $image->store('Products/ImageSimilaires/');
+        //         $data[] = $imageStore;
+        //     }
+        //     $imagesUpdate = json_encode($data);
+        // }else {
+        //     $imagesUpdate = $product->images;
+        // }
 
         
 
@@ -300,7 +303,7 @@ class ProduitController extends Controller
             'qty_alert' => $request->qty_alert,
             'desc' => $request->desc,
             'image' => $imageName,
-            'images' => $imagesUpdate,
+            // 'images' => $imagesUpdate,
             'visible' => $request->visible,
             'promot' => $promot,
             'promo_price' => $validatePromotion,

@@ -136,6 +136,8 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
     Route::put('/option/synchro/{id}',[App\Http\Controllers\Magasin\ProductColorSizeController::class,'updateSynchro'])->name('option.updateSynchro');
     Route::delete('/option/synchro/{id}',[App\Http\Controllers\Magasin\ProductColorSizeController::class,'deleteSynchro'])->name('option.deleteSynchro');
     
+    // Les ides et suggestion
+    Route::resource('/ide', App\Http\Controllers\Magasin\IdeController::class);
     
     // login des admin
     Route::get('/login',[App\Http\Controllers\Magasin\Auth\LoginController::class,'showLoginForm'])->name('login');
