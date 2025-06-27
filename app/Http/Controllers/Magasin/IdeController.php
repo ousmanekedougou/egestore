@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 use Intervention\Image\Laravel\Facades\Image;
 class IdeController extends Controller
 {
+     public function __construct()
+    {
+        $this->middleware(['isMagasinAgent']);
+    }
+    
     /**
      * Display a listing of the resource.
      */

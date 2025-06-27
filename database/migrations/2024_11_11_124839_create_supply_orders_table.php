@@ -20,15 +20,15 @@ return new class extends Migration
           $table->dateTime('payment_created_at')->nullable();
           $table->integer('tva')->nullable();
           $table
-            ->foreignId("magasin_id")
+            ->foreignId("magasin_id")->nullable()
             ->references("id")
             ->on("magasins")
             ->cascadeOnDelete();
           $table
-            ->foreignId("supply_id")
+            ->foreignId("supply_id")->nullable()
             ->references("id")
             ->on("supplies")
-            ->cascadeOnDelete()->nullable();
+            ->cascadeOnDelete();
           $table->string('amount')->nullable();
           $table->enum('payment', ['Success', 'Pending','Cancelled'])->nullable();
           $table->integer('delivery')->nullable();

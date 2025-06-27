@@ -28,18 +28,18 @@ return new class extends Migration
             $table->text('desc')->nullable();
             $table->string('amount')->nullable();
             $table
-                ->foreignId("sub_category_id")
+                ->foreignId("sub_category_id")->nullable()
                 ->references("id")
                 ->on("sub_categories")
-                ->cascadeOnDelete()->nullable();
+                ->cascadeOnDelete();
             $table
-                ->foreignId("supply_order_id")
+                ->foreignId("supply_order_id")->nullable()
                 ->references("id")
                 ->on("supply_orders")
-                ->cascadeOnDelete()->nullable();
+                ->cascadeOnDelete();
             
             $table
-                ->foreignId("magasin_id")
+                ->foreignId("magasin_id")->nullable()
                 ->references("id")
                 ->on("magasins")
                 ->cascadeOnDelete();

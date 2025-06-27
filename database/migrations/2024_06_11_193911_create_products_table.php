@@ -34,22 +34,22 @@ return new class extends Migration
           $table->string('supply_name')->nullable();
           
           $table
-            ->foreignId("magasin_id")
+            ->foreignId("magasin_id")->nullable()
             ->references("id")
             ->on("magasins")
-            ->cascadeOnDelete()->default(0);
+            ->cascadeOnDelete();
 
           $table
-            ->foreignId("order_id")
+            ->foreignId("order_id")->nullable()
             ->references("id")
             ->on("orders")
-            ->cascadeOnDelete()->default(0);
+            ->cascadeOnDelete();
             
           $table
-            ->foreignId("sub_category_id")
+            ->foreignId("sub_category_id")->nullable()
             ->references("id")
             ->on("sub_categories")
-            ->cascadeOnDelete()->default(0);
+            ->cascadeOnDelete();
           $table->rememberToken();
           $table->timestamps();
         });
