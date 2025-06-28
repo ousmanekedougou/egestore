@@ -10,9 +10,9 @@
           Telepone : <a class="fw-bold" href="#!"> @if($order->user_id == '' && $order->client_id == '') {{ $order->phone }} @elseif($order->user_id != '') {{ $order->user->phone }} @elseif($order->client_id != '') {{ $order->client->phone }} @endif</a>
         </p>
         <div class="d-flex">
-          <button class="btn btn-link pe-3 ps-0 text-body">
-            <span data-feather="printer" class="me-2"></span>Print
-          </button>
+          <a class="btn btn-primary" href="{{ route('magasin.commande.edit',$order->slug) }}" target="_blank" class="btn btn-link text-primary pe-3 ps-0 text-body">
+            <span class="me-2 fas fa-file-pdf"></span>Voir la facture
+          </a>
         </div>
       </div>
       <div class="row g-5 gy-7">
@@ -60,45 +60,45 @@
         </div>
         <div class="col-12 col-xl-4 col-xxl-3">
           <div class="row">
-            {{--
-              <div class="col-12">
-                <div class="card mb-3">
-                  <div class="card-body">
-                    <h3 class="card-title mb-4">Résumé</h3>
-                    <div>
-                      <div class="d-flex justify-content-between">
-                        <p class="text-body fw-semibold">Nombre d'articles :</p>
-                        <p class="text-body-emphasis fw-semibold">{{ $order->count() }}</p>
-                      </div>
-                      <div class="d-flex justify-content-between">
-                        <p class="text-body fw-semibold">Discount :</p>
-                        <p class="text-danger fw-semibold">-$59</p>
-                      </div>
-                      <div class="d-flex justify-content-between">
-                        <p class="text-body fw-semibold">Tax :</p>
-                        <p class="text-body-emphasis fw-semibold">$126.20</p>
-                      </div>
-                      <div class="d-flex justify-content-between">
-                        <p class="text-body fw-semibold">Subtotal :</p>
-                        <p class="text-body-emphasis fw-semibold">$665</p>
-                      </div>
-                      <div class="d-flex justify-content-between">
-                        <p class="text-body fw-semibold">Shipping Cost :</p>
-                        <p class="text-body-emphasis fw-semibold">$30</p>
-                      </div>
+          @if ($order->status == 1)
+            <div class="col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h3 class="card-title mb-4">Résumé</h3>
+                  <div>
+                    <div class="d-flex justify-content-between">
+                      <p class="text-body fw-semibold">Nombre d'articles :</p>
+                      <p class="text-body-emphasis fw-semibold">{{ $order->count() }}</p>
                     </div>
-                    <div class="d-flex justify-content-between border-top border-translucent border-dashed pt-4">
-                      <h4 class="mb-0">Total :</h4>
-                      <h4 class="mb-0">$695.20</h4>
+                    <div class="d-flex justify-content-between">
+                      <p class="text-body fw-semibold">Status :</p>
+                      <p class="text-success fw-semibold">Payé</p>
                     </div>
+                    <div class="d-flex justify-content-between">
+                      <p class="text-body fw-semibold">Méthode :</p>
+                      <p class="text-body-emphasis fw-semibold">
+                        @if ($order->methode == 1)
+                          <span class="text-info">Wave</span>
+                        @elseif ($order->methode == 2)
+                          <span class="text-warning">Orange money</span>
+                        @elseif ($order->methode == 3)
+                          <span class="text-success">Cache</span>
+                        @endif
+                      </p>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between border-top border-translucent border-dashed pt-4">
+                    <h4 class="mb-0">Total :</h4>
+                    <h4 class="mb-0">{{ $order->amount }} CFA</h4>
                   </div>
                 </div>
               </div>
-            --}}
+            </div>
+          @else  
             <div class="col-12">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title mb-4">Statut de la commande</h4>
+                  <h4 class="card-title mb-4">Paiement de la commande</h4>
                   @if($order->type != 2)
                   <form action="{{ route('magasin.commande.update',$order->id) }}" method="post">
                     @csrf
@@ -150,6 +150,7 @@
                 </div>
               </div>
             </div>
+          @endif
           </div>
         </div>
       </div>
