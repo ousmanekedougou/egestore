@@ -105,7 +105,7 @@
                     @if ($order->type == 2)
                       <span class="text-warning">A crédit </span>
                     @else
-                     @if ($order->methode == 1)
+                      @if ($order->methode == 1)
                         <span class="text-info">Wave</span>
                       @elseif ($order->methode == 2)
                         <span class="text-warning">Orange money</span>

@@ -31,13 +31,13 @@
           <div class="tm_invoice_info tm_mb25">
             <div class="tm_card_note tm_mobile_hide"><b class="tm_primary_color">Paiement : </b>
               @if ($order->status == 1)
-                Total paye
+                Total payée
               @elseif ($order->status == 2)
                 En cours
               @elseif ($order->status == 3)
-                Annulé
+                Annulée
               @else
-                Non paye
+                Non payée
               @endif
             </div>
             <div class="tm_invoice_info_list tm_white_color">
@@ -48,7 +48,7 @@
           </div>
           <div class="tm_invoice_head tm_mb10">
             <div class="tm_invoice_left">
-              <p class="tm_mb2"><b class="tm_primary_color">Facture à:</b></p>
+              <p class="tm_mb2"><b class="tm_primary_color">Facturé à:</b></p>
               <p>
                 @if ($order->type == 1)
                   @if($order->client_id != '') {{ $order->client->name }} @else {{ $order->name }}@endif <br>
@@ -64,7 +64,7 @@
               </p>
             </div>
             <div class="tm_invoice_right tm_text_right">
-              <p class="tm_mb2"><b class="tm_primary_color">Payer à:</b></p>
+              <p class="tm_mb2"><b class="tm_primary_color">Payé à:</b></p>
               <p>
                 {{$order->magasin->name}} <br>
                 {{$order->magasin->email}} <br>
@@ -134,6 +134,22 @@
                           <td class="tm_width_3 tm_primary_color tm_text_right tm_bold">{{$order->client->getRestant()}}</td>
                         </tr>
                       @endif
+                    @endif
+                    @if ($order->status == 1)
+                      <tr class="tm_gray_bg">
+                        <td class="tm_width_4 tm_primary_color tm_bold">Méthode :</td>
+                        <td class="tm_width_3 tm_primary_color tm_text_right tm_bold">
+                          @if ($order->methode == 1)
+                          <span class="text-info">Wave</span>
+                          @elseif ($order->methode == 2)
+                          <span class="text-warning">Orange money</span>
+                          @elseif ($order->methode == 3)
+                          <span class="text-success">Cache</span>
+                          @else
+                          Non paye
+                          @endif
+                        </td>
+                      </tr>
                     @endif
                     <tr class="tm_accent_bg">
                       <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_white_color">Grand Total	</td>
