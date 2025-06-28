@@ -93,6 +93,8 @@
               @csrf
               <input type="hidden" name="product_id" value="{{ $product->id }}">
 
+              <input type="hidden" name="unite_status" value="{{ $unite_status->id }}">
+
               <div class="mb-3 text-start">
                 <label for="organizerSingle">Sélectionner une unité</label>
                 <select class="form-select @error('unite_id') is-invalid @enderror" name="unite_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
@@ -118,29 +120,29 @@
                     </span>
                 @enderror
               </div>
-            
-              <div class="mb-3 text-start">
-                <label class="form-label" for="price_achat">Prix d'achat de l'unité</label>
-                <input id="price_achat" type="numeric" class="form-control @error('price_achat') is-invalid @enderror" name="price_achat" value="{{ old('price_achat') }}" placeholder="Prix d'achat de l'unité" required autocomplete="price_achat">
-
-                @error('price_achat')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-              </div>
-
+              @if($unite_status->status != 1)
                 <div class="mb-3 text-start">
-                <label class="form-label" for="price_vente">Prix de vente de l'unité</label>
-                <input id="price_vente" type="numeric" class="form-control @error('price_vente') is-invalid @enderror" name="price_vente" value="{{ old('price_vente') }}" placeholder="Prix de vente de l'unité" required autocomplete="price_vente">
+                  <label class="form-label" for="price_achat">Prix d'achat de l'unité</label>
+                  <input id="price_achat" type="numeric" class="form-control @error('price_achat') is-invalid @enderror" name="price_achat" value="{{ old('price_achat') }}" placeholder="Prix d'achat de l'unité" required autocomplete="price_achat">
 
-                @error('price_vente')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-              </div>
+                  @error('price_achat')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
 
+                  <div class="mb-3 text-start">
+                  <label class="form-label" for="price_vente">Prix de vente de l'unité</label>
+                  <input id="price_vente" type="numeric" class="form-control @error('price_vente') is-invalid @enderror" name="price_vente" value="{{ old('price_vente') }}" placeholder="Prix de vente de l'unité" required autocomplete="price_vente">
+
+                  @error('price_vente')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+              @endif
               <div class="mb-3 text-start">
                 <div class="form-check form-switch">
                   <input class="form-check-input mt-1 @error('status_unite') is-invalid @enderror" id="status_unite" name="status_unite" type="checkbox" value="1" />
@@ -173,7 +175,7 @@
               @csrf
               {{ method_field('PUT') }}
               <input type="hidden" name="product_id" value="{{ $product->id }}">
-
+              <input type="hidden" name="unite_status" value="{{ $unite_status->id }}">
               <div class="mb-3 text-start">
                 <label for="organizerSingle">Séléctionner une unité pour ce produit</label>
                 <select class="form-select @error('unite_id') is-invalid @enderror" name="unite_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
@@ -199,28 +201,29 @@
                     </span>
                 @enderror
               </div>
-            
-              <div class="mb-3 text-start">
-                <label class="form-label" for="price_achat">Prix d'achat de l'unité</label>
-                <input id="price_achat" type="numeric" class="form-control @error('price_achat') is-invalid @enderror" name="price_achat" value="{{ old('price_achat') ?? $vendor_system_update->price_achat }}" placeholder="Prix d'achat de l'unité" required autocomplete="price_achat">
+              @if($unite_status->status != 1)
+                <div class="mb-3 text-start">
+                  <label class="form-label" for="price_achat">Prix d'achat de l'unité</label>
+                  <input id="price_achat" type="numeric" class="form-control @error('price_achat') is-invalid @enderror" name="price_achat" value="{{ old('price_achat') ?? $vendor_system_update->price_achat }}" placeholder="Prix d'achat de l'unité" required autocomplete="price_achat">
 
-                @error('price_achat')
+                  @error('price_achat')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+
+                <div class="mb-3 text-start">
+                  <label class="form-label" for="price_vente">Prix de vente de l'unité</label>
+                  <input id="price_vente" type="numeric" class="form-control @error('price_vente') is-invalid @enderror" name="price_vente" value="{{ old('price_vente') ?? $vendor_system_update->price_vente }}" placeholder="Prix de vente de l'unité" required autocomplete="price_vente">
+
+                  @error('price_vente')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
-                @enderror
-              </div>
-
-              <div class="mb-3 text-start">
-                <label class="form-label" for="price_vente">Prix de vente de l'unité</label>
-                <input id="price_vente" type="numeric" class="form-control @error('price_vente') is-invalid @enderror" name="price_vente" value="{{ old('price_vente') ?? $vendor_system_update->price_vente }}" placeholder="Prix de vente de l'unité" required autocomplete="price_vente">
-
-                @error('price_vente')
-                  <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
+                  @enderror
+                </div>
+              @endif
               <div class="mb-3 text-start">
                 <div class="form-check form-switch">
                   <input class="form-check-input mt-1 @error('status_unite') is-invalid @enderror" @if($vendor_system_update->status == 1) checked="" @endif id="status_unite-{{ $vendor_system_update->id }}" name="status_unite" type="checkbox" value="1" />

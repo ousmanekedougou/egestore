@@ -19,7 +19,7 @@
             <div class="col-12 col-md-10 col-lg-12 col-xl-10">
               <div class="d-flex align-items-center border border-translucent rounded-3 text-center p-5 h-100">
                 <div>
-                  <img src="{{Storage::url($product->image)}}" alt="" style="width: 100%;height:100%;" />
+                  <img src="{{Storage::url($product->image)}}" alt="" style="width: 100%;height:auto;" />
                 </div>
               </div>
             </div>

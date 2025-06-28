@@ -17,28 +17,28 @@ return new class extends Migration
             $table->integer('quantity');
 
             $table
-              ->foreignId("product_id")
+              ->foreignId("product_id")->nullable()
               ->references("id")
               ->on("users")
-              ->cascadeOnDelete('set null');
+              ->cascadeOnDelete();
 
             $table
-              ->foreignId("color_id")
+              ->foreignId("color_id")->nullable()
               ->references("id")
               ->on("magasins")
-              ->cascadeOnDelete('set null');
+              ->cascadeOnDelete();
 
             $table
-              ->foreignId("size_id")
+              ->foreignId("size_id")->nullable()
               ->references("id")
               ->on("magasins")
-              ->cascadeOnDelete('set null');
+              ->cascadeOnDelete();
 
             $table
-              ->foreignId("magasin_id")
+              ->foreignId("magasin_id")->nullable()
               ->references("id")
               ->on("magasins")
-              ->cascadeOnDelete('set null');
+              ->cascadeOnDelete();
 
               $table->boolean('visible')->nullable();
 

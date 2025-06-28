@@ -41,8 +41,8 @@
                   <th class="sort align-middle ps-4" scope="col" data-sort="time" style="width:50px;">STATUS</th>
                   <th class="sort align-middle text-end ps-4" scope="col" data-sort="time" style="width:150px;">QUANTITES</th>
                   <th class="sort align-middle ps-3 w-auto" scope="col" data-sort="tags">UNITES</th>
-                  <th class="sort align-middle ps-3 w-auto" scope="col" data-sort="tags">COULEURS</th>
-                  <th class="sort align-middle ps-3 w-auto" scope="col" data-sort="vendor">TAILLES</th>
+                  <th class="sort align-middle ps-3 w-auto" scope="col" data-sort="tags" style="width:75px;">COULEURS & TAILLES</th>
+                  {{--<th class="sort align-middle ps-3 w-auto" scope="col" data-sort="vendor">TAILLES</th>--}}
                   <th class="sort text-end align-middle pe-0 ps-4" scope="col">ACTIONS</th>
                 </tr>
               </thead>
@@ -83,18 +83,24 @@
                       </td>
 
                       <td class="align-middle review ps-3">
-                        @if($product->colors->count() > 0)
-                        <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label="Default select example .form-select-sm" name="color">
-                        <option>Choisir</option>
-                          @foreach($product->colors as $colorGet)
-                            <option value="{{ $colorGet->id }}"> {{$colorGet->name}} </option>
-                          @endforeach
-                        </select>
+                        @if($product->product_color_sizes->count() > 0)
+                          <select class="form-select form-select-sm p-1" style="width: 110px;" aria-label="Default select example .form-select-sm" name="getProductColorSize">
+                          <option>Choisir</option>
+                            @foreach($product->product_color_sizes as $getProductColorSize)
+                              @if ($getProductColorSize->quantity > 0)
+                                <option value="{{ $getProductColorSize->id }}">
+                                  <span class=""> {{$getProductColorSize->color->name}}</span> 
+                                  <span class=""> {{$getProductColorSize->size->name}}</span> 
+                                  <span class=""> {{$getProductColorSize->quantity}}</span> 
+                                </option>
+                              @endif
+                            @endforeach
+                          </select>
                         @else 
                           Null
                         @endif
                       </td>
-
+                      {{-- 
                       <td class="align-middle review ps-3" >
                         @if($product->sizes->count() > 0)
                         <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label=".form-select-sm example" name="size">
@@ -107,7 +113,7 @@
                           Null
                         @endif
                       </td>
-                    
+                       --}}
                       <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger">
                         @if($product->quantity > 0)
                         <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-3 @if( $product->quantity < 10 ) text-white @else text-warning @endif fs-7" data-feather="shopping-cart" data-fa-transform="shrink-3"></span></a>
@@ -452,20 +458,35 @@
                 </div>
                 @endif
                 --}}
-                <div class="mb-3 text-start">
-                  <label for="organizerSingle">Sélectionner un fournisseur</label>
-                  <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
-                    <option value="">Sélectionner un...</option>
-                    @foreach ($supplies as $supplie)
-                      <option value="{{ old('supply_id') ?? $supplie->id }}" @if($supplie->id == $product->supply_id) selected="" @endif > @if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
-                    @endforeach
-                  </select>
-                  @error('supply_id')
-                    <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                </div>
+                @if ($product->supply_id == null)
+                  <div class="mb-3 text-start">
+                    <div class="col-lg-12 mb-3">
+                      <label class="form-label" for="supply_name">Nom de votre fournisseur</label>
+                      <input id="supply_name" type="text" class="form-control @error('supply_name') is-invalid @enderror" name="supply_name" value="{{ old('supply_name') ?? $product->supply_name }}" placeholder="Nom de votre fournisseur" autocomplete="supply_name">
+
+                      @error('supply_name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                    </div>
+                  </div>
+                @else
+                  <div class="mb-3 text-start">
+                    <label class="form-label" for="organizerSingle">Sélectionner un fournisseur</label>
+                    <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
+                      <option value="">Sélectionner un...</option>
+                      @foreach ($supplies as $supplie)
+                        <option value="{{ old('supply_id') ?? $supplie->id }}" @if($supplie->id == $product->supply_id) selected="" @endif > @if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
+                      @endforeach
+                    </select>
+                    @error('supply_id')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
+                  </div>
+                @endif
 
                 <div class="mb-3 text-start">
                   <label class="form-label" for="desc">Description du produit </label>
@@ -533,89 +554,6 @@
         </div>
       </div>
     @endforeach
-
-
-    @foreach($products as $product)
-      <div class="card-body p-0">
-        <div class="p-4 code-to-copy">
-          <!-- Right Offcanvas-->
-          <div class="offcanvas offcanvas-end" id="offcanvasRightMethode-{{ $product->id }}" tabindex="-1" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-              <h5 id="offcanvasRightLabel">Ajouter une unité de vente</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-              <form method="POST" action="{{ route('magasin.produit.addVendorSystem') }}">
-                @csrf
-                <input type="hidden" name="product_id" value="{{ $product->id }}">
-
-                <div class="mb-3 text-start">
-                  <label for="organizerSingle">Sélectionner une unité</label>
-                  <select class="form-select @error('unite_id') is-invalid @enderror" name="unite_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
-                    <option value="">Sélectionner un...</option>
-                    @foreach ($unites as $unite)
-                      <option value="{{ old('unite_id') ?? $unite->id }}"> {{ $unite->name }}</option>
-                    @endforeach
-                  </select>
-                  @error('unite_id')
-                    <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                </div>
-
-                <div class="mb-3 text-start">
-                  <label class="form-label" for="quantity">Quantité de l'unité</label>
-                  <input id="quantity" type="quantity" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" placeholder="Quantité de l'unité" required autocomplete="quantity">
-
-                  @error('quantity')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-                </div>
-              
-                <div class="mb-3 text-start">
-                  <label class="form-label" for="price_achat">Prix d'achat de l'unité</label>
-                  <input id="price_achat" type="numeric" class="form-control @error('price_achat') is-invalid @enderror" name="price_achat" value="{{ old('price_achat') }}" placeholder="Prix d'achat de l'unité" required autocomplete="price_achat">
-
-                  @error('price_achat')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-                </div>
-
-                 <div class="mb-3 text-start">
-                  <label class="form-label" for="price_vente">Prix de vente de l'unité</label>
-                  <input id="price_vente" type="numeric" class="form-control @error('price_vente') is-invalid @enderror" name="price_vente" value="{{ old('price_vente') }}" placeholder="Prix de vente de l'unité" required autocomplete="price_vente">
-
-                  @error('price_vente')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
-                </div>
-
-                <div class="mb-3 text-start">
-                  <div class="form-check form-switch">
-                    <input class="form-check-input @error('status_unite') is-invalid @enderror" id="status_unite" name="status_unite" type="checkbox" value="1" />
-                    <label class="form-check-label mt-1" for="status_unite">Unité de base</label>
-                  </div>
-                  @error('status_unite')
-                    <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                </div>
-
-                <button class="btn btn-primary w-100 mb-3" type="submit">Enregistrer cette unité</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    @endforeach
-
 
     @foreach($products as $product)
       <div class="modal fade" id="DeleteCompte-{{ $product->id }}" tabindex="-1" style="display: none;" aria-hidden="true">

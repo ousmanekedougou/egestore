@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Magasin\Order;
 use App\Models\Magasin\Product;
+use App\Models\Magasin\ProductColorSize;
 use App\Models\Magasin\VendorSystem;
 use App\Models\Magasin\Vente;
 use App\Models\User\User;
@@ -268,21 +269,32 @@ class OrderController extends Controller
             $products['product_' .$i][] = $product->options->color;
             $products['product_' .$i][] = $product->options->size;
             $products['product_' .$i][] = $product->options->unite;
+            $products['product_' .$i][] = $product->options->request_qty;
             $i++;
 
             
-            $voendor_system_get = VendorSystem::where('id',$product->options->vendor_system_id)->where('magasin_id',AuthMagasinAgent())->first();
+            // $voendor_system_get = VendorSystem::where('id',$product->options->vendor_system_id)->where('magasin_id',AuthMagasinAgent())->first();
             
-            $item = Product::find($product->model->id);
+            // $item = Product::find($product->model->id);
 
-            $getQty = $voendor_system_get->quantity * $product->qty;
+            // $getQty = $voendor_system_get->quantity * $product->qty;
 
 
-            $item->update(['quantity' => $item->quantity - $getQty]);
+            // $item->update(['quantity' => $item->quantity - $getQty]);
+
+            $productColorSize = ProductColorSize::where('id',$product->options->productColorSizeId)->where('product_id',$product->model->id)->where('magasin_id',AuthMagasinAgent())->first();
+            // dd($productColorSize);
+            $productColorSize->update(['quantity' => $productColorSize->quantity - $product->qty]);
+
         }
 
+        $productUpdateQuantity = ProductColorSize::where('product_id',$product->model->id)->where('magasin_id',AuthMagasinAgent())->sum('quantity');
+        Product::where('id',$product->model->id)->where('magasin_id', AuthMagasinAgent())->update([
+            'quantity' => $productUpdateQuantity
+        ]);
+
         // $code = $this->generateCode();
-        $verify = Order::where("magasin_id", AuthMagasinAgent())->latest()->first();
+        $verify = Order::where('magasin_id', AuthMagasinAgent())->latest()->first();
         if ($verify) {
             $newOrder = $verify->order + 1;
         }else {

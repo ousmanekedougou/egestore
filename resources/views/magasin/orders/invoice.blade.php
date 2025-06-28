@@ -50,7 +50,7 @@
             <div class="tm_invoice_left">
               <p class="tm_mb2"><b class="tm_primary_color">Facture à:</b></p>
               <p>
-                @if ($order->client->type == 1)
+                @if ($order->type == 1)
                   @if($order->client_id != '') {{ $order->client->name }} @else {{ $order->name }}@endif <br>
                   @if($order->client_id != '') {{ $order->client->email }} @else {{ $order->email }}@endif <br>
                   @if($order->client_id != '') {{ $order->client->phone }}  @else {{ $order->phone }}@endif
@@ -82,7 +82,8 @@
                       <th class="tm_width_4 tm_semi_bold tm_white_color">Désignation</th>
                       <th class="tm_width_3 tm_semi_bold tm_white_color">Couleurs</th>
                       <th class="tm_width_3 tm_semi_bold tm_white_color">Tailles</th>
-                      <th class="tm_width_3 tm_semi_bold tm_white_color">Quantites</th>
+                      <th class="tm_width_3 tm_semi_bold tm_white_color">Unités</th>
+                      <th class="tm_width_3 tm_semi_bold tm_white_color">Quantités</th>
                       <th class="tm_width_2 tm_semi_bold tm_white_color">Prix</th>
                       <th class="tm_width_2 tm_semi_bold tm_white_color tm_text_right">Total</th>
                     </tr>
@@ -90,10 +91,11 @@
                   <tbody>
                     @foreach(unserialize($order->products) as $product)
                       <tr>
-                        <td class="tm_width_4">{{$product[1]}}</td>
+                        <td class="tm_width_4 tm_text_left">{{$product[1]}}</td>
                         <td class="tm_width_3">@if($product[4] != ''){{$product[4]}} @else Null @endif</td>
                         <td class="tm_width_3">@if($product[5] != ''){{$product[5]}} @else Null @endif</td>
-                        <td class="tm_width_3">{{$product[3]}}  {{$product[6]}}</td>
+                        <td class="tm_width_3">{{$product[7]}}  {{$product[6]}}</td>
+                        <td class="tm_width_3 tm_text_center">{{$product[3]}}</td>
                         <td class="tm_width_2">{{$product[2]}}</td>
                         <td class="tm_width_2 tm_text_right">{{$product[2] * $product[3]}}</td>
                       </tr>
@@ -111,23 +113,27 @@
                 <table class="tm_mb15">
                   <tbody>
                      @if($order->type == 1)
-                      <tr class="tm_gray_bg ">
-                        <td class="tm_width_3 tm_primary_color tm_bold">Somme décaissée</td>
-                        <td class="tm_width_3 tm_primary_color tm_bold tm_text_right">{{$order->client->getAmount()}}</td>
-                      </tr>
-                      <tr class="tm_gray_bg">
-                        <td class="tm_width_3 tm_primary_color tm_bold">Somme restante</td>
-                        <td class="tm_width_3 tm_primary_color tm_text_right tm_bold">{{$order->client->getRestant()}}</td>
-                      </tr>
+                      @if($order->client_id != '')
+                        <tr class="tm_gray_bg ">
+                          <td class="tm_width_3 tm_primary_color tm_bold">Somme décaissée</td>
+                          <td class="tm_width_3 tm_primary_color tm_bold tm_text_right">{{$order->client->getAmount()}}</td>
+                        </tr>
+                        <tr class="tm_gray_bg">
+                          <td class="tm_width_3 tm_primary_color tm_bold">Somme restante</td>
+                          <td class="tm_width_3 tm_primary_color tm_text_right tm_bold">{{$order->client->getRestant()}}</td>
+                        </tr>
+                      @endif
                     @elseif ($order->type == 2)
-                      <tr class="tm_gray_bg ">
-                        <td class="tm_width_3 tm_primary_color tm_bold">Somme ecaissée</td>
-                        <td class="tm_width_3 tm_primary_color tm_bold tm_text_right">{{$order->client->getAmount()}}</td>
-                      </tr>
-                      <tr class="tm_gray_bg">
-                        <td class="tm_width_3 tm_primary_color tm_bold">Réstant à payer</td>
-                        <td class="tm_width_3 tm_primary_color tm_text_right tm_bold">{{$order->client->getRestant()}}</td>
-                      </tr>
+                      @if($order->client_id != '')
+                        <tr class="tm_gray_bg ">
+                          <td class="tm_width_3 tm_primary_color tm_bold">Somme ecaissée</td>
+                          <td class="tm_width_3 tm_primary_color tm_bold tm_text_right">{{$order->client->getAmount()}}</td>
+                        </tr>
+                        <tr class="tm_gray_bg">
+                          <td class="tm_width_3 tm_primary_color tm_bold">Réstant à payer</td>
+                          <td class="tm_width_3 tm_primary_color tm_text_right tm_bold">{{$order->client->getRestant()}}</td>
+                        </tr>
+                      @endif
                     @endif
                     <tr class="tm_accent_bg">
                       <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_white_color">Grand Total	</td>

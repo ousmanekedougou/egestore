@@ -179,12 +179,12 @@ class ProduitController extends Controller
 
         $products = $subcategory->products()->orderBy('id','desc')->paginate(50);
         return view('magasin.produits.index',
-            [
-                'products' => $products,
-                'subcategory' => $subcategory,
-                'supplies'    => Supply::where('owner_id',AuthMagasinAgent())->get(),     
-                'unites'    => Unite::where('magasin_id',AuthMagasinAgent())->get()     
-            ]);
+        [
+            'products' => $products,
+            'subcategory' => $subcategory,
+            'supplies'    => Supply::where('owner_id',AuthMagasinAgent())->get(),     
+            'unites'    => Unite::where('magasin_id',AuthMagasinAgent())->get()     
+        ]);
     }
 
     /**
@@ -336,13 +336,26 @@ class ProduitController extends Controller
      public function addVendorSystem(Request $request){
         $this->validate($request,[
             'unite_id' => 'required|string',
-            'price_achat' => 'required|numeric',
-            'price_vente' => 'required|numeric',
             'quantity' => 'required|numeric',
             'status_unite' => 'boolean',
         ]);
 
         // dd($request->all());
+
+        $unite_status = VendorSystem::where('id',$request->unite_status)->where('status',1)->where('magasin_id',AuthMagasinAgent())->first();
+
+        if ($unite_status->status == 1) {
+            $price_achat = $unite_status->price_achat * $request->quantity;
+            $price_vente = $unite_status->price_vente * $request->quantity;
+        }else{
+            $this->validate($request,[
+                'price_achat' => 'required|numeric',
+                'price_vente' => 'required|numeric',
+            ]);
+
+            $price_achat = $request->price_achat;
+            $price_vente = $request->price_vente;
+        }
 
         $uniteExist = VendorSystem::where('unite_id',$request->unite_id)->where('product_id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->first();
         $uniteStatusExist = VendorSystem::where('magasin_id',AuthMagasinAgent())->where('product_id',$request->product_id)->where('status',1)->first();
@@ -351,12 +364,11 @@ class ProduitController extends Controller
                 Toastr()->error('Une unité de base a été ajouté pour ce produit', 'Unités de base', ["positionClass" => "toast-top-right"]);
                 return back();
             }else{
-                if($request->price_vente > $request->price_achat){
-
+                if($price_vente > $price_achat){
                     VendorSystem::create([
                         'unite_id' => $request->unite_id,
-                        'price_achat' => $request->price_achat,
-                        'price_vente' => $request->price_vente,
+                        'price_achat' => $price_achat,
+                        'price_vente' => $price_vente,
                         'quantity' => $request->quantity,
                         'status' => $request->status_unite,
                         'product_id' => $request->product_id,
@@ -382,23 +394,38 @@ class ProduitController extends Controller
     }
 
     public function showVendorSystem($slug){
+        $product = Product::where('slug',$slug)->where('magasin_id',AuthMagasinAgent())->first();
+        $unite_status = VendorSystem::where('product_id',$product->id)->where('status',1)->where('magasin_id',AuthMagasinAgent())->first();
+        // dd($unite_status->id);
         return view('magasin.produits.product_unite_show',
         [
-            'product' => Product::where('slug',$slug)->where('magasin_id',AuthMagasinAgent())->first(),
-            'unites'    => Unite::where('magasin_id',AuthMagasinAgent())->where('visible',1)->get() 
+            'product' => $product,
+            'unite_status' => $unite_status,
+            'unites'  => Unite::where('magasin_id',AuthMagasinAgent())->where('visible',1)->get() 
         ]);
     }
 
     public function updateVendorSystem(Request $request, $id){
         $this->validate($request,[
             'unite_id' => 'required|string',
-            'price_achat' => 'required|numeric',
-            'price_vente' => 'required|numeric',
             'quantity' => 'required|numeric',
             'status_unite' => 'boolean',
         ]);
 
-        $status_unite = null;
+        $unite_status = VendorSystem::where('id',$request->unite_status)->where('status',1)->where('magasin_id',AuthMagasinAgent())->first();
+
+        if ($unite_status->status == 1) {
+            $price_achat = $unite_status->price_achat * $request->quantity;
+            $price_vente = $unite_status->price_vente * $request->quantity;
+        }else{
+            $this->validate($request,[
+                'price_achat' => 'required|numeric',
+                'price_vente' => 'required|numeric',
+            ]);
+
+            $price_achat = $request->price_achat;
+            $price_vente = $request->price_vente;
+        }
 
         $get_current_vendor = VendorSystem::where('id',$id)->where('product_id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->first();
         $uniteStatusExist = VendorSystem::where('id','!=',$id)->where('magasin_id',AuthMagasinAgent())->where('product_id',$request->product_id)->where('status',1)->first();
@@ -406,13 +433,13 @@ class ProduitController extends Controller
             Toastr()->error('Une unité de base a été ajouté pour ce produit', 'Unités de base', ["positionClass" => "toast-top-right"]);
             return back();
         }else{
-            if($request->price_vente > $request->price_achat){
+            if($price_vente > $price_achat){
             
                 VendorSystem::where('id',$id)->where('product_id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->update(
                     [
                         'unite_id' => $request->unite_id,
-                        'price_achat' => $request->price_achat,
-                        'price_vente' => $request->price_vente,
+                        'price_achat' => $price_achat,
+                        'price_vente' => $price_vente,
                         'quantity' => $request->quantity,
                         'status' => $request->status_unite,
                         'product_id' => $request->product_id,
