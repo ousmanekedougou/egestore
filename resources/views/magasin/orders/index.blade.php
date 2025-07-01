@@ -11,7 +11,7 @@
       <div class="mb-4">
         <div class="row g-3">
           <div class="col-auto">
-            <div class="search-box">
+            <div class="search-box" style="width: 100%;">
               <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Rechercher un commande" aria-label="Search" />
                 <span class="fas fa-search search-box-icon"></span>
               </form>

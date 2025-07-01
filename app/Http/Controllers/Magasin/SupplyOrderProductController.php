@@ -104,7 +104,7 @@ class SupplyOrderProductController extends Controller
     {
         $supplyOrderNotify = SupplyOrder::where("request_id", AuthMagasinAgent())->where('slug',$slug)->first();
         $supplyOrderNotify->update(['notify' => 1]);
-        return view('magasin.supplies.product',['supplyOrder' => $supplyOrderNotify]);
+        return view('magasin.supplies.product',['supplyOrder' => $supplyOrderNotify,'is_vendor_order' => 1]);
     }
 
     /**

@@ -11,14 +11,12 @@
       <div id="products" data-list='{"valueNames":["customer","email","total-orders","total-spent","city","last-seen","last-order"],"page":10,"pagination":true}'>
         <div class="mb-4">
           <div class="row g-3">
-            <div class="col-auto">
-              <div class="search-box">
-                <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="rechercher un client" aria-label="Search" />
-                  <span data-feather="search" class="search-box-icon"></span>
-                </form>
-              </div>
+            <div class="search-box" style="width: 70%;">
+              <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="rechercher un fidèle client" aria-label="Search" />
+                <span data-feather="search" class="search-box-icon"></span>
+              </form>
             </div>
-            <div class="col-auto">
+            <div class="col-auto ms-auto">
                 <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                   <span data-feather="plus" class="me-2"></span>Ajouter un client
                 </button>

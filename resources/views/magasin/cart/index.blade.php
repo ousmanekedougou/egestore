@@ -32,8 +32,8 @@
                           <tr class="cart-table-row btn-reveal-trigger">
                             <td class="align-middle white-space-nowrap py-0"><a class="d-block border border-translucent rounded-2"><img src="{{Storage::url($product->model->image)}}" alt="" width="53" /></a></td>
                             <td class="products align-middle"><a class="fw-semibold mb-0 line-clamp-2">{{$product->model->name}}</a></td>
-                            <td class="color align-middle white-space-nowrap fs-9 text-body">{{ $product->options->color }}</td>
-                            <td class="size align-middle white-space-nowrap text-body-tertiary fs-9 fw-semibold">{{ $product->options->size }}</td>
+                            <td class="color align-middle white-space-nowrap fs-9 text-body">@if($product->options->color != null){{ $product->options->color }}@else Null @endif</td>
+                            <td class="size align-middle white-space-nowrap text-body-tertiary fs-9 fw-semibold">@if($product->options->size != null){{ $product->options->size }}@else Null @endif</td>
                             <td class="price align-middle text-body fs-9 fw-semibold text-end" style="width:auto;">{{$product->model->getPrice()}}</td>
                             <td class="quantity align-middle fs-8 ps-5">
                               <div class="input-group input-group-sm flex-nowrap" data-quantity="data-quantity">
@@ -42,7 +42,7 @@
                                 <a class="btn btn-sm px-2" href="{{ route('magasin.panier.show',$product->rowId) }}" data-type="plus">+</a>
                               </div>
                             </td>
-                            <td class="color align-middle white-space-nowrap fs-9 text-body text-center">{{ $product->options->request_qty }} - {{ $product->options->unite }}</td>
+                            <td class="color align-middle white-space-nowrap fs-9 text-body text-center">@if($product->options->unite != null){{$product->options->request_qty }} - {{ $product->options->unite }} @else Null @endif</td>
                             <td class="total align-middle fw-bold text-body-highlight text-end fs-9"> {{$product->model->getProductSubtotal($product->subtotal())}}</td>
                             <td class="align-middle white-space-nowrap text-end pe-0 ps-3">
                               <a href="{{ route('magasin.panier.destroy',$product->rowId) }}" onclick="event.preventDefault(); document.getElementById('SupprimerAuPanier-{{ $product->id }}').submit();" class="btn btn-sm text-body-tertiary text-opacity-85 text-body-tertiary-hover me-2"><span class="text-warning fs-7" data-feather="trash-2"></span></a>

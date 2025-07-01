@@ -10,7 +10,7 @@
         </div>
         <div class="col-auto">
           <div class="row g-3">
-            <div class="col-auto">
+            <div class="col-auto ms-auto">
               {{--  
               <a href="{{ route('magasin.fournisseurs.addSupply',$magasin->id) }}" class="btn btn-phoenix-secondary">
                 <span class="fas fa-shopping-bag me-2"></span>Ajouter comme fournisseur

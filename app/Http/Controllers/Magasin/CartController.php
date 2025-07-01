@@ -45,10 +45,7 @@ class CartController extends Controller
      */
     public function create()
     {
-        if (Auth::guard('magasin')->user()->id) {
-            Cart::destroy();
-        }
-        
+        Cart::destroy();
         Toastr()->success('Votre panier a bien été vidé', 'Vider le panier', ["positionClass" => "toast-top-right"]);
         return redirect()->route('magasin.home');
     }
@@ -58,26 +55,34 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->qty != null && $request->vendor_system != null) {
+        if ($request->qty != null && $request->unite_id != null) {
         
             $duplicata = Cart::search(function ($cartItem, $rowId) use ($request){
-                if ($cartItem->id == $request->product_id && $cartItem->options->productColorSizeId == $request->getProductColorSize && $cartItem->options->unite == $request->vendor_system) {
+                if ($cartItem->id == $request->product_id && $cartItem->options->productColorSizeId == $request->getProductColorSize) {
                     return $cartItem->id == $request->product_id;
                 }
             });
+            
             // dd($request->all());
 
             $getProductColorSizeId = null;
             $color = null;
             $size = null;
             $qty = null;
-
+            $uniteCode = null;
+            $vendor_system_id = null;
+            $quantityFinale = null;
+            
+            $product = Product::where('id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->first();
             if($request->getProductColorSize != null)
             {
                 $attribute = ProductColorSize::where('id',$request->getProductColorSize)->where('product_id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->first();
                 $getProductColorSizeId = $attribute->id;
                 $color = $attribute->color->name;
                 $size = $attribute->size->name;
+                $quantityFinale = $attribute->quantity;
+            }else{
+                $quantityFinale = $product->quantity;
             }
 
             // if($request->size != null)
@@ -92,30 +97,30 @@ class CartController extends Controller
                 return back();
             }
 
-            $voendor_system = VendorSystem::where('id',$request->vendor_system)->where('magasin_id',AuthMagasinAgent())->first();
+            $vendor_system = VendorSystem::where('id',$request->unite_id)->where('magasin_id',AuthMagasinAgent())->first();
             
-            if($request->qty != null)
+            if($vendor_system)
             {
-                if ($voendor_system->status == 1) {
+                if ($vendor_system->status == 1) {
                     $qty = $request->qty;
                 }else{
-                    $qty = $request->qty * $voendor_system->quantity;
+                    $qty = $request->qty * $vendor_system->quantity;
+                    // dd($qty);
                 }
-            }else {
-                $qty = 1;
+                $uniteCode = $vendor_system->unite->code;
+                $vendor_system_id = $vendor_system->id;
             }
 
-            $product_color_size = ProductColorSize::where('product_id',$request->product_id)->where('id',$getProductColorSizeId)->where('magasin_id',AuthMagasinAgent())->first();
-            // dd($product_color_size->quantity);
-            $product = Product::where('id',$request->product_id)->where('magasin_id',AuthMagasinAgent())->first();
-            if ($qty <= $product_color_size->quantity) {
+            // dd($quantityFinale);
+
+            if ($qty <= $quantityFinale) {
                 Cart::add($product->id, $product->name, $qty, $product->price,
                 array(
                     'productColorSizeId' => $getProductColorSizeId,
                     'color' => $color,
                     'size' => $size,
-                    'unite' => $voendor_system->unite->code,
-                    'vendor_system_id' => $voendor_system->id,
+                    'unite' => $uniteCode,
+                    'vendor_system_id' => $vendor_system_id,
                     'request_qty' => $request->qty
                     ))
                 ->associate('App\Models\Magasin\Product');

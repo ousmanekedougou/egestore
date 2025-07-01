@@ -1,4 +1,4 @@
-@extends('layouts.app',['title' => 'categories'])
+@extends('layouts.app',['title' => 'catégories'])
 
 @section('main-content')
   <div class="content">
@@ -6,22 +6,20 @@
     <div class="mb-9">
       <div class="row g-2 mb-4">
         <div class="col-auto">
-          <h2 class="mb-0">Mes categories</h2>
+          <h2 class="mb-0">Mes catégories</h2>
         </div>
       </div>
       <div id="products" data-list='{"valueNames":["customer","email","total-orders","total-spent","city","last-seen","last-order"]}'>
         <div class="mb-4">
           <div class="row g-3">
-            <div class="col-auto">
-              <div class="search-box">
-                <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Rechercher une categorie" aria-label="Search" />
-                  <span class="fas fa-search search-box-icon"></span>
-                </form>
-              </div>
+            <div class="search-box" style="width: 70%;">
+              <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Rechercher une categorie" aria-label="Search" />
+                <span class="fas fa-search search-box-icon"></span>
+              </form>
             </div>
-            <div class="col-auto">
+            <div class="col-auto ms-auto">
                 <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                  <span class="me-2" data-feather="plus"></span>Ajouter une categorie
+                  <span class="me-2" data-feather="plus"></span>Ajouter une catégorie
               </button>
             </div>
           </div>

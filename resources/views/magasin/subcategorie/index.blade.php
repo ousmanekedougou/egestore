@@ -1,4 +1,4 @@
-@extends('layouts.app',['title' => 'sous-categories'])
+@extends('layouts.app',['title' => 'sous catégories'])
 
 @section('main-content')
   <div class="content">
@@ -6,22 +6,20 @@
     <div class="mb-9">
       <div class="row g-2 mb-4">
         <div class="col-auto">
-          <h2 class="mb-0">Les sous-categories de la categorie {{ $cateorie->name }}</h2>
+          <h2 class="mb-0">Les sous catégories de la catégorie {{ $cateorie->name }}</h2>
         </div>
       </div>
       <div id="products" data-list='{"valueNames":["customer","email","total-orders","total-spent","city","last-seen","last-order"]}'>
         <div class="mb-4">
           <div class="row g-3">
-            <div class="col-auto">
-              <div class="search-box">
-                <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Rechercher une sous-categorie" aria-label="Search" />
-                  <span class="fas fa-search search-box-icon"></span>
-                </form>
-              </div>
+            <div class="search-box" style="width: 70%;">
+              <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Rechercher une sous catégorie" aria-label="Search" />
+                <span class="fas fa-search search-box-icon"></span>
+              </form>
             </div>
-            <div class="col-auto">
+            <div class="col-auto ms-auto">
                 <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                  <span class="me-2" data-feather="plus"></span>Ajouter une sous-categorie
+                  <span class="me-2" data-feather="plus"></span>Ajouter une sous catégorie
               </button>
             </div>
           </div>
@@ -66,14 +64,14 @@
         <!-- Right Offcanvas-->
         <div class="offcanvas offcanvas-end" id="offcanvasRight" tabindex="-1" aria-labelledby="offcanvasRightLabel">
           <div class="offcanvas-header">
-            <h5 id="offcanvasRightLabel">Ajouter une sous-categorie</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <h5 id="offcanvasRightLabel">Ajouter une sous catégorie</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
             <form method="POST" action="{{ route('magasin.sous-categorie.store') }}">
               @csrf
               <input type="hidden" name="category_id" value="{{ $cateorie->id }}">
               <div class="mb-3 text-start">
-                  <label class="form-label" for="name">Nom de la sous-categorie</label>
+                  <label class="form-label" for="name">Nom de la sous catégorie</label>
                   <input id="name" type="text" placeholder="Nom de la sous-categorie" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
                   @error('name')
@@ -84,7 +82,7 @@
               </div>
               {{--  
                 <div class="mb-3 text-start">
-                  <label class="form-label" for="type">Selecetionner le type de cette categorie</label>
+                  <label class="form-label" for="type">Selecetionner le type de cette catégorie</label>
                   <select class="form-select @error('type') is-invalid @enderror" name="type" aria-label="Default select example">
                     <option selected=""></option>
                     <option value="1">Commercial</option>
@@ -100,7 +98,7 @@
               --}}
               
               <div class="mb-3 text-start">
-                <label class="form-label" for="email">Status de la sous-categories</label> <br>
+                <label class="form-label" for="email">Status de la sous catégorie</label> <br>
                 <div class="form-check form-check-inline">
                   <input class="form-check-input text-success @error('visible') is-invalid @enderror"  id="inlineRadio1" type="radio" name="visible" value=" 1 ">
                   <label class="form-check-label text-success" for="inlineRadio1">Visible</label>
@@ -115,7 +113,7 @@
                   </span>
                 @enderror
               </div>
-              <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer la sous-categories</button>
+              <button class="btn btn-primary w-100 mb-3" type="submit">Enreistrer la sous catégorie</button>
             </form>
           </div>
         </div>

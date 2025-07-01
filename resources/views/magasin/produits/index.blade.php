@@ -71,8 +71,8 @@
 
                       <td class="align-middle review ps-3">
                         @if($product->vendor_systems->count() > 0)
-                          <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label="Default select example .form-select-sm" name="vendor_system" required>
-                          <option>Choisir</option>
+                          <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label="Default select example .form-select-sm" name="unite_id" required>
+                          <option value="">Choisir</option>
                             @foreach($product->vendor_systems as $vendor_system)
                               <option value="{{ $vendor_system->id }}"> {{ $vendor_system->unite->code }} </option>
                             @endforeach
@@ -85,7 +85,7 @@
                       <td class="align-middle review ps-3">
                         @if($product->product_color_sizes->count() > 0)
                           <select class="form-select form-select-sm p-1" style="width: 110px;" aria-label="Default select example .form-select-sm" name="getProductColorSize">
-                          <option>Choisir</option>
+                          <option value="">Choisir</option>
                             @foreach($product->product_color_sizes as $getProductColorSize)
                               @if ($getProductColorSize->quantity > 0)
                                 <option value="{{ $getProductColorSize->id }}">

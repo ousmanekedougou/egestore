@@ -20,20 +20,20 @@
       <div id="products" data-list='{"valueNames":["product","price","category","tags","vendor","time"]}'>
         <div class="mb-4">
           <div class="d-flex flex-wrap gap-3">
-            <div class="search-box">
+            <div class="search-box" style="width: 70%;">
               <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Rechercher un produit" aria-label="Search" />
                 <span class="fas fa-search search-box-icon"></span>
               </form>
             </div>
-              <div class="ms-xxl-auto">
-                @if($is_vendor_order == 0)
-                  @if($supplyOrder->status == 2)
-                    <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                      <span data-feather="plus" class="me-2"></span>Ajouter des produits
-                    </button>
-                  @endif
+            <div class="ms-xxl-auto ms-auto">
+              @if($is_vendor_order == 0)
+                @if($supplyOrder->status == 2)
+                  <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                    <span data-feather="plus" class="me-2"></span>Ajouter des produits
+                  </button>
                 @endif
-              </div>
+              @endif
+            </div>
           </div>
         </div>
         <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis border-top border-bottom border-translucent position-relative top-1">
@@ -144,19 +144,19 @@
                     <tbody class="list" id="customers-table-body">
                       <tr class="hover-actions-trigger btn-reveal-trigger position-static">
                         <td class="customer align-middle white-space-nowrap pe-5 text-center">
-                          <input type="text" placeholder="Designation" class="form-control @error('name') is-invalid @enderror" name="inputs[0][name]" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                          <input type="text" placeholder="Designation" class="form-control @error('name') is-invalid @enderror" name="inputs[0][name]" value="{{ old('name') }}" autocomplete="name" autofocus>
                         </td>
                         <td class="city align-middle white-space-nowrap text-body-highlight ps-7 text-center">
                           <input type="text" placeholder="Reference" class="form-control @error('reference') is-invalid @enderror" name="inputs[0][reference]" value="{{ old('reference') }}" autocomplete="reference" autofocus>
                         </td>
                         <td class="email align-middle white-space-nowrap pe-5 text-center">
-                          <input type="number" placeholder="Quantite" class="form-control @error('quantite') is-invalid @enderror" name="inputs[0][qty]" value="{{ old('quantite') }}" required autocomplete="quantite" autofocus>
+                          <input type="number" placeholder="Quantite" class="form-control @error('quantite') is-invalid @enderror" name="inputs[0][qty]" value="{{ old('quantite') }}" autocomplete="quantite" autofocus>
                         </td>
                         <td class="email align-middle white-space-nowrap pe-5 text-center">
-                          <input id="colors" type="text" placeholder="coleurs" class="colors form-control @error('colors') is-invalid @enderror" name="inputs[0][colors]" value="{{ old('colors') }}" required autocomplete="colors" autofocus>
+                          <input id="colors" type="text" placeholder="coleurs" class="colors form-control @error('colors') is-invalid @enderror" name="inputs[0][colors]" value="{{ old('colors') }}" autocomplete="colors" autofocus>
                         </td>
                         <td class="email align-middle white-space-nowrap pe-5 text-center">
-                          <input id="sizes" type="text" placeholder="Tailles" class="sizes form-control @error('sizes') is-invalid @enderror" name="inputs[0][sizes]" value="{{ old('sizes') }}" required autocomplete="sizes" autofocus>
+                          <input id="sizes" type="text" placeholder="Tailles" class="sizes form-control @error('sizes') is-invalid @enderror" name="inputs[0][sizes]" value="{{ old('sizes') }}" autocomplete="sizes" autofocus>
                         </td>
                         <td class="email align-middle white-space-nowrap ml-3 pe-5 text-center">
                           <input class="form-control @error('image') is-invalid @enderror" id="image" name="inputs[0][image]" type="file" value="{{ old('image') }}" autocomplete="image"/>
@@ -399,22 +399,22 @@
           <tr class="hover-actions-trigger btn-reveal-trigger position-static">
 
             <td class="customer align-middle white-space-nowrap pe-5 text-center">
-              <input type="text" placeholder="Designation" class="form-control @error('name') is-invalid @enderror" name="inputs[`+i+`][name]" value="{{ old('name') }}" required autocomplete="name" autofocus>
+              <input type="text" placeholder="Designation" class="form-control @error('name') is-invalid @enderror" name="inputs[`+i+`][name]" value="{{ old('name') }}" autocomplete="name" autofocus>
             </td>
             <td class="city align-middle white-space-nowrap text-body-highlight ps-7 text-center">
               <input type="text" placeholder="Reference" class="form-control @error('reference') is-invalid @enderror" name="inputs[`+i+`][reference]" value="{{ old('reference') }}"  autocomplete="reference" autofocus>
             </td>
             <td class="email align-middle white-space-nowrap pe-5 text-center">
-              <input type="number" placeholder="Quantite" class="form-control @error('quantite') is-invalid @enderror" name="inputs[`+i+`][qty]" value="{{ old('quantite') }}" required autocomplete="quantite" autofocus>
+              <input type="number" placeholder="Quantite" class="form-control @error('quantite') is-invalid @enderror" name="inputs[`+i+`][qty]" value="{{ old('quantite') }}" autocomplete="quantite" autofocus>
             </td>
             <td class="email align-middle white-space-nowrap pe-5 text-center">
-              <input id="colors" type="text" placeholder="Couleurs" class="form-control colors @error('colors') is-invalid @enderror" name="inputs[`+i+`][colors]" value="{{ old('colors') }}" required autocomplete="colors" autofocus>
+              <input id="colors" type="text" placeholder="Couleurs" class="form-control colors @error('colors') is-invalid @enderror" name="inputs[`+i+`][colors]" value="{{ old('colors') }}" autocomplete="colors" autofocus>
             </td>
             <td class="email align-middle white-space-nowrap pe-5 text-center">
-              <input id="sizes" type="text" placeholder="Tailles" class="form-control sizes @error('sizes') is-invalid @enderror" name="inputs[`+i+`][sizes]" value="{{ old('sizes') }}" required autocomplete="sizes" autofocus>
+              <input id="sizes" type="text" placeholder="Tailles" class="form-control sizes @error('sizes') is-invalid @enderror" name="inputs[`+i+`][sizes]" value="{{ old('sizes') }}" autocomplete="sizes" autofocus>
             </td>
             <td class="email align-middle white-space-nowrap pe-5 ml-3 text-center">
-              <input type="file" class="form-control @error('image') is-invalid @enderror" name="inputs[`+i+`][image]" value="{{ old('image') }}" required autocomplete="image" autofocus>
+              <input type="file" class="form-control @error('image') is-invalid @enderror" name="inputs[`+i+`][image]" value="{{ old('image') }}" autocomplete="image" autofocus>
             </td>
             <td class="last-order align-middle white-space-nowrap text-body-tertiary text-center">
               <button type="button" class="btn btn-danger remove-table-row">
@@ -422,7 +422,8 @@
               </button>
             </td>
           </tr>
-          </tbody>
+        </tbody>
+        
         `
       )
     });

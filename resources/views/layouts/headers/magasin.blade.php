@@ -95,7 +95,7 @@
                     <a href="{{ route('magasin.devis-produits.notify',$orderNotify->slug) }}">
                       <div class="d-flex align-items-center justify-content-between position-relative">
                         <div class="d-flex">
-                          <div class="avatar avatar-m status-online me-3"><img class="rounded-circle" src="@if($orderNotify->magasin->image != '') {{Storage::url($orderNotify->magasin->image)}} @else https://ui-avatars.com/api/?name={{ $orderNotify->magasin->name }} @endif" alt="" /></div>
+                          <div class="avatar avatar-m status-online me-3"><img class="rounded-circle" src="@if($orderNotify->magasin->logo != '') {{Storage::url($orderNotify->magasin->logo)}} @else https://ui-avatars.com/api/?name={{ $orderNotify->magasin->name }} @endif" alt="" /></div>
                           <div class="flex-1 me-sm-3">
                             <h4 class="fs-9 text-body-emphasis">{{ $orderNotify->magasin->name }}</h4>
                             <p class="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal"><span class='me-1 fs-10'>💬</span>BC : {{ $orderNotify->bon_commande }}<span class="ms-2 text-body-quaternary text-opacity-75 fw-bold fs-10">{{date('d-m-Y', strtotime( $orderNotify->date ))}}</span></p>

@@ -17,12 +17,12 @@
       <div id="products" data-list='{"valueNames":["product","price","category","tags","vendor","time"],"page":10,"pagination":true}'>
         <div class="mb-4">
           <div class="d-flex flex-wrap gap-3">
-            <div class="search-box">
+            <div class="search-box" style="width: 70%;">
               <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Rechercher un produit" aria-label="Search" />
                 <span class="fas fa-search search-box-icon"></span>
               </form>
             </div>
-            <div class="ms-xxl-auto">
+            <div class="ms-xxl-auto ms-auto">
               @if($reserve->status == 1)
                 <a href="{{ route('magasin.reserve.delete',$reserve->id) }}" class="btn btn-warning">
                   <span data-feather="trash-2" data-fa-transform="shrink-3" class="me-2"></span>Vider ce stock

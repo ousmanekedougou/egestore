@@ -13,13 +13,13 @@
         <div class="mb-4">
           <div class="row g-3">
             <div class="col-auto">
-              <div class="search-box">
+              <div class="search-box" style="width: 70%;">
                 <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Rechercher une unite" aria-label="Search" />
                   <span class="fas fa-search search-box-icon"></span>
                 </form>
               </div>
             </div>
-            <div class="col-auto">
+            <div class="col-auto ms-auto">
                 <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                   <span class="me-2" data-feather="plus"></span>Ajouter une unité pour ce produit
               </button>

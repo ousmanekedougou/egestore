@@ -14,7 +14,7 @@
 
     <div id="products" data-list='{"valueNames":["product","price","category","tags","vendor","time"]}'>
       <div class="mb-4">
-        <div class="search-box">
+        <div class="search-box" style="width: 100%;">
           <form class="position-relative">
             <input class="form-control search-input search" type="search" placeholder="Rechercher un produit" aria-label="Search" />
             <span class="fas fa-search search-box-icon"></span>
@@ -31,9 +31,9 @@
                 <th class="sort align-middle text-end ps-4" scope="col" data-sort="category" style="width:150px;">REFERENCES</th>
                 <th class="sort align-middle text-end ps-4" scope="col" data-sort="price" style="width:150px;">PRIX UNITAIRE</th>
                 <th class="sort align-middle text-end ps-4" scope="col" data-sort="time" style="width:150px;">QUANTITES</th>
-                <th class="sort align-middle text-end ps-4" scope="col" data-sort="time" style="width:150px;">UNITES</th>
-                <th class="sort align-middle ps-3" scope="col" data-sort="tags" style="width:100px;">COULEUR</th>
-                <th class="sort align-middle ps-3" scope="col" data-sort="vendor" style="width:100px;">TAILLES</th>
+                <th class="sort align-middle ps-3 w-auto" scope="col" data-sort="tags">UNITES</th>
+                <th class="sort align-middle ps-3 w-auto" scope="col" data-sort="tags" style="width:75px;">COULEURS & TAILLES</th>
+                {{--<th class="sort align-middle ps-3" scope="col" data-sort="vendor" style="width:100px;">TAILLES</th>--}}
                 <th class="sort text-end align-middle pe-1 ps-4" scope="col">PANIERS</th>
               </tr>
             </thead>
@@ -67,31 +67,38 @@
                         Null
                       @endif
                     </td>
-                    <td class="align-middle review ps-3">
-                      @if($product->colors != '')
-                      <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label="Default select example .form-select-sm" name="color">
-                      <option value="">Choisir</option>
-                        @foreach(unserialize($product->colors) as $colorGet)
-                          <option value="{{ $colorGet }}"> {{$colorGet}} </option>
-                        @endforeach
-                      </select>
+                    <td class="align-middle review ps-3 text-center">
+                      @if($product->product_color_sizes->count() > 0)
+                        <select class="form-select form-select-sm p-1" style="width: 110px;" aria-label="Default select example .form-select-sm" name="getProductColorSize">
+                        <option>Choisir</option>
+                          @foreach($product->product_color_sizes as $getProductColorSize)
+                            @if ($getProductColorSize->quantity > 0)
+                              <option value="{{ $getProductColorSize->id }}">
+                                <span class=""> {{$getProductColorSize->color->name}}</span> 
+                                <span class=""> {{$getProductColorSize->size->name}}</span> 
+                                <span class=""> {{$getProductColorSize->quantity}}</span> 
+                              </option>
+                            @endif
+                          @endforeach
+                        </select>
                       @else 
                         Null
                       @endif
                     </td>
-
+                    {{-- 
                     <td class="align-middle review ps-3" >
-                      @if($product->sizes != '')
+                      @if($product->sizes->count())
                       <select class="form-select form-select-sm p-1" style="width: 75px;" aria-label=".form-select-sm example" name="size">
                       <option value="">Choisir</option>
-                        @foreach(unserialize($product->sizes) as $sizeGet)
-                          <option value="{{ $sizeGet }}"> {{$sizeGet}} </option>
+                        @foreach($product->sizes as $sizeGet)
+                          <option value="{{ $sizeGet->id }}"> {{$sizeGet->name}} </option>
                         @endforeach
                       </select>
                       @else 
                         Null
                       @endif
                     </td>
+                     --}}
                     <td class="align-middle white-space-nowrap text-end pe-3 ps-4 btn-reveal-trigger">
                       @if($product->quantity > 0)
                         <a href="{{ route('magasin.panier.store') }}" onclick="event.preventDefault(); document.getElementById('ajouterAuPanier-{{ $product->id }}').submit();"><span class="me-2 @if( $product->quantity < 10 ) text-white @else text-warning  @endif fs-7" data-feather="shopping-cart" data-fa-transform="shrink-3"></span></a>
