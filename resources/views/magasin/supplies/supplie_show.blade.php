@@ -8,11 +8,6 @@
         <div class="col-auto">
           <h2 class="mb-0">Informations sur {{ $magasin->name }}</h2>
         </div>
-        <div class="col-auto">
-          <div class="row g-3">
-            <div class="col-auto"><button class="btn btn-phoenix-danger"><span data-feather="trash-2" class="me-2"></span>Retirer</button></div>
-          </div>
-        </div>
       </div>
       <div class="row g-5">
         <div class="col-12 col-xxl-4">
@@ -153,7 +148,7 @@
                   <div class="row gx-7 gy-5 mb-5">
                     @foreach($magasin->categories as $category)
                       <div class="col-12 col-sm-6 col-md-4">
-                        <div class="d-flex align-items-center mb-3"><span class="text-primary me-2 {{ $category->icon }} fs-9" style="stroke-width:3;"></span>
+                        <div class="d-flex align-items-center mb-3"><span data-feather="{{ $category->icon }}" class="text-primary me-2 fs-9" style="stroke-width:3;"></span>
                           <h6 class="text-body-highlight mb-0 text-nowrap">{{$category->name}}</h6>
                         </div>
                         <div class="ms-n2">

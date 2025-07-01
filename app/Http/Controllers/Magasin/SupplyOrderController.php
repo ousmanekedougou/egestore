@@ -22,7 +22,7 @@ class SupplyOrderController extends Controller
      */
     public function index()
     {
-        return view('magasin.supplies.vendor_order',
+        return view('magasin.supplies.vendor.index',
         [
             'orders' => SupplyOrder::where('request_id',AuthMagasinAgent())->get()
         ]);
@@ -88,7 +88,7 @@ class SupplyOrderController extends Controller
      */
     public function show(string $slug)
     {
-        return view('magasin.supplies.buyer_order',
+        return view('magasin.supplies.buyer.index',
         [
             'supplie' => Supply::where('owner_id',AuthMagasinAgent())->where('slug',$slug)->first()
         ]);
@@ -126,8 +126,7 @@ class SupplyOrderController extends Controller
     
     public function status(Request $request, string $id)
     {
-        // dd('jjj');
-        $commande = SupplyOrder::where('id',$id)->where('request_id',AuthMagasinAgent())->first();
+        $commande = SupplyOrder::where('id',$id)->where('magasin_id',AuthMagasinAgent())->first();
         if ($commande->supply_order_products->count() > 0) 
         {
             $poductValidateCount = SupplyOrderProduct::where('supply_order_id',$commande->id)->where('status',1)->get();
@@ -136,6 +135,8 @@ class SupplyOrderController extends Controller
                 $this->validate($request,[
                     'status' => 'required|numeric',
                 ]);
+
+                // dd('yes');
                 
                 $dateUpdate = null;
                 $incvoiceNum = null;

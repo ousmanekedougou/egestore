@@ -31,7 +31,6 @@ return new class extends Migration
           $table->text('desc')->nullable();
           $table->date('exp_date')->nullable();
           $table->integer('supply_id')->nullable();
-          $table->string('supply_name')->nullable();
           
           $table
             ->foreignId("magasin_id")->nullable()

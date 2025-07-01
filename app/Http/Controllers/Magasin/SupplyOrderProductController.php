@@ -28,10 +28,13 @@ class SupplyOrderProductController extends Controller
      */
     public function create(string $slug)
     {
-        // Lescommande recue dnas le vando_order
-        return view('magasin.supplies.product',
+        // Lescommande recue dans le vando_order
+        $supplyVendor = SupplyOrder::where('slug',$slug)->first();
+        // dd($supplyVendor->magasin->name);
+        return view('magasin.supplies.vendor.product',
         [
             'supplyOrder' => SupplyOrder::where('request_id',AuthMagasinAgent())->where('slug',$slug)->first(),
+            'supplyVendor' => SupplyOrder::where('slug',$slug)->first(),
             'is_vendor_order' => 1
         ]);
     }
@@ -89,7 +92,8 @@ class SupplyOrderProductController extends Controller
      */
     public function show(string $slug)
     {
-        return view('magasin.supplies.product',
+        // Notre devis de commande dans le buyer
+        return view('magasin.supplies.buyer.product',
         [
             'supplyOrder' => SupplyOrder::where("magasin_id", AuthMagasinAgent())->where('slug',$slug)->first(),
             'is_vendor_order' => 0

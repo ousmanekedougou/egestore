@@ -57,25 +57,11 @@ class ProduitController extends Controller
             'exp_date' => 'required',
             'image' => 'required|image|mimes:PNG,png',
             // 'images.*' => 'image|mimes:PNG,png', 
+            'supply_id' => 'required|numeric',
             'desc' => 'required|string',
             'visible' => 'required|boolean',
             'promot' => 'boolean',
         ]);
-
-        if ($request->supply == 0) {
-            $this->validate($request,[
-                'supply_id' => 'required|numeric',
-            ]);
-
-            $supply_id = $request->supply_id;
-
-        }elseif ($request->supply == 1) {
-            $this->validate($request,[
-                'supply_name' => 'required|string',
-            ]);
-
-            $supply_name = $request->supply_name;
-        }
 
         $imageName = '';
         if($request->hasFile('image'))
@@ -156,8 +142,7 @@ class ProduitController extends Controller
             'promo_price' => $validatePromotion,
             'visible' => $request->visible,
             'magasin_id' => AuthMagasinAgent(),
-            'supply_id' => $supply_id,
-            'supply_name' => $supply_name,
+            'supply_id' => $request->supply_id,
             'sub_category_id' => $request->sub_category_id
         ]);
 

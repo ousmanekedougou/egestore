@@ -6,11 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Magasin\Magasin;
 use App\Models\Magasin\Product;
 use App\Models\Magasin\Supply;
-use Brian2694\Toastr\Facades\Toastr;
+use App\Models\Magasin\SupplyOrder;
+use Intervention\Image\Laravel\Facades\Image;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class SupplyController extends Controller
 {
@@ -29,7 +30,7 @@ class SupplyController extends Controller
         ]);
     }
 
-    public function addSupply($id){
+    public function addSupply(int $id){
         $magasin = Magasin::where('is_active',1)->where('confirmation_token',null)->where('id',$id)->first();
         $supplyExist = Supply::where('owner_id',AuthMagasinAgent())->where('magasin_id',$magasin->id)->first();
         if ($supplyExist) {
@@ -61,7 +62,58 @@ class SupplyController extends Controller
      */
     public function store(Request $request)
     {
-       
+        $this->validate($request,[
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:supplies',
+            'phone' => 'required|numeric|unique:supplies',
+            'adresse' => 'required|string',
+            'ninea' => 'required|string|unique:supplies',
+            'registre_com' => 'required|string|unique:supplies',
+            'visible' => 'required|boolean',
+        ]);
+
+        $imageName = '';
+        if($request->image != null){
+            $this->validate($request,[
+                'image' => 'required|image|mimes:PNG,png,JPG,jpg,JPEG,jpeg,webp',
+            ]);
+            if(request()->hasFile('image'))
+            {
+                $file = request()->file('image');
+
+                $Name = request()->name.'-'.time().'.'. $file->getClientOriginalExtension();
+                if (!is_dir(storage_path("app/public/Supplies"))) {
+                    mkdir(storage_path("app/public/Supplies/"), 0775, true);
+                }
+                $image = Image::read($file);
+                // Resize image
+                $image->resize(300, 300, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save(storage_path('app/public/Supplies/' . $Name));
+
+                $imageName = 'public/Supplies/'. $Name;
+            }
+        }
+
+        // dd($request->all());
+
+        Supply::create([
+            'name' => $request->name,
+            'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'adresse' => $request->adresse,
+            'ninea' => $request->ninea,
+            'registre_com' => $request->registre_com,
+            'image' => $imageName,
+            'status' => $request->visible,
+            'owner_id' => AuthMagasinAgent(),
+            'magasin_id' => null,
+        ]);
+
+        Toastr()->success('Votre fourniseur a été ajouté avec succéss', 'Ajout fournisseur', ["positionClass" => "toast-top-right"]);
+        return back();
+
     }
 
     /**
@@ -97,7 +149,7 @@ class SupplyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(int $id)
     {
         //
     }
@@ -143,24 +195,69 @@ class SupplyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, int $id)
     {
-        //
+        // dd($request->image);
+        $supplyUpdate = Supply::where('id',$id)->where('owner_id',AuthMagasinAgent())->first();
+        $imageName = null;
+        if($request->image != null){
+            $this->validate($request,[
+                'image' => 'required|image|mimes:PNG,png,JPG,jpg,JPEG,jpeg,webp',
+            ]);
+            if(request()->hasFile('image'))
+            {
+                $file = request()->file('image');
+
+                $Name = request()->name.'-'.time().'.'. $file->getClientOriginalExtension();
+                $image = Image::read($file);
+                // Resize image
+                $image->resize(300, 300, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save(storage_path('app/public/Supplies/' . $Name));
+
+                $imageName = 'public/Supplies/'. $Name;
+                Storage::delete($supplyUpdate->image);
+            }
+        }else{
+            $imageName = $supplyUpdate->image;
+        }
+
+
+        $supplyUpdate->update([
+            'name' => $request->name,
+            'slug' => str_replace('/','',Hash::make(Str::random(2).$request->name)),
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'adresse' => $request->adresse,
+            'ninea' => $request->ninea,
+            'registre_com' => $request->registre_com,
+            'image' => $imageName,
+            'status' => $request->visible,
+            'owner_id' => AuthMagasinAgent(),
+            'magasin_id' => null,
+        ]);
+
+        Toastr()->success('Votre fourniseur a été modifié avec succéss', 'Ajout fournisseur', ["positionClass" => "toast-top-right"]);
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $id)
     {
         $supplyGet = Supply::where('id',$id)->where('owner_id',AuthMagasinAgent())->first();
-        Product::where('supply_id',$supplyGet->id)->where('magasin_id',AuthMagasinAgent())->update(['supply_id' => null,'supply_name' => $supplyGet->name]);
-        $supplyGet->delete();
-        Toastr()->success('Fournisseur a été supprimé avec success', 'Suppréssion fournisseur', ["positionClass" => "toast-top-right"]);
-        return back();
-    }
-
-    private function getDuration(){
-        
+        $supplyOrder = SupplyOrder::where('supply_id',$supplyGet->id)->where('owner_id',AuthMagasinAgent())->where('status',2)->where('delivery',2)->first();
+        if($supplyOrder){
+            if ($supplyGet->magasin_id == null) {
+                Storage::delete($supplyGet->image);
+            }
+            $supplyGet->delete();
+            Toastr()->success('Fournisseur a été supprimé avec success', 'Suppréssion fournisseur', ["positionClass" => "toast-top-right"]);
+            return back();
+        }else{
+            Toastr()->warning('Suppression impossible ce fornisseur a des commande en cours', 'Suppréssion fournisseur', ["positionClass" => "toast-top-right"]);
+            return back();
+        }
     }
 }

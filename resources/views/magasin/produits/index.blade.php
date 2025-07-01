@@ -217,7 +217,7 @@
                  </div>
               </div>
               {{-- 
-                <div class="mb-3 text-start">
+                <div class="mb-3 d-none text-start">
                   <label class="form-label" for="colors">Entrer les couleurs du produits</label>
                   <input id="colors" type="text" placeholder="Couleurs du produits" class="form-control text-body-quaternary text-monospace @error('colors') is-invalid @enderror" name="colors" value="{{ old('colors') }}" required autocomplete="colors" autofocus>
 
@@ -228,7 +228,7 @@
                   @enderror
                 </div>
 
-                <div class="mb-3 text-start">
+                <div class="mb-3 d-none text-start">
                   <label class="form-label" for="sizes">Entrer les tailles du produit</label>
                   <input id="sizes" type="text" placeholder="Tailles du produits" class="form-control text-body-quaternary text-monospace @error('sizes') is-invalid @enderror" name="sizes" value="{{ old('sizes') }}" required autocomplete="sizes" autofocus>
 
@@ -239,26 +239,11 @@
                   @enderror
                 </div>
                --}}
-              <div class="mb-3 text-start">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input text-success @error('supply') is-invalid @enderror"  id="Mysupply" type="radio" name="supply" value="0" onclick="text(0)">
-                  <label class="form-check-label text-succes mt-1" for="Mysupply">Mes fournisseurs existants</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input text-warning @error('supply') is-invalid @enderror"  id="OurSupply" type="radio" name="supply" value="1" onclick="text(1)">
-                  <label class="form-check-label text-warning mt-1" for="OurSupply">Un autre fournisseur</label>
-                </div>
-                @error('supply')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
 
-              <div class="mb-3 text-start d-none" id="MysupplyId">
+              <div class="mb-3 text-start">
                 <label for="organizerSingle">Sélectionner un fournisseur</label>
                 <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
-                  <option value="">Sélectionner un...</option>
+                  <option value="">Sélectionner un fournisseur</option>
                   @foreach ($supplies as $supplie)
                     <option value="{{ $supplie->id }}">@if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
                   @endforeach
@@ -269,19 +254,6 @@
                   </span>
                 @enderror
               </div>
-              <div class="mb-3 text-start d-none" id="OursupplyId">
-                <div class="col-lg-12 mb-3">
-                  <label class="form-label" for="supply_name">Nom de votre fournisseur</label>
-                  <input id="supply_name" type="text" class="form-control @error('supply_name') is-invalid @enderror" name="supply_name" value="{{ old('supply_name') }}" placeholder="Nom de votre fournisseur" autocomplete="supply_name">
-
-                  @error('supply_name')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                </div>
-              </div>
-             
 
               <div class="mb-3 text-start">
                 <label class="form-label" for="desc">Description du produit </label>
@@ -434,7 +406,7 @@
                 </div>
                 {{-- 
                 @if($product->colors->count() > 0 )
-                <div class="mb-3 text-start">
+                <div class="mb-3 d-none text-start">
                   <label class="form-label" for="colors">Modifier les couleurs</label>
                   <input id="colorsUpdate" type="text"  class="form-control colorsUpdate @error('colors') is-invalid @enderror" name="colors" value="@foreach($product->colors as $colorGet) {{ old('colors') ?? $colorGet->name }},  @endforeach" required autocomplete="colors" autofocus>
 
@@ -446,7 +418,7 @@
                 </div>
                 @endif
                 @if($product->sizes->count() > 0)
-                <div class="mb-3 text-start">
+                <div class="mb-3 d-none text-start">
                   <label class="form-label" for="sizes">Modifier les tailles</label>
                   <input id="sizesUpdate" type="text"  class="form-control sizesUpdate @error('sizes') is-invalid @enderror" name="sizes" value="@foreach($product->sizes as $sizeGet) {{ old('sizes') ?? $sizeGet->name }},  @endforeach" required autocomplete="sizes" autofocus>
 
@@ -458,35 +430,20 @@
                 </div>
                 @endif
                 --}}
-                @if ($product->supply_id == null)
-                  <div class="mb-3 text-start">
-                    <div class="col-lg-12 mb-3">
-                      <label class="form-label" for="supply_name">Nom de votre fournisseur</label>
-                      <input id="supply_name" type="text" class="form-control @error('supply_name') is-invalid @enderror" name="supply_name" value="{{ old('supply_name') ?? $product->supply_name }}" placeholder="Nom de votre fournisseur" autocomplete="supply_name">
-
-                      @error('supply_name')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                      @enderror
-                    </div>
-                  </div>
-                @else
-                  <div class="mb-3 text-start">
-                    <label class="form-label" for="organizerSingle">Sélectionner un fournisseur</label>
-                    <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
-                      <option value="">Sélectionner un...</option>
-                      @foreach ($supplies as $supplie)
-                        <option value="{{ old('supply_id') ?? $supplie->id }}" @if($supplie->id == $product->supply_id) selected="" @endif > @if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
-                      @endforeach
-                    </select>
-                    @error('supply_id')
-                      <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                      </span>
-                    @enderror
-                  </div>
-                @endif
+                <div class="mb-3 text-start">
+                  <label class="form-label" for="organizerSingle">Sélectionner un fournisseur</label>
+                  <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
+                    <option value="">Sélectionner un...</option>
+                    @foreach ($supplies as $supplie)
+                      <option value="{{ old('supply_id') ?? $supplie->id }}" @if($supplie->id == $product->supply_id) selected="" @endif > @if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
+                    @endforeach
+                  </select>
+                  @error('supply_id')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
 
                 <div class="mb-3 text-start">
                   <label class="form-label" for="desc">Description du produit </label>
@@ -605,15 +562,6 @@
     }
   }
 
-  function text(x){
-    if (x == 0) {
-      document.getElementById('MysupplyId').classList.remove('d-none')
-      document.getElementById('OursupplyId').classList.add('d-none')
-    }else{
-      document.getElementById('MysupplyId').classList.add('d-none')
-      document.getElementById('OursupplyId').classList.remove('d-none')
-    }
-  }
 </script>
 
 @endsection
