@@ -3,7 +3,7 @@
 <link href="{{asset('assets/css/bootstrap-tagsinput.css')}}" rel="stylesheet" />
 @endsection
 @section('main-content')
-<div class="content">
+  <div class="content">
     <div class="mb-9">
       <div class="row g-3 mb-4">
         <div class="col-auto">
@@ -98,9 +98,6 @@
         </div>
       </div>
     </div>
-
-
-    
 
     <div class="offcanvas offcanvas-top h-auto w-auto" id="offcanvasTop" tabindex="-1" aria-labelledby="offcanvasTopLabel">
       <div class="offcanvas-header">
@@ -315,7 +312,6 @@
       </div>
     @endforeach
 
-    
     @foreach($supplyOrder->supply_order_products  as $product)
       <div class="modal fade" id="scrollingLong-{{ $product->id }}" tabindex="-1" aria-labelledby="scrollingLongModalLabel2" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
@@ -335,13 +331,8 @@
         </div>
       </div>
     @endforeach
-                    
-
-
 
     @include('layouts.footer_admin')
-
-
   </div>
 @endsection
 @section('footerSection')

@@ -98,6 +98,8 @@ Route::prefix('/magasin')->name('magasin.')->group(function() {
     Route::put('/profile/edit/{id}',[App\Http\Controllers\Magasin\ProfileController::class,'edit'])->name('profile.edit');
     Route::put('/profile/updateImageProfile/{id}',[App\Http\Controllers\Magasin\ProfileController::class,'updateImageProfile'])->name('profile.imageUpdate');
     
+    Route::resource('/methodes', App\Http\Controllers\Magasin\PaymentMethodController::class);
+    
     Route::resource('/reserve', App\Http\Controllers\Magasin\ReservationController::class);
     Route::resource('/bagage', App\Http\Controllers\Magasin\BagageController::class);
     Route::post('bagage/post',[App\Http\Controllers\Magasin\BagageController::class,'post'])->name('bagage.post');

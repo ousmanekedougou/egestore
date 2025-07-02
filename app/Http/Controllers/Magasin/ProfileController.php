@@ -15,7 +15,7 @@ class ProfileController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['isMagasinAgent']);
+        $this->middleware(['isMagasin']);
     }
     /**
      * Display a listing of the resource.
@@ -103,7 +103,7 @@ class ProfileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(int $id)
     {
         //
     }
@@ -111,7 +111,7 @@ class ProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(int $id)
     {
         $auth_reseau = Social::where('magasin_id',Auth::guard('magasin')->user()->id)->first();
         if ( $auth_reseau) {
@@ -140,7 +140,7 @@ class ProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, int $id)
     {
         $this->validate($request,[
             'admin_name' => ['required', 'string', 'max:255'],

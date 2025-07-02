@@ -5,8 +5,7 @@
 @section('main-content')
   
   <div class="content">
-    <h2 class="mb-2 lh-sm">Feather Icons</h2>
-    <p class="text-body-tertiary lead mb-3">Simply beautiful open source icons</p>
+    <h2 class="mb-2 lh-sm">Les icons pour vos catégories</h2>
     <div class="mb-9">
       <div class="card border mb-3" data-list='{"valueNames":["icon-list-item"]}'>
         <div class="card-header border-bottom bg-body">
@@ -15,7 +14,7 @@
               <h4 class="mb-0">Liste des icons</h4>
             </div>
             <div class="col-auto col-sm-6">
-              <div class="text-end"><input class="form-control d-inline-block rounded-3 search" type="search" placeholder="Search" style="width: 250px;" /></div>
+              <div class="text-end"><input class="form-control d-inline-block rounded-3 search" type="search" placeholder="Rechercher une icon" style="width: 250px;" /></div>
             </div>
           </div>
         </div>
