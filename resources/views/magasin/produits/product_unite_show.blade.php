@@ -143,6 +143,7 @@
                   @enderror
                 </div>
               @endif
+              
               <div class="mb-3 text-start">
                 <div class="form-check form-switch">
                   <input class="form-check-input mt-1 @error('status_unite') is-invalid @enderror" id="status_unite" name="status_unite" type="checkbox" value="1" />

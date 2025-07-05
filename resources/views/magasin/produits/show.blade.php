@@ -99,13 +99,14 @@
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <div class="row g-3 g-sm-5 align-items-end">
-                  @if($product->colors->count())
-                    <div class="col-12 col-sm-auto">
-                      <p class="fw-semibold mb-2 text-body">Couleurs : </p>
-                      <div class="d-flex align-items-center">
-                        <select class="form-select w-auto @error('colors') is-invalid @enderror" name="color">
-                          @foreach($product->colors as $color)
-                            <option value="{{ $color->id }}">{{$color->name}}</option>
+                  <div class="col-4">
+                    <p class="fw-semibold mb-2 text-body">Unités : </p>
+                    <div class="d-flex align-items-center">
+                      @if($product->vendor_systems->count() > 0)
+                        <select class="form-select w-auto @error('colors') is-invalid @enderror" name="color" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
+                          <option value="">Choisir</option> 
+                          @foreach($product->vendor_systems as $vendor_system)
+                            <option value="{{ $vendor_system->id }}"> {{ $vendor_system->unite->code }} </option>
                           @endforeach
                         </select>
                         @error('color')
@@ -113,28 +114,40 @@
                             <strong>{{ $message }}</strong>
                           </span>
                         @enderror
-                      </div>
+                      @else 
+                        Null
+                      @endif
                     </div>
-                  @endif
-                  @if($product->sizes->count())
-                    <div class="col-12 col-sm-auto">
-                      <p class="fw-semibold mb-2 text-body">Tailles : </p>
-                      <div class="d-flex align-items-center">
-                        <select class="form-select w-auto @error('size') is-invalid @enderror" name="size">
-                          @foreach($product->sizes as $size)
-                            <option value="{{ $size->id }}">{{$size->name}}</option>
-                          @endforeach
+                  </div>
+                  
+                  <div class="col-4">
+                    <p class="fw-semibold mb-2 text-body">Couleurs|Tailles: </p>
+                    <div class="d-flex align-items-center">
+                      @if($product->product_color_sizes->count() > 0)
+                        <select class="form-select w-auto @error('size') is-invalid @enderror" name="size" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
+                          <option value="">Choisir</option>
+                            @foreach($product->product_color_sizes as $getProductColorSize)
+                              @if ($getProductColorSize->quantity > 0)
+                                <option value="{{ $getProductColorSize->id }}">
+                                  <span> {{$getProductColorSize->color->name}}</span> 
+                                  <span> {{$getProductColorSize->size->name}}</span> 
+                                  <span> {{$getProductColorSize->quantity}}</span> 
+                                </option>
+                              @endif
+                            @endforeach
                         </select>
                         @error('size')
                           <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                           </span>
                         @enderror
-                      </div>
+                      @else 
+                        Null
+                      @endif
                     </div>
-                  @endif
-                  <div class="col-12 col-sm">
-                    <p class="fw-semibold mb-2 text-body">Quantite : </p>
+                  </div>
+                  <div class="col-4">
+                    <p class="fw-semibold mb-2 text-body">Quantité : </p>
                     <div class="d-flex justify-content-between align-items-end">
                       <div class="d-flex flex-between-center" data-quantity="data-quantity">
                         <span class="btn btn-phoenix-primary px-3" data-type="minus"><span class="fas fa-minus"></span></span>
@@ -404,6 +417,20 @@
             {{ method_field('PUT') }}
             <input type="hidden" name="sub_category_id" value="{{ $product->sub_category->id }}">
             <div class="mb-3 text-start">
+              <label class="form-label" for="organizerSingle">Sélectionner un fournisseur</label>
+              <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
+                <option value="">Sélectionner un...</option>
+                @foreach ($supplies as $supplie)
+                  <option value="{{ old('supply_id') ?? $supplie->id }}" @if($supplie->id == $product->supply_id) selected="" @endif > @if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
+                @endforeach
+              </select>
+              @error('supply_id')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
+            </div>
+            <div class="mb-3 text-start">
                 <label class="form-label" for="name">Titre du produit</label>
                 <input id="name" type="text" placeholder="Titre du produit" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $product->name }}" required autocomplete="name" autofocus>
 
@@ -469,64 +496,6 @@
                 @enderror
               </div>
             </div>
-            @if($product->colors->count() > 0)
-              <div class="mb-3 text-start">
-                <label class="form-label" for="colors">Modifier les couleurs</label>
-                <input id="colorsUpdate" type="text"  class="form-control colorsUpdate @error('colors') is-invalid @enderror" name="colors" value="@foreach($product->colors as $colorGet) {{ old('colors') ?? $colorGet->name }},  @endforeach" required autocomplete="colors" autofocus>
-
-                @error('colors')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-              </div>
-            @endif
-
-
-            @if($product->sizes->count())
-            <div class="mb-3 text-start">
-              <label class="form-label" for="sizes">Modifier les tailles</label>
-              <input id="sizesUpdate" type="text"  class="form-control sizesUpdate @error('sizes') is-invalid @enderror" name="sizes" value="@foreach($product->sizes as $sizeGet) {{ old('sizes') ?? $sizeGet->name }},  @endforeach" required autocomplete="sizes" autofocus>
-
-              @error('sizes')
-                  <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                  </span>
-              @enderror
-            </div>
-            @endif
-
-            @if ($product->supply_id == null)
-              <div class="mb-3 text-start">
-                <div class="col-lg-12 mb-3">
-                  <label class="form-label" for="supply_name">Nom de votre fournisseur</label>
-                  <input id="supply_name" type="text" class="form-control @error('supply_name') is-invalid @enderror" name="supply_name" value="{{ old('supply_name') ?? $product->supply_name }}" placeholder="Nom de votre fournisseur" autocomplete="supply_name">
-
-                  @error('supply_name')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                </div>
-              </div>
-            @else
-              <div class="mb-3 text-start">
-                <label class="form-label" for="organizerSingle">Sélectionner un fournisseur</label>
-                <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
-                  <option value="">Sélectionner un...</option>
-                  @foreach ($supplies as $supplie)
-                    <option value="{{ old('supply_id') ?? $supplie->id }}" @if($supplie->id == $product->supply_id) selected="" @endif > @if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
-                  @endforeach
-                </select>
-                @error('supply_id')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
-            @endif
-
-            
 
             <div class="mb-3 text-start">
               <label class="form-label" for="desc">Description du produit </label>

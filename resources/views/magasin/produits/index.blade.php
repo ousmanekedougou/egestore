@@ -139,7 +139,7 @@
     <div class="card-body p-0">
       <div class="p-4 code-to-copy">
         <!-- Right Offcanvas-->
-        <div class="offcanvas offcanvas-end" id="offcanvasRight" tabindex="-1" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas offcanvas-end w-50" id="offcanvasRight" tabindex="-1" aria-labelledby="offcanvasRightLabel">
           <div class="offcanvas-header">
             <h5 id="offcanvasRightLabel">Ajouter un produit</h5><button class="btn-close text-reset" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
@@ -147,35 +147,50 @@
             <form method="POST" action="{{ route('magasin.produit.store') }}" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="sub_category_id" value="{{ $subcategory->id }}">
-              
+
               <div class="mb-3 text-start">
-                  <label class="form-label" for="name">Titre du produit</label>
-                  <input id="name" type="text" placeholder="Titre du produit" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                  @error('name')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
+                <label class="form-label" for="organizerSingle">Séléctionner un fournisseur</label>
+                <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
+                  <option value="">Séléctionner un fournisseur</option>
+                  @foreach ($supplies as $supplie)
+                    <option value="{{ $supplie->id }}">@if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
+                  @endforeach
+                </select>
+                @error('supply_id')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
               </div>
+              <div class="row">
+                <div class="mb-3 text-start col-6">
+                    <label class="form-label" for="name">Titre du produit</label>
+                    <input id="name" type="text" placeholder="Titre du produit" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
-              <div class="row mb-3 text-start">
-                <div class="col-lg-12">
-                  <label class="form-label" for="reference">Reference du produit</label>
-                  <input id="reference" type="text" placeholder="Reference du produit" class="form-control @error('reference') is-invalid @enderror" name="reference" value="{{ old('reference') }}" required autocomplete="reference" autofocus>
+                    @error('name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
 
-                  @error('reference')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
+                <div class="mb-3 text-start col-6">
+                  <div class="col-lg-12">
+                    <label class="form-label" for="reference">Référence du produit (facultative)</label>
+                    <input id="reference" type="text" placeholder="Référence du produit" class="form-control @error('reference') is-invalid @enderror" name="reference" value="{{ old('reference') }}" required autocomplete="reference" autofocus>
+
+                    @error('reference')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                  </div>
                 </div>
               </div>
-              
               <div class="row mb-3 text-start">
                 <div class="col-lg-6">
-                  <label class="form-label" for="quantity">Quantite du produit</label>
-                  <input id="quantity" type="quantity" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" placeholder="Quantite du produit" required autocomplete="quantity">
+                  <label class="form-label" for="quantity">Quantité du produit</label>
+                  <input id="quantity" type="quantity" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}" placeholder="Quantité du produit" required autocomplete="quantity">
 
                   @error('quantity')
                       <span class="invalid-feedback" role="alert">
@@ -184,8 +199,8 @@
                   @enderror
                 </div>
                 <div class="col-lg-6">
-                  <label class="form-label" for="qty_alert">Quantite d'alerte</label>
-                  <input id="qty_alert" type="qty_alert" class="form-control @error('qty_alert') is-invalid @enderror" name="qty_alert" value="{{ old('qty_alert') }}" placeholder="Quantite d'alerte" required autocomplete="qty_alert">
+                  <label class="form-label" for="qty_alert">Quantité d'alérte</label>
+                  <input id="qty_alert" type="qty_alert" class="form-control @error('qty_alert') is-invalid @enderror" name="qty_alert" value="{{ old('qty_alert') }}" placeholder="Quantité d'alérte" required autocomplete="qty_alert">
 
                   @error('qty_alert')
                       <span class="invalid-feedback" role="alert">
@@ -206,7 +221,7 @@
                   @enderror
                 </div>
                  <div class="col-lg-6">
-                  <label class="form-label" for="datepicker">Date d'expiration</label>
+                  <label class="form-label" for="datepicker">Date d'éxpiration</label>
                     <input type="text" id="datepicker" class="form-control datetimepicker @error('exp_date') is-invalid @enderror" name="exp_date" value="{{ old('exp_date') }}" placeholder="dd/mm/yyyy" data-options='{"disableMobile":true,"dateFormat":"d/m/y"}' required autocomplete="exp_date">
 
                     @error('exp_date')
@@ -216,8 +231,8 @@
                     @enderror
                  </div>
               </div>
-              {{-- 
-                <div class="mb-3 d-none text-start">
+              <div class="row">
+                <div class="mb-3 text-start col-6">
                   <label class="form-label" for="colors">Entrer les couleurs du produits</label>
                   <input id="colors" type="text" placeholder="Couleurs du produits" class="form-control text-body-quaternary text-monospace @error('colors') is-invalid @enderror" name="colors" value="{{ old('colors') }}" required autocomplete="colors" autofocus>
 
@@ -228,7 +243,7 @@
                   @enderror
                 </div>
 
-                <div class="mb-3 d-none text-start">
+                <div class="mb-3 text-start col-6">
                   <label class="form-label" for="sizes">Entrer les tailles du produit</label>
                   <input id="sizes" type="text" placeholder="Tailles du produits" class="form-control text-body-quaternary text-monospace @error('sizes') is-invalid @enderror" name="sizes" value="{{ old('sizes') }}" required autocomplete="sizes" autofocus>
 
@@ -238,25 +253,60 @@
                       </span>
                   @enderror
                 </div>
-               --}}
+              </div>
+              <div class="row">
+                <div class="mb-3 text-start col-lg-6">
+                  <label class="form-label" for="organizerSingle">Ajouter l'unité de vente de base de ce produit</label>
+                  <select class="form-select @error('unite_id') is-invalid @enderror" name="unite_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
+                    <option value="">Sélectionner un...</option>
+                    @foreach ($unites as $unite)
+                      <option value="{{ old('unite_id') ?? $unite->id }}"> {{ $unite->name }}</option>
+                    @endforeach
+                  </select>
+                  @error('unite_id')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
 
-              <div class="mb-3 text-start">
-                <label for="organizerSingle">Sélectionner un fournisseur</label>
-                <select class="form-select @error('supply_id') is-invalid @enderror" name="supply_id" id="organizerSingle" data-choices="data-choices" data-options='{"removeItemButton":true,"placeholder":true}'>
-                  <option value="">Sélectionner un fournisseur</option>
-                  @foreach ($supplies as $supplie)
-                    <option value="{{ $supplie->id }}">@if ($supplie->magasin_id != '') {{ $supplie->magasin->name }} @else {{ $supplie->name }} @endif</option>
-                  @endforeach
-                </select>
-                @error('supply_id')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
+                <div class="mb-3 text-start col-lg-6">
+                  <label class="form-label" for="quantity_unite">Quantité de l'unité</label>
+                  <input id="quantity_unite" type="quantity_unite" class="form-control @error('quantity_unite') is-invalid @enderror" name="quantity_unite" value="{{ old('quantity_unite') }}" placeholder="Quantité de l'unité" required autocomplete="quantity_unite">
+
+                  @error('quantity_unite')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+              </div>
+              <div class="row">
+                <div class="mb-3 text-start col-lg-6">
+                  <label class="form-label" for="price_achat">Prix d'achat unitaire du produit</label>
+                  <input id="price_achat" type="numeric" class="form-control @error('price_achat') is-invalid @enderror" name="price_achat" value="{{ old('price_achat') }}" placeholder="Prix d'achat unitaire du produit" required autocomplete="price_achat">
+
+                  @error('price_achat')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+
+                <div class="mb-3 text-start col-lg-6">
+                  <label class="form-label" for="price_vente">Prix de vente unitaire du produit</label>
+                  <input id="price_vente" type="numeric" class="form-control @error('price_vente') is-invalid @enderror" name="price_vente" value="{{ old('price_vente') }}" placeholder="Prix de vente unitaire du produit" required autocomplete="price_vente">
+
+                  @error('price_vente')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
               </div>
 
               <div class="mb-3 text-start">
-                <label class="form-label" for="desc">Description du produit </label>
+                <label class="form-label" for="desc">Déscription du produit </label>
                 <textarea class="form-control @error('desc') is-invalid @enderror" id="desc" value="{{ old('desc') }}" name="desc" required autocomplete="desc" rows="4"> </textarea>
                 @error('desc')
                     <span class="invalid-feedback" role="alert">
@@ -298,7 +348,7 @@
 
                   <div class="col-lg-12 mb-3 d-none" id="EnPromotion">
                     <label class="form-label" for="price_promotion">Prix du produit en promotion</label>
-                    <input id="price_promotion" type="numeric" class="form-control @error('price_promotion') is-invalid @enderror" name="price_promotion" value="{{ old('price_promotion') }}" placeholder="Prix du produit" autocomplete="price_promotion">
+                    <input id="price_promotion" type="numeric" class="form-control @error('price_promotion') is-invalid @enderror" name="price_promotion" value="{{ old('price_promotion') }}" placeholder="Prix du produit en promotion" autocomplete="price_promotion">
 
                     @error('price_promotion')
                       <span class="invalid-feedback" role="alert">
@@ -551,7 +601,6 @@
   $(".colorsUpdate").tagsinput();
   $(".sizesUpdate").tagsinput();
 </script>
-
 
 <script>
   function enableBrand(answer){

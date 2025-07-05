@@ -50,7 +50,7 @@
               </tr>
             </thead>
             <tbody class="list" id="order-table-body">
-              @foreach($supplie->supply_orders as $order)
+              @foreach($orders as $order)
                 <tr class="hover-actions-trigger btn-reveal-trigger position-static">
                   <td class="fs-9 align-middle px-0 py-3">
                     <div class="form-check mb-0 fs-8"><input class="form-check-input" type="checkbox" data-bulk-select-row='{"order":2453,"total":87,"customer":{"avatar":"/team/32.webp","name":"Carry Anna"},"payment_status":{"label":"Complete","type":"badge-phoenix-success","icon":"check"},"fulfilment_status":{"label":"Cancelled","type":"badge-phoenix-secondary","icon":"x"},"delivery_type":"Cash on delivery","date":"Dec 12, 12:56 PM"}' /></div>
@@ -181,7 +181,7 @@
   </div>
 
 
-    @foreach($supplie->supply_orders as $order)
+    @foreach($orders as $order)
       <div class="modal fade" id="DeleteCompte-{{ $order->id }}" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -206,7 +206,7 @@
     @endforeach 
 
 
-    @foreach($supplie->supply_orders as $order)
+    @foreach($orders as $order)
       <div class="modal fade" id="DevisDelivery-{{ $order->id }}" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -261,7 +261,7 @@
     @endforeach 
 
 
-    @foreach($supplie->supply_orders as $order)
+    @foreach($orders as $order)
       <div class="modal fade" id="OrderState-{{ $order->id }}" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -308,63 +308,7 @@
       </div>
     @endforeach 
 
-     @foreach($supplie->supply_orders as $order)
-      <div class="modal fade" id="OrderPayment-{{ $order->id }}" tabindex="-1" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Status de la commande de devis</h5><button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><svg class="svg-inline--fa fa-xmark fs-9" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path></svg><!-- <span class="fas fa-times fs-9"></span> Font Awesome fontawesome.com --></button>
-            </div>
-            <form action="{{ route('magasin.devis.status',$order->id) }}" method="post">
-              @csrf
-              {{ method_field('PUT') }}
-              <div class="modal-body">
-                <p class="text-body-tertiary lh-lg mb-3"> Commande devis Nº {{ $order->order }} de  {{$order->name}} </p>
-                <p class="text-body-tertiary lh-lg mb-3">
-                  <h6 class="mb-2">Selectionner un status</h6>
-                  <select onchange="enableBrand(this)" class="form-select mb-4 @error('status') is-invalid @enderror" name="status" id="status"aria-label="delivery type">
-                    <option value=""></option>
-                    <option value="1" @if($order->status == 1) selected="" @endif>Terminé</option>
-                    <option value="2" @if($order->status == 2) selected="" @endif>En cours</option>
-                    <option value="3" @if($order->status == 3) selected="" @endif>Annulé</option>
-                  </select>
-                  @error('status')
-                  <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                  </span>
-                  @enderror
-                </p>
-                <div class="mb-3 text-start d-none" id="clientNone" data-id="{{ $order->id }}">
-                  <label class="form-label" for="email">Methode de paiement</label> <br>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input text-primary @error('methode') is-invalid @enderror" @if($order->methode == 1) checked="" @endif id="inlineRadioA-{{ $order->id }}" type="radio" name="methode" value=" 1 ">
-                    <label class="form-check-label text-primary" for="inlineRadioA-{{ $order->id }}" style="margin-top: 2px;">Wave</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input text-warning @error('methode') is-invalid @enderror" @if($order->methode == 2) checked="" @endif id="inlineRadioB-{{ $order->id }}" type="radio" name="methode" value=" 2 ">
-                    <label class="form-check-label text-warning" for="inlineRadioB-{{ $order->id }}" style="margin-top: 2px;">Orange Money</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input text-success @error('methode') is-invalid @enderror" @if($order->methode == 3) checked="" @endif id="inlineRadioC-{{ $order->id }}" type="radio" name="methode" value=" 3 ">
-                    <label class="form-check-label text-success" for="inlineRadioC-{{ $order->id }}" style="margin-top: 2px;">Cache</label>
-                  </div>
-                  @error('methode')
-                    <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button class="btn btn-success" type="submit">Enregistre le status</button>
-                <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Anuller</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    @endforeach 
-
+ 
 
 
     @include('layouts.footer_admin')

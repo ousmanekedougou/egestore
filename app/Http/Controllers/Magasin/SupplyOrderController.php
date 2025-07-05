@@ -24,7 +24,7 @@ class SupplyOrderController extends Controller
     {
         return view('magasin.supplies.vendor.index',
         [
-            'orders' => SupplyOrder::where('request_id',AuthMagasinAgent())->get()
+            'orders' => SupplyOrder::where('request_id',AuthMagasinAgent())->orderBy('id','desc')->get()
         ]);
     }
 
@@ -88,9 +88,11 @@ class SupplyOrderController extends Controller
      */
     public function show(string $slug)
     {
+        $supply = Supply::where('owner_id',AuthMagasinAgent())->where('slug',$slug)->first();
         return view('magasin.supplies.buyer.index',
         [
-            'supplie' => Supply::where('owner_id',AuthMagasinAgent())->where('slug',$slug)->first()
+            'orders' => SupplyOrder::where('magasin_id',AuthMagasinAgent())->where('supply_id',$supply->id)->orderBy('id','desc')->get(),
+            'supplie' => $supply
         ]);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Magasin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Magasin\Product;
 use App\Models\Magasin\SupplyOrder;
 use App\Models\Magasin\SupplyOrderProduct;
 use Brian2694\Toastr\Facades\Toastr;

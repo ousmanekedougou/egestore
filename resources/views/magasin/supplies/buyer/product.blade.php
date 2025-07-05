@@ -20,7 +20,7 @@
       <div id="products" data-list='{"valueNames":["product","price","category","tags","vendor","time"]}'>
         <div class="mb-4">
           <div class="d-flex flex-wrap gap-3">
-            <div class="search-box" style="width: 70%;">
+            <div class="search-box" style="width: 60%;">
               <form class="position-relative"><input class="form-control search-input search" type="search" placeholder="Rechercher un produit" aria-label="Search" />
                 <span class="fas fa-search search-box-icon"></span>
               </form>
@@ -148,7 +148,8 @@
                           <input id="sizes" type="text" placeholder="Tailles" class="sizes form-control @error('sizes') is-invalid @enderror" name="inputs[0][sizes]" value="{{ old('sizes') }}" autocomplete="sizes" autofocus>
                         </td>
                         <td class="email align-middle white-space-nowrap ml-3 pe-5 text-center">
-                          <input class="form-control @error('image') is-invalid @enderror" id="image" name="inputs[0][image]" type="file" value="{{ old('image') }}" autocomplete="image"/>
+                          <label for="image"><img src="{{ asset('assets/img/icons/image-icon.png') }}" alt="" srcset=""></label>
+                          <input class="form-control d-none @error('image') is-invalid @enderror" id="image" name="inputs[0][image]" type="file" value="{{ old('image') }}" autocomplete="image"/>
                         </td>
                         <td class="last-order align-middle white-space-nowrap text-body-tertiary text-center">
                           <button type="button" class="btn btn-primary" id="add">
@@ -332,11 +333,12 @@
       </div>
     @endforeach
 
+   
+
     @include('layouts.footer_admin')
   </div>
 @endsection
 @section('footerSection')
-<script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/js/bootstrap-tagsinput.js') }}"></script> 
 <script>
   $(document).ready(function(){
@@ -364,7 +366,8 @@
               <input id="sizes" type="text" placeholder="Tailles" class="form-control sizes @error('sizes') is-invalid @enderror" name="inputs[`+i+`][sizes]" value="{{ old('sizes') }}" autocomplete="sizes" autofocus>
             </td>
             <td class="email align-middle white-space-nowrap pe-5 ml-3 text-center">
-              <input type="file" class="form-control @error('image') is-invalid @enderror" name="inputs[`+i+`][image]" value="{{ old('image') }}" autocomplete="image" autofocus>
+              <label for="inputs[`+i+`][image]"><img src="{{ asset('assets/img/icons/image-icon.png') }}" alt="" srcset=""></label>
+              <input type="file" id="inputs[`+i+`][image]" class="form-control d-none @error('image') is-invalid @enderror" name="inputs[`+i+`][image]" value="{{ old('image') }}" autocomplete="image" autofocus>
             </td>
             <td class="last-order align-middle white-space-nowrap text-body-tertiary text-center">
               <button type="button" class="btn btn-danger remove-table-row">

@@ -60,7 +60,7 @@
             <div class="row justify-content-between align-items-center mb-4">
               <div class="col-12 col-md-auto col-xl-12 col-xxl-auto">
                   <div class="mb-1 mb-md-0 d-flex align-items-center lh-1">
-                    <label class="form-check-label mb-1 mb-md-0 mb-xl-1 mb-xxl-0 fs-8 me-2 line-clamp-1 text-body cursor-pointer">Designing the dungeon</label>
+                    <label class="form-check-label mb-1 mb-md-0 mb-xl-1 mb-xxl-0 fs-8 me-2 line-clamp-1 text-body cursor-pointer">Les tailles de ce produit</label>
                     <button type="button" class="btn btn-primary btn-sm ms-auto" data-bs-toggle="modal" data-bs-target="#AddSize">
                       <span data-feather="plus" class="me-1"></span>Ajouter une taille
                     </button>
